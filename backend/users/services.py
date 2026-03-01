@@ -2,7 +2,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from utils.email_service import send_verification_email
 from utils.otp_service import OTPService
 from utils.constraints import CheckConstraint
-from users.models import User
+from .models import User
 
 class AuthService:
     @staticmethod
@@ -61,7 +61,7 @@ class AuthService:
         try:
             user = User.objects.get(email=email)
             
-            if not OTPService.is_expired(user.expiration_date):
+            if OTPService.is_expired(user.expiration_date):
                 AuthService._send_otp(email)
                 return {'data': {'success': False, 'message': 'Code expired, new code sent'}, 'status': 400}
             
@@ -75,6 +75,17 @@ class AuthService:
         except User.DoesNotExist:
             return {'data': {'success': False, 'message': 'User not found'}, 'status': 404}
 
+    @staticmethod
+    def verifyEmail(email):
+        if CheckConstraint.is_email_used(email):
+            return {'data' : {'success' : False, 'message' : 'Error, this email is already used!'}, 'status' : 400}
+        return {'data' : {'success' : True, 'message' : 'OK!'}, 'status' : 200}
+    
+    @staticmethod
+    def verifyPhone(phone):
+        if CheckConstraint.is_phone_used(phone):
+            return {'data' : {'success' : False, 'message' : 'Error, this phone number is already used!'}, 'status' : 400}
+        return {'data' : {'success' : True, 'message' : 'OK!'}, 'status' : 200}
 
     @staticmethod
     def _send_otp(email):

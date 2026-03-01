@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.core.validators import MinValueValidator, RegexValidator
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
@@ -27,8 +28,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('D', 'Doctor')
     ]
 
-    first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
+    first_name = models.CharField(max_length=25, validators=[RegexValidator(r'^[a-zA-Z]+$')])
+    last_name = models.CharField(max_length=25, validators=[RegexValidator(r'^[a-zA-Z]+$')])
     birth_date = models.DateField()
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15, unique=True)
@@ -37,8 +38,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     joined_date = models.DateTimeField(auto_now_add=True)
-    verification_code = models.CharField(max_length=6, null=True)
-    expiration_date = models.DateTimeField(null=True)
+    verification_code = models.CharField(max_length=6, null=True, blank=True)
+    expiration_date = models.DateTimeField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)
 
     objects = UserManager()
