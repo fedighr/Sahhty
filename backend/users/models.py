@@ -41,6 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     verification_code = models.CharField(max_length=6, null=True, blank=True)
     expiration_date = models.DateTimeField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)
+    can_reset_password = models.BooleanField(default=False)
 
     objects = UserManager()
     USERNAME_FIELD = 'email'

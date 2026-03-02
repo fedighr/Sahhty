@@ -30,7 +30,14 @@ class UserAuth(ViewSet):
     def resend_code(self, request):
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = AuthService.resendCode(serializer.validated_data)
+        result = AuthService.resendCode(serializer.validated_data.get('email'))
+        return Response(result['data'], status=result['status']) 
+
+    @action(detail=False, methods=['post'], url_path='verify_reset_code', permission_classes=[AllowAny])
+    def verify_reset_code(self, request):
+        serializer = EmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)        
+        result = AuthService.verifyResetCode(serializer.validated_data.get('email'), request.data.get('code'))    
         return Response(result['data'], status=result['status']) 
 
     @action(detail=False, methods=['post'], url_path='verify_code', permission_classes=[AllowAny])
@@ -38,14 +45,21 @@ class UserAuth(ViewSet):
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)        
         result = AuthService.verifyCode(serializer.validated_data.get('email'), request.data.get('code'))    
-        return Response(result['data'], status=result['status']) 
+        return Response(result['data'], status=result['status'])    
 
-    @action(detail=False, methods=['post'], url_path="verify_email", permission_classes=[AllowAny])
-    def verify_email(self, request):
+    @action(detail=False, methods=['post'], url_path="is_email_available", permission_classes=[AllowAny])
+    def is_email_available(self, request):
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = AuthService.verifyEmail(serializer.validated_data.get('email'))
+        result = AuthService.verifyEmailAvailable(serializer.validated_data.get('email'))
         return Response(result['data'], status=result['status'])
+
+    @action(detail=False, methods=['post'], url_path="verify_reset_email", permission_classes=[AllowAny])
+    def verify_reset_email(self, request):
+        serializer = EmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result = AuthService.verifyResetEmail(serializer.validated_data.get('email'))
+        return Response(result['data'], status=result['status'])    
 
     @action(detail=False, methods=['post'], url_path='verify_phone', permission_classes=[AllowAny])
     def verify_phone(self, request):
@@ -53,6 +67,14 @@ class UserAuth(ViewSet):
         serializer.is_valid(raise_exception=True)
         result = AuthService.verifyPhone(serializer.validated_data.get('phone'))
         return Response(result['data'], status=result['status'])
+
+    @action(detail=False, methods=['post'], url_path='forget_password', permission_classes=[AllowAny])
+    def forget_password(self,request):
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result = AuthService.forgetPassword(serializer.validated_data)
+        return Response(result['data'], status=result['status'])
+
     
 
 

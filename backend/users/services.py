@@ -76,16 +76,58 @@ class AuthService:
             return {'data': {'success': False, 'message': 'User not found'}, 'status': 404}
 
     @staticmethod
-    def verifyEmail(email):
+    def verifyResetCode(email, code):
+        try:
+            user = User.objects.get(email=email)
+            
+            if OTPService.is_expired(user.expiration_date):
+                return {'data': {'success': False, 'message': 'Code expired, new code sent'}, 'status': 400}
+            
+            if code != user.verification_code:
+                return {'data': {'success': False, 'message': 'Incorrect verification code'}, 'status': 400}
+            
+            user.can_reset_password = True
+            user.save()
+            return {'data': {'success': True, 'message': 'User verified successfully'}, 'status': 200}
+
+        except User.DoesNotExist:
+            return {'data': {'success': False, 'message': 'User not found'}, 'status': 404}    
+
+    @staticmethod
+    def verifyEmailAvailable(email):
         if CheckConstraint.is_email_used(email):
             return {'data' : {'success' : False, 'message' : 'Error, this email is already used!'}, 'status' : 400}
-        return {'data' : {'success' : True, 'message' : 'OK!'}, 'status' : 200}
+        return {'data' : {'success' : True, 'message' : 'Email is available'}, 'status' : 200}
+    
+    @staticmethod
+    def verifyResetEmail(email):
+        if not CheckConstraint.is_email_used(email):
+            return {'data' : {'success' : False, 'message' : 'Error, this email does not exist!'}, 'status' : 400}
+        AuthService._send_otp(email)
+        return {'data' : {'success' : True, 'message' : 'Email exists, verification code sent'}, 'status' : 200}
     
     @staticmethod
     def verifyPhone(phone):
         if CheckConstraint.is_phone_used(phone):
             return {'data' : {'success' : False, 'message' : 'Error, this phone number is already used!'}, 'status' : 400}
-        return {'data' : {'success' : True, 'message' : 'OK!'}, 'status' : 200}
+        return {'data' : {'success' : True, 'message' : 'Phone number is available'}, 'status' : 200}
+
+    @staticmethod
+    def forgetPassword(data):
+        email = data.get('email')
+        try:
+            user = User.objects.get(email=email)
+            if not user.can_reset_password:
+                return {'data': {'success': False, 'message': 'Error, you did not verify your email.'}, 'status': 400}   
+                    
+            user.set_password(data.get('password'))
+            user.can_reset_password =False
+            user.save()
+
+        except User.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Invalid email or password'}, 'status': 400}
+        
+        return {'data' : {'success' : True, 'message' : 'Password updated'}, 'status' : 200}
 
     @staticmethod
     def _send_otp(email):

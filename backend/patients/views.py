@@ -11,7 +11,7 @@ from users.serializers import EmailSerializer
 from .services import PatientService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
-class PatientAuth(ViewSet):
+class PatientView(ViewSet):
 
     @action(detail=False, methods=['post'], url_path='create_patient', permission_classes=[AllowAny])
     def create_patient(self, request):

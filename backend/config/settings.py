@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'patients',
-    'doctors'
+    'doctors',
+    'Pregnancies'
 ]
 
 REST_FRAMEWORK = {
