@@ -42,7 +42,12 @@ INSTALLED_APPS = [
     'users',
     'patients',
     'doctors',
-    'Pregnancies'
+    'Pregnancies',
+    'measurements',
+    'alerts',
+    'appointments',
+    'medications',
+    'medical_files'
 ]
 
 REST_FRAMEWORK = {

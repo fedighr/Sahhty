@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=25, validators=[RegexValidator(r'^[a-zA-Z]+$')])
     birth_date = models.DateField()
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=15, unique=True)
+    phone = models.CharField(max_length=30, unique=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='F')
     role = models.CharField(max_length=1, choices=ROLE_CHOICES, default='P')
     is_active = models.BooleanField(default=True)
@@ -41,6 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     verification_code = models.CharField(max_length=6, null=True, blank=True)
     expiration_date = models.DateTimeField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
     can_reset_password = models.BooleanField(default=False)
 
     objects = UserManager()

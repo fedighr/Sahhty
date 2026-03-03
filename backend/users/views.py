@@ -8,6 +8,7 @@ from django.db import IntegrityError, DatabaseError
 from .models import User
 from .serializers import UserSerializer, LoginSerializer, EmailSerializer, PhoneSerializer
 from .services import AuthService
+from utils.constraints import IsOwnerOrAdmin
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
 class UserAuth(ViewSet):
@@ -74,7 +75,17 @@ class UserAuth(ViewSet):
         serializer.is_valid(raise_exception=True)
         result = AuthService.forgetPassword(serializer.validated_data)
         return Response(result['data'], status=result['status'])
-
     
+    @action(detail=True, methods=['delete'], url_path='delete_account', permission_classes=[IsAuthenticated, IsOwnerOrAdmin])
+    def delete_account(self, request, pk=None):
+        try:
+            target_user = get_object_or_404(User, id=pk)
+            self.check_object_permissions(request, target_user)
+            result = AuthService.delete_user_account(target_user)
+            return Response(result)
+        
+        except Http404:
+            return Response({'success' : False ,'message' : 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        
 
 

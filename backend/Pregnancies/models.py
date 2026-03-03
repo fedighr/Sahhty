@@ -7,4 +7,4 @@ class Pregnancy(models.Model):
     start_date = models.DateField(null=True, blank=True)
     due_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE, related_name="pregnancy")
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="pregnancy")

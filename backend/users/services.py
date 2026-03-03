@@ -130,6 +130,18 @@ class AuthService:
         return {'data' : {'success' : True, 'message' : 'Password updated'}, 'status' : 200}
 
     @staticmethod
+    def delete_user_account(user):
+        if user.is_deleted:
+            return  {'data':{"success": False,"message": "Account already deleted"}, 'status' : 400}
+
+        user.is_deleted = True
+        user.email = user.email + ".deleted"
+        user.phone = user.phone + ".deleted"
+        user.save()
+
+        return {'data':{"success": True,"message": "Account deleted successfully"}, 'status' : 200   }
+
+    @staticmethod
     def _send_otp(email):
         otp = OTPService.create_otp()
         result = send_verification_email(email, otp['code'], otp['expires_at'])
