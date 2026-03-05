@@ -15,6 +15,7 @@ class UserAuth(ViewSet):
 
     @action(detail=False, methods=['post'], url_path='signup', permission_classes=[AllowAny])
     def signup(self, request):
+        print(request.data)
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.register(serializer.validated_data)

@@ -8,12 +8,12 @@ class AppConstants {
   static const String appVersion = '1.0.0';
 
   // Base URL — change to your Django backend
-  static const String baseUrl = 'https://api.sahhty.tn/api/v1';
+  static const String baseUrl = 'http://192.168.1.106:8000';
 
   // API Endpoints
-  static const String signupEndpoint = '/users/auth/signup';
-  static const String signinEndpoint = '/users/auth/signin';
-  static const String refreshEndpoint = '/users/auth/token/refresh';
+  static const String signupEndpoint = '/users/auth/signup/';
+  static const String signinEndpoint = '/users/auth/signin/';
+  static const String refreshEndpoint = '/users/auth/refresh/';
 
   // Secure Storage Keys
   static const String accessTokenKey = 'sahhty_access_token';
