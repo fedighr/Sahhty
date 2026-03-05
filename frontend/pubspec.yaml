@@ -1,48 +1,51 @@
-name: frontend
-description: "Medical Application"
+name: sahhty
+description: Sahhty - Intelligent Health Tracking Application for Tunisia
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.11.0
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
+  flutter_localizations:
+    sdk: flutter
 
-  # ── Navigation ──
-  go_router: ^14.2.0                  # like react-router-dom
+  # State Management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
 
-  # ── State Management ──
-  flutter_riverpod: ^2.5.1            # like Redux / Context API
+  # HTTP Client
+  dio: ^5.4.3+1
 
-  # ── HTTP Client ──
-  dio: ^5.4.3                         # like axios
+  # Secure Storage
+  flutter_secure_storage: ^9.2.2
 
-  # ── Secure Storage (for JWT tokens) ──
-  flutter_secure_storage: ^9.2.2      # store tokens safely
+  # Navigation
+  go_router: ^13.2.4
 
-  # ── Models / JSON ──
-  freezed_annotation: ^2.4.1          # immutable models
-  json_annotation: ^4.9.0             # JSON serialization
+  # UI
+  flutter_animate: ^4.5.0
+  google_fonts: ^6.2.1
+  intl: 0.20.2
 
-  # ── UI ──
-  carousel_slider: ^4.2.1             # carousel
-  cached_network_image: ^3.3.1        # load & cache images from API
-
-  # ── Utils ──
-  intl: ^0.19.0                       # date formatting
+  # Utils
+  equatable: ^2.0.5
+  logger: ^2.3.0
+  connectivity_plus: ^6.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
-
-  # ── Code Generators (run: dart run build_runner build) ──
-  freezed: ^2.5.2                     # generates model boilerplate
-  json_serializable: ^6.8.0           # generates fromJson/toJson
-  build_runner: ^2.4.9                # runs the generators
+  flutter_lints: ^3.0.0
+  riverpod_generator: ^2.4.3
+  build_runner: ^2.4.9
+  mocktail: ^1.0.4
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
