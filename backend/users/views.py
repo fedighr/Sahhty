@@ -87,6 +87,4 @@ class UserAuth(ViewSet):
         
         except Http404:
             return Response({'success' : False ,'message' : 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        
-
 
