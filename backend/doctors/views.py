@@ -12,7 +12,7 @@ from .services import DoctorService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
 class DoctorView(ViewSet):
-    @action(detail=False, methods=['post'], url_path="create_doctor")
+    @action(detail=False, methods=['post'], url_path="create_doctor", permission_classes=[AllowAny])
     def create_doctor(self, request):
         serializer = DoctorSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
