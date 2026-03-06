@@ -1,11 +1,10 @@
 name: sahhty
-description: Sahhty - Intelligent Health Tracking Application for Tunisia
+description: Sahhty — Tunisian health tracking app
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
-  flutter: ">=3.10.0"
+  sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -13,39 +12,39 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  # State Management
-  flutter_riverpod: ^2.5.1
+  # State management
+  flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.3.5
 
-  # HTTP Client
-  dio: ^5.4.3+1
+  # Navigation
+  go_router: ^14.6.1
 
-  # Secure Storage
+  # HTTP
+  dio: ^5.7.0
+
+  # Secure storage
   flutter_secure_storage: ^9.2.2
 
-  # Navigation
-  go_router: ^13.2.4
-
-  # UI
-  flutter_animate: ^4.5.0
-  google_fonts: ^6.2.1
-  intl: 0.20.2
-
-  # Utils
+  # Utilities
   equatable: ^2.0.5
-  logger: ^2.3.0
-  connectivity_plus: ^6.0.3
+  intl: ^0.20.2
+
+  # Animations
+  flutter_animate: ^4.5.0
+
+  # Logging
+  logger: ^2.4.0
+
+  # Fonts
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
-  riverpod_generator: ^2.4.3
-  build_runner: ^2.4.9
+  flutter_lints: ^4.0.0
   mocktail: ^1.0.4
+  build_runner: ^2.4.13
+  riverpod_generator: ^2.4.3
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/images/
-    - assets/icons/

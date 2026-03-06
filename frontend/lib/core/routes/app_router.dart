@@ -3,135 +3,112 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/auth/providers/auth_notifier.dart';
+import '../../features/auth/providers/auth_state.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/auth/screens/splash_screen.dart';
-import '../constants/app_constants.dart';
+import '../../features/auth/screens/verify_code_screen.dart';
+import '../../features/auth/screens/forgot_password_screen.dart';
+import '../../features/profile_setup/screens/profile_selection_screen.dart';
+import '../../features/profile_setup/screens/patient_setup_screen.dart';
+import '../../features/profile_setup/screens/doctor_setup_screen.dart';
+import '../../features/home/screens/patient_home_screen.dart';
+import '../../features/home/screens/doctor_home_screen.dart';
 
-part 'app_router.g.dart';
-
-// Placeholder screens — replace with actual screens when built
-class ProfileSelectionScreen extends StatelessWidget {
-  const ProfileSelectionScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile Selection')),
-      body: const Center(
-        child: Text('Profile Selection Screen\n(Implement next)', textAlign: TextAlign.center),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text(AppConstants.appName)),
-      body: const Center(child: Text('Home Screen')),
-    );
-  }
-}
-
-// Route names
 class AppRoutes {
   AppRoutes._();
-  static const String splash = '/';
-  static const String login = '/login';
-  static const String register = '/register';
+  static const String splash           = '/';
+  static const String login            = '/login';
+  static const String register         = '/register';
+  static const String verifyCode       = '/verify-code';
+  static const String forgotPassword   = '/forgot-password';
   static const String profileSelection = '/profile-selection';
-  static const String home = '/home';
+  static const String patientSetup     = '/patient-setup';
+  static const String doctorSetup      = '/doctor-setup';
+  static const String patientHome      = '/patient-home';
+  static const String doctorHome       = '/doctor-home';
 }
 
-@riverpod
-GoRouter appRouter(AppRouterRef ref) {
+final appRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authNotifierProvider);
 
   return GoRouter(
     initialLocation: AppRoutes.splash,
-    debugLogDiagnostics: true,
+    debugLogDiagnostics: false,
     redirect: (context, state) {
-      final isAuthenticated = authState.isAuthenticated;
-      final isLoading = authState.isLoading;
-      final isSplash = state.matchedLocation == AppRoutes.splash;
-      final isOnAuthRoutes = state.matchedLocation == AppRoutes.login ||
-          state.matchedLocation == AppRoutes.register;
+      final isAuth = authState.isAuthenticated;
+      final isLoading = authState.isLoading || authState.isInitial;
+      final loc = state.matchedLocation;
 
-      if (isLoading) return null;
+      // Never redirect during loading / splash
+      if (isLoading || loc == AppRoutes.splash) return null;
 
-      if (isSplash) return null;
+      final publicRoutes = [
+        AppRoutes.login,
+        AppRoutes.register,
+        AppRoutes.verifyCode,
+        AppRoutes.forgotPassword,
+      ];
 
-      if (!isAuthenticated && !isOnAuthRoutes) {
-        return AppRoutes.login;
-      }
+      final isPublic = publicRoutes.contains(loc);
 
-      if (isAuthenticated && isOnAuthRoutes) {
-        return AppRoutes.profileSelection;
-      }
+      if (!isAuth && !isPublic) return AppRoutes.login;
+      if (isAuth && isPublic)   return AppRoutes.profileSelection;
 
       return null;
     },
     routes: [
+      GoRoute(path: AppRoutes.splash,
+        builder: (_, __) => const SplashScreen()),
+      GoRoute(path: AppRoutes.login,
+        pageBuilder: (_, s) => _fade(s, const LoginScreen())),
+      GoRoute(path: AppRoutes.register,
+        pageBuilder: (_, s) => _fade(s, const RegisterScreen())),
       GoRoute(
-        path: AppRoutes.splash,
-        builder: (context, state) => const SplashScreen(),
+        path: AppRoutes.verifyCode,
+        pageBuilder: (_, s) {
+          final email = s.extra as String? ?? '';
+          return _fade(s, VerifyCodeScreen(email: email));
+        },
       ),
       GoRoute(
-        path: AppRoutes.login,
-        pageBuilder: (context, state) => CustomTransitionPage(
-          key: state.pageKey,
-          child: const LoginScreen(),
-          transitionsBuilder: _fadeSlideTransition,
-        ),
+        path: AppRoutes.forgotPassword,
+        pageBuilder: (_, s) => _fade(s, const ForgotPasswordScreen()),
       ),
-      GoRoute(
-        path: AppRoutes.register,
-        pageBuilder: (context, state) => CustomTransitionPage(
-          key: state.pageKey,
-          child: const RegisterScreen(),
-          transitionsBuilder: _fadeSlideTransition,
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.profileSelection,
-        pageBuilder: (context, state) => CustomTransitionPage(
-          key: state.pageKey,
-          child: const ProfileSelectionScreen(),
-          transitionsBuilder: _fadeSlideTransition,
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.home,
-        pageBuilder: (context, state) => CustomTransitionPage(
-          key: state.pageKey,
-          child: const HomeScreen(),
-          transitionsBuilder: _fadeSlideTransition,
-        ),
-      ),
+      GoRoute(path: AppRoutes.profileSelection,
+        pageBuilder: (_, s) => _fade(s, const ProfileSelectionScreen())),
+      GoRoute(path: AppRoutes.patientSetup,
+        pageBuilder: (_, s) {
+          final email = s.extra as String? ?? '';
+          return _fade(s, PatientSetupScreen(email: email));
+        }),
+      GoRoute(path: AppRoutes.doctorSetup,
+        pageBuilder: (_, s) {
+          final email = s.extra as String? ?? '';
+          return _fade(s, DoctorSetupScreen(email: email));
+        }),
+      GoRoute(path: AppRoutes.patientHome,
+        pageBuilder: (_, s) => _fade(s, const PatientHomeScreen())),
+      GoRoute(path: AppRoutes.doctorHome,
+        pageBuilder: (_, s) => _fade(s, const DoctorHomeScreen())),
     ],
   );
-}
+});
 
-Widget _fadeSlideTransition(
-  BuildContext context,
-  Animation<double> animation,
-  Animation<double> secondaryAnimation,
-  Widget child,
-) {
-  return FadeTransition(
-    opacity: animation,
-    child: SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0.05, 0),
-        end: Offset.zero,
-      ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
-      child: child,
+CustomTransitionPage<void> _fade(GoRouterState s, Widget child) {
+  return CustomTransitionPage(
+    key: s.pageKey,
+    child: child,
+    transitionsBuilder: (_, animation, __, c) => FadeTransition(
+      opacity: animation,
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0.04, 0),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+        child: c,
+      ),
     ),
   );
 }

@@ -7,10 +7,14 @@ import '../models/auth_model.dart';
 import '../services/auth_service.dart';
 import '../services/token_storage_service.dart';
 
-/// Abstract contract for testability
 abstract class IAuthRepository {
   Future<AuthTokens> signIn(SignInRequest request);
-  Future<AuthTokens> signUp(SignUpRequest request);
+  Future<void> signUp(SignUpRequest request);
+  Future<void> verifyCode(VerifyCodeRequest request);
+  Future<void> resendCode(EmailRequest request);
+  Future<void> verifyResetEmail(EmailRequest request);
+  Future<void> verifyResetCode(VerifyCodeRequest request);
+  Future<void> forgotPassword(ForgotPasswordRequest request);
   Future<void> signOut();
   Future<bool> isAuthenticated();
   Future<AuthTokens?> getCachedTokens();
@@ -31,36 +35,72 @@ class AuthRepository implements IAuthRepository {
     try {
       final tokens = await _authService.signIn(request);
       await _tokenStorage.saveTokens(tokens);
-      AppLogger.i('SignIn successful — tokens persisted');
       return tokens;
-    } on AppFailure {
-      rethrow; // Already mapped — just propagate
-    } catch (e, st) {
+    } on AppFailure { rethrow; }
+    catch (e, st) {
       AppLogger.e('Repository signIn error', e, st);
       throw const UnexpectedFailure();
     }
   }
 
   @override
-  Future<AuthTokens> signUp(SignUpRequest request) async {
+  Future<void> signUp(SignUpRequest request) async {
     try {
-      final tokens = await _authService.signUp(request);
-      await _tokenStorage.saveTokens(tokens);
-      AppLogger.i('SignUp successful — tokens persisted');
-      return tokens;
-    } on AppFailure {
-      rethrow;
-    } catch (e, st) {
+      await _authService.signUp(request);
+    } on AppFailure { rethrow; }
+    catch (e, st) {
       AppLogger.e('Repository signUp error', e, st);
       throw const UnexpectedFailure();
     }
   }
 
   @override
+  Future<void> verifyCode(VerifyCodeRequest request) async {
+    try {
+      await _authService.verifyCode(request);
+    } on AppFailure { rethrow; }
+    catch (e, st) {
+      AppLogger.e('Repository verifyCode error', e, st);
+      throw const UnexpectedFailure();
+    }
+  }
+
+  @override
+  Future<void> resendCode(EmailRequest request) async {
+    try {
+      await _authService.resendCode(request);
+    } on AppFailure { rethrow; }
+    catch (_) { throw const UnexpectedFailure(); }
+  }
+
+  @override
+  Future<void> verifyResetEmail(EmailRequest request) async {
+    try {
+      await _authService.verifyResetEmail(request);
+    } on AppFailure { rethrow; }
+    catch (_) { throw const UnexpectedFailure(); }
+  }
+
+  @override
+  Future<void> verifyResetCode(VerifyCodeRequest request) async {
+    try {
+      await _authService.verifyResetCode(request);
+    } on AppFailure { rethrow; }
+    catch (_) { throw const UnexpectedFailure(); }
+  }
+
+  @override
+  Future<void> forgotPassword(ForgotPasswordRequest request) async {
+    try {
+      await _authService.forgotPassword(request);
+    } on AppFailure { rethrow; }
+    catch (_) { throw const UnexpectedFailure(); }
+  }
+
+  @override
   Future<void> signOut() async {
     try {
       await _tokenStorage.clearTokens();
-      AppLogger.i('User signed out — tokens cleared');
     } catch (e, st) {
       AppLogger.e('Repository signOut error', e, st);
       throw const StorageFailure();
@@ -68,23 +108,15 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<bool> isAuthenticated() async {
-    return await _tokenStorage.hasValidTokens();
-  }
+  Future<bool> isAuthenticated() => _tokenStorage.hasValidTokens();
 
   @override
-  Future<AuthTokens?> getCachedTokens() async {
-    return await _tokenStorage.getTokens();
-  }
+  Future<AuthTokens?> getCachedTokens() => _tokenStorage.getTokens();
 }
 
-// ─── Provider ────────────────────────────────────────────────────────────────
-
 final authRepositoryProvider = Provider<IAuthRepository>((ref) {
-  final authService = ref.watch(authServiceProvider);
-  final tokenStorage = ref.watch(tokenStorageServiceProvider);
   return AuthRepository(
-    authService: authService,
-    tokenStorage: tokenStorage,
+    authService: ref.watch(authServiceProvider),
+    tokenStorage: ref.watch(tokenStorageServiceProvider),
   );
 });

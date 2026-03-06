@@ -8,24 +8,21 @@ import '../../../data/repositories/auth_repository.dart';
 import 'auth_state.dart';
 
 class AuthNotifier extends Notifier<AuthState> {
-  late final IAuthRepository _repository;
+  late final IAuthRepository _repo;
 
   @override
   AuthState build() {
-    _repository = ref.watch(authRepositoryProvider);
-    // Check persisted session on startup
+    _repo = ref.watch(authRepositoryProvider);
     _checkExistingSession();
     return const AuthInitial();
   }
 
-  /// Called on app start — restores session from secure storage
   Future<void> _checkExistingSession() async {
     try {
-      final isAuth = await _repository.isAuthenticated();
+      final isAuth = await _repo.isAuthenticated();
       if (isAuth) {
-        final tokens = await _repository.getCachedTokens();
+        final tokens = await _repo.getCachedTokens();
         if (tokens != null) {
-          AppLogger.i('Existing session found — restoring auth state');
           state = AuthAuthenticated(tokens: tokens);
           return;
         }
@@ -37,117 +34,116 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  /// Sign In
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signIn({required String email, required String password}) async {
     if (state is AuthLoading) return;
-
     state = const AuthLoading();
-
     try {
-      final tokens = await _repository.signIn(
-        SignInRequest(email: email, password: password),
-      );
-      AppLogger.i('AuthNotifier: signIn success');
+      final tokens = await _repo.signIn(SignInRequest(email: email, password: password));
       state = AuthAuthenticated(tokens: tokens);
     } on AuthFailure catch (e) {
-      AppLogger.w('AuthNotifier: auth failure — ${e.message}');
-      state = AuthError(message: e.message, statusCode: e.statusCode);
-    } on ValidationFailure catch (e) {
-      AppLogger.w('AuthNotifier: validation failure — ${e.message}');
-      state = AuthError(message: e.message, statusCode: e.statusCode);
-    } on NetworkFailure catch (e) {
-      AppLogger.w('AuthNotifier: network failure — ${e.message}');
-      state = AuthError(message: e.message);
-    } on ServerFailure catch (e) {
-      AppLogger.w('AuthNotifier: server failure — ${e.message}');
       state = AuthError(message: e.message, statusCode: e.statusCode);
     } on AppFailure catch (e) {
-      AppLogger.e('AuthNotifier: unexpected failure — ${e.message}');
       state = AuthError(message: e.message);
-    } catch (e, st) {
-      AppLogger.e('AuthNotifier: unknown error', e, st);
-      state = const AuthError(
-        message: 'Erreur inattendue. Réessayez.',
-      );
+    } catch (_) {
+      state = const AuthError(message: 'Erreur inattendue. Réessayez.');
     }
   }
 
-  /// Sign Up
   Future<void> signUp({
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String phone,
-    required String password,
-    required String confirmPassword,
-    required String birthDate,
-    required String gender,
-    required String role,
+    required String firstName, required String lastName,
+    required String email, required String phone,
+    required String password, required String birthDate,
+    required String gender, required String role,
   }) async {
     if (state is AuthLoading) return;
-
     state = const AuthLoading();
-
     try {
-      final tokens = await _repository.signUp(
-        SignUpRequest(
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phone: phone,
-          password: password,
-          confirmPassword: confirmPassword,
-          birthDate: birthDate,
-          gender: gender,
-          role: role,
-        ),
-      );
-      AppLogger.i('AuthNotifier: signUp success');
-      state = AuthAuthenticated(tokens: tokens);
-    } on AuthFailure catch (e) {
-      state = AuthError(message: e.message, statusCode: e.statusCode);
-    } on ValidationFailure catch (e) {
-      state = AuthError(message: e.message, statusCode: e.statusCode);
-    } on NetworkFailure catch (e) {
-      state = AuthError(message: e.message);
-    } on ServerFailure catch (e) {
-      state = AuthError(message: e.message, statusCode: e.statusCode);
+      await _repo.signUp(SignUpRequest(
+        firstName: firstName, lastName: lastName, email: email,
+        phone: phone, password: password, birthDate: birthDate,
+        gender: gender, role: role,
+      ));
+      state = AuthAwaitingVerification(email: email);
     } on AppFailure catch (e) {
       state = AuthError(message: e.message);
-    } catch (e, st) {
-      AppLogger.e('AuthNotifier: signUp unknown error', e, st);
-      state = const AuthError(
-        message: 'Erreur inattendue. Réessayez.',
-      );
+    } catch (_) {
+      state = const AuthError(message: 'Erreur inattendue. Réessayez.');
     }
   }
 
-  /// Sign Out
+  Future<void> verifyCode({required String email, required String code}) async {
+    if (state is AuthLoading) return;
+    state = const AuthLoading();
+    try {
+      await _repo.verifyCode(VerifyCodeRequest(email: email, code: code));
+      state = AuthVerified(email: email);
+    } on AppFailure catch (e) {
+      state = AuthError(message: e.message);
+    } catch (_) {
+      state = const AuthError(message: 'Erreur inattendue. Réessayez.');
+    }
+  }
+
+  Future<void> resendCode({required String email}) async {
+    try {
+      await _repo.resendCode(EmailRequest(email: email));
+    } on AppFailure catch (e) {
+      state = AuthError(message: e.message);
+    } catch (_) {}
+  }
+
+  Future<void> startPasswordReset({required String email}) async {
+    if (state is AuthLoading) return;
+    state = const AuthLoading();
+    try {
+      await _repo.verifyResetEmail(EmailRequest(email: email));
+      state = AuthAwaitingResetCode(email: email);
+    } on AppFailure catch (e) {
+      state = AuthError(message: e.message);
+    } catch (_) {
+      state = const AuthError(message: 'Erreur inattendue. Réessayez.');
+    }
+  }
+
+  Future<void> verifyResetCode({required String email, required String code}) async {
+    if (state is AuthLoading) return;
+    state = const AuthLoading();
+    try {
+      await _repo.verifyResetCode(VerifyCodeRequest(email: email, code: code));
+      state = AuthCanResetPassword(email: email);
+    } on AppFailure catch (e) {
+      state = AuthError(message: e.message);
+    } catch (_) {
+      state = const AuthError(message: 'Erreur inattendue. Réessayez.');
+    }
+  }
+
+  Future<void> resetPassword({required String email, required String newPassword}) async {
+    if (state is AuthLoading) return;
+    state = const AuthLoading();
+    try {
+      await _repo.forgotPassword(ForgotPasswordRequest(email: email, password: newPassword));
+      state = const AuthPasswordReset();
+    } on AppFailure catch (e) {
+      state = AuthError(message: e.message);
+    } catch (_) {
+      state = const AuthError(message: 'Erreur inattendue. Réessayez.');
+    }
+  }
+
   Future<void> signOut() async {
     try {
-      await _repository.signOut();
-      state = const AuthUnauthenticated();
-      AppLogger.i('AuthNotifier: signed out');
-    } catch (e, st) {
-      AppLogger.e('AuthNotifier: signOut error', e, st);
-      // Force logout even if storage fails
+      await _repo.signOut();
+    } finally {
       state = const AuthUnauthenticated();
     }
   }
 
-  /// Reset error state (e.g., when navigating back)
   void resetError() {
-    if (state is AuthError) {
-      state = const AuthUnauthenticated();
-    }
+    if (state is AuthError) state = const AuthUnauthenticated();
   }
+
+  void goBackToLogin() => state = const AuthUnauthenticated();
 }
 
-// ─── Provider ────────────────────────────────────────────────────────────────
-
-final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(() {
-  return AuthNotifier();
-});
+final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);

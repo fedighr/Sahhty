@@ -40,10 +40,9 @@ final fakeSignUpRequest = SignUpRequest(
   email: 'ahmed@test.tn',
   phone: '22345678',
   password: 'Password123!',
-  confirmPassword: 'Password123!',
   birthDate: '1990-01-15',
-  gender: 'male',
-  role: 'patient',
+  gender: 'M',
+  role: 'P',
 );
 
 void main() {
@@ -112,17 +111,15 @@ void main() {
   });
 
   group('AuthRepository.signUp', () {
-    test('returns tokens and saves them on success', () async {
+    test('succeeds without error', () async {
       when(() => mockAuthService.signUp(any()))
-          .thenAnswer((_) async => fakeTokens);
-      when(() => mockTokenStorage.saveTokens(any()))
           .thenAnswer((_) async {});
 
-      final result = await repository.signUp(fakeSignUpRequest);
-
-      expect(result, equals(fakeTokens));
+      await expectLater(
+        () => repository.signUp(fakeSignUpRequest),
+        returnsNormally,
+      );
       verify(() => mockAuthService.signUp(fakeSignUpRequest)).called(1);
-      verify(() => mockTokenStorage.saveTokens(fakeTokens)).called(1);
     });
   });
 

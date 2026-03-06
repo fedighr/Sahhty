@@ -1,7 +1,6 @@
 // lib/features/auth/screens/splash_screen.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/routes/app_router.dart';
@@ -11,142 +10,63 @@ import '../providers/auth_state.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
-
   @override
   ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends ConsumerState<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _ctrl;
+  late Animation<double> _scale;
+  late Animation<double> _fade;
+
   @override
   void initState() {
     super.initState();
-    _navigate();
-  }
-
-  Future<void> _navigate() async {
-    // Give splash time to display
-    await Future.delayed(const Duration(milliseconds: 2200));
-
-    if (!mounted) return;
-
-    final authState = ref.read(authNotifierProvider);
-    _handleNavigation(authState);
-  }
-
-  void _handleNavigation(AuthState authState) {
-    if (!mounted) return;
-
-    if (authState is AuthAuthenticated) {
-      context.go(AppRoutes.profileSelection);
-    } else {
-      context.go(AppRoutes.login);
-    }
+    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
+    _scale = Tween<double>(begin: 0.4, end: 1.0).animate(CurvedAnimation(parent: _ctrl, curve: Curves.elasticOut));
+    _fade  = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _ctrl, curve: const Interval(0.0, 0.6)));
+    _ctrl.forward();
   }
 
   @override
+  void dispose() { _ctrl.dispose(); super.dispose(); }
+
+  @override
   Widget build(BuildContext context) {
-    // Listen for state changes during splash
-    ref.listen(authNotifierProvider, (previous, next) {
-      if (previous is AuthInitial && next is! AuthInitial) {
-        Future.delayed(const Duration(milliseconds: 800), () {
-          _handleNavigation(next);
-        });
+    ref.listen<AuthState>(authNotifierProvider, (_, next) {
+      if (next.isInitial || next.isLoading) return;
+      if (next.isAuthenticated) {
+        context.go(AppRoutes.patientHome);
+      } else {
+        context.go(AppRoutes.login);
       }
     });
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.primaryDark,
-              AppColors.primary,
-              AppColors.primaryLight,
-              AppColors.accent,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+        decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // App logo
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 30,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.health_and_safety_rounded,
-                  color: AppColors.primary,
-                  size: 52,
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .scale(
-                    begin: const Offset(0.3, 0.3),
-                    end: const Offset(1, 1),
-                    curve: Curves.elasticOut,
+          child: FadeTransition(
+            opacity: _fade,
+            child: ScaleTransition(
+              scale: _scale,
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Container(
+                  width: 96, height: 96,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
                   ),
-
-              const SizedBox(height: 28),
-
-              // App name
-              Text(
-                'Sahhty',
-                style: const TextStyle(
-                  fontSize: 42,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                  letterSpacing: 2,
+                  child: const Icon(Icons.health_and_safety_rounded, color: Colors.white, size: 52),
                 ),
-              )
-                  .animate()
-                  .fadeIn(delay: 400.ms, duration: 600.ms)
-                  .slideY(begin: 0.3, end: 0),
-
-              const SizedBox(height: 8),
-
-              Text(
-                'صحّتي — Votre santé, notre priorité',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white.withOpacity(0.8),
-                  fontWeight: FontWeight.w300,
-                  letterSpacing: 0.5,
-                ),
-              )
-                  .animate()
-                  .fadeIn(delay: 600.ms, duration: 600.ms),
-
-              const SizedBox(height: 60),
-
-              // Loading indicator
-              SizedBox(
-                width: 32,
-                height: 32,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white.withOpacity(0.7),
-                  ),
-                ),
-              )
-                  .animate()
-                  .fadeIn(delay: 1000.ms, duration: 400.ms),
-            ],
+                const SizedBox(height: 20),
+                const Text('Sahhty', style: TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.w800, letterSpacing: 1)),
+                const SizedBox(height: 6),
+                const Text('Votre santé, notre priorité', style: TextStyle(color: Colors.white70, fontSize: 14, letterSpacing: 0.5)),
+              ]),
+            ),
           ),
         ),
       ),

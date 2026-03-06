@@ -8,103 +8,143 @@ import '../../core/utils/app_logger.dart';
 import '../models/auth_model.dart';
 import 'dio_client.dart';
 
-/// Abstract interface — allows mocking in tests
 abstract class IAuthService {
   Future<AuthTokens> signIn(SignInRequest request);
-  Future<AuthTokens> signUp(SignUpRequest request);
+  Future<void> signUp(SignUpRequest request);
+  Future<void> verifyCode(VerifyCodeRequest request);
+  Future<void> resendCode(EmailRequest request);
+  Future<void> verifyResetEmail(EmailRequest request);
+  Future<void> verifyResetCode(VerifyCodeRequest request);
+  Future<void> forgotPassword(ForgotPasswordRequest request);
 }
 
 class AuthService implements IAuthService {
   final Dio _dio;
-
   const AuthService(this._dio);
 
   @override
   Future<AuthTokens> signIn(SignInRequest request) async {
     try {
-      AppLogger.i('SignIn request for: ${request.email}');
-
-      final response = await _dio.post(
-        AppConstants.signinEndpoint,
-        data: request.toJson(),
-      );
-
-      return _handleAuthResponse(response);
+      AppLogger.i('SignIn: \${request.email}');
+      final response = await _dio.post(AppConstants.signinEndpoint, data: request.toJson());
+      return _parseTokens(response);
     } on DioException catch (e, st) {
-      AppLogger.e('SignIn DioException', e, st);
+      AppLogger.e('signIn DioException', e, st);
       throw _mapDioError(e);
     } catch (e, st) {
-      AppLogger.e('SignIn unexpected error', e, st);
+      if (e is AppFailure) rethrow;
       throw const UnexpectedFailure();
     }
   }
 
   @override
-  Future<AuthTokens> signUp(SignUpRequest request) async {
+  Future<void> signUp(SignUpRequest request) async {
     try {
-      AppLogger.i('SignUp request for: ${request.email}');
-
-      final response = await _dio.post(
-        AppConstants.signupEndpoint,
-        data: request.toJson(),
-      );
-
-      return _handleAuthResponse(response);
+      final response = await _dio.post(AppConstants.signupEndpoint, data: request.toJson());
+      _assertSuccess(response);
     } on DioException catch (e, st) {
-      AppLogger.e('SignUp DioException', e, st);
       throw _mapDioError(e);
     } catch (e, st) {
-      AppLogger.e('SignUp unexpected error', e, st);
+      if (e is AppFailure) rethrow;
       throw const UnexpectedFailure();
     }
   }
 
-  // ── Private helpers ────────────────────────────────────────────────────────
+  @override
+  Future<void> verifyCode(VerifyCodeRequest request) async {
+    try {
+      final response = await _dio.post(AppConstants.verifyCodeEndpoint, data: request.toJson());
+      _assertSuccess(response);
+    } on DioException catch (e, st) {
+      throw _mapDioError(e);
+    } catch (e, st) {
+      if (e is AppFailure) rethrow;
+      throw const UnexpectedFailure();
+    }
+  }
 
-  AuthTokens _handleAuthResponse(Response response) {
+  @override
+  Future<void> resendCode(EmailRequest request) async {
+    try {
+      final response = await _dio.post(AppConstants.resendCodeEndpoint, data: request.toJson());
+      _assertSuccess(response);
+    } on DioException catch (e, st) {
+      throw _mapDioError(e);
+    } catch (e, st) {
+      if (e is AppFailure) rethrow;
+      throw const UnexpectedFailure();
+    }
+  }
+
+  @override
+  Future<void> verifyResetEmail(EmailRequest request) async {
+    try {
+      final response = await _dio.post(AppConstants.verifyResetEmail, data: request.toJson());
+      _assertSuccess(response);
+    } on DioException catch (e, st) {
+      throw _mapDioError(e);
+    } catch (e, st) {
+      if (e is AppFailure) rethrow;
+      throw const UnexpectedFailure();
+    }
+  }
+
+  @override
+  Future<void> verifyResetCode(VerifyCodeRequest request) async {
+    try {
+      final response = await _dio.post(AppConstants.verifyResetCode, data: request.toJson());
+      _assertSuccess(response);
+    } on DioException catch (e, st) {
+      throw _mapDioError(e);
+    } catch (e, st) {
+      if (e is AppFailure) rethrow;
+      throw const UnexpectedFailure();
+    }
+  }
+
+  @override
+  Future<void> forgotPassword(ForgotPasswordRequest request) async {
+    try {
+      final response = await _dio.post(AppConstants.forgetPassword, data: request.toJson());
+      _assertSuccess(response);
+    } on DioException catch (e, st) {
+      throw _mapDioError(e);
+    } catch (e, st) {
+      if (e is AppFailure) rethrow;
+      throw const UnexpectedFailure();
+    }
+  }
+
+  AuthTokens _parseTokens(Response response) {
+    final statusCode = response.statusCode ?? 0;
+    final body = response.data as Map<String, dynamic>?;
+    if (body == null) throw const ServerFailure(message: 'Réponse vide.');
+    final success = body['success'] as bool? ?? false;
+    if (!success || statusCode >= 400) {
+      final msg = body['message'] as String? ?? 'Erreur d\'authentification.';
+      if (statusCode == 403) throw AuthFailure(message: msg, statusCode: 403);
+      throw ServerFailure(message: msg, statusCode: statusCode);
+    }
+    try {
+      return AuthTokens(
+        accessToken: body['access'] as String,
+        refreshToken: body['refresh'] as String,
+      );
+    } catch (_) {
+      throw const ServerFailure(message: 'Tokens manquants dans la réponse.');
+    }
+  }
+
+  void _assertSuccess(Response response) {
     final statusCode = response.statusCode ?? 0;
     final body = response.data;
-
-    AppLogger.d('Auth response [$statusCode]: $body');
-
-    if (body == null) {
-      throw const ServerFailure(
-        message: 'Réponse serveur vide.',
-        statusCode: 0,
-      );
-    }
-
-    final Map<String, dynamic> bodyMap;
-    if (body is Map<String, dynamic>) {
-      bodyMap = body;
-    } else {
-      throw const ServerFailure(message: 'Format de réponse invalide.');
-    }
-
-    final dataField = bodyMap['data'] as Map<String, dynamic>?;
-    final success = dataField?['success'] as bool? ?? false;
-
+    final map = body is Map<String, dynamic> ? body : <String, dynamic>{};
+    final success = map['success'] as bool? ?? false;
     if (!success || statusCode >= 400) {
-      final message = dataField?['message'] as String? ??
-          'Une erreur est survenue. Réessayez.';
-
-      if (statusCode == 401 || statusCode == 403) {
-        throw AuthFailure(message: message, statusCode: statusCode);
-      }
-      if (statusCode == 400 || statusCode == 422) {
-        throw ValidationFailure(message: message, statusCode: statusCode);
-      }
-      throw ServerFailure(message: message, statusCode: statusCode);
-    }
-
-    // Parse tokens from successful response
-    try {
-      return AuthTokens.fromJson(bodyMap);
-    } catch (e) {
-      AppLogger.e('Token parsing failed', e);
-      throw const ServerFailure(
-        message: 'Impossible de lire les tokens d\'authentification.',
-      );
+      final msg = map['message'] as String? ?? 'Une erreur est survenue.';
+      if (statusCode == 403) throw AuthFailure(message: msg, statusCode: 403);
+      if (statusCode == 400) throw ValidationFailure(message: msg, statusCode: statusCode);
+      throw ServerFailure(message: msg, statusCode: statusCode);
     }
   }
 
@@ -113,46 +153,20 @@ class AuthService implements IAuthService {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return const NetworkFailure(
-          message: 'Délai de connexion dépassé. Vérifiez votre réseau.',
-        );
       case DioExceptionType.connectionError:
         return const NetworkFailure();
-      case DioExceptionType.badResponse:
-        return _handleBadResponse(e.response);
-      case DioExceptionType.cancel:
-        return const UnexpectedFailure(
-          message: 'La requête a été annulée.',
-        );
       default:
+        final body = e.response?.data;
+        if (body is Map<String, dynamic>) {
+          final msg = body['message'] as String? ?? 'Erreur serveur.';
+          final code = e.response?.statusCode;
+          if (code == 403) return AuthFailure(message: msg, statusCode: code);
+          return ServerFailure(message: msg, statusCode: code);
+        }
         return const UnexpectedFailure();
     }
   }
-
-  AppFailure _handleBadResponse(Response? response) {
-    if (response == null) return const UnexpectedFailure();
-
-    final statusCode = response.statusCode ?? 0;
-    final body = response.data;
-    String message = 'Erreur serveur. Réessayez.';
-
-    if (body is Map<String, dynamic>) {
-      final dataField = body['data'] as Map<String, dynamic>?;
-      message = dataField?['message'] as String? ?? message;
-    }
-
-    if (statusCode >= 500) {
-      return ServerFailure(
-        message: 'Erreur serveur interne. Réessayez plus tard.',
-        statusCode: statusCode,
-      );
-    }
-
-    return ServerFailure(message: message, statusCode: statusCode);
-  }
 }
-
-// ─── Provider ────────────────────────────────────────────────────────────────
 
 final authServiceProvider = Provider<IAuthService>((ref) {
   final dio = ref.watch(authDioProvider);
