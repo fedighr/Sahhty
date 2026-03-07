@@ -15,7 +15,12 @@ import '../widgets/snackbar_helper.dart';
 
 class VerifyCodeScreen extends ConsumerStatefulWidget {
   final String email;
-  const VerifyCodeScreen({super.key, required this.email});
+  final bool isPasswordReset; // true = reset flow, false = registration flow
+  const VerifyCodeScreen({
+    super.key,
+    required this.email,
+    this.isPasswordReset = false,
+  });
 
   @override
   ConsumerState<VerifyCodeScreen> createState() => _VerifyCodeScreenState();
@@ -28,10 +33,6 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
 
   int _resendCountdown = 60;
   Timer? _timer;
-  bool _isResendMode; // true = verify_reset_code, false = verify_code
-  bool get _isForgotFlow => _isResendMode;
-
-  _VerifyCodeScreenState() : _isResendMode = false;
 
   @override
   void initState() {
@@ -59,9 +60,7 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
   String get _code => _controllers.map((c) => c.text).join();
 
   void _onDigitEntered(int index, String value) {
-    if (value.isNotEmpty && index < 5) {
-      _focusNodes[index + 1].requestFocus();
-    }
+    if (value.isNotEmpty && index < 5) _focusNodes[index + 1].requestFocus();
   }
 
   Future<void> _submit() async {
@@ -70,9 +69,8 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
       return;
     }
     final notifier = ref.read(authNotifierProvider.notifier);
-    final currentState = ref.read(authNotifierProvider);
-
-    if (currentState is AuthAwaitingResetCode) {
+    // Flow type is fixed at construction — never read live auth state here
+    if (widget.isPasswordReset) {
       await notifier.verifyResetCode(email: widget.email, code: _code);
     } else {
       await notifier.verifyCode(email: widget.email, code: _code);
@@ -83,7 +81,7 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
     if (_resendCountdown > 0) return;
     await ref.read(authNotifierProvider.notifier).resendCode(email: widget.email);
     _startCountdown();
-    if (mounted) SnackbarHelper.showSuccess(context, 'Nouveau code envoyé!');
+    if (mounted) SnackbarHelper.showSuccess(context, 'Nouveau code envoyé !');
   }
 
   @override
@@ -95,7 +93,8 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
       if (next is AuthVerified) {
         context.go(AppRoutes.profileSelection);
       } else if (next is AuthCanResetPassword) {
-        context.go(AppRoutes.forgotPassword, extra: {'email': widget.email, 'step': 'reset'});
+        context.go(AppRoutes.forgotPassword,
+            extra: {'email': widget.email, 'step': 'reset'});
       } else if (next is AuthError) {
         SnackbarHelper.showError(context, next.message);
         for (final c in _controllers) c.clear();
@@ -137,11 +136,19 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                   gradient: AppColors.primaryGradient,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Icons.mark_email_read_outlined, color: Colors.white, size: 32),
-              ).animate().scale(begin: const Offset(0.5,0.5), duration: 400.ms, curve: Curves.elasticOut),
+                child: const Icon(Icons.mark_email_read_outlined,
+                    color: Colors.white, size: 32),
+              ).animate().scale(
+                  begin: const Offset(0.5, 0.5),
+                  duration: 400.ms,
+                  curve: Curves.elasticOut),
               const SizedBox(height: 24),
-              Text('Vérification Email', style: Theme.of(context).textTheme.headlineMedium)
-                  .animate().fadeIn(delay: 100.ms).slideY(begin: 0.2, end: 0),
+              Text(
+                widget.isPasswordReset
+                    ? 'Code de réinitialisation'
+                    : 'Vérification Email',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.2, end: 0),
               const SizedBox(height: 8),
               Text(
                 'Un code à 6 chiffres a été envoyé à\n${widget.email}',
@@ -164,11 +171,12 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                 child: _resendCountdown > 0
                     ? Text(
                         'Renvoyer le code dans $_resendCountdown s',
-                        style: TextStyle(color: AppColors.textHint, fontSize: 13),
+                        style: const TextStyle(
+                            color: AppColors.textHint, fontSize: 13),
                       )
                     : GestureDetector(
                         onTap: _resend,
-                        child: Text(
+                        child: const Text(
                           'Renvoyer le code',
                           style: TextStyle(
                             color: AppColors.primary,

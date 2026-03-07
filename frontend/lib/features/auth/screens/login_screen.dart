@@ -50,7 +50,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     ref.listen<AuthState>(authNotifierProvider, (_, next) {
       if (next is AuthAuthenticated) {
-        context.go(AppRoutes.patientHome);
+        if (next.isDoctor) {
+          context.go(AppRoutes.doctorHome);
+        } else {
+          context.go(AppRoutes.patientHome);
+        }
       } else if (next is AuthError) {
         SnackbarHelper.showError(context, next.message);
         ref.read(authNotifierProvider.notifier).resetError();

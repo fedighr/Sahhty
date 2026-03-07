@@ -19,8 +19,11 @@ class AuthPasswordReset    extends AuthState { const AuthPasswordReset(); }
 
 class AuthAuthenticated extends AuthState {
   final AuthTokens tokens;
-  const AuthAuthenticated({required this.tokens});
-  @override List<Object?> get props => [tokens];
+  final String role; // 'P' | 'D'
+  const AuthAuthenticated({required this.tokens, this.role = 'P'});
+  bool get isDoctor  => role == 'D';
+  bool get isPatient => role == 'P';
+  @override List<Object?> get props => [tokens, role];
 }
 
 class AuthError extends AuthState {
@@ -38,8 +41,9 @@ class AuthAwaitingVerification extends AuthState {
 
 class AuthVerified extends AuthState {
   final String email;
-  const AuthVerified({required this.email});
-  @override List<Object?> get props => [email];
+  final String role;
+  const AuthVerified({required this.email, this.role = 'P'});
+  @override List<Object?> get props => [email, role];
 }
 
 class AuthAwaitingResetCode extends AuthState {

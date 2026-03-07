@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../features/auth/providers/auth_notifier.dart';
-import '../../features/auth/providers/auth_state.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/auth/screens/splash_screen.dart';
@@ -31,33 +29,9 @@ class AppRoutes {
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authNotifierProvider);
-
   return GoRouter(
     initialLocation: AppRoutes.splash,
     debugLogDiagnostics: false,
-    redirect: (context, state) {
-      final isAuth = authState.isAuthenticated;
-      final isLoading = authState.isLoading || authState.isInitial;
-      final loc = state.matchedLocation;
-
-      // Never redirect during loading / splash
-      if (isLoading || loc == AppRoutes.splash) return null;
-
-      final publicRoutes = [
-        AppRoutes.login,
-        AppRoutes.register,
-        AppRoutes.verifyCode,
-        AppRoutes.forgotPassword,
-      ];
-
-      final isPublic = publicRoutes.contains(loc);
-
-      if (!isAuth && !isPublic) return AppRoutes.login;
-      if (isAuth && isPublic)   return AppRoutes.profileSelection;
-
-      return null;
-    },
     routes: [
       GoRoute(path: AppRoutes.splash,
         builder: (_, __) => const SplashScreen()),
@@ -68,13 +42,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.verifyCode,
         pageBuilder: (_, s) {
-          final email = s.extra as String? ?? '';
-          return _fade(s, VerifyCodeScreen(email: email));
+          final extra = s.extra;
+          String email = '';
+          bool isPasswordReset = false;
+          if (extra is Map<String, dynamic>) {
+            email           = extra['email'] as String? ?? '';
+            isPasswordReset = extra['isPasswordReset'] as bool? ?? false;
+          } else if (extra is String) {
+            email = extra;
+          }
+          return _fade(s, VerifyCodeScreen(email: email, isPasswordReset: isPasswordReset));
         },
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,
-        pageBuilder: (_, s) => _fade(s, const ForgotPasswordScreen()),
+        pageBuilder: (_, s) {
+          final extra = s.extra as Map<String, dynamic>?;
+          final email = extra?['email'] as String? ?? '';
+          final step  = extra?['step']  as String? ?? 'email';
+          return _fade(s, ForgotPasswordScreen(initialEmail: email, initialStep: step));
+        },
       ),
       GoRoute(path: AppRoutes.profileSelection,
         pageBuilder: (_, s) => _fade(s, const ProfileSelectionScreen())),

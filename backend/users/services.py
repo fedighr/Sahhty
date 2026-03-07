@@ -40,6 +40,8 @@ class AuthService:
         token = RefreshToken.for_user(user)    
         token['email'] = user.email
         token['name'] =user.first_name + " " + user.last_name
+        token['gender']=user.gender
+        token['role']=user.role
         return {
             'data': {
                 'success': True,

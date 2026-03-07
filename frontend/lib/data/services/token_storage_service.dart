@@ -6,7 +6,6 @@ import '../../core/constants/app_constants.dart';
 import '../../core/utils/app_logger.dart';
 import '../models/auth_model.dart';
 
-/// Abstract interface for testability and future swapping
 abstract class ITokenStorageService {
   Future<void> saveTokens(AuthTokens tokens);
   Future<AuthTokens?> getTokens();
@@ -14,124 +13,63 @@ abstract class ITokenStorageService {
   Future<String?> getRefreshToken();
   Future<void> clearTokens();
   Future<bool> hasValidTokens();
+  Future<void> saveUserRole(String role);
+  Future<String?> getUserRole();
+  Future<void> saveUserEmail(String email);
+  Future<String?> getUserEmail();
 }
 
 class TokenStorageService implements ITokenStorageService {
   final FlutterSecureStorage _storage;
-
   const TokenStorageService(this._storage);
 
-  static const _androidOptions = AndroidOptions(
-    encryptedSharedPreferences: true,
-  );
-
-  static const _iosOptions = IOSOptions(
-    accessibility: KeychainAccessibility.first_unlock_this_device,
-  );
+  static const _androidOptions = AndroidOptions(encryptedSharedPreferences: true);
+  static const _iosOptions = IOSOptions(accessibility: KeychainAccessibility.first_unlock_this_device);
 
   @override
   Future<void> saveTokens(AuthTokens tokens) async {
     try {
       await Future.wait([
-        _storage.write(
-          key: AppConstants.accessTokenKey,
-          value: tokens.accessToken,
-          aOptions: _androidOptions,
-          iOptions: _iosOptions,
-        ),
-        _storage.write(
-          key: AppConstants.refreshTokenKey,
-          value: tokens.refreshToken,
-          aOptions: _androidOptions,
-          iOptions: _iosOptions,
-        ),
+        _storage.write(key: AppConstants.accessTokenKey,  value: tokens.accessToken,  aOptions: _androidOptions, iOptions: _iosOptions),
+        _storage.write(key: AppConstants.refreshTokenKey, value: tokens.refreshToken, aOptions: _androidOptions, iOptions: _iosOptions),
       ]);
-      AppLogger.d('Tokens saved securely');
-    } catch (e, st) {
-      AppLogger.e('Failed to save tokens', e, st);
-      rethrow;
-    }
+    } catch (e, st) { AppLogger.e('Failed to save tokens', e, st); rethrow; }
   }
 
   @override
   Future<AuthTokens?> getTokens() async {
     try {
       final results = await Future.wait([
-        _storage.read(
-          key: AppConstants.accessTokenKey,
-          aOptions: _androidOptions,
-          iOptions: _iosOptions,
-        ),
-        _storage.read(
-          key: AppConstants.refreshTokenKey,
-          aOptions: _androidOptions,
-          iOptions: _iosOptions,
-        ),
+        _storage.read(key: AppConstants.accessTokenKey,  aOptions: _androidOptions, iOptions: _iosOptions),
+        _storage.read(key: AppConstants.refreshTokenKey, aOptions: _androidOptions, iOptions: _iosOptions),
       ]);
-
-      final accessToken = results[0];
-      final refreshToken = results[1];
-
-      if (accessToken == null || refreshToken == null) return null;
-
-      return AuthTokens(
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      );
-    } catch (e, st) {
-      AppLogger.e('Failed to read tokens', e, st);
-      return null;
-    }
+      if (results[0] == null || results[1] == null) return null;
+      return AuthTokens(accessToken: results[0]!, refreshToken: results[1]!);
+    } catch (e, st) { AppLogger.e('Failed to read tokens', e, st); return null; }
   }
 
   @override
   Future<String?> getAccessToken() async {
-    try {
-      return await _storage.read(
-        key: AppConstants.accessTokenKey,
-        aOptions: _androidOptions,
-        iOptions: _iosOptions,
-      );
-    } catch (e, st) {
-      AppLogger.e('Failed to read access token', e, st);
-      return null;
-    }
+    try { return await _storage.read(key: AppConstants.accessTokenKey, aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to read access token', e, st); return null; }
   }
 
   @override
   Future<String?> getRefreshToken() async {
-    try {
-      return await _storage.read(
-        key: AppConstants.refreshTokenKey,
-        aOptions: _androidOptions,
-        iOptions: _iosOptions,
-      );
-    } catch (e, st) {
-      AppLogger.e('Failed to read refresh token', e, st);
-      return null;
-    }
+    try { return await _storage.read(key: AppConstants.refreshTokenKey, aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to read refresh token', e, st); return null; }
   }
 
   @override
   Future<void> clearTokens() async {
     try {
       await Future.wait([
-        _storage.delete(
-          key: AppConstants.accessTokenKey,
-          aOptions: _androidOptions,
-          iOptions: _iosOptions,
-        ),
-        _storage.delete(
-          key: AppConstants.refreshTokenKey,
-          aOptions: _androidOptions,
-          iOptions: _iosOptions,
-        ),
+        _storage.delete(key: AppConstants.accessTokenKey,  aOptions: _androidOptions, iOptions: _iosOptions),
+        _storage.delete(key: AppConstants.refreshTokenKey, aOptions: _androidOptions, iOptions: _iosOptions),
+        _storage.delete(key: AppConstants.userRoleKey,     aOptions: _androidOptions, iOptions: _iosOptions),
+        _storage.delete(key: AppConstants.userEmailKey,    aOptions: _androidOptions, iOptions: _iosOptions),
       ]);
-      AppLogger.d('Tokens cleared');
-    } catch (e, st) {
-      AppLogger.e('Failed to clear tokens', e, st);
-      rethrow;
-    }
+    } catch (e, st) { AppLogger.e('Failed to clear tokens', e, st); rethrow; }
   }
 
   @override
@@ -139,15 +77,34 @@ class TokenStorageService implements ITokenStorageService {
     final token = await getAccessToken();
     return token != null && token.isNotEmpty;
   }
+
+  @override
+  Future<void> saveUserRole(String role) async {
+    try { await _storage.write(key: AppConstants.userRoleKey, value: role, aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to save role', e, st); }
+  }
+
+  @override
+  Future<String?> getUserRole() async {
+    try { return await _storage.read(key: AppConstants.userRoleKey, aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to read role', e, st); return null; }
+  }
+
+  @override
+  Future<void> saveUserEmail(String email) async {
+    try { await _storage.write(key: AppConstants.userEmailKey, value: email, aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to save email', e, st); }
+  }
+
+  @override
+  Future<String?> getUserEmail() async {
+    try { return await _storage.read(key: AppConstants.userEmailKey, aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to read email', e, st); return null; }
+  }
 }
 
-// ─── Providers ────────────────────────────────────────────────────────────────
-
-final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) {
-  return const FlutterSecureStorage();
-});
+final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((_) => const FlutterSecureStorage());
 
 final tokenStorageServiceProvider = Provider<ITokenStorageService>((ref) {
-  final storage = ref.watch(flutterSecureStorageProvider);
-  return TokenStorageService(storage);
+  return TokenStorageService(ref.watch(flutterSecureStorageProvider));
 });

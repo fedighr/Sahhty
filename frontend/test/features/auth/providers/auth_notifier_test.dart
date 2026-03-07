@@ -28,6 +28,8 @@ const fakeTokens = AuthTokens(
   refreshToken: 'refresh_xyz',
 );
 
+final fakeTokensWithRole = AuthTokensWithRole(tokens: fakeTokens, role: 'P');
+
 void main() {
   late MockAuthRepository mockRepo;
 
@@ -42,6 +44,7 @@ void main() {
     // Default: no existing session
     when(() => mockRepo.isAuthenticated()).thenAnswer((_) async => false);
     when(() => mockRepo.getCachedTokens()).thenAnswer((_) async => null);
+    when(() => mockRepo.getCachedRole()).thenAnswer((_) async => 'P');
   });
 
   /// Builds container and pumps until the async _checkExistingSession settles.
@@ -69,6 +72,7 @@ void main() {
     test('restores session if tokens found in storage', () async {
       when(() => mockRepo.isAuthenticated()).thenAnswer((_) async => true);
       when(() => mockRepo.getCachedTokens()).thenAnswer((_) async => fakeTokens);
+    when(() => mockRepo.getCachedRole()).thenAnswer((_) async => 'P');
 
       final container = await buildAndWait();
       addTearDown(container.dispose);
@@ -81,7 +85,7 @@ void main() {
 
   group('AuthNotifier.signIn', () {
     test('transitions loading → authenticated on success', () async {
-      when(() => mockRepo.signIn(any())).thenAnswer((_) async => fakeTokens);
+      when(() => mockRepo.signIn(any())).thenAnswer((_) async => fakeTokensWithRole);
 
       final container = await buildAndWait();
       addTearDown(container.dispose);
@@ -135,6 +139,7 @@ void main() {
     test('clears state to AuthUnauthenticated', () async {
       when(() => mockRepo.isAuthenticated()).thenAnswer((_) async => true);
       when(() => mockRepo.getCachedTokens()).thenAnswer((_) async => fakeTokens);
+    when(() => mockRepo.getCachedRole()).thenAnswer((_) async => 'P');
       when(() => mockRepo.signOut()).thenAnswer((_) async {});
 
       final container = await buildAndWait();

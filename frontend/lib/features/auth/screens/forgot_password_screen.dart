@@ -14,7 +14,13 @@ import '../widgets/primary_button.dart';
 import '../widgets/snackbar_helper.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
-  const ForgotPasswordScreen({super.key});
+  final String initialEmail;
+  final String initialStep;
+  const ForgotPasswordScreen({
+    super.key,
+    this.initialEmail = '',
+    this.initialStep = 'email',
+  });
   @override
   ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
@@ -25,9 +31,18 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   final _passCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
 
-  // step: 'email' | 'reset'
-  String _step = 'email';
-  String _email = '';
+  late String _step;
+  late String _email;
+
+  @override
+  void initState() {
+    super.initState();
+    _step  = widget.initialStep;
+    _email = widget.initialEmail;
+    if (widget.initialEmail.isNotEmpty) {
+      _emailCtrl.text = widget.initialEmail;
+    }
+  }
 
   @override
   void dispose() {
@@ -58,7 +73,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
     ref.listen<AuthState>(authNotifierProvider, (_, next) {
       if (next is AuthAwaitingResetCode) {
-        context.push(AppRoutes.verifyCode, extra: next.email);
+        context.go(AppRoutes.verifyCode,
+            extra: {'email': next.email, 'isPasswordReset': true});
       } else if (next is AuthPasswordReset) {
         SnackbarHelper.showSuccess(context, 'Mot de passe mis à jour !');
         context.go(AppRoutes.login);

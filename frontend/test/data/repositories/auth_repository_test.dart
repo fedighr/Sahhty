@@ -29,6 +29,8 @@ const fakeTokens = AuthTokens(
   refreshToken: 'fake_refresh_token_xyz456',
 );
 
+final fakeTokensWithRole = AuthTokensWithRole(tokens: fakeTokens, role: 'P');
+
 final fakeSignInRequest = SignInRequest(
   email: 'test@test.tn',
   password: 'Password123!',
@@ -68,13 +70,18 @@ void main() {
   group('AuthRepository.signIn', () {
     test('returns tokens and saves them on success', () async {
       when(() => mockAuthService.signIn(any()))
-          .thenAnswer((_) async => fakeTokens);
+          .thenAnswer((_) async => fakeTokensWithRole);
       when(() => mockTokenStorage.saveTokens(any()))
+          .thenAnswer((_) async {});
+      when(() => mockTokenStorage.saveUserRole(any()))
+          .thenAnswer((_) async {});
+      when(() => mockTokenStorage.saveUserEmail(any()))
           .thenAnswer((_) async {});
 
       final result = await repository.signIn(fakeSignInRequest);
 
-      expect(result, equals(fakeTokens));
+      expect(result.tokens, equals(fakeTokens));
+      expect(result.role, equals('P'));
       verify(() => mockAuthService.signIn(fakeSignInRequest)).called(1);
       verify(() => mockTokenStorage.saveTokens(fakeTokens)).called(1);
     });
@@ -113,6 +120,10 @@ void main() {
   group('AuthRepository.signUp', () {
     test('succeeds without error', () async {
       when(() => mockAuthService.signUp(any()))
+          .thenAnswer((_) async {});
+      when(() => mockTokenStorage.saveUserRole(any()))
+          .thenAnswer((_) async {});
+      when(() => mockTokenStorage.saveUserEmail(any()))
           .thenAnswer((_) async {});
 
       await expectLater(

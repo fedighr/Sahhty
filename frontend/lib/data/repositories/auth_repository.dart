@@ -8,7 +8,7 @@ import '../services/auth_service.dart';
 import '../services/token_storage_service.dart';
 
 abstract class IAuthRepository {
-  Future<AuthTokens> signIn(SignInRequest request);
+  Future<AuthTokensWithRole> signIn(SignInRequest request);
   Future<void> signUp(SignUpRequest request);
   Future<void> verifyCode(VerifyCodeRequest request);
   Future<void> resendCode(EmailRequest request);
@@ -18,6 +18,14 @@ abstract class IAuthRepository {
   Future<void> signOut();
   Future<bool> isAuthenticated();
   Future<AuthTokens?> getCachedTokens();
+  Future<String> getCachedRole();
+}
+
+/// Wraps tokens + role returned from signIn
+class AuthTokensWithRole {
+  final AuthTokens tokens;
+  final String role;
+  const AuthTokensWithRole({required this.tokens, required this.role});
 }
 
 class AuthRepository implements IAuthRepository {
@@ -31,11 +39,15 @@ class AuthRepository implements IAuthRepository {
         _tokenStorage = tokenStorage;
 
   @override
-  Future<AuthTokens> signIn(SignInRequest request) async {
+  Future<AuthTokensWithRole> signIn(SignInRequest request) async {
     try {
-      final tokens = await _authService.signIn(request);
-      await _tokenStorage.saveTokens(tokens);
-      return tokens;
+      final result = await _authService.signIn(request);
+      await _tokenStorage.saveTokens(result.tokens);
+      // Save role and email for later use (profile setup, routing)
+      await _tokenStorage.saveUserRole(result.role);
+      await _tokenStorage.saveUserEmail(request.email.trim().toLowerCase());
+      AppLogger.i('SignIn successful — role: ${result.role}');
+      return AuthTokensWithRole(tokens: result.tokens, role: result.role);
     } on AppFailure { rethrow; }
     catch (e, st) {
       AppLogger.e('Repository signIn error', e, st);
@@ -47,6 +59,9 @@ class AuthRepository implements IAuthRepository {
   Future<void> signUp(SignUpRequest request) async {
     try {
       await _authService.signUp(request);
+      // Save role and email so profile setup screen can use them
+      await _tokenStorage.saveUserRole(request.role);
+      await _tokenStorage.saveUserEmail(request.email.trim().toLowerCase());
     } on AppFailure { rethrow; }
     catch (e, st) {
       AppLogger.e('Repository signUp error', e, st);
@@ -56,52 +71,43 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<void> verifyCode(VerifyCodeRequest request) async {
-    try {
-      await _authService.verifyCode(request);
-    } on AppFailure { rethrow; }
-    catch (e, st) {
-      AppLogger.e('Repository verifyCode error', e, st);
-      throw const UnexpectedFailure();
-    }
+    try { await _authService.verifyCode(request); }
+    on AppFailure { rethrow; }
+    catch (e, st) { AppLogger.e('Repository verifyCode error', e, st); throw const UnexpectedFailure(); }
   }
 
   @override
   Future<void> resendCode(EmailRequest request) async {
-    try {
-      await _authService.resendCode(request);
-    } on AppFailure { rethrow; }
+    try { await _authService.resendCode(request); }
+    on AppFailure { rethrow; }
     catch (_) { throw const UnexpectedFailure(); }
   }
 
   @override
   Future<void> verifyResetEmail(EmailRequest request) async {
-    try {
-      await _authService.verifyResetEmail(request);
-    } on AppFailure { rethrow; }
+    try { await _authService.verifyResetEmail(request); }
+    on AppFailure { rethrow; }
     catch (_) { throw const UnexpectedFailure(); }
   }
 
   @override
   Future<void> verifyResetCode(VerifyCodeRequest request) async {
-    try {
-      await _authService.verifyResetCode(request);
-    } on AppFailure { rethrow; }
+    try { await _authService.verifyResetCode(request); }
+    on AppFailure { rethrow; }
     catch (_) { throw const UnexpectedFailure(); }
   }
 
   @override
   Future<void> forgotPassword(ForgotPasswordRequest request) async {
-    try {
-      await _authService.forgotPassword(request);
-    } on AppFailure { rethrow; }
+    try { await _authService.forgotPassword(request); }
+    on AppFailure { rethrow; }
     catch (_) { throw const UnexpectedFailure(); }
   }
 
   @override
   Future<void> signOut() async {
-    try {
-      await _tokenStorage.clearTokens();
-    } catch (e, st) {
+    try { await _tokenStorage.clearTokens(); }
+    catch (e, st) {
       AppLogger.e('Repository signOut error', e, st);
       throw const StorageFailure();
     }
@@ -112,6 +118,12 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<AuthTokens?> getCachedTokens() => _tokenStorage.getTokens();
+
+  @override
+  Future<String> getCachedRole() async {
+    final role = await _tokenStorage.getUserRole();
+    return role ?? 'P'; // default to patient if unknown
+  }
 }
 
 final authRepositoryProvider = Provider<IAuthRepository>((ref) {

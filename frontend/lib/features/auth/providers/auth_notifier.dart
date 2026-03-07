@@ -22,8 +22,10 @@ class AuthNotifier extends Notifier<AuthState> {
       final isAuth = await _repo.isAuthenticated();
       if (isAuth) {
         final tokens = await _repo.getCachedTokens();
+        final role   = await _repo.getCachedRole();
         if (tokens != null) {
-          state = AuthAuthenticated(tokens: tokens);
+          AppLogger.i('Session restored — role: $role');
+          state = AuthAuthenticated(tokens: tokens, role: role);
           return;
         }
       }
@@ -38,8 +40,8 @@ class AuthNotifier extends Notifier<AuthState> {
     if (state is AuthLoading) return;
     state = const AuthLoading();
     try {
-      final tokens = await _repo.signIn(SignInRequest(email: email, password: password));
-      state = AuthAuthenticated(tokens: tokens);
+      final result = await _repo.signIn(SignInRequest(email: email, password: password));
+      state = AuthAuthenticated(tokens: result.tokens, role: result.role);
     } on AuthFailure catch (e) {
       state = AuthError(message: e.message, statusCode: e.statusCode);
     } on AppFailure catch (e) {
@@ -76,7 +78,10 @@ class AuthNotifier extends Notifier<AuthState> {
     state = const AuthLoading();
     try {
       await _repo.verifyCode(VerifyCodeRequest(email: email, code: code));
-      state = AuthVerified(email: email);
+      // After OTP verification user still needs to set up profile
+      // Restore the role that was saved during signUp
+      final role = await _repo.getCachedRole();
+      state = AuthVerified(email: email, role: role);
     } on AppFailure catch (e) {
       state = AuthError(message: e.message);
     } catch (_) {
@@ -132,11 +137,8 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   Future<void> signOut() async {
-    try {
-      await _repo.signOut();
-    } finally {
-      state = const AuthUnauthenticated();
-    }
+    try { await _repo.signOut(); }
+    finally { state = const AuthUnauthenticated(); }
   }
 
   void resetError() {
@@ -146,4 +148,5 @@ class AuthNotifier extends Notifier<AuthState> {
   void goBackToLogin() => state = const AuthUnauthenticated();
 }
 
-final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
+final authNotifierProvider =
+    NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
