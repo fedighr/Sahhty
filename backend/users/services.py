@@ -3,6 +3,8 @@ from utils.email_service import send_verification_email
 from utils.otp_service import OTPService
 from utils.constraints import CheckConstraint
 from .models import User
+from patients.models import Patient
+from doctors.models import Doctor
 
 class AuthService:
     @staticmethod
@@ -36,12 +38,25 @@ class AuthService:
         
         if not user.is_verified:
             return {'data': {'success': False, 'message': 'Email not verified'}, 'status': 403}
+        
+        role_model_map = {
+            'P': Patient,
+            'D': Doctor,
+        }
 
+        model = role_model_map.get(user.role)
+        if model and not model.objects.filter(user=user).exists():
+            return {
+                'data': {'success': False, 'message': 'User does not complete his signup'},
+                'status': 403
+            }
+   
         token = RefreshToken.for_user(user)    
         token['email'] = user.email
         token['name'] =user.first_name + " " + user.last_name
         token['gender']=user.gender
         token['role']=user.role
+        
         return {
             'data': {
                 'success': True,

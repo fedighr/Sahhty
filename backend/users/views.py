@@ -83,7 +83,7 @@ class UserAuth(ViewSet):
             target_user = get_object_or_404(User, id=pk)
             self.check_object_permissions(request, target_user)
             result = AuthService.delete_user_account(target_user)
-            return Response(result)
+            return Response(result['data'], status=result['status'])
         
         except Http404:
             return Response({'success' : False ,'message' : 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)

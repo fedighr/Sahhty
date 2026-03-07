@@ -1,68 +1,65 @@
 import numpy as np
 import pandas as pd
 
-N = 2500
+N_LOW    = 1200
+N_MEDIUM = 900
+N_HIGH   = 600
+RANDOM_SEED = 42
+np.random.seed(RANDOM_SEED)
 
 data = []
 
-for _ in range(N):
+def generate_patient(risk_level):
+    if risk_level == "LOW":
+        age            = np.random.randint(18, 30)
+        bmi            = np.random.normal(22, 1.5)
+        glucose        = np.random.normal(82, 6)
+        bp_sys         = np.random.normal(108, 6)
+        bp_dia         = np.random.normal(68, 5)
+        pregnancy_week = np.random.randint(1, 28)
+        risk_pct_base  = np.random.uniform(5, 29)
 
-    age = np.random.randint(18, 46)
+    elif risk_level == "MEDIUM":
+        age            = np.random.randint(25, 38)
+        bmi            = np.random.normal(27, 2)
+        glucose        = np.random.normal(100, 8)
+        bp_sys         = np.random.normal(128, 7)
+        bp_dia         = np.random.normal(82, 5)
+        pregnancy_week = np.random.randint(10, 36)
+        risk_pct_base  = np.random.uniform(30, 59)
 
-    bmi = np.random.normal(24 + age * 0.05, 3)
-    bmi = np.clip(bmi, 18, 40)
-    bmi = round(bmi, 2)
+    else:
+        age            = np.random.randint(32, 46)
+        bmi            = np.random.normal(32, 3)
+        glucose        = np.random.normal(138, 15)
+        bp_sys         = np.random.normal(148, 8)
+        bp_dia         = np.random.normal(93, 6)
+        pregnancy_week = np.random.randint(20, 41)
+        risk_pct_base  = np.random.uniform(60, 95)
 
-    glucose = np.random.normal(90 + bmi * 1.2 + age * 0.3, 15)
-    glucose = np.clip(glucose, 70, 180)
-    glucose = round(glucose, 2)
-
-    bp_sys = np.random.normal(100 + age * 0.8 + bmi * 0.5, 10)
-    bp_sys = np.clip(bp_sys, 90, 160)
-    bp_sys = round(bp_sys, 2)
-
-    bp_dia = np.random.normal(65 + age * 0.4 + bmi * 0.3, 8)
-    bp_dia = np.clip(bp_dia, 60, 100)
-    bp_dia = round(bp_dia, 2)
-
-    pregnancy_week = np.random.randint(1, 41)
+    bmi            = round(np.clip(bmi, 18.0, 42.0), 2)
+    glucose        = round(np.clip(glucose, 70.0, 200.0), 2)
+    bp_sys         = round(np.clip(bp_sys, 90.0, 170.0), 2)
+    bp_dia         = round(np.clip(bp_dia, 55.0, 110.0), 2)
 
     if np.random.random() < 0.3:
         heart_rate = np.nan
     else:
-        heart_rate = np.random.normal(80 + age * 0.1, 8)
-        heart_rate = np.clip(heart_rate, 60, 120)
-    heart_rate = round(heart_rate, 2)    
+        hr_base    = 80 if risk_level == "LOW" else (88 if risk_level == "MEDIUM" else 95)
+        heart_rate = np.random.normal(hr_base, 7)
+        heart_rate = round(np.clip(heart_rate, 60.0, 130.0), 2)
 
-    risk_score = (
-        0.25 * (age / 45) +
-        0.25 * (bmi / 40) +
-        0.2 * (glucose / 180) +
-        0.15 * (bp_sys / 160) +
-        0.15 * (pregnancy_week / 40)
-    )
+    risk_percentage = round(np.clip(risk_pct_base + np.random.normal(0, 3), 0, 100), 2)
 
-    risk_percentage = np.clip(risk_score * 100 + np.random.normal(0, 6), 0, 100)
-    risk_percentage = round(risk_percentage, 2)
+    return [age, bmi, glucose, bp_sys, bp_dia, pregnancy_week,
+            heart_rate, risk_percentage, risk_level]
 
-    if risk_percentage < 30:
-        risk_level = "LOW"
-    elif risk_percentage < 60:
-        risk_level = "MEDIUM"
-    else:
-        risk_level = "HIGH"
 
-    data.append([
-        age,
-        bmi,
-        glucose,
-        bp_sys,
-        bp_dia,
-        pregnancy_week,
-        heart_rate,
-        risk_percentage,
-        risk_level
-    ])
+for level, count in [("LOW", N_LOW), ("MEDIUM", N_MEDIUM), ("HIGH", N_HIGH)]:
+    for _ in range(count):
+        data.append(generate_patient(level))
+
+np.random.shuffle(data)
 
 df = pd.DataFrame(data, columns=[
     "age",
@@ -76,4 +73,12 @@ df = pd.DataFrame(data, columns=[
     "risk_level"
 ])
 
+print("=== Dataset distribution ===")
+print(df["risk_level"].value_counts())
+print(f"\nTotal rows: {len(df)}")
+print(f"\nMissing heart_rate: {df['heart_rate'].isna().sum()} rows ({df['heart_rate'].isna().mean()*100:.1f}%)")
+print("\n=== Feature ranges per risk level ===")
+print(df.groupby("risk_level")[["age","bmi","glucose","blood_pressure_sys","blood_pressure_dia"]].mean().round(2))
+
 df.to_csv("pregnancy_dataset.csv", index=False)
+print("\n✅ pregnancy_dataset.csv saved successfully!")
