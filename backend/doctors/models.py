@@ -40,8 +40,6 @@ class Doctor(models.Model):
     consultation_price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
     bio = models.TextField(blank=True, null=True)
     is_available = models.BooleanField(default=True)
+    is_doctor_verified = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="doctor")
     speciality = models.ForeignKey(Speciality, on_delete=models.PROTECT)
-
-
-

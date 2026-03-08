@@ -4,7 +4,7 @@ from utils.otp_service import OTPService
 from utils.constraints import CheckConstraint
 from .models import User
 from patients.models import Patient
-from doctors.models import Doctor
+
 
 class AuthService:
     @staticmethod
