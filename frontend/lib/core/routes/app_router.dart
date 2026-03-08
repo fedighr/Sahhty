@@ -8,7 +8,6 @@ import '../../features/auth/screens/register_screen.dart';
 import '../../features/auth/screens/splash_screen.dart';
 import '../../features/auth/screens/verify_code_screen.dart';
 import '../../features/auth/screens/forgot_password_screen.dart';
-import '../../features/profile_setup/screens/profile_selection_screen.dart';
 import '../../features/profile_setup/screens/patient_setup_screen.dart';
 import '../../features/profile_setup/screens/doctor_setup_screen.dart';
 import '../../features/home/screens/patient_home_screen.dart';
@@ -16,16 +15,15 @@ import '../../features/home/screens/doctor_home_screen.dart';
 
 class AppRoutes {
   AppRoutes._();
-  static const String splash           = '/';
-  static const String login            = '/login';
-  static const String register         = '/register';
-  static const String verifyCode       = '/verify-code';
-  static const String forgotPassword   = '/forgot-password';
-  static const String profileSelection = '/profile-selection';
-  static const String patientSetup     = '/patient-setup';
-  static const String doctorSetup      = '/doctor-setup';
-  static const String patientHome      = '/patient-home';
-  static const String doctorHome       = '/doctor-home';
+  static const String splash         = '/';
+  static const String login          = '/login';
+  static const String register       = '/register';
+  static const String verifyCode     = '/verify-code';
+  static const String forgotPassword = '/forgot-password';
+  static const String patientSetup   = '/patient-setup';
+  static const String doctorSetup    = '/doctor-setup';
+  static const String patientHome    = '/patient-home';
+  static const String doctorHome     = '/doctor-home';
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -33,12 +31,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: AppRoutes.splash,
     debugLogDiagnostics: false,
     routes: [
-      GoRoute(path: AppRoutes.splash,
-        builder: (_, __) => const SplashScreen()),
-      GoRoute(path: AppRoutes.login,
-        pageBuilder: (_, s) => _fade(s, const LoginScreen())),
-      GoRoute(path: AppRoutes.register,
-        pageBuilder: (_, s) => _fade(s, const RegisterScreen())),
+      GoRoute(
+        path: AppRoutes.splash,
+        builder: (_, __) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.login,
+        pageBuilder: (_, s) => _fade(s, const LoginScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        pageBuilder: (_, s) => _fade(s, const RegisterScreen()),
+      ),
       GoRoute(
         path: AppRoutes.verifyCode,
         pageBuilder: (_, s) {
@@ -46,12 +50,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           String email = '';
           bool isPasswordReset = false;
           if (extra is Map<String, dynamic>) {
-            email           = extra['email'] as String? ?? '';
-            isPasswordReset = extra['isPasswordReset'] as bool? ?? false;
+            email           = extra['email']           as String? ?? '';
+            isPasswordReset = extra['isPasswordReset'] as bool?   ?? false;
           } else if (extra is String) {
             email = extra;
           }
-          return _fade(s, VerifyCodeScreen(email: email, isPasswordReset: isPasswordReset));
+          return _fade(s, VerifyCodeScreen(
+            email: email,
+            isPasswordReset: isPasswordReset,
+          ));
         },
       ),
       GoRoute(
@@ -60,25 +67,34 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           final extra = s.extra as Map<String, dynamic>?;
           final email = extra?['email'] as String? ?? '';
           final step  = extra?['step']  as String? ?? 'email';
-          return _fade(s, ForgotPasswordScreen(initialEmail: email, initialStep: step));
+          return _fade(s, ForgotPasswordScreen(
+            initialEmail: email,
+            initialStep: step,
+          ));
         },
       ),
-      GoRoute(path: AppRoutes.profileSelection,
-        pageBuilder: (_, s) => _fade(s, const ProfileSelectionScreen())),
-      GoRoute(path: AppRoutes.patientSetup,
+      GoRoute(
+        path: AppRoutes.patientSetup,
         pageBuilder: (_, s) {
           final email = s.extra as String? ?? '';
           return _fade(s, PatientSetupScreen(email: email));
-        }),
-      GoRoute(path: AppRoutes.doctorSetup,
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.doctorSetup,
         pageBuilder: (_, s) {
           final email = s.extra as String? ?? '';
           return _fade(s, DoctorSetupScreen(email: email));
-        }),
-      GoRoute(path: AppRoutes.patientHome,
-        pageBuilder: (_, s) => _fade(s, const PatientHomeScreen())),
-      GoRoute(path: AppRoutes.doctorHome,
-        pageBuilder: (_, s) => _fade(s, const DoctorHomeScreen())),
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.patientHome,
+        pageBuilder: (_, s) => _fade(s, const PatientHomeScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorHome,
+        pageBuilder: (_, s) => _fade(s, const DoctorHomeScreen()),
+      ),
     ],
   );
 });

@@ -46,6 +46,17 @@ class AuthVerified extends AuthState {
   @override List<Object?> get props => [email, role];
 }
 
+// Shown briefly after login succeeds — lets the UI play a success animation
+class AuthSuccess extends AuthState {
+  final AuthTokens tokens;
+  final String role;
+  final String name;
+  const AuthSuccess({required this.tokens, required this.role, required this.name});
+  bool get isDoctor  => role == 'D';
+  bool get isPatient => role == 'P';
+  @override List<Object?> get props => [tokens, role, name];
+}
+
 class AuthAwaitingResetCode extends AuthState {
   final String email;
   const AuthAwaitingResetCode({required this.email});

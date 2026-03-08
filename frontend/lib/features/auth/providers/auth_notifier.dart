@@ -1,5 +1,6 @@
 // lib/features/auth/providers/auth_notifier.dart
 
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/app_failure.dart';
 import '../../../core/utils/app_logger.dart';
@@ -41,6 +42,10 @@ class AuthNotifier extends Notifier<AuthState> {
     state = const AuthLoading();
     try {
       final result = await _repo.signIn(SignInRequest(email: email, password: password));
+      final name = _extractNameFromJwt(result.tokens.accessToken);
+      // Show success state briefly for animation, then navigate
+      state = AuthSuccess(tokens: result.tokens, role: result.role, name: name);
+      await Future.delayed(const Duration(milliseconds: 1800));
       state = AuthAuthenticated(tokens: result.tokens, role: result.role);
     } on AuthFailure catch (e) {
       state = AuthError(message: e.message, statusCode: e.statusCode);
@@ -49,6 +54,18 @@ class AuthNotifier extends Notifier<AuthState> {
     } catch (_) {
       state = const AuthError(message: 'Erreur inattendue. Réessayez.');
     }
+  }
+
+  String _extractNameFromJwt(String token) {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) return '';
+      var payload = parts[1].replaceAll('-', '+').replaceAll('_', '/');
+      while (payload.length % 4 != 0) payload += '=';
+      final decoded = utf8.decode(base64Decode(payload));
+      final claims = jsonDecode(decoded) as Map<String, dynamic>;
+      return claims['name'] as String? ?? '';
+    } catch (_) { return ''; }
   }
 
   Future<void> signUp({

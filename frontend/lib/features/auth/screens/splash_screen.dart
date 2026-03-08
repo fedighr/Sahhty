@@ -32,7 +32,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         CurvedAnimation(parent: _ctrl, curve: const Interval(0.0, 0.6)));
     _ctrl.forward();
 
-    // Ensure minimum splash time then navigate based on current state
     Future.delayed(const Duration(milliseconds: 1800), () {
       if (mounted) _navigate(ref.read(authNotifierProvider));
     });
@@ -46,10 +45,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   void _navigate(AuthState state) {
     if (_navigated || !mounted) return;
-    if (state.isInitial || state.isLoading) return; // still checking
+    if (state is AuthInitial || state is AuthLoading) return;
     _navigated = true;
-    if (state.isAuthenticated) {
-      context.go(AppRoutes.patientHome);
+    if (state is AuthAuthenticated) {
+      // ✅ Route vers le bon home selon le rôle sauvegardé
+      state.isDoctor
+          ? context.go(AppRoutes.doctorHome)
+          : context.go(AppRoutes.patientHome);
     } else {
       context.go(AppRoutes.login);
     }
@@ -57,10 +59,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    // Also react immediately if state resolves before the 1800ms delay
-    ref.listen<AuthState>(authNotifierProvider, (_, next) {
-      _navigate(next);
-    });
+    ref.listen<AuthState>(authNotifierProvider, (_, next) => _navigate(next));
 
     return Scaffold(
       body: Container(
