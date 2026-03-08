@@ -4,7 +4,7 @@ from utils.otp_service import OTPService
 from utils.constraints import CheckConstraint
 from .models import User
 from patients.models import Patient
-
+from doctors.models import Doctor
 
 class AuthService:
     @staticmethod
@@ -167,5 +167,5 @@ class AuthService:
             user.verification_code = otp['code']
             user.expiration_date = otp['expires_at']
             user.save()
-            return {'data': {'success': True, 'message': 'Code sent successfully'}, 'status': 200}
+            return {'data': {'success': True, 'message': 'Code sent successfully', 'user_id': user.id}, 'status': 200}
         return {'data': {'success': False, 'message': 'Email not sent'}, 'status': 500}      

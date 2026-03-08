@@ -150,3 +150,119 @@ def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
     except Exception as e:
         print(f"Email error: {e}")
         return False
+
+def send_medication_reminder_email(email, medication_name, first_name, dose_time):
+    cfg = {
+        'bg':          '#f0fff4',
+        'border':      '#38a169',
+        'header_bg':   '#38a169',
+        'badge_bg':    '#276749',
+        'badge_text':  '#ffffff',
+        'icon':        '💊',
+        'label':       'Medication Reminder',
+        'subject':     '💊 Time to take your medication',
+    }
+
+    try:
+        subject = cfg['subject']
+        text_content = f"Reminder: Take your {medication_name} at {dose_time}"
+        html_content = f'''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin:0;padding:0;background-color:#f7fafc;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7fafc;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:{cfg["bg"]};border-radius:12px;overflow:hidden;border:2px solid {cfg["border"]};box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background-color:{cfg["header_bg"]};padding:28px 32px;text-align:center;">
+              <p style="margin:0;font-size:36px;line-height:1;">{cfg["icon"]}</p>
+              <h1 style="margin:10px 0 0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">
+                {cfg["label"]}
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:13px;color:#718096;text-transform:uppercase;letter-spacing:1px;font-weight:600;">
+                Sahty Health
+              </p>
+              <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
+                Hello {first_name} 👋
+              </h2>
+
+              <!-- Reminder box -->
+              <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+                <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
+                  This is a friendly reminder to take your medication:
+                </p>
+                <table cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
+                      <span style="font-size:13px;color:#718096;">Medication</span>
+                    </td>
+                    <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;text-align:right;">
+                      <strong style="font-size:14px;color:#2d3748;">{medication_name}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:8px 0;">
+                      <span style="font-size:13px;color:#718096;">Scheduled time</span>
+                    </td>
+                    <td style="padding:8px 0;text-align:right;">
+                      <strong style="font-size:14px;color:#38a169;">🕐 {dose_time}</strong>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Badge -->
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:{cfg["badge_bg"]};border-radius:20px;padding:6px 16px;">
+                    <span style="color:{cfg["badge_text"]};font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;">
+                      {cfg["label"]}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
+                Please mark your medication as taken in the Sahty app after you have taken it.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+              <p style="margin:0;font-size:12px;color:#718096;">
+                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        '''
+        email_msg = EmailMultiAlternatives(subject, text_content, os.getenv('DEFAULT_FROM_EMAIL'), [email])
+        email_msg.attach_alternative(html_content, "text/html")
+        email_msg.send()
+        return True
+    except BadHeaderError:
+        return False
+    except Exception as e:
+        print(f"Email error: {e}")
+        return False        

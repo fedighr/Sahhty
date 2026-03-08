@@ -3,18 +3,10 @@ from users.models import User
 
 class Alert(models.Model):
     TYPE_CHOICES = [
-        ('DELAYED_PERIOD', 'Delayed Period'),
-        ('HIGH_GLYCEMIA', 'High Glycemia'),
-        ('LOW_GLYCEMIA', 'Low Glycemia'),
-        ('HIGH_BLOOD_PRESSURE', 'High Blood Pressure'),
-        ('LOW_BLOOD_PRESSURE', 'Low Blood Pressure'),
-        ('APPOINTMENT_REMINDER', 'Appointment Reminder'),
-        ('TREATMENT_REMINDER', 'Treatment Reminder'),
-        ('ULTRASOUND_REMINDER', 'Ultrasound Reminder'),
-        ('MEDICATION_REMINDER', 'Medication Reminder'),
-        ('RISK_HIGH', 'High Risk Detected'),
-        ('RISK_MEDIUM', 'Medium Risk Detected'),
-        ('PERSONAL_SPIKE', 'Unusual Personal Reading'),
+    ('HEALTH', 'Health alert triggered by measurements or ML risk assessment'),
+    ('REMINDER', 'Reminder for appointments, medication, or treatment'),
+    ('DOCTOR_MESSAGE', 'Manual message or instruction sent by a doctor'),
+    ('SYSTEM', 'System alert such as inactivity or pregnancy milestones'),
     ]
 
     STATE_CHOICES = [

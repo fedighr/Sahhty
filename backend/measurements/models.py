@@ -1,5 +1,5 @@
 from django.db import models
-from Pregnancies.models import Pregnancy
+from patients.models import Patient
 
 class Measurement(models.Model):
     TYPE_CHOICES = [
@@ -25,7 +25,7 @@ class Measurement(models.Model):
     value2 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     unit = models.CharField(max_length=10, choices=UNIT_CHOICES)
     context = models.CharField(max_length=100, blank=True, default="")
-    pregnancy = models.ForeignKey(Pregnancy, on_delete=models.CASCADE, related_name="measurements")
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="measurements")
 
 class RiskAssessment(models.Model):
     RISK_CHOICES = [
@@ -44,4 +44,4 @@ class RiskAssessment(models.Model):
     bp_dia_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     heart_rate_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     weight_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    pregnancy = models.ForeignKey(Pregnancy, on_delete=models.CASCADE, related_name="risk_assessments")
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="risk_assessments")

@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from Pregnancies.models import Pregnancy
-from Pregnancies.serializers import PregnancySerializer
-from .models import Medication, Treatment
+from patients.models import Patient
+from patients.serializers import PatientSerializer
+from .models import Medication, Treatment, TreatmentSchedule
 
 class MedicationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,13 +15,24 @@ class TreatmentSerializer(serializers.ModelSerializer):
         source = 'medication',
         write_only = True
     )
-    pregnancy = PregnancySerializer(read_only=True)
-    pregnancy_id = serializers.PrimaryKeyRelatedField(
-        queryset = Pregnancy.objects.all(),
-        source = 'pregnancy',
+    patient = PatientSerializer(read_only=True)
+    patient_id = serializers.PrimaryKeyRelatedField(
+        queryset = Patient.objects.all(),
+        source = 'patient',
         write_only = True
     )      
 
     class Meta:
         model = Treatment
-        fields = '__all__'  
+        fields = ['id', 'start_date', 'end_date', 'dosage', 'frequency', 'patient_id', 'patient', 'medication_id', 'medication']
+
+class TreatmentScheduleSerializer(serializers.ModelSerializer):
+    treatment = TreatmentSerializer(read_only=True)
+    treatment_id = serializers.PrimaryKeyRelatedField(
+        queryset = Treatment.objects.all(),
+        source = 'treatment',
+        write_only = True
+    )
+    class Meta:
+        model = TreatmentSchedule
+        fields = ['id', 'dose_time', 'last_sent_at', 'treatment_id', 'treatment']      
