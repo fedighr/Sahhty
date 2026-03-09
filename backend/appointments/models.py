@@ -15,5 +15,6 @@ class Appointment(models.Model):
     reason = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_reminder_sent = models.BooleanField(default=False)
     patient = models.ForeignKey(Patient, on_delete=models.PROTECT, related_name="appointments")
     doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT, related_name="appointments")
