@@ -43,9 +43,9 @@ class MeasurementService:
             RiskAssessment.objects.create(pregnancy=measurements['pregnancy'],global_risk_level=risk_level,global_risk_percentage=risk_percentage,personal_risk_level=risk_level,personal_risk_note=note, glucose_used=glucose, bp_sys_used=bp_sys, bp_dia_used=bp_dia, heart_rate_used=new_heart_rate, weight_used=weight)
             print(measurements['pregnancy'].patient.user.email)
             if(risk_level == "HIGH"):
-                AlertService.createAlert(measurements['pregnancy'].patient.user.email, f"High risk detected for pregnancy {measurements['pregnancy'].id} with risk percentage {risk_percentage}%. Note: {note}", "CRITICAL")
+                AlertService.sendRiskAlert(measurements['pregnancy'].patient.user.email, f"High risk detected for pregnancy {measurements['pregnancy'].id} with risk percentage {risk_percentage}%. Note: {note}", "CRITICAL")
             elif(risk_level == "MEDIUM"):
-                AlertService.createAlert(measurements['pregnancy'].patient.user.email, f"Medium risk detected for pregnancy {measurements['pregnancy'].id} with risk percentage {risk_percentage}%. Note: {note}", "WARNING")    
+                AlertService.sendRiskAlert(measurements['pregnancy'].patient.user.email, f"Medium risk detected for pregnancy {measurements['pregnancy'].id} with risk percentage {risk_percentage}%. Note: {note}", "WARNING")    
             return {'data': {'success': True, 'risk_level': risk_level, 'risk_percentage': risk_percentage, 'message': 'Measurement created and risk assessed'},'status': 200 }
         
         except Measurement.DoesNotExist:
