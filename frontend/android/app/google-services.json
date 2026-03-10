@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "234218707987",
+    "project_id": "sahhty-c4542",
+    "storage_bucket": "sahhty-c4542.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234218707987:android:45314de1c7adb3ada5f3e6",
+        "android_client_info": {
+          "package_name": "com.example.sahhty"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6d68JHKJf-zHrxgdlnMmbEwTxNwXmOWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,8 +10,10 @@ from .serializers import DoctorSerializer, SpecialitySerializer
 from users.serializers import EmailSerializer
 from .services import DoctorService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from drf_spectacular.utils import extend_schema
 
 class DoctorView(ViewSet):
+    @extend_schema(request=DoctorSerializer, responses=DoctorSerializer)
     @action(detail=False, methods=['post'], url_path="create_doctor", permission_classes=[AllowAny])
     def create_doctor(self, request):
         serializer = DoctorSerializer(data=request.data)

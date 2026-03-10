@@ -10,9 +10,11 @@ from .serializers import PatientSerializer, MenstrualCycleSerializer
 from users.serializers import EmailSerializer
 from .services import PatientService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from drf_spectacular.utils import extend_schema
 
 class PatientView(ViewSet):
 
+    @extend_schema(request=PatientSerializer, responses=PatientSerializer)
     @action(detail=False, methods=['post'], url_path='create_patient', permission_classes=[AllowAny])
     def create_patient(self, request):
         serializer = PatientSerializer(data=request.data)

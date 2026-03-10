@@ -3,18 +3,112 @@ from django.core.mail import BadHeaderError
 import os
 
 def send_verification_email(user_email, code, expires_at):
+    try:
+        formatted_expires = expires_at.strftime('%Y-%m-%d %H:%M')
+    except AttributeError:
+        formatted_expires = str(expires_at)
+
+    cfg = {
+        'bg':          '#eef2ff',
+        'border':      '#5a67d8',
+        'header_bg':   '#5a67d8',
+        'badge_bg':    '#4c51bf',
+        'badge_text':  '#ffffff',
+        'icon':        '🔐',
+        'label':       'Email Verification',
+        'subject':     '🔐 Your Verification Code',
+    }
 
     try:
-        
-        subject = 'Your Verification Code'
-        text_content = f'Your verification code is: {code}'
+        subject = cfg['subject']
+        text_content = f'Your verification code is: {code}. It expires at {formatted_expires}.'
         html_content = f'''
-            <div style="font-family: Arial, sans-serif; padding: 20px;">
-                <h2>Email Verification</h2>
-                <p>Your verification code is:</p>
-                <h1 style="color: #2196F3;">{code}</h1>
-                <p>This code expires at {expires_at}.</p>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin:0;padding:0;background-color:#f7fafc;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7fafc;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:{cfg["bg"]};border-radius:12px;overflow:hidden;border:2px solid {cfg["border"]};box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background-color:{cfg["header_bg"]};padding:28px 32px;text-align:center;">
+              <p style="margin:0;font-size:36px;line-height:1;">{cfg["icon"]}</p>
+              <h1 style="margin:10px 0 0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">
+                {cfg["label"]}
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:13px;color:#718096;text-transform:uppercase;letter-spacing:1px;font-weight:600;">
+                Sahty Health
+              </p>
+              <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
+                Verify your email address
+              </h2>
+
+              <!-- Code box -->
+              <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+                <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
+                  Use the following code to verify your email address. Please do not share this code with anyone.
+                </p>
+                <div style="text-align:center;margin:20px 0;">
+                  <span style="display:inline-block;background-color:#eef2ff;border:2px dashed {cfg["border"]};border-radius:10px;padding:16px 40px;font-size:32px;font-weight:800;letter-spacing:8px;color:#5a67d8;">
+                    {code}
+                  </span>
+                </div>
+                <table cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style="padding:8px 0;">
+                      <span style="font-size:13px;color:#718096;">Expires at</span>
+                    </td>
+                    <td style="padding:8px 0;text-align:right;">
+                      <strong style="font-size:14px;color:#5a67d8;">⏰ {formatted_expires}</strong>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Badge -->
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:{cfg["badge_bg"]};border-radius:20px;padding:6px 16px;">
+                    <span style="color:{cfg["badge_text"]};font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;">
+                      {cfg["label"]}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
+                If you did not request this code, you can safely ignore this email.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+              <p style="margin:0;font-size:12px;color:#718096;">
+                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
         '''
         email = EmailMultiAlternatives(subject, text_content, os.getenv('DEFAULT_FROM_EMAIL'), [user_email])
         email.attach_alternative(html_content, "text/html")

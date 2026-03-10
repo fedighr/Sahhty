@@ -24,7 +24,7 @@ class AlertView(ViewSet):
     
     @action(detail=False, methods=['post'], url_path='send_appointment_reminders', permission_classes=[AllowAny])
     def send_appointment_reminders(self, request):
-        result = AlertService.createAppointmentReminder()
+        result = AlertService.createAppointmentReminder(request)
         return Response("ok", status=200)
     
     @action(detail=False, methods=['post'], url_path='send_missing_measurements_alerts', permission_classes=[AllowAny])

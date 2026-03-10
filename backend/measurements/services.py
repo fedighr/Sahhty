@@ -6,7 +6,7 @@ from alerts.services import AlertService
 
 class MeasurementService:
     @staticmethod
-    def createMesurement(measurements):    
+    def createMeasurement(measurements):    
         try:
             Measurement.objects.create(**measurements)
 

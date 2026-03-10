@@ -9,13 +9,15 @@ from .models import Measurement
 from .serializers import MeasurementSerializer
 from .services import MeasurementService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from drf_spectacular.utils import extend_schema
 
 class MeasurementView(ViewSet):
-    @action(detail=False, methods=['post'], url_path='MeasurementService', permission_classes=[AllowAny])
-    def create_mesurement(self, request):
+    @extend_schema(request=MeasurementSerializer, responses=MeasurementSerializer)
+    @action(detail=False, methods=['post'], url_path='create_measurement', permission_classes=[AllowAny])
+    def create_measurement(self, request):
         serializer = MeasurementSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = MeasurementService.createMesurement(serializer.validated_data)
+        result = MeasurementService.createMeasurement(serializer.validated_data)
         return Response(result['data'], status=result['status'])
 
 

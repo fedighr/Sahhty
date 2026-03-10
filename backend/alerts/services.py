@@ -9,6 +9,16 @@ from datetime import timedelta, datetime
 from Pregnancies.models import Pregnancy
 from medications.models import Treatment, TreatmentSchedule, Medication
 from utils.email_service import send_alert_email, send_medication_reminder_email, send_appointment_reminder_email, send_missing_measurement_email, send_unconfirmed_appointment_email, send_pregnancy_no_appointment_email
+from utils.firebase import send_push_notification_to_user
+
+
+"""add this to every service after abdelhedi complete frontend alerts
+    send_push_notification_to_user(
+        user=patient.user,
+        title="Appointment Reminder",
+        body=f"You have an appointment tomorrow at {appointment_date}",
+    )
+"""
 
 class AlertService:
     @staticmethod
@@ -64,7 +74,7 @@ class AlertService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}    
 
     @staticmethod
-    def createAppointmentReminder():
+    def createAppointmentReminder(request):
         try:
             now = timezone.localtime(timezone.now())
             tomorrow = now + timedelta(days=1)
@@ -77,9 +87,16 @@ class AlertService:
                 appointment_time = appointment.appointment_date.strftime("%Y-%m-%d %H:%M")
                 result = send_appointment_reminder_email(patient_email, patient_name, doctor_name, appointment_time)
                 if result:
+                    print('aaaa')
                     Alert.objects.create(type='REMINDER', message=f"Appointment reminder: You have an appointment with Dr. {doctor_name} on {appointment_time}", level='INFO', status='NEW', user=User.objects.get(email=patient_email))
                     appointment.is_reminder_sent = True
                     appointment.save(update_fields=['is_reminder_sent'])
+                    #TEST
+                    send_push_notification_to_user(
+                    user=request.user,
+                    title="Appointment Reminder",
+                    body=f"You have an appointment tomorrow at {appointment_time}",
+                    )
 
         except IntegrityError:
             return {'data': {'success': False, 'message': 'Invalid data or constraint violated'}, 'status': 400}

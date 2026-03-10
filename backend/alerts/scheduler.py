@@ -2,6 +2,7 @@ import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from django_apscheduler.jobstores import DjangoJobStore
+from utils.firebase import send_push_notification_to_user
 from django_apscheduler.models import DjangoJobExecution
 
 logger = logging.getLogger(__name__)
@@ -55,6 +56,7 @@ def start():
         jobstore="default",
         replace_existing=True,
     )
+    
 
     scheduler.add_job(
         sendUnconfirmedAppointmentAlert,    #WORKING!
@@ -92,6 +94,7 @@ def start():
         name="Create Medication Reminders",
         jobstore="default",
         replace_existing=True,
+        
     )
 
     # --- Cleanup old job execution logs (runs weekly) ---
@@ -104,7 +107,9 @@ def start():
         jobstore="default",
         replace_existing=True,
         misfire_grace_time=None,
+        
     )
+    
 
     logger.info("Starting scheduler...")
     scheduler.start()

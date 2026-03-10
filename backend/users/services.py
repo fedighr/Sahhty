@@ -168,4 +168,7 @@ class AuthService:
             user.expiration_date = otp['expires_at']
             user.save()
             return {'data': {'success': True, 'message': 'Code sent successfully', 'user_id': user.id}, 'status': 200}
-        return {'data': {'success': False, 'message': 'Email not sent'}, 'status': 500}      
+        return {'data': {'success': False, 'message': 'Email not sent'}, 'status': 500}    
+
+    
+      

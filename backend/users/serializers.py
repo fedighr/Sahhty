@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import FCMDevice, User
 import re
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,3 +21,8 @@ class PhoneSerializer(serializers.Serializer):
         if not re.match(r'^\+?\d{8,15}$', value):
             raise serializers.ValidationError("Invalid phone number format.")
         return value
+
+class FCMDeviceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FCMDevice
+        fields = ['fcm_token']        
