@@ -13,6 +13,7 @@ import '../../../data/models/measurement_model.dart';
 import '../../../data/models/appointment_model.dart';
 import '../../../data/models/alert_model.dart' as alert_model;
 import '../../auth/providers/auth_notifier.dart';
+import '../../auth/providers/auth_state.dart';
 import '../providers/home_provider.dart';
 
 class PatientHomeScreen extends ConsumerWidget {

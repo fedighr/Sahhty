@@ -46,7 +46,7 @@ class _ShimmerCardState extends State<_ShimmerCard> with SingleTickerProviderSta
         height: 80,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: AppColors.divider.withOpacity(_animation.value),
+          color: AppColors.divider.withValues(alpha: _animation.value),
         ),
         child: Row(
           children: [
@@ -54,7 +54,7 @@ class _ShimmerCardState extends State<_ShimmerCard> with SingleTickerProviderSta
             Container(
               width: 48, height: 48,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
@@ -64,9 +64,9 @@ class _ShimmerCardState extends State<_ShimmerCard> with SingleTickerProviderSta
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(width: 120, height: 12, decoration: BoxDecoration(color: Colors.white.withOpacity(0.5), borderRadius: BorderRadius.circular(6))),
+                  Container(width: 120, height: 12, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(6))),
                   const SizedBox(height: 8),
-                  Container(width: 80, height: 10, decoration: BoxDecoration(color: Colors.white.withOpacity(0.4), borderRadius: BorderRadius.circular(5))),
+                  Container(width: 80, height: 10, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(5))),
                 ],
               ),
             ),
@@ -77,10 +77,3 @@ class _ShimmerCardState extends State<_ShimmerCard> with SingleTickerProviderSta
   }
 }
 
-class AnimatedBuilder extends AnimatedWidget {
-  final Widget Function(BuildContext context, Widget? child) builder;
-  const AnimatedBuilder({super.key, required super.listenable, required this.builder});
-
-  @override
-  Widget build(BuildContext context) => builder(context, null);
-}
