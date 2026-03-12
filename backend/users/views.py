@@ -115,5 +115,5 @@ class FCMDeviceView(ViewSet):
             fcm_token=token,
             defaults={'user': request.user}
         )
-        return Response({'success': True, 'message': 'Device registered successfully'})
+        return Response({'success': True, 'message': 'Device registered successfully'}, status=status.HTTP_200_OK)
 

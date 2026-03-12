@@ -4,16 +4,15 @@ from patients.models import Patient
 from patients.serializers import PatientSerializer
 
 class MeasurementSerializer(serializers.ModelSerializer):
-    patient = PatientSerializer(read_only=True)
+    #patient = PatientSerializer(read_only=True)
     patient_id = serializers.PrimaryKeyRelatedField(
         queryset = Patient.objects.all(),
         source = 'patient',
         write_only = True
     )
-
     class Meta:
         model = Measurement
-        fields = ['id', 'type', 'measurement_date', 'value1', 'value2', 'unit', 'context', 'patient_id', 'patient']
+        fields = ['id', 'type', 'measurement_date', 'value1', 'value2', 'unit', 'context', 'patient_id']
 
 class RiskAssessmentSerializer(serializers.ModelSerializer):
     patient = PatientSerializer(read_only=True)

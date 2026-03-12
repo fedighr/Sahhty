@@ -21,3 +21,16 @@ class PatientView(ViewSet):
         serializer.is_valid(raise_exception=True)
         result = PatientService.createPatient(serializer.validated_data)
         return Response(result['data'], result['status'])
+
+    @extend_schema(request=PatientSerializer, responses=PatientSerializer)
+    @action(detail=True, methods=['get'], permission_classes=[AllowAny])
+    def get_patient_by_id(self, request, pk=None):
+        result = PatientService.getPatientById(pk)
+        return Response(result['data'], result['status'])
+
+    @extend_schema(request=PatientSerializer, responses=PatientSerializer)
+    @action(detail=True, methods=['patch'], permission_classes=[AllowAny])
+    def update_patient(self, request, pk=None):
+        result = PatientService.updatePatient(pk, request.data)
+        return Response(result['data'], status=result['status'])    
+    

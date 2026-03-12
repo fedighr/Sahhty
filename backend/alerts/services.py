@@ -1,3 +1,4 @@
+from .serializers import AlertSerializer
 from .models import Alert
 from django.db import IntegrityError, DatabaseError
 from django.utils import timezone
@@ -25,11 +26,15 @@ class AlertService:
     def sendRiskAlert(email, alert_message, alert_level):    
         try:
             
+            user = User.objects.get(email=email)
             result = send_alert_email(email, alert_message, alert_level)
             if result:
-                Alert.objects.create(type='HEALTH', message=alert_message, level=alert_level, status='NEW', user=User.objects.get(email=email))
-            
-        
+                Alert.objects.create(type='HEALTH', message=alert_message, level=alert_level, status='NEW', user=user)
+            return {'data': {'success': True, 'message': 'Alert sent successfully'}, 'status': 200}
+
+        except User.DoesNotExist:
+            return {'data': {'success': False, 'message': 'User not found'}, 'status': 404}
+
         except IntegrityError:
             return {'data': {'success': False, 'message': 'Invalid data or constraint violated'},'status': 400 }
 
@@ -60,9 +65,8 @@ class AlertService:
                                 schedule.last_sent_at = now
                                 schedule.save(update_fields=['last_sent_at'])
 
-                    break
-
-            return {'data': {'success': True, 'message': 'Medication reminders processed successfully'},'status': 200 }
+                    break  # Only check the next upcoming dose for each treatment
+            return {'data': {'success': True, 'message': 'Medication reminders processed successfully'}, 'status': 200}
         
         except IntegrityError:
             return {'data': {'success': False, 'message': 'Invalid data or constraint violated'},'status': 400 }
@@ -74,7 +78,7 @@ class AlertService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}    
 
     @staticmethod
-    def createAppointmentReminder(request):
+    def createAppointmentReminder():
         try:
             now = timezone.localtime(timezone.now())
             tomorrow = now + timedelta(days=1)
@@ -88,15 +92,16 @@ class AlertService:
                 result = send_appointment_reminder_email(patient_email, patient_name, doctor_name, appointment_time)
                 if result:
                     print('aaaa')
-                    Alert.objects.create(type='REMINDER', message=f"Appointment reminder: You have an appointment with Dr. {doctor_name} on {appointment_time}", level='INFO', status='NEW', user=User.objects.get(email=patient_email))
+                    Alert.objects.create(type='REMINDER', message=f"Appointment reminder: You have an appointment with Dr. {doctor_name} on {appointment_time}", level='INFO', status='NEW', user=appointment.patient.user)
                     appointment.is_reminder_sent = True
                     appointment.save(update_fields=['is_reminder_sent'])
-                    #TEST
                     send_push_notification_to_user(
-                    user=request.user,
-                    title="Appointment Reminder",
-                    body=f"You have an appointment tomorrow at {appointment_time}",
+                        user=appointment.patient.user,
+                        title="Appointment Reminder",
+                        body=f"You have an appointment tomorrow at {appointment_time}",
                     )
+
+            return {'data': {'success': True, 'message': 'Appointment reminders processed successfully'}, 'status': 200}
 
         except IntegrityError:
             return {'data': {'success': False, 'message': 'Invalid data or constraint violated'}, 'status': 400}
@@ -126,8 +131,9 @@ class AlertService:
                     missing_measurements_str = ", ".join(missing_measurements)
                     result = send_missing_measurement_email(patient_email, patient_name, missing_measurements_str)
                     if result:
-                        Alert.objects.create(type='SYSTEM', message=f"Missing measurements alert: You have not recorded {missing_measurements_str} measurements in the last 7 days. Please update your measurements.", level='WARNING', status='NEW', user=User.objects.get(email=patient_email))        
-                        print(f"Missing measurements alert sent to {patient_email} for patient {patient_name}")
+                        Alert.objects.create(type='SYSTEM', message=f"Missing measurements alert: You have not recorded {missing_measurements_str} measurements in the last 7 days. Please update your measurements.", level='WARNING', status='NEW', user=User.objects.get(email=patient_email))
+
+            return {'data': {'success': True, 'message': 'Missing measurements alerts processed successfully'}, 'status': 200}
 
         except IntegrityError:
             return {'data': {'success': False, 'message': 'Invalid data or constraint violated'}, 'status': 400}
@@ -152,7 +158,8 @@ class AlertService:
                 result = send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name, doctor_email, appointment_time)
                 if result:
                     Alert.objects.create(type='SYSTEM', message=f"Unconfirmed appointment alert: You have a pending appointment with Dr. {doctor_name} on {appointment_time}. Please confirm or reschedule.", level='WARNING', status='NEW', user=User.objects.get(email=patient_email))
-                    print(f"Unconfirmed appointment alert sent to {patient_email} and {doctor_email}")
+
+            return {'data': {'success': True, 'message': 'Unconfirmed appointment alerts processed successfully'}, 'status': 200}
 
         except IntegrityError:
             return {'data': {'success': False, 'message': 'Invalid data or constraint violated'}, 'status': 400}
@@ -171,13 +178,13 @@ class AlertService:
             for pregnancy in pregnancies:
                 last_appointment = Appointment.objects.filter(patient=pregnancy.patient).exclude(status='CANCELLED').order_by('-appointment_date').first()
                 if last_appointment is None or (now - last_appointment.appointment_date).days > 14:
-                    print('dd')
                     patient_email = pregnancy.patient.user.email
                     patient_name = pregnancy.patient.user.first_name + " " + pregnancy.patient.user.last_name
                     result = send_pregnancy_no_appointment_email(patient_email, patient_name)
                     if result:
                         Alert.objects.create(type='SYSTEM', message=f"No appointment alert: You have not had an appointment in the last 14 days for pregnancy {pregnancy.id}. Please schedule an appointment.", level='WARNING', status='NEW', user=User.objects.get(email=patient_email))
-                        print(f"No appointment alert sent to {patient_email} for pregnancy {pregnancy.id}")
+
+            return {'data': {'success': True, 'message': 'Pregnancy no-appointment alerts processed successfully'}, 'status': 200}
 
         except IntegrityError:
             return {'data': {'success': False, 'message': 'Invalid data or constraint violated'}, 'status': 400}
@@ -188,4 +195,35 @@ class AlertService:
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
-                        
+    @staticmethod
+    def getAlertsByUser(user_id):
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return {'data': {'success': False, 'message': 'User not found'}, 'status': 404}
+        
+        try:
+            alerts = Alert.objects.filter(user=user).order_by('-created_at')
+            serializer = AlertSerializer(alerts, many=True)
+            return {'data': {'success': True, 'alerts': serializer.data}, 'status': 200}
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def markAlertAsRead(alert_id):
+        try:
+            alert = Alert.objects.get(pk=alert_id)
+        except Alert.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Alert not found'}, 'status': 404}
+        
+        try:
+            alert.status = 'READ'
+            alert.save(update_fields=['status'])
+            return {'data': {'success': True, 'message': 'Alert marked as read successfully'}, 'status': 200}
+        
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
