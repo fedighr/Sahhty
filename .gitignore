@@ -1,2 +1,27 @@
 
+# Large files
 backend.zip
+*.zip
+*.tar.gz
+*.rar
+
+# IDE
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pkl
+*.csv
+db.sqlite3
+venv/
+.env
+
+# Flutter
+frontend/build/
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/.packages
+

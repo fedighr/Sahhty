@@ -26,7 +26,41 @@ class AppConstants {
   static const String createPatientEndpoint = '/patients/PatientService/create_patient/';
   static const String createDoctorEndpoint  = '/doctors/DoctorService/create_doctor/';
 
+  // ── Patient Endpoints (backend TBD – mock for now) ────────────────────────
+  static const String patientProfile        = '/patients/PatientService/me/';
+  static const String patientUpdate         = '/patients/PatientService/update/';
+
+  // ── Pregnancy Endpoints (backend TBD – mock for now) ──────────────────────
+  static const String pregnancies           = '/pregnancies/';
+  static const String activePregnancy       = '/pregnancies/active/';
+
+  // ── Measurement Endpoints ─────────────────────────────────────────────────
+  static const String createMeasurement     = '/measurements/MeasurementService/create_measurement/';
+  static const String measurementsList      = '/measurements/MeasurementService/list/';
+  static const String measurementsLatest    = '/measurements/MeasurementService/latest/';
+
+  // ── Appointment Endpoints (backend TBD – mock for now) ────────────────────
+  static const String appointments          = '/appointments/';
+  static const String appointmentsUpcoming  = '/appointments/upcoming/';
+
+  // ── Medication Endpoints (backend TBD – mock for now) ─────────────────────
+  static const String treatments            = '/medications/treatments/';
+  static const String medications           = '/medications/';
+
+  // ── Medical Files Endpoints (backend TBD – mock for now) ──────────────────
+  static const String attachments           = '/medical_files/';
+
+  // ── Alert Endpoints ───────────────────────────────────────────────────────
+  static const String alertsList            = '/alerts/AlertService/list/';
+  static const String alertMarkRead         = '/alerts/AlertService/mark_read/';
+  static const String riskAssessments       = '/measurements/MeasurementService/risk_assessments/';
+
+  // ── Doctor Endpoints ──────────────────────────────────────────────────────
+  static const String doctorsList           = '/doctors/DoctorService/list/';
+
   // ── Secure Storage Keys ───────────────────────────────────────────────────
+  static const String userNameKey     = 'sahhty_user_name';
+  static const String userGenderKey   = 'sahhty_user_gender';
   static const String accessTokenKey  = 'sahhty_access_token';
   static const String refreshTokenKey = 'sahhty_refresh_token';
   static const String userDataKey     = 'sahhty_user_data';

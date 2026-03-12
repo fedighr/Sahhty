@@ -12,6 +12,14 @@ import '../../features/profile_setup/screens/patient_setup_screen.dart';
 import '../../features/profile_setup/screens/doctor_setup_screen.dart';
 import '../../features/home/screens/patient_home_screen.dart';
 import '../../features/home/screens/doctor_home_screen.dart';
+import '../../features/profile/screens/profile_screen.dart';
+import '../../features/pregnancy/screens/pregnancy_detail_screen.dart';
+import '../../features/measurements/screens/measurements_screen.dart';
+import '../../features/measurements/screens/add_measurement_screen.dart';
+import '../../features/appointments/screens/appointments_list_screen.dart';
+import '../../features/medications/screens/medications_list_screen.dart';
+import '../../features/medical_files/screens/medical_files_screen.dart';
+import '../../features/alerts/screens/alerts_screen.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -24,6 +32,16 @@ class AppRoutes {
   static const String doctorSetup    = '/doctor-setup';
   static const String patientHome    = '/patient-home';
   static const String doctorHome     = '/doctor-home';
+
+  // ── New Feature Routes ──────────────────────────────────────────────────
+  static const String profile          = '/profile';
+  static const String pregnancyDetail  = '/pregnancy';
+  static const String measurements     = '/measurements';
+  static const String addMeasurement   = '/measurements/add';
+  static const String appointmentsList = '/appointments';
+  static const String medicationsList  = '/medications';
+  static const String medicalFiles     = '/medical-files';
+  static const String alerts           = '/alerts';
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -94,6 +112,40 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.doctorHome,
         pageBuilder: (_, s) => _fade(s, const DoctorHomeScreen()),
+      ),
+
+      // ── New Feature Routes ────────────────────────────────────────────────
+      GoRoute(
+        path: AppRoutes.profile,
+        pageBuilder: (_, s) => _fade(s, const ProfileScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.pregnancyDetail,
+        pageBuilder: (_, s) => _fade(s, const PregnancyDetailScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.measurements,
+        pageBuilder: (_, s) => _fade(s, const MeasurementsScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.addMeasurement,
+        pageBuilder: (_, s) => _fade(s, const AddMeasurementScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.appointmentsList,
+        pageBuilder: (_, s) => _fade(s, const AppointmentsListScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.medicationsList,
+        pageBuilder: (_, s) => _fade(s, const MedicationsListScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.medicalFiles,
+        pageBuilder: (_, s) => _fade(s, const MedicalFilesScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.alerts,
+        pageBuilder: (_, s) => _fade(s, const AlertsScreen()),
       ),
     ],
   );
