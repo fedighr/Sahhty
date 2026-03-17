@@ -1,0 +1,52 @@
+[
+  {
+    "trained_at": "2026-03-17T03:41:33.716816Z",
+    "split": {
+      "train": 0.7,
+      "test": 0.3,
+      "random_state": 42,
+      "stratified": true
+    },
+    "dataset_rows": 3600,
+    "class_distribution": {
+      "MEDIUM": 1200,
+      "HIGH": 1200,
+      "LOW": 1200
+    },
+    "regression": {
+      "mae": 7.6428,
+      "rmse": 9.7773
+    },
+    "classification": {
+      "accuracy": 0.7519,
+      "confusion_matrix": [
+        [
+          307,
+          5,
+          48
+        ],
+        [
+          1,
+          302,
+          57
+        ],
+        [
+          49,
+          108,
+          203
+        ]
+      ],
+      "f1_per_class": {
+        "HIGH": 0.8563,
+        "LOW": 0.7794,
+        "MEDIUM": 0.6078
+      },
+      "accuracy_per_class": {
+        "HIGH": 0.8528,
+        "LOW": 0.8389,
+        "MEDIUM": 0.5639
+      }
+    },
+    "version": 1
+  }
+]
