@@ -20,6 +20,7 @@ import '../../features/appointments/screens/appointments_list_screen.dart';
 import '../../features/medications/screens/medications_list_screen.dart';
 import '../../features/medical_files/screens/medical_files_screen.dart';
 import '../../features/alerts/screens/alerts_screen.dart';
+import '../../features/doctors/screens/doctors_list_screen.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -42,6 +43,7 @@ class AppRoutes {
   static const String medicationsList  = '/medications';
   static const String medicalFiles     = '/medical-files';
   static const String alerts           = '/alerts';
+  static const String doctorsList      = '/doctors';
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -146,6 +148,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.alerts,
         pageBuilder: (_, s) => _fade(s, const AlertsScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorsList,
+        pageBuilder: (_, s) => _fade(s, const DoctorsListScreen()),
       ),
     ],
   );

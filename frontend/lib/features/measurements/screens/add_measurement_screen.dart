@@ -166,12 +166,69 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
 
     try {
       final result = await ref.read(measurementServiceProvider).createMeasurement(measurement);
-      if (mounted) {
-        final riskLevel = result['risk_level'] as String?;
+      if (!mounted) return;
+
+      final riskLevelRaw = result['risk_level'] as String?;
+      final riskLevel = riskLevelRaw?.toLowerCase() ?? 'low';
+      final riskPercentage = result['risk_percentage'];
+      final percString = (riskPercentage is num) ? riskPercentage.toStringAsFixed(1) : (riskPercentage?.toString() ?? '0');
+
+      if (riskLevel == 'medium') {
+        await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            backgroundColor: AppColors.surface,
+            title: const Row(
+              children: [
+                 Icon(Icons.warning_amber_rounded, color: AppColors.warning, size: 28),
+                 SizedBox(width: 10),
+                 Expanded(
+                   child: Text('Attention', style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.w700)),
+                 ),
+              ],
+            ),
+            content: Text('Risque modéré détecté ($percString%).\nVeuillez surveiller vos constantes.', style: const TextStyle(color: AppColors.textPrimary)),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Compris', style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.w700)),
+              ),
+            ],
+          ),
+        );
+        if (mounted) context.pop();
+      } else if (riskLevel == 'high') {
+        await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            backgroundColor: AppColors.surface,
+            title: const Row(
+              children: [
+                 Icon(Icons.error_outline_rounded, color: AppColors.error, size: 28),
+                 SizedBox(width: 10),
+                 Expanded(
+                   child: Text('Critique', style: TextStyle(color: AppColors.error, fontWeight: FontWeight.w700)),
+                 ),
+              ],
+            ),
+            content: Text('Risque élevé détecté ($percString%)!\nVeuillez consulter votre médecin immédiatement.', style: const TextStyle(color: AppColors.textPrimary)),
+            actions: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: AppColors.error, foregroundColor: Colors.white),
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Compris', style: TextStyle(fontWeight: FontWeight.w700)),
+              ),
+            ],
+          ),
+        );
+        if (mounted) context.pop();
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(riskLevel != null ? 'Mesure enregistrée — Risque: $riskLevel' : 'Mesure enregistrée avec succès'),
-            backgroundColor: riskLevel == 'HIGH' ? AppColors.error : AppColors.success,
+          const SnackBar(
+            content: Text('Mesure enregistrée avec succès'),
+            backgroundColor: AppColors.success,
           ),
         );
         context.pop();

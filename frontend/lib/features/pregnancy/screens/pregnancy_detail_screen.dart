@@ -22,21 +22,21 @@ class PregnancyDetailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Ma Grossesse', style: TextStyle(fontWeight: FontWeight.w700)),
+        title: const Text('Ma grossesse', style: TextStyle(fontWeight: FontWeight.w700)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
         leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => context.pop()),
       ),
       body: pregnancyAsync.when(
-        loading: () => const Padding(padding: EdgeInsets.all(20), child: LoadingShimmer()),
+        loading: () => const Padding(padding: EdgeInsets.all(20), child: LoadingShimmer(itemCount: 4)),
         error: (e, _) => Center(child: Text('Erreur: $e')),
         data: (pregnancy) {
           if (pregnancy == null || !pregnancy.isActive) {
             return const EmptyStateWidget(
               icon: Icons.pregnant_woman_rounded,
               title: 'Aucune grossesse active',
-              subtitle: 'Les informations de votre grossesse apparaîtront ici.',
+              subtitle: 'Les informations de votre grossesse apparaîtront ici dès qu’elles seront disponibles.',
             );
           }
 
@@ -46,91 +46,72 @@ class PregnancyDetailScreen extends ConsumerWidget {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header card
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFF8BBD0), Color(0xFFFFCDD2), Color(0xFFFFEBEE)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(24),
+                    gradient: const LinearGradient(colors: [Color(0xFFFDF2F8), Color(0xFFEFF6FF)]),
+                    borderRadius: BorderRadius.circular(28),
                   ),
                   child: Column(
                     children: [
-                      Text(pregnancy.babySize.split(' ').first, style: const TextStyle(fontSize: 60)),
+                      const Text('🤰', style: TextStyle(fontSize: 54)),
                       const SizedBox(height: 12),
-                      Text('Semaine $week', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: Color(0xFF880E4F))),
+                      Text('Semaine $week', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
                       const SizedBox(height: 4),
-                      Text(pregnancy.babySize.split(' ').skip(1).join(' '), style: const TextStyle(fontSize: 14, color: Color(0xFFAD1457))),
-                      const SizedBox(height: 16),
+                      Text(pregnancy.babySize, style: const TextStyle(fontSize: 14, color: AppColors.textSecondary)),
+                      const SizedBox(height: 18),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _StatPill(label: '$days', subtitle: 'jours restants'),
+                          Expanded(child: _StatPill(label: '$days', subtitle: 'jours restants')),
                           const SizedBox(width: 12),
-                          _StatPill(label: '${pregnancy.trimester}', subtitle: 'trimestre'),
+                          Expanded(child: _StatPill(label: '${pregnancy.trimester}', subtitle: 'trimestre')),
                           const SizedBox(width: 12),
-                          _StatPill(label: '${(week * 7) % 7 + (DateTime.now().difference(DateTime.tryParse(pregnancy.startDate!) ?? DateTime.now()).inDays % 7)}', subtitle: 'jours'),
+                          Expanded(child: _StatPill(label: _formatDateShort(pregnancy.dueDate), subtitle: 'terme')),
                         ],
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Détails
                 _DetailCard(
-                  title: 'Informations de grossesse',
+                  title: 'Informations clés',
                   icon: Icons.info_outline_rounded,
                   children: [
-                    _DetailRow(label: 'Date du test', value: pregnancy.testDate),
-                    _DetailRow(label: 'Résultat', value: pregnancy.testResult ? '✅ Positif' : '❌ Négatif'),
-                    if (pregnancy.startDate != null)
-                      _DetailRow(label: 'Date de début', value: _formatDate(pregnancy.startDate!)),
-                    if (pregnancy.dueDate != null)
-                      _DetailRow(label: 'Date prévue', value: _formatDate(pregnancy.dueDate!)),
+                    _DetailRow(label: 'Date du test', value: _formatDate(pregnancy.testDate)),
+                    _DetailRow(label: 'Résultat', value: pregnancy.testResult ? 'Positif' : 'Négatif'),
+                    if (pregnancy.startDate != null) _DetailRow(label: 'Début', value: _formatDate(pregnancy.startDate!)),
+                    if (pregnancy.dueDate != null) _DetailRow(label: 'Date prévue', value: _formatDate(pregnancy.dueDate!)),
                   ],
                 ),
                 const SizedBox(height: 16),
-
-                // Développement du bébé
                 _DetailCard(
-                  title: 'Développement cette semaine',
+                  title: 'Développement cette période',
                   icon: Icons.child_care_rounded,
-                  color: const Color(0xFFEC407A),
+                  color: const Color(0xFFEC4899),
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        _weekDescription(week),
-                        style: const TextStyle(fontSize: 13, height: 1.5, color: AppColors.textSecondary),
-                      ),
-                    ),
+                    Text(_weekDescription(week), style: const TextStyle(fontSize: 13, height: 1.55, color: AppColors.textSecondary)),
                   ],
                 ),
                 const SizedBox(height: 16),
-
-                // Conseils
                 _DetailCard(
-                  title: 'Conseils de la semaine',
+                  title: 'Conseils utiles',
                   icon: Icons.lightbulb_outline_rounded,
                   color: AppColors.warning,
-                  children: [
-                    ..._weekTips(week).map((tip) => Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('💡 ', style: TextStyle(fontSize: 14)),
-                              Expanded(child: Text(tip, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.4))),
-                            ],
-                          ),
-                        )),
-                  ],
+                  children: _weekTips(week)
+                      .map((tip) => Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('• ', style: TextStyle(color: AppColors.warning, fontSize: 16)),
+                                Expanded(child: Text(tip, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary, height: 1.45))),
+                              ],
+                            ),
+                          ))
+                      .toList(),
                 ),
                 const SizedBox(height: 32),
               ],
@@ -142,46 +123,45 @@ class PregnancyDetailScreen extends ConsumerWidget {
   }
 
   String _formatDate(String date) {
-    try {
-      return DateFormat('dd MMMM yyyy', 'fr_FR').format(DateTime.parse(date));
-    } catch (_) {
-      return date;
-    }
+    final parsed = DateTime.tryParse(date);
+    if (parsed == null) return date;
+    return DateFormat('dd MMMM yyyy', 'fr_FR').format(parsed);
+  }
+
+  String _formatDateShort(String? date) {
+    if (date == null || date.isEmpty) return '—';
+    final parsed = DateTime.tryParse(date);
+    if (parsed == null) return date;
+    return DateFormat('dd/MM', 'fr_FR').format(parsed);
   }
 
   String _weekDescription(int week) {
-    if (week <= 4) return 'L\'embryon s\'implante dans l\'utérus. Les premières cellules se divisent rapidement pour former les futures structures du bébé.';
-    if (week <= 8) return 'Le cœur du bébé bat déjà ! Les bras et les jambes commencent à se former. Le système nerveux se développe rapidement.';
-    if (week <= 12) return 'Tous les organes vitaux sont en place. Le bébé commence à bouger, même si vous ne le sentez pas encore. Les doigts et les orteils se forment.';
-    if (week <= 16) return 'Le bébé grandit rapidement. Les traits du visage se précisent. Il peut faire des grimaces et sucer son pouce.';
-    if (week <= 20) return 'Le bébé est très actif ! Vous pouvez commencer à sentir ses mouvements. C\'est le moment de l\'échographie morphologique.';
-    if (week <= 24) return 'Le bébé entend les sons. Il réagit à votre voix et à la musique. Ses poumons continuent de se développer.';
-    if (week <= 28) return 'Le bébé ouvre et ferme les yeux. Il prend du poids rapidement. Le cerveau se développe à grande vitesse.';
-    if (week <= 32) return 'Le bébé se prépare pour la naissance. Il se positionne progressivement tête en bas. Ses poumons arrivent à maturité.';
-    if (week <= 36) return 'Le bébé est presque prêt ! Il accumule de la graisse sous la peau. Ses mouvements peuvent être moins fréquents car il a moins de place.';
-    return 'Le bébé est à terme ! Il peut naître à tout moment. Surveillez les signes de travail et restez en contact avec votre médecin.';
+    if (week <= 8) return 'Le tout début de la grossesse est une phase de mise en place rapide. Le développement est intense et le repos compte beaucoup.';
+    if (week <= 12) return 'Les organes essentiels se mettent en place. Une bonne alimentation et le suivi médical précoce sont importants.';
+    if (week <= 24) return 'Votre bébé grandit activement. Les mouvements peuvent commencer à se faire sentir et le suivi devient plus concret.';
+    if (week <= 32) return 'Le bébé gagne du poids, ses organes mûrissent et votre confort mérite une attention particulière.';
+    return 'La naissance approche. Restez attentive aux signes d’alerte et gardez vos consultations bien planifiées.';
   }
 
   List<String> _weekTips(int week) {
     if (week <= 12) {
       return [
-        'Prenez de l\'acide folique quotidiennement.',
-        'Évitez l\'alcool et le tabac.',
-        'Mangez équilibré et hydratez-vous bien.',
+        'Hydratez-vous bien et évitez l’automédication.',
+        'Consultez rapidement si les nausées deviennent sévères ou en cas de saignement.',
+        'Pensez à vos compléments prescrits par votre médecin.',
       ];
     }
-    if (week <= 24) {
+    if (week <= 27) {
       return [
-        'Continuez les suppléments de fer et acide folique.',
-        'Faites de l\'exercice modéré (marche, natation).',
-        'Surveillez votre tension artérielle régulièrement.',
+        'Surveillez votre tension et votre poids régulièrement.',
+        'Maintenez une activité douce si elle est autorisée.',
+        'Préparez vos examens et votre suivi de trimestre.',
       ];
     }
     return [
-      'Préparez votre valise de maternité.',
-      'Reposez-vous suffisamment.',
-      'Surveillez les contractions et les mouvements du bébé.',
-      'Consultez immédiatement en cas de saignement ou douleur intense.',
+      'Surveillez les mouvements du bébé et consultez si vous les sentez diminuer.',
+      'Préparez les affaires nécessaires pour la maternité.',
+      'Consultez immédiatement en cas de contractions régulières, saignement ou perte des eaux.',
     ];
   }
 }
@@ -193,15 +173,16 @@ class _StatPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.6),
+        color: Colors.white.withValues(alpha: 0.75),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
-          Text(label, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFF880E4F))),
-          Text(subtitle, style: const TextStyle(fontSize: 10, color: Color(0xFFAD1457))),
+          Text(label, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+          const SizedBox(height: 2),
+          Text(subtitle, style: const TextStyle(fontSize: 10, color: AppColors.textHint)),
         ],
       ),
     );
@@ -224,7 +205,7 @@ class _DetailCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: AppColors.cardShadow, blurRadius: 10, offset: const Offset(0, 3))],
+        boxShadow: [BoxShadow(color: AppColors.cardShadow.withValues(alpha: 0.24), blurRadius: 10, offset: const Offset(0, 3))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,8 +213,9 @@ class _DetailCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 36, height: 36,
-                decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
                 child: Icon(icon, color: color, size: 18),
               ),
               const SizedBox(width: 10),

@@ -21,23 +21,28 @@ class AppConstants {
   static const String forgetPassword        = '/users/auth/forget_password/';
   static const String isEmailAvailable      = '/users/auth/is_email_available/';
   static const String verifyPhone           = '/users/auth/verify_phone/';
+  static const String registerFCMDevice     = '/users/devices/register_device/';
 
   // ── Profile Setup Endpoints ───────────────────────────────────────────────
   static const String createPatientEndpoint = '/patients/PatientService/create_patient/';
   static const String createDoctorEndpoint  = '/doctors/DoctorService/create_doctor/';
 
-  // ── Patient Endpoints (backend TBD – mock for now) ────────────────────────
-  static const String patientProfile        = '/patients/PatientService/me/';
-  static const String patientUpdate         = '/patients/PatientService/update/';
+  // ── Patient Endpoints ───────────────────────────────────────────────────────
+  static const String patientProfile        = '/patients/me/';
+  static const String patientUpdate         = '/patients/me/';
+  static const String legacyPatientProfile  = '/patients/PatientService/me/';
+  static const String legacyPatientUpdate   = '/patients/PatientService/update/';
 
-  // ── Pregnancy Endpoints (backend TBD – mock for now) ──────────────────────
+  // ── Pregnancy Endpoints ─────────────────────────────────────────────────────
   static const String pregnancies           = '/pregnancies/';
-  static const String activePregnancy       = '/pregnancies/active/';
+  static const String legacyPregnancyBase  = '/pregnancies/PregnancyService';
 
   // ── Measurement Endpoints ─────────────────────────────────────────────────
   static const String createMeasurement     = '/measurements/MeasurementService/create_measurement/';
-  static const String measurementsList      = '/measurements/MeasurementService/list/';
-  static const String measurementsLatest    = '/measurements/MeasurementService/latest/';
+  static const String measurementsList      = '/measurements/list/';
+  static const String legacyMeasurementsByPatient = '/measurements/MeasurementService';
+  static const String riskAssessments       = '/risk_assessments/';
+  static const String legacyRiskAssessmentsByPatient = '/measurements/MeasurementService';
 
   // ── Appointment Endpoints (backend TBD – mock for now) ────────────────────
   static const String appointments          = '/appointments/';
@@ -51,12 +56,14 @@ class AppConstants {
   static const String attachments           = '/medical_files/';
 
   // ── Alert Endpoints ───────────────────────────────────────────────────────
-  static const String alertsList            = '/alerts/AlertService/list/';
-  static const String alertMarkRead         = '/alerts/AlertService/mark_read/';
-  static const String riskAssessments       = '/measurements/MeasurementService/risk_assessments/';
+  static const String alertsList            = '/alerts/list/';
+  static const String alertsBase            = '/alerts';
+  static const String alertMarkRead         = '/alerts';
+  static const String legacyAlertsBase      = '/alerts/AlertService';
 
   // ── Doctor Endpoints ──────────────────────────────────────────────────────
-  static const String doctorsList           = '/doctors/DoctorService/list/';
+  static const String doctorsList           = '/doctors/list/';
+  static const String legacyDoctorsList     = '/doctors/DoctorService/get_all_doctors/';
 
   // ── Secure Storage Keys ───────────────────────────────────────────────────
   static const String userNameKey     = 'sahhty_user_name';

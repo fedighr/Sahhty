@@ -20,62 +20,78 @@ class ProfileScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Mon Profil', style: TextStyle(fontWeight: FontWeight.w700)),
+        title: const Text('Mon profil', style: TextStyle(fontWeight: FontWeight.w700)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
         leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => context.pop()),
       ),
       body: profileAsync.when(
-        loading: () => const Padding(padding: EdgeInsets.all(20), child: LoadingShimmer()),
+        loading: () => const Padding(padding: EdgeInsets.all(20), child: LoadingShimmer(itemCount: 4)),
         error: (e, _) => Center(child: Text('Erreur: $e')),
         data: (patient) => SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Avatar
               Container(
-                width: 90, height: 90,
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
-                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(colors: [Color(0xFFEFF6FF), Color(0xFFFDF2F8)]),
+                  borderRadius: BorderRadius.circular(24),
                 ),
-                child: const Center(child: Text('👩', style: TextStyle(fontSize: 40))),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 88,
+                      height: 88,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.8),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(child: Text('👩', style: TextStyle(fontSize: 40))),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text('Mes informations', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Gardez vos données à jour pour un suivi plus précis.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 13, color: AppColors.textSecondary.withValues(alpha: 0.9)),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 24),
-
-              // Infos générales
+              const SizedBox(height: 20),
               _ProfileSection(
-                title: 'Informations générales',
-                icon: Icons.person_outline_rounded,
+                title: 'Repères généraux',
+                icon: Icons.favorite_outline_rounded,
                 children: [
                   _ProfileRow(label: 'Taille', value: '${patient.height} cm'),
-                  _ProfileRow(label: 'Poids', value: '${patient.weight} kg'),
-                  _ProfileRow(label: 'IMC', value: '${patient.bmi.toStringAsFixed(1)} (${patient.bmiCategory})'),
+                  _ProfileRow(label: 'Poids', value: '${patient.weight.toStringAsFixed(1)} kg'),
+                  _ProfileRow(label: 'IMC', value: '${patient.bmi.toStringAsFixed(1)} • ${patient.bmiCategory}'),
                   _ProfileRow(label: 'Groupe sanguin', value: patient.bloodType ?? 'Non renseigné'),
                 ],
               ),
               const SizedBox(height: 16),
-
-              // Santé
               _ProfileSection(
                 title: 'Santé',
                 icon: Icons.medical_information_outlined,
+                color: const Color(0xFF8B5CF6),
                 children: [
-                  _ProfileRow(label: 'Maladies chroniques', value: patient.chronicDiseases ?? 'Aucune'),
-                  _ProfileRow(label: 'Allergies', value: patient.allergies ?? 'Aucune'),
-                  _ProfileRow(label: 'Médicaments actuels', value: patient.currentMedications ?? 'Aucun'),
-                  _ProfileRow(label: 'Médecin traitant', value: patient.familyDoctorName ?? 'Non renseigné'),
+                  _ProfileRow(label: 'Maladies chroniques', value: _safe(patient.chronicDiseases, 'Aucune')),
+                  _ProfileRow(label: 'Allergies', value: _safe(patient.allergies, 'Aucune')),
+                  _ProfileRow(label: 'Traitements actuels', value: _safe(patient.currentMedications, 'Aucun')),
+                  _ProfileRow(label: 'Médecin traitant', value: _safe(patient.familyDoctorName, 'Non renseigné')),
                 ],
               ),
-              const SizedBox(height: 16),
-
-              // Cycle menstruel
-              if (patient.menstrualCycle != null)
+              if (patient.menstrualCycle != null) ...[
+                const SizedBox(height: 16),
                 _ProfileSection(
                   title: 'Cycle menstruel',
                   icon: Icons.calendar_today_outlined,
-                  color: const Color(0xFFEC407A),
+                  color: const Color(0xFFEC4899),
                   children: [
                     _ProfileRow(label: 'Statut', value: _menstrualStatusLabel(patient.menstrualCycle!.menstrualStatus)),
                     if (patient.menstrualCycle!.startDate != null)
@@ -84,6 +100,7 @@ class ProfileScreen extends ConsumerWidget {
                       _ProfileRow(label: 'Fin', value: patient.menstrualCycle!.endDate!),
                   ],
                 ),
+              ],
               const SizedBox(height: 32),
             ],
           ),
@@ -92,12 +109,18 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
+  String _safe(String? value, String fallback) => (value == null || value.trim().isEmpty) ? fallback : value;
+
   String _menstrualStatusLabel(String status) {
     switch (status) {
-      case 'ACTIVE': return 'Actif';
-      case 'MENOPAUSE': return 'Ménopause';
-      case 'PREPUBESCENT': return 'Prépubère';
-      default: return status;
+      case 'ACTIVE':
+        return 'Actif';
+      case 'MENOPAUSE':
+        return 'Ménopause';
+      case 'PREPUBESCENT':
+        return 'Prépubère';
+      default:
+        return status;
     }
   }
 }
@@ -118,7 +141,7 @@ class _ProfileSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: AppColors.cardShadow, blurRadius: 10, offset: const Offset(0, 3))],
+        boxShadow: [BoxShadow(color: AppColors.cardShadow.withValues(alpha: 0.24), blurRadius: 10, offset: const Offset(0, 3))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,12 +149,13 @@ class _ProfileSection extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 36, height: 36,
-                decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
                 child: Icon(icon, color: color, size: 18),
               ),
               const SizedBox(width: 10),
-              Text(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+              Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
             ],
           ),
           const SizedBox(height: 14),
@@ -149,14 +173,11 @@ class _ProfileRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 140,
-            child: Text(label, style: const TextStyle(fontSize: 13, color: AppColors.textHint, fontWeight: FontWeight.w500)),
-          ),
+          SizedBox(width: 140, child: Text(label, style: const TextStyle(fontSize: 13, color: AppColors.textHint, fontWeight: FontWeight.w500))),
           Expanded(child: Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary))),
         ],
       ),

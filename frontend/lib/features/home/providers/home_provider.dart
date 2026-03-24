@@ -2,12 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/patient_model.dart';
 import '../../../data/models/pregnancy_model.dart';
 import '../../../data/models/measurement_model.dart';
-import '../../../data/models/appointment_model.dart';
 import '../../../data/models/alert_model.dart';
 import '../../../data/services/patient_service.dart';
 import '../../../data/services/pregnancy_service.dart';
 import '../../../data/services/measurement_service.dart';
-import '../../../data/services/appointment_service.dart';
 import '../../../data/services/alert_service.dart';
 
 /// Combined home data for the patient home screen
@@ -16,7 +14,6 @@ class HomeData {
   final Pregnancy? activePregnancy;
   final List<Measurement> recentMeasurements;
   final RiskAssessment? latestRisk;
-  final List<Appointment> upcomingAppointments;
   final List<Alert> unreadAlerts;
   final bool isLoading;
   final String? error;
@@ -26,7 +23,6 @@ class HomeData {
     this.activePregnancy,
     this.recentMeasurements = const [],
     this.latestRisk,
-    this.upcomingAppointments = const [],
     this.unreadAlerts = const [],
     this.isLoading = false,
     this.error,
@@ -37,7 +33,6 @@ class HomeData {
     Pregnancy? activePregnancy,
     List<Measurement>? recentMeasurements,
     RiskAssessment? latestRisk,
-    List<Appointment>? upcomingAppointments,
     List<Alert>? unreadAlerts,
     bool? isLoading,
     String? error,
@@ -47,7 +42,6 @@ class HomeData {
         activePregnancy: activePregnancy ?? this.activePregnancy,
         recentMeasurements: recentMeasurements ?? this.recentMeasurements,
         latestRisk: latestRisk ?? this.latestRisk,
-        upcomingAppointments: upcomingAppointments ?? this.upcomingAppointments,
         unreadAlerts: unreadAlerts ?? this.unreadAlerts,
         isLoading: isLoading ?? this.isLoading,
         error: error,
@@ -66,7 +60,6 @@ class HomeNotifier extends Notifier<HomeData> {
       final patientService = ref.read(patientServiceProvider);
       final pregnancyService = ref.read(pregnancyServiceProvider);
       final measurementService = ref.read(measurementServiceProvider);
-      final appointmentService = ref.read(appointmentServiceProvider);
       final alertService = ref.read(alertServiceProvider);
 
       final results = await Future.wait([
@@ -74,7 +67,6 @@ class HomeNotifier extends Notifier<HomeData> {
         pregnancyService.getActivePregnancy(),
         measurementService.getLatestMeasurements(),
         measurementService.getLatestRiskAssessment(),
-        appointmentService.getUpcomingAppointments(),
         alertService.getUnreadAlerts(),
       ]);
 
@@ -83,8 +75,7 @@ class HomeNotifier extends Notifier<HomeData> {
         activePregnancy: results[1] as Pregnancy?,
         recentMeasurements: results[2] as List<Measurement>,
         latestRisk: results[3] as RiskAssessment?,
-        upcomingAppointments: results[4] as List<Appointment>,
-        unreadAlerts: results[5] as List<Alert>,
+        unreadAlerts: results[4] as List<Alert>,
         isLoading: false,
       );
     } catch (e) {
