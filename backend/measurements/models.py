@@ -36,7 +36,6 @@ class RiskAssessment(models.Model):
 
     assessed_at = models.DateTimeField(auto_now_add=True)
     global_risk_level = models.CharField(max_length=10, choices=RISK_CHOICES)
-    global_risk_percentage = models.DecimalField(max_digits=5, decimal_places=2)
     personal_risk_level = models.CharField(max_length=10, choices=RISK_CHOICES, null=True, blank=True)
     personal_risk_note = models.TextField(null=True, blank=True)
     glucose_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
@@ -44,4 +43,5 @@ class RiskAssessment(models.Model):
     bp_dia_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     heart_rate_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     weight_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    body_temp_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="risk_assessments")

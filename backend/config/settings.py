@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'alerts',
     'appointments',
     'medications',
-    'medical_files'
+    'medical_files',
+    'dci'
 ]
 
 REST_FRAMEWORK = {

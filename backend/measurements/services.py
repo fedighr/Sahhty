@@ -12,10 +12,10 @@ class MeasurementService:
     @staticmethod
     def createMeasurement(measurements):
         try:
-            with transaction.atomic():
-                patient = measurements['patient']
+            patient = measurements['patient']
+            Measurement.objects.create(**measurements)
 
-                Measurement.objects.create(**measurements)
+            with transaction.atomic():
 
                 weight_obj = Measurement.objects.filter(patient=patient, type='WEIGHT').latest('measurement_date')
                 weight = weight_obj.value1 if weight_obj.value1 is not None else patient.weight
@@ -28,6 +28,8 @@ class MeasurementService:
 
                 heart_rate_obj = Measurement.objects.filter(patient=patient, type='HEART_RATE').order_by('-measurement_date').first()
                 heart_rate = heart_rate_obj.value1 if heart_rate_obj else None
+                body_temp_obj = Measurement.objects.filter(patient=patient, type='TEMPERATURE').order_by('-measurement_date').first()
+                body_temp = body_temp_obj.value1 if body_temp_obj else None
 
                 birth_date = patient.user.birth_date
                 today = date.today()
@@ -38,22 +40,22 @@ class MeasurementService:
                 pregnancy_week = (today - pregnancy.start_date).days // 7 if pregnancy else None
 
                 risk_data = {
-                    'age': age,
+                    'Age': age,
                     'bmi': bmi,
-                    'glucose': glucose,
-                    'blood_pressure_sys': bp_sys,
-                    'blood_pressure_dia': bp_dia,
+                    'BS': glucose,
+                    'SystolicBP': bp_sys,
+                    'DiastolicBP': bp_dia,
                     'pregnancy_week': pregnancy_week,
-                    'heart_rate': heart_rate,
+                    'HeartRate': heart_rate,
+                    'BodyTemp': body_temp,
                 }
 
-                risk_level, risk_percentage, new_heart_rate = predict_risk(risk_data)
+                risk_level, new_heart_rate = predict_risk(risk_data)
                 note = MeasurementService.generate_risk_note(glucose, bp_sys, bp_dia, new_heart_rate, bmi)
 
                 RiskAssessment.objects.create(
                     patient=patient,
                     global_risk_level=risk_level,
-                    global_risk_percentage=risk_percentage,
                     personal_risk_level=risk_level,
                     personal_risk_note=note,
                     glucose_used=glucose,
@@ -61,18 +63,18 @@ class MeasurementService:
                     bp_dia_used=bp_dia,
                     heart_rate_used=new_heart_rate,
                     weight_used=weight,
+                    body_temp_used=body_temp,
                 )
 
                 if risk_level == 'HIGH':
-                    AlertService.sendRiskAlert(patient.user.email,f"High risk detected for patient {patient.id} with risk percentage {risk_percentage}%. Note: {note}",'CRITICAL')
+                    AlertService.sendRiskAlert(patient.user.email,f"High risk detected for patient {patient.id}. Note: {note}",'CRITICAL')
                 elif risk_level == 'MEDIUM':
-                    AlertService.sendRiskAlert(patient.user.email,f"Medium risk detected for patient {patient.id} with risk percentage {risk_percentage}%. Note: {note}",'WARNING')
+                    AlertService.sendRiskAlert(patient.user.email,f"Medium risk detected for patient {patient.id}. Note: {note}",'WARNING')
 
                 return {
                     'data': {
                         'success': True,
                         'risk_level': risk_level,
-                        'risk_percentage': risk_percentage,
                         'message': 'Measurement created and risk assessed',
                     },
                     'status': 200,
@@ -120,6 +122,8 @@ class MeasurementService:
 
             heart_rate = Measurement.objects.filter(patient=patient, type='HEART_RATE').order_by('-measurement_date').values('value1', 'unit', 'context').annotate(measurement_date=TruncDate('measurement_date')).first()
 
+            body_temp = Measurement.objects.filter(patient=patient, type='TEMPERATURE').order_by('-measurement_date').values('value1', 'unit', 'context').annotate(measurement_date=TruncDate('measurement_date')).first()
+
             pregnancy_week = None
             if patient.user.gender == 'F':
                 pregnancy = Pregnancy.objects.filter(patient=patient, end_date__isnull=True).order_by('-start_date').first()
@@ -134,6 +138,7 @@ class MeasurementService:
                 'glycemia_informations': glycemia,
                 'blood_pressure': blood_pressure,
                 'heart_rate': heart_rate,
+                'body_temp': body_temp,
                 'pregnancy_week': pregnancy_week,
             }
 
