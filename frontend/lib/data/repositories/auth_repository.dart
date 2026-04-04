@@ -19,13 +19,17 @@ abstract class IAuthRepository {
   Future<bool> isAuthenticated();
   Future<AuthTokens?> getCachedTokens();
   Future<String> getCachedRole();
+  Future<int?> getCachedUserId();
+  Future<int?> getCachedPatientId();
+  Future<void> savePatientId(int patientId);
 }
 
 /// Wraps tokens + role returned from signIn
 class AuthTokensWithRole {
   final AuthTokens tokens;
   final String role;
-  const AuthTokensWithRole({required this.tokens, required this.role});
+  final int? userId;
+  const AuthTokensWithRole({required this.tokens, required this.role, this.userId});
 }
 
 class AuthRepository implements IAuthRepository {
@@ -46,8 +50,12 @@ class AuthRepository implements IAuthRepository {
       // Save role and email for later use (profile setup, routing)
       await _tokenStorage.saveUserRole(result.role);
       await _tokenStorage.saveUserEmail(request.email.trim().toLowerCase());
-      AppLogger.i('SignIn successful — role: ${result.role}');
-      return AuthTokensWithRole(tokens: result.tokens, role: result.role);
+      // Save userId extracted from JWT
+      if (result.userId != null) {
+        await _tokenStorage.saveUserId(result.userId!);
+      }
+      AppLogger.i('SignIn successful — role: ${result.role}, userId: ${result.userId}');
+      return result;
     } on AppFailure { rethrow; }
     catch (e, st) {
       AppLogger.e('Repository signIn error', e, st);
@@ -124,6 +132,15 @@ class AuthRepository implements IAuthRepository {
     final role = await _tokenStorage.getUserRole();
     return role ?? 'P'; // default to patient if unknown
   }
+
+  @override
+  Future<int?> getCachedUserId() => _tokenStorage.getUserId();
+
+  @override
+  Future<int?> getCachedPatientId() => _tokenStorage.getPatientId();
+
+  @override
+  Future<void> savePatientId(int patientId) => _tokenStorage.savePatientId(patientId);
 }
 
 final authRepositoryProvider = Provider<IAuthRepository>((ref) {

@@ -3,50 +3,69 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/utils/app_logger.dart';
 import '../models/pregnancy_model.dart';
-import '../mock/mock_data.dart';
 import 'dio_client.dart';
 
 class PregnancyService {
   final Dio _dio;
   const PregnancyService(this._dio);
 
-  Future<List<Pregnancy>> getPregnancies() async {
+  Future<List<Pregnancy>> getPregnancies(int patientId) async {
     try {
-      final response = await _dio.get(AppConstants.pregnancies);
-      if (response.statusCode == 200 && response.data is List) {
-        return (response.data as List)
-            .map((e) => Pregnancy.fromJson(e as Map<String, dynamic>))
-            .toList();
-      }
-      throw Exception('Failed to load pregnancies');
+      // Backend doesn't have a list endpoint; get active pregnancy as a list
+      final pregnancy = await getActivePregnancy(patientId);
+      return pregnancy != null ? [pregnancy] : [];
     } catch (e) {
-      AppLogger.w('Pregnancies endpoint not available, using mock data');
-      return [MockData.activePregnancy];
+      AppLogger.e('Pregnancies list failed', e);
+      rethrow;
     }
   }
 
-  Future<Pregnancy?> getActivePregnancy() async {
+  /// GET /pregnancies/PregnancyService/{patientId}/get_current_pregnancy/
+  /// Backend returns: { success: true, pregnancy: { ... } }
+  Future<Pregnancy?> getActivePregnancy(int patientId) async {
     try {
-      final response = await _dio.get(AppConstants.activePregnancy);
+      final url = '${AppConstants.activePregnancy}$patientId/get_current_pregnancy/';
+      final response = await _dio.get(url);
       if (response.statusCode == 200 && response.data != null) {
-        return Pregnancy.fromJson(response.data as Map<String, dynamic>);
+        final data = response.data;
+        if (data is Map<String, dynamic>) {
+          // Backend wraps response in { success: true, pregnancy: {...} }
+          if (data['success'] == true && data['pregnancy'] != null) {
+            return Pregnancy.fromJson(data['pregnancy'] as Map<String, dynamic>);
+          }
+          if (data.containsKey('test_date')) {
+            return Pregnancy.fromJson(data);
+          }
+        }
       }
       return null;
     } catch (e) {
-      AppLogger.w('Active pregnancy endpoint not available, using mock data');
-      return MockData.activePregnancy;
+      AppLogger.e('Active pregnancy failed', e);
+      return null; // Return null instead of rethrowing to be graceful
     }
   }
 
   Future<Pregnancy> createPregnancy(Pregnancy pregnancy) async {
     try {
-      final response = await _dio.post(AppConstants.pregnancies, data: pregnancy.toJson());
-      if (response.statusCode == 201 && response.data != null) {
-        return Pregnancy.fromJson(response.data as Map<String, dynamic>);
+      final response = await _dio.post(AppConstants.pregnancyCreate, data: pregnancy.toJson());
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        if (response.data != null) {
+          final data = response.data;
+          if (data is Map<String, dynamic>) {
+            // Backend wraps in { success: true, pregnancy: {...} }
+            if (data['success'] == true && data['pregnancy'] != null) {
+              return Pregnancy.fromJson(data['pregnancy'] as Map<String, dynamic>);
+            }
+            if (data.containsKey('test_date')) {
+              return Pregnancy.fromJson(data);
+            }
+            return Pregnancy.fromJson(data);
+          }
+        }
       }
       throw Exception('Failed to create pregnancy');
     } catch (e) {
-      AppLogger.w('Create pregnancy endpoint not available');
+      AppLogger.w('Create pregnancy failed');
       rethrow;
     }
   }

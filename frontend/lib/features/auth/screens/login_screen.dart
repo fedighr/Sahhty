@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import '../../../core/constants/app_constants.dart';
 import '../../../core/routes/app_router.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/app_logger.dart';
 import '../../../core/utils/validators.dart';
+import '../../../data/services/dio_client.dart';
 import '../providers/auth_notifier.dart';
 import '../providers/auth_state.dart';
 import '../widgets/auth_header.dart';
@@ -43,10 +47,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
+  /// Register FCM device token after successful login (fire-and-forget).
+  Future<void> _registerFcmDevice() async {
+    try {
+      final token = await FirebaseMessaging.instance.getToken();
+      if (token != null && token.isNotEmpty) {
+        final dio = ref.read(protectedDioProvider);
+        final response = await dio.post(
+          AppConstants.registerDevice,
+          data: {'fcm_token': token},
+        );
+        if (response.statusCode == 200) {
+          AppLogger.i('FCM device registered after login');
+        } else {
+          AppLogger.w('FCM registration after login returned ${response.statusCode}');
+        }
+      }
+    } catch (e) {
+      AppLogger.e('FCM registration after login failed', e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen<AuthState>(authNotifierProvider, (_, next) {
       if (next is AuthAuthenticated) {
+        // Register FCM device with fresh tokens (fire-and-forget)
+        _registerFcmDevice();
         next.isDoctor
             ? context.go(AppRoutes.doctorHome)
             : context.go(AppRoutes.patientHome);

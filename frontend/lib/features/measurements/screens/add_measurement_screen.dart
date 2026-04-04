@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/measurement_model.dart';
 import '../../../data/services/measurement_service.dart';
+import '../../../data/services/token_storage_service.dart';
 
 class AddMeasurementScreen extends ConsumerStatefulWidget {
   const AddMeasurementScreen({super.key});
@@ -156,25 +157,57 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
     setState(() => _isLoading = true);
     final currentType = _types.firstWhere((t) => t.$1 == _selectedType);
 
+    // Get patientId from storage — backend requires patient_id
+    final tokenStorage = ref.read(tokenStorageServiceProvider);
+    final patientId = await tokenStorage.getPatientId() ?? await tokenStorage.getUserId();
+
     final measurement = Measurement(
       type: _selectedType,
       value1: double.tryParse(_value1Controller.text) ?? 0,
       value2: currentType.$4 ? double.tryParse(_value2Controller.text) : null,
       unit: currentType.$3,
       context: _contextController.text.isNotEmpty ? _contextController.text : null,
+      patientId: patientId,
     );
 
     try {
       final result = await ref.read(measurementServiceProvider).createMeasurement(measurement);
       if (mounted) {
-        final riskLevel = result['risk_level'] as String?;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(riskLevel != null ? 'Mesure enregistrée — Risque: $riskLevel' : 'Mesure enregistrée avec succès'),
-            backgroundColor: riskLevel == 'HIGH' ? AppColors.error : AppColors.success,
-          ),
-        );
-        context.pop();
+        final riskLevel = (result['risk_level'] as String?)?.toUpperCase() ?? 'LOW';
+        final riskPercentage = _parseRiskPercentage(result['risk_percentage']);
+
+        if (riskLevel == 'HIGH') {
+          await _showRiskAlertDialog(
+            title: 'Risque critique détecté',
+            message: 'Risque élevé détecté ($riskPercentage%) !\nConsultez votre médecin immédiatement.',
+            icon: Icons.dangerous_rounded,
+            iconColor: AppColors.error,
+            backgroundColor: AppColors.errorLight,
+            borderColor: AppColors.error,
+            buttonText: 'Je comprends',
+            buttonColor: AppColors.error,
+          );
+        } else if (riskLevel == 'MEDIUM') {
+          await _showRiskAlertDialog(
+            title: 'Attention',
+            message: 'Niveau de risque moyen ($riskPercentage%).\nSurveillez vos constantes de près.',
+            icon: Icons.warning_amber_rounded,
+            iconColor: AppColors.warning,
+            backgroundColor: const Color(0xFFFFF8E1),
+            borderColor: AppColors.warning,
+            buttonText: 'Compris',
+            buttonColor: AppColors.warning,
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Mesure enregistrée avec succès'),
+              backgroundColor: AppColors.success,
+            ),
+          );
+        }
+
+        if (mounted) context.pop();
       }
     } catch (e) {
       if (mounted) {
@@ -185,5 +218,86 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  double _parseRiskPercentage(dynamic value) {
+    if (value is double) return double.parse(value.toStringAsFixed(1));
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
+  }
+
+  Future<void> _showRiskAlertDialog({
+    required String title,
+    required String message,
+    required IconData icon,
+    required Color iconColor,
+    required Color backgroundColor,
+    required Color borderColor,
+    required String buttonText,
+    required Color buttonColor,
+  }) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: borderColor.withOpacity(0.3), width: 1.5),
+        ),
+        backgroundColor: Colors.white,
+        contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+        actionsPadding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: iconColor, size: 36),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: iconColor,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              message,
+              style: const TextStyle(
+                fontSize: 14,
+                color: AppColors.textSecondary,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actions: [
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: buttonColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                padding: const EdgeInsets.symmetric(vertical: 14),
+              ),
+              child: Text(buttonText, style: const TextStyle(fontWeight: FontWeight.w600)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
