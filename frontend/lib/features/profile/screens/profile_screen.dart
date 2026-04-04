@@ -4,10 +4,14 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/patient_model.dart';
 import '../../../data/services/patient_service.dart';
+import '../../../data/services/token_storage_service.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 
 final patientProfileProvider = FutureProvider<Patient>((ref) async {
-  return ref.read(patientServiceProvider).getProfile();
+  final tokenStorage = ref.read(tokenStorageServiceProvider);
+  final patientId = await tokenStorage.getPatientId() ?? await tokenStorage.getUserId();
+  if (patientId == null) throw Exception('Utilisateur non identifié');
+  return ref.read(patientServiceProvider).getProfile(patientId);
 });
 
 class ProfileScreen extends ConsumerWidget {

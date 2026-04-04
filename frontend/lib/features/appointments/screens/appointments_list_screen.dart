@@ -9,7 +9,7 @@ import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
 final appointmentsProvider = FutureProvider<List<Appointment>>((ref) async {
-  return ref.read(appointmentServiceProvider).getAppointments();
+  return await ref.read(appointmentServiceProvider).getAppointments();
 });
 
 class AppointmentsListScreen extends ConsumerWidget {

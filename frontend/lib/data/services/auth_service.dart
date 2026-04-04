@@ -123,14 +123,33 @@ class AuthService implements IAuthService {
       throw const ServerFailure(message: 'Tokens manquants dans la réponse.');
     }
 
-    // Decode JWT payload to extract role claim
+    // Decode JWT payload to extract role and user_id claims
     final role = _extractRoleFromJwt(accessToken);
-    AppLogger.i('Login role extracted from JWT: $role');
+    final userId = _extractUserIdFromJwt(accessToken);
+    AppLogger.i('Login role extracted from JWT: $role, userId: $userId');
 
     return AuthTokensWithRole(
       tokens: AuthTokens(accessToken: accessToken, refreshToken: refreshToken),
       role: role,
+      userId: userId,
     );
+  }
+
+  /// Decodes the JWT payload (base64url) and extracts the `user_id` claim.
+  int? _extractUserIdFromJwt(String token) {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) return null;
+      var payload = parts[1];
+      payload = payload.replaceAll('-', '+').replaceAll('_', '/');
+      while (payload.length % 4 != 0) payload += '=';
+      final decoded = utf8.decode(base64Decode(payload));
+      final claims = jsonDecode(decoded) as Map<String, dynamic>;
+      return claims['user_id'] as int?;
+    } catch (e) {
+      AppLogger.w('Could not decode JWT user_id: $e');
+      return null;
+    }
   }
 
   /// Decodes the JWT payload (base64url) and extracts the `role` claim.

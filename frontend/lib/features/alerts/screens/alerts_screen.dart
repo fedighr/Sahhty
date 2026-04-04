@@ -5,11 +5,15 @@ import 'package:intl/intl.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/alert_model.dart';
 import '../../../data/services/alert_service.dart';
+import '../../../data/services/token_storage_service.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
 final alertsProvider = FutureProvider<List<Alert>>((ref) async {
-  return ref.read(alertServiceProvider).getAlerts();
+  final tokenStorage = ref.read(tokenStorageServiceProvider);
+  final userId = await tokenStorage.getUserId();
+  if (userId == null) return [];
+  return ref.read(alertServiceProvider).getAlerts(userId);
 });
 
 class AlertsScreen extends ConsumerWidget {

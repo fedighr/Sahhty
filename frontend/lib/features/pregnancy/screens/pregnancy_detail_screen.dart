@@ -5,11 +5,15 @@ import 'package:intl/intl.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/pregnancy_model.dart';
 import '../../../data/services/pregnancy_service.dart';
+import '../../../data/services/token_storage_service.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
 final pregnancyProvider = FutureProvider<Pregnancy?>((ref) async {
-  return ref.read(pregnancyServiceProvider).getActivePregnancy();
+  final tokenStorage = ref.read(tokenStorageServiceProvider);
+  final patientId = await tokenStorage.getPatientId() ?? await tokenStorage.getUserId();
+  if (patientId == null) return null;
+  return ref.read(pregnancyServiceProvider).getActivePregnancy(patientId);
 });
 
 class PregnancyDetailScreen extends ConsumerWidget {

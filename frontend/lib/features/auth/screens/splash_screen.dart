@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/routes/app_router.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/app_logger.dart';
 import '../providers/auth_notifier.dart';
 import '../providers/auth_state.dart';
 
@@ -33,7 +34,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     _ctrl.forward();
 
     Future.delayed(const Duration(milliseconds: 1800), () {
-      if (mounted) _navigate(ref.read(authNotifierProvider));
+      if (mounted) _handleNavigation(ref.read(authNotifierProvider));
     });
   }
 
@@ -43,23 +44,25 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     super.dispose();
   }
 
-  void _navigate(AuthState state) {
+  void _handleNavigation(AuthState state) {
     if (_navigated || !mounted) return;
     if (state is AuthInitial || state is AuthLoading) return;
+
     _navigated = true;
     if (state is AuthAuthenticated) {
-      // ✅ Route vers le bon home selon le rôle sauvegardé
+      AppLogger.i('Splash: user authenticated, navigating to home');
       state.isDoctor
           ? context.go(AppRoutes.doctorHome)
           : context.go(AppRoutes.patientHome);
     } else {
+      AppLogger.i('Splash: not authenticated, navigating to login');
       context.go(AppRoutes.login);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AuthState>(authNotifierProvider, (_, next) => _navigate(next));
+    ref.listen<AuthState>(authNotifierProvider, (_, next) => _handleNavigation(next));
 
     return Scaffold(
       body: Container(
@@ -94,6 +97,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                         color: Colors.white70,
                         fontSize: 14,
                         letterSpacing: 0.5)),
+                const SizedBox(height: 24),
+                if (!_navigated)
+                  const SizedBox(
+                    width: 24, height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
+                    ),
+                  ),
               ]),
             ),
           ),

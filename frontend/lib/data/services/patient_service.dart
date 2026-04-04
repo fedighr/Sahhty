@@ -3,51 +3,50 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/utils/app_logger.dart';
 import '../models/patient_model.dart';
-import '../mock/mock_data.dart';
 import 'dio_client.dart';
 
 class PatientService {
   final Dio _dio;
   const PatientService(this._dio);
 
-  Future<Patient> getProfile() async {
+  /// GET /patients/PatientService/{patientId}/get_patient_by_id/
+  /// Backend returns: { success: true, patient: { ... } }
+  Future<Patient> getProfile(int patientId) async {
     try {
-      final response = await _dio.get(AppConstants.patientProfile);
+      final url = '${AppConstants.patientById}$patientId/get_patient_by_id/';
+      final response = await _dio.get(url);
       if (response.statusCode == 200 && response.data != null) {
-        return Patient.fromJson(response.data as Map<String, dynamic>);
+        final data = response.data as Map<String, dynamic>;
+        // Backend wraps patient data in 'patient' key
+        if (data['success'] == true && data['patient'] != null) {
+          return Patient.fromJson(data['patient'] as Map<String, dynamic>);
+        }
+        return Patient.fromJson(data);
       }
       throw Exception('Failed to load profile');
     } catch (e) {
-      AppLogger.w('Primary patient profile endpoint unavailable, trying fallback');
-      try {
-        final fallback = await _dio.get(AppConstants.legacyPatientProfile);
-        if (fallback.statusCode == 200 && fallback.data != null) {
-          return Patient.fromJson(fallback.data as Map<String, dynamic>);
-        }
-      } catch (_) {
-        AppLogger.w('Legacy patient profile endpoint unavailable, using mock data');
-      }
-      return MockData.patient;
+      AppLogger.e('Patient profile failed', e);
+      rethrow;
     }
   }
 
-  Future<Patient> updateProfile(Map<String, dynamic> data) async {
+  /// PATCH /patients/PatientService/{patientId}/update_patient/
+  /// Backend returns: { success: true, patient: { ... } }
+  Future<Patient> updateProfile(int patientId, Map<String, dynamic> data) async {
     try {
-      final response = await _dio.patch(AppConstants.patientUpdate, data: data);
-      if ((response.statusCode == 200 || response.statusCode == 202) && response.data != null) {
-        return Patient.fromJson(response.data as Map<String, dynamic>);
+      final url = '${AppConstants.patientUpdate}$patientId/update_patient/';
+      final response = await _dio.patch(url, data: data);
+      if (response.statusCode == 200 && response.data != null) {
+        final respData = response.data as Map<String, dynamic>;
+        if (respData['success'] == true && respData['patient'] != null) {
+          return Patient.fromJson(respData['patient'] as Map<String, dynamic>);
+        }
+        return Patient.fromJson(respData);
       }
       throw Exception('Failed to update profile');
     } catch (e) {
-      AppLogger.w('Primary patient update endpoint unavailable, trying fallback');
-      final profile = await getProfile();
-      final patientId = profile.id;
-      if (patientId == null) rethrow;
-      final fallback = await _dio.patch('/patients/PatientService/$patientId/update_patient/', data: data);
-      if ((fallback.statusCode == 200 || fallback.statusCode == 202) && fallback.data != null) {
-        return Patient.fromJson(fallback.data as Map<String, dynamic>);
-      }
-      throw Exception('Failed to update profile');
+      AppLogger.w('Patient update failed');
+      rethrow;
     }
   }
 }

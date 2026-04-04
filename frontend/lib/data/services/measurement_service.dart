@@ -3,22 +3,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/utils/app_logger.dart';
 import '../models/measurement_model.dart';
-import '../mock/mock_data.dart';
 import 'dio_client.dart';
-import 'patient_service.dart';
 
 class MeasurementService {
   final Dio _dio;
-  final PatientService _patientService;
-  const MeasurementService(this._dio, this._patientService);
+  const MeasurementService(this._dio);
 
+  /// POST /measurements/MeasurementService/create_measurement/
+  /// Backend returns: { success: true, risk_level: ..., risk_percentage: ..., message: ... }
   Future<Map<String, dynamic>> createMeasurement(Measurement measurement) async {
     try {
       final response = await _dio.post(
         AppConstants.createMeasurement,
         data: measurement.toJson(),
       );
-      if ((response.statusCode == 200 || response.statusCode == 201) && response.data != null) {
+      if (response.statusCode == 200 && response.data != null) {
         return response.data as Map<String, dynamic>;
       }
       throw Exception('Failed to create measurement');
@@ -28,101 +27,77 @@ class MeasurementService {
     }
   }
 
-  Future<List<Measurement>> getMeasurements({String? type}) async {
+  /// GET /measurements/MeasurementService/{patientId}/get_patient_measurements/
+  /// Backend returns: { success: true, measurements: [...] }
+  Future<List<Measurement>> getMeasurements(int patientId, {String? type}) async {
     try {
+      final url = '${AppConstants.measurementsByPatient}$patientId/get_patient_measurements/';
       final queryParams = <String, dynamic>{};
       if (type != null) queryParams['type'] = type;
-      final response = await _dio.get(AppConstants.measurementsList, queryParameters: queryParams);
-      if (response.statusCode == 200 && response.data is List) {
-        return (response.data as List)
-            .map((e) => Measurement.fromJson(e as Map<String, dynamic>))
-            .toList();
-      }
-      throw Exception('Failed to load measurements');
-    } catch (e) {
-      AppLogger.w('Primary measurements endpoint unavailable, trying fallback');
-      try {
-        final patient = await _patientService.getProfile();
-        final patientId = patient.id;
-        if (patientId != null) {
-          final response = await _dio.get('${AppConstants.legacyMeasurementsByPatient}/$patientId/get_patient_measurements/');
-          if (response.statusCode == 200 && response.data is List) {
-            final items = (response.data as List)
-                .map((e) => Measurement.fromJson(e as Map<String, dynamic>))
-                .toList();
-            if (type != null) return items.where((m) => m.type == type).toList();
-            return items;
-          }
-        }
-      } catch (_) {
-        AppLogger.w('Legacy measurements endpoint unavailable, using mock data');
-      }
-      if (type != null) {
-        return MockData.recentMeasurements.where((m) => m.type == type).toList();
-      }
-      return MockData.recentMeasurements;
-    }
-  }
-
-  Future<List<Measurement>> getLatestMeasurements() async {
-    final all = await getMeasurements();
-    final grouped = <String, Measurement>{};
-    for (final measurement in all) {
-      final current = grouped[measurement.type];
-      if (current == null) {
-        grouped[measurement.type] = measurement;
-        continue;
-      }
-      final currentDate = DateTime.tryParse(current.measurementDate ?? '');
-      final nextDate = DateTime.tryParse(measurement.measurementDate ?? '');
-      if (nextDate != null && (currentDate == null || nextDate.isAfter(currentDate))) {
-        grouped[measurement.type] = measurement;
-      }
-    }
-    return grouped.values.toList();
-  }
-
-  Future<RiskAssessment?> getLatestRiskAssessment() async {
-    try {
-      final response = await _dio.get(AppConstants.riskAssessments);
+      final response = await _dio.get(url, queryParameters: queryParams);
       if (response.statusCode == 200 && response.data != null) {
         final data = response.data;
-        if (data is List && data.isNotEmpty) {
-          return RiskAssessment.fromJson(data.first as Map<String, dynamic>);
-        }
         if (data is Map<String, dynamic>) {
-          return RiskAssessment.fromJson(data);
+          if (data['measurements'] is List) {
+            return (data['measurements'] as List)
+                .map((e) => Measurement.fromJson(e as Map<String, dynamic>))
+                .toList();
+          }
+        }
+        if (data is List) {
+          return data
+              .map((e) => Measurement.fromJson(e as Map<String, dynamic>))
+              .toList();
+        }
+      }
+      return [];
+    } catch (e) {
+      AppLogger.e('Measurements list failed', e);
+      rethrow;
+    }
+  }
+
+  /// GET /measurements/MeasurementService/{patientId}/get_latest_measurements/
+  /// Backend returns: { success: true, height: ..., weight: ..., bmi: ..., ... }
+  Future<Map<String, dynamic>?> getLatestMeasurements(int patientId) async {
+    try {
+      final url = '${AppConstants.measurementsLatest}$patientId/get_latest_measurements/';
+      final response = await _dio.get(url);
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data;
+        if (data is Map<String, dynamic> && data['success'] == true) {
+          return data;
         }
       }
       return null;
     } catch (e) {
-      AppLogger.w('Primary risk assessment endpoint unavailable, trying fallback');
-      try {
-        final patient = await _patientService.getProfile();
-        final patientId = patient.id;
-        if (patientId != null) {
-          final response = await _dio.get('${AppConstants.legacyRiskAssessmentsByPatient}/$patientId/get_risk_assessment/');
-          if (response.statusCode == 200 && response.data != null) {
-            final data = response.data;
-            if (data is List && data.isNotEmpty) {
-              return RiskAssessment.fromJson(data.first as Map<String, dynamic>);
-            }
-            if (data is Map<String, dynamic>) {
-              return RiskAssessment.fromJson(data);
-            }
+      AppLogger.e('Latest measurements failed', e);
+      return null;
+    }
+  }
+
+  /// GET /measurements/MeasurementService/{patientId}/get_risk_assessment/
+  /// Backend returns: { success: true, risk_assessment: {...} }
+  Future<RiskAssessment?> getLatestRiskAssessment(int patientId) async {
+    try {
+      final url = '${AppConstants.riskAssessment}$patientId/get_risk_assessment/';
+      final response = await _dio.get(url);
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data;
+        if (data is Map<String, dynamic>) {
+          if (data['success'] == true && data['risk_assessment'] != null) {
+            return RiskAssessment.fromJson(data['risk_assessment'] as Map<String, dynamic>);
           }
         }
-      } catch (_) {
-        AppLogger.w('Legacy risk assessment endpoint unavailable, using mock data');
       }
-      return MockData.latestRisk;
+      return null;
+    } catch (e) {
+      AppLogger.e('Risk assessment failed', e);
+      return null;
     }
   }
 }
 
 final measurementServiceProvider = Provider<MeasurementService>((ref) {
-  return MeasurementService(
-    ref.watch(protectedDioProvider),
-    ref.watch(patientServiceProvider),
-  );
+  return MeasurementService(ref.watch(protectedDioProvider));
 });

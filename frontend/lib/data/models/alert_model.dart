@@ -47,9 +47,10 @@ class Alert extends Equatable {
         type: json['type'] as String? ?? 'SYSTEM',
         message: json['message'] as String? ?? '',
         level: json['level'] as String? ?? 'INFO',
-        status: json['status'] as String? ?? 'NEW',
+        // Backend serializer uses 'Status' (capital S)
+        status: json['Status'] as String? ?? json['status'] as String? ?? 'NEW',
         createdAt: json['created_at'] as String?,
-        userId: json['user'] as int?,
+        userId: json['user_id'] as int? ?? (json['user'] is Map ? json['user']['id'] as int? : json['user'] as int?),
       );
 
   Alert copyWith({String? status}) => Alert(

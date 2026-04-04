@@ -17,6 +17,10 @@ abstract class ITokenStorageService {
   Future<String?> getUserRole();
   Future<void> saveUserEmail(String email);
   Future<String?> getUserEmail();
+  Future<void> saveUserId(int userId);
+  Future<int?> getUserId();
+  Future<void> savePatientId(int patientId);
+  Future<int?> getPatientId();
 }
 
 class TokenStorageService implements ITokenStorageService {
@@ -68,6 +72,8 @@ class TokenStorageService implements ITokenStorageService {
         _storage.delete(key: AppConstants.refreshTokenKey, aOptions: _androidOptions, iOptions: _iosOptions),
         _storage.delete(key: AppConstants.userRoleKey,     aOptions: _androidOptions, iOptions: _iosOptions),
         _storage.delete(key: AppConstants.userEmailKey,    aOptions: _androidOptions, iOptions: _iosOptions),
+        _storage.delete(key: AppConstants.userIdKey,       aOptions: _androidOptions, iOptions: _iosOptions),
+        _storage.delete(key: AppConstants.patientIdKey,    aOptions: _androidOptions, iOptions: _iosOptions),
       ]);
     } catch (e, st) { AppLogger.e('Failed to clear tokens', e, st); rethrow; }
   }
@@ -100,6 +106,34 @@ class TokenStorageService implements ITokenStorageService {
   Future<String?> getUserEmail() async {
     try { return await _storage.read(key: AppConstants.userEmailKey, aOptions: _androidOptions, iOptions: _iosOptions); }
     catch (e, st) { AppLogger.e('Failed to read email', e, st); return null; }
+  }
+
+  @override
+  Future<void> saveUserId(int userId) async {
+    try { await _storage.write(key: AppConstants.userIdKey, value: userId.toString(), aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to save userId', e, st); }
+  }
+
+  @override
+  Future<int?> getUserId() async {
+    try {
+      final v = await _storage.read(key: AppConstants.userIdKey, aOptions: _androidOptions, iOptions: _iosOptions);
+      return v != null ? int.tryParse(v) : null;
+    } catch (e, st) { AppLogger.e('Failed to read userId', e, st); return null; }
+  }
+
+  @override
+  Future<void> savePatientId(int patientId) async {
+    try { await _storage.write(key: AppConstants.patientIdKey, value: patientId.toString(), aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to save patientId', e, st); }
+  }
+
+  @override
+  Future<int?> getPatientId() async {
+    try {
+      final v = await _storage.read(key: AppConstants.patientIdKey, aOptions: _androidOptions, iOptions: _iosOptions);
+      return v != null ? int.tryParse(v) : null;
+    } catch (e, st) { AppLogger.e('Failed to read patientId', e, st); return null; }
   }
 }
 

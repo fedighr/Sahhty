@@ -42,6 +42,15 @@ class Patient extends Equatable {
   final int? userId;
   final MenstrualCycle? menstrualCycle;
 
+  // Extra user fields returned by backend getPatientById
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? birthDate;
+  final int? age;
+  final String? phone;
+  final String? gender;
+
   const Patient({
     this.id,
     required this.height,
@@ -53,6 +62,13 @@ class Patient extends Equatable {
     this.familyDoctorName,
     this.userId,
     this.menstrualCycle,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.birthDate,
+    this.age,
+    this.phone,
+    this.gender,
   });
 
   double get bmi => weight / ((height / 100) * (height / 100));
@@ -66,21 +82,39 @@ class Patient extends Equatable {
 
   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
         id: json['id'] as int?,
-        height: json['height'] as int? ?? 0,
-        weight: (json['weight'] is String
-                ? double.tryParse(json['weight'])
-                : (json['weight'] as num?)?.toDouble()) ??
-            0.0,
+        height: _parseInt(json['height']),
+        weight: _parseDouble(json['weight']),
         bloodType: json['blood_type'] as String?,
         chronicDiseases: json['chronic_diseases'] as String?,
         allergies: json['allergies'] as String?,
         currentMedications: json['current_medications'] as String?,
         familyDoctorName: json['family_doctor_name'] as String?,
         userId: json['user'] as int?,
-        menstrualCycle: json['menstrual_cycle'] != null
+        menstrualCycle: json['menstrual_cycle'] != null && json['menstrual_cycle'] is Map
             ? MenstrualCycle.fromJson(json['menstrual_cycle'])
             : null,
+        firstName: json['first_name'] as String?,
+        lastName: json['last_name'] as String?,
+        email: json['email'] as String?,
+        birthDate: json['birth_date']?.toString(),
+        age: json['age'] as int?,
+        phone: json['phone'] as String?,
+        gender: json['gender'] as String?,
       );
+
+  static int _parseInt(dynamic v) {
+    if (v is int) return v;
+    if (v is double) return v.toInt();
+    if (v is String) return int.tryParse(v) ?? 0;
+    return 0;
+  }
+
+  static double _parseDouble(dynamic v) {
+    if (v is double) return v;
+    if (v is int) return v.toDouble();
+    if (v is String) return double.tryParse(v) ?? 0.0;
+    return 0.0;
+  }
 
   Map<String, dynamic> toJson() => {
         if (id != null) 'id': id,
@@ -105,6 +139,13 @@ class Patient extends Equatable {
     String? familyDoctorName,
     int? userId,
     MenstrualCycle? menstrualCycle,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? birthDate,
+    int? age,
+    String? phone,
+    String? gender,
   }) =>
       Patient(
         id: id ?? this.id,
@@ -117,6 +158,13 @@ class Patient extends Equatable {
         familyDoctorName: familyDoctorName ?? this.familyDoctorName,
         userId: userId ?? this.userId,
         menstrualCycle: menstrualCycle ?? this.menstrualCycle,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        email: email ?? this.email,
+        birthDate: birthDate ?? this.birthDate,
+        age: age ?? this.age,
+        phone: phone ?? this.phone,
+        gender: gender ?? this.gender,
       );
 
   @override

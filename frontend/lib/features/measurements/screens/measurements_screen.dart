@@ -6,10 +6,14 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/routes/app_router.dart';
 import '../../../data/models/measurement_model.dart';
 import '../../../data/services/measurement_service.dart';
+import '../../../data/services/token_storage_service.dart';
 import '../../../core/widgets/loading_shimmer.dart';
 
 final measurementsProvider = FutureProvider<List<Measurement>>((ref) async {
-  return ref.read(measurementServiceProvider).getMeasurements();
+  final tokenStorage = ref.read(tokenStorageServiceProvider);
+  final patientId = await tokenStorage.getPatientId() ?? await tokenStorage.getUserId();
+  if (patientId == null) return [];
+  return ref.read(measurementServiceProvider).getMeasurements(patientId);
 });
 
 class MeasurementsScreen extends ConsumerWidget {
