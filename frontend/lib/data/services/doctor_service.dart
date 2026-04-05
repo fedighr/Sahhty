@@ -32,19 +32,8 @@ class DoctorService {
       }
       return [];
     } catch (e) {
-<<<<<<< HEAD
-      AppLogger.w('Primary doctors list endpoint unavailable, trying fallback');
-      final response = await _dio.get(AppConstants.doctorsList);
-      if (response.statusCode == 200 && response.data is List) {
-        return (response.data as List)
-            .map((e) => Doctor.fromJson(e as Map<String, dynamic>))
-            .toList();
-      }
-      throw Exception('Failed to load doctors');
-=======
       AppLogger.e('Doctors list failed', e);
       return [];
->>>>>>> 7d8c113f6f42644487069905ea4c06e632b788f8
     }
   }
 }

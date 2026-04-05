@@ -12,8 +12,6 @@ backend.zip
 __pycache__/
 *.pyc
 *.pyo
-*.pkl
-*.csv
 db.sqlite3
 venv/
 .env

@@ -106,14 +106,54 @@ class UserAuth(ViewSet):
 
 class FCMDeviceView(ViewSet):
     @extend_schema(request=FCMDeviceSerializer, responses=FCMDeviceSerializer)
-    @action(detail=False, methods=['post'], url_path='register_device', permission_classes=[AllowAny])
+    @action(detail=False, methods=['post'], url_path='register_device', permission_classes=[IsAuthenticated])
     def register_device(self, request):
-        serializer = FCMDeviceSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        token = serializer.validated_data['fcm_token']
-        FCMDevice.objects.update_or_create(
-            fcm_token=token,
-            defaults={'user': request.user}
-        )
-        return Response({'success': True, 'message': 'Device registered successfully'}, status=status.HTTP_200_OK)
+        try:
+            token = request.data.get('fcm_token')
 
+            if not token:
+                return Response(
+                    {'success': False, 'message': 'fcm_token is required'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            if not isinstance(token, str) or len(token.strip()) == 0:
+                return Response(
+                    {'success': False, 'message': 'fcm_token must be a non-empty string'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            serializer = FCMDeviceSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response(
+                    {'success': False, 'message': 'Invalid data', 'errors': serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            FCMDevice.objects.update_or_create(
+                user=request.user,
+                defaults={'fcm_token': token.strip()}
+            )
+
+            return Response(
+                {'success': True, 'message': 'Device registered successfully'},
+                status=status.HTTP_200_OK
+            )
+
+        except IntegrityError as e:
+            return Response(
+                {'success': False, 'message': 'Device registration conflict, token may already be in use', 'error': str(e)},
+                status=status.HTTP_409_CONFLICT
+            )
+
+        except DatabaseError as e:
+            return Response(
+                {'success': False, 'message': 'A database error occurred, please try again later', 'error': str(e)},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE
+            )
+
+        except Exception as e:
+            return Response(
+                {'success': False, 'message': 'An unexpected error occurred', 'error': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
