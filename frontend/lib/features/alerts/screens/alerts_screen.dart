@@ -1,173 +1,174 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/alert_model.dart';
-import '../../../data/services/alert_service.dart';
-import '../../../data/services/token_storage_service.dart';
-import '../../../core/widgets/loading_shimmer.dart';
-import '../../../core/widgets/empty_state_widget.dart';
+import 'package:sahhty/core/theme/app_theme.dart';
+import 'package:sahhty/features/auth/providers/auth_provider.dart';
+import 'package:sahhty/data/providers/service_providers.dart';
 
-final alertsProvider = FutureProvider<List<Alert>>((ref) async {
-  final tokenStorage = ref.read(tokenStorageServiceProvider);
-  final userId = await tokenStorage.getUserId();
-  if (userId == null) return [];
-  return ref.read(alertServiceProvider).getAlerts(userId);
-});
-
-class AlertsScreen extends ConsumerWidget {
+class AlertsScreen extends ConsumerStatefulWidget {
   const AlertsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final alertsAsync = ref.watch(alertsProvider);
+  ConsumerState<AlertsScreen> createState() => _AlertsScreenState();
+}
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Notifications', style: TextStyle(fontWeight: FontWeight.w700)),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: AppColors.textPrimary,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => context.pop()),
-      ),
-      body: alertsAsync.when(
-        loading: () => const Padding(padding: EdgeInsets.all(20), child: LoadingShimmer(itemCount: 5)),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
-        data: (alerts) {
-          if (alerts.isEmpty) {
-            return const EmptyStateWidget(
-              icon: Icons.notifications_none_rounded,
-              title: 'Aucune notification',
-              subtitle: 'Vos alertes et rappels apparaîtront ici.',
-            );
-          }
+class _AlertsScreenState extends ConsumerState<AlertsScreen> {
+  List<dynamic> _alerts = [];
+  bool _loading = true;
+  String? _error;
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(20),
-            itemCount: alerts.length,
-            itemBuilder: (_, i) {
-              final alert = alerts[i];
-              return InkWell(
-                onTap: () async {
-                  if (alert.isNew && alert.id != null) {
-                    await ref.read(alertServiceProvider).markAsRead(alert.id!);
-                    ref.invalidate(alertsProvider);
-                  }
-                },
-                borderRadius: BorderRadius.circular(18),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: _alertBgColor(alert),
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: _alertColor(alert).withValues(alpha: 0.14)),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 42,
-                        height: 42,
-                        decoration: BoxDecoration(
-                          color: _alertColor(alert).withValues(alpha: 0.14),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(_alertIcon(alert), color: _alertColor(alert), size: 20),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                _Tag(label: alert.typeLabel, color: _alertColor(alert)),
-                                const SizedBox(width: 8),
-                                _Tag(label: alert.levelLabel, color: _alertColor(alert)),
-                                const Spacer(),
-                                if (alert.isNew)
-                                  Container(
-                                    width: 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(color: _alertColor(alert), shape: BoxShape.circle),
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(alert.message, style: const TextStyle(fontSize: 13, color: AppColors.textPrimary, height: 1.45)),
-                            if (alert.createdAt != null) ...[
-                              const SizedBox(height: 8),
-                              Text(_formatDate(alert.createdAt!), style: const TextStyle(fontSize: 11, color: AppColors.textHint)),
-                            ],
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _loadAlerts();
   }
 
-  Color _alertColor(Alert alert) {
-    if (alert.isCritical) return AppColors.error;
-    if (alert.isWarning) return AppColors.warning;
-    return AppColors.primary;
+  Future<void> _loadAlerts() async {
+    setState(() { _loading = true; _error = null; });
+    final userId = ref.read(authProvider).userId;
+    if (userId == null || userId.isEmpty) {
+      setState(() { _loading = false; _error = 'ID utilisateur non trouvé'; });
+      return;
+    }
+    final uid = int.tryParse(userId);
+    if (uid == null) {
+      setState(() { _loading = false; _error = 'ID utilisateur invalide'; });
+      return;
+    }
+
+    final result = await ref.read(alertServiceProvider).getAlertsByUser(uid);
+    if (!mounted) return;
+    setState(() {
+      _loading = false;
+      if (result['success'] == true) {
+        _alerts = result['alerts'] ?? [];
+      } else {
+        _error = result['message'] ?? 'Erreur';
+      }
+    });
   }
 
-  Color _alertBgColor(Alert alert) {
-    if (alert.isCritical) return AppColors.errorLight;
-    if (alert.isWarning) return const Color(0xFFFFF8E1);
-    return const Color(0xFFEFF6FF);
+  Future<void> _markAsRead(int alertId) async {
+    await ref.read(alertServiceProvider).markAsRead(alertId);
+    _loadAlerts();
   }
 
-  IconData _alertIcon(Alert alert) {
-    switch (alert.type) {
-      case 'HEALTH':
-        return Icons.monitor_heart_rounded;
-      case 'REMINDER':
-        return Icons.alarm_rounded;
-      case 'DOCTOR_MESSAGE':
-        return Icons.message_rounded;
-      case 'SYSTEM':
-        return Icons.info_outline_rounded;
-      default:
-        return Icons.notifications_rounded;
+  IconData _iconForLevel(String level) {
+    switch (level) {
+      case 'CRITICAL': return Icons.dangerous_outlined;
+      case 'WARNING': return Icons.warning_amber_rounded;
+      default: return Icons.info_outline;
     }
   }
 
-  String _formatDate(String date) {
-    final d = DateTime.tryParse(date);
-    if (d == null) return date;
-    final diff = DateTime.now().difference(d);
-    if (diff.inMinutes < 60) return 'Il y a ${diff.inMinutes} min';
-    if (diff.inHours < 24) return 'Il y a ${diff.inHours}h';
-    if (diff.inDays < 7) return 'Il y a ${diff.inDays} jour${diff.inDays > 1 ? 's' : ''}';
-    return DateFormat('dd/MM/yyyy HH:mm').format(d);
+  Color _colorForLevel(String level) {
+    switch (level) {
+      case 'CRITICAL': return AppColors.riskHigh;
+      case 'WARNING': return AppColors.riskMedium;
+      default: return AppColors.info;
+    }
   }
-}
 
-class _Tag extends StatelessWidget {
-  final String label;
-  final Color color;
-  const _Tag({required this.label, required this.color});
+  String _formatType(String type) {
+    switch (type) {
+      case 'HEALTH': return 'Santé';
+      case 'REMINDER': return 'Rappel';
+      case 'DOCTOR_MESSAGE': return 'Message médecin';
+      case 'SYSTEM': return 'Système';
+      default: return type;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(label, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: color)),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Alertes')),
+      body: _loading
+          ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+          : _error != null
+              ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                  const SizedBox(height: 8),
+                  Text(_error!, style: const TextStyle(color: AppColors.error)),
+                  TextButton(onPressed: _loadAlerts, child: const Text('Réessayer')),
+                ]))
+              : _alerts.isEmpty
+                  ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(Icons.notifications_off_outlined, size: 64, color: AppColors.primary.withOpacity(0.3)),
+                      const SizedBox(height: 16),
+                      const Text('Aucune alerte', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                      const SizedBox(height: 4),
+                      const Text('Tout est en ordre !', style: TextStyle(color: AppColors.textSecondary)),
+                    ]))
+                  : RefreshIndicator(
+                      onRefresh: _loadAlerts,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(16),
+                        itemCount: _alerts.length,
+                        itemBuilder: (context, i) {
+                          final alert = _alerts[i];
+                          final level = alert['level'] ?? 'INFO';
+                          final type = alert['type'] ?? '';
+                          final message = alert['message'] ?? '';
+                          final status = alert['status'] ?? '';
+                          final createdAt = alert['created_at'] ?? '';
+                          final id = alert['id'];
+                          final isRead = status == 'READ';
+
+                          String dateStr = '';
+                          if (createdAt.isNotEmpty) {
+                            final dt = DateTime.tryParse(createdAt);
+                            if (dt != null) {
+                              dateStr = '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
+                            }
+                          }
+
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              color: isRead ? Colors.white : _colorForLevel(level).withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: isRead ? const Color(0xFFE0E0E0) : _colorForLevel(level).withOpacity(0.3),
+                              ),
+                              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 6)],
+                            ),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(16),
+                              leading: Container(
+                                width: 44, height: 44,
+                                decoration: BoxDecoration(
+                                  color: _colorForLevel(level).withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Icon(_iconForLevel(level), color: _colorForLevel(level)),
+                              ),
+                              title: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: _colorForLevel(level).withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(_formatType(type), style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: _colorForLevel(level))),
+                                  ),
+                                  const Spacer(),
+                                  Text(dateStr, style: const TextStyle(fontSize: 11, color: AppColors.textLight)),
+                                ],
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(message, style: TextStyle(
+                                  color: isRead ? AppColors.textSecondary : AppColors.textPrimary,
+                                  fontWeight: isRead ? FontWeight.normal : FontWeight.w500,
+                                )),
+                              ),
+                              onTap: !isRead && id != null ? () => _markAsRead(id) : null,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
     );
   }
 }

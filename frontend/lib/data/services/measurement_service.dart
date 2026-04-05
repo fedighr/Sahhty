@@ -1,103 +1,59 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/utils/app_logger.dart';
-import '../models/measurement_model.dart';
-import 'dio_client.dart';
+import 'package:sahhty/core/constants/api_endpoints.dart';
+import 'package:sahhty/data/services/dio_client.dart';
 
 class MeasurementService {
-  final Dio _dio;
-  const MeasurementService(this._dio);
+  final Dio _dio = DioClient().dio;
 
   /// POST /measurements/MeasurementService/create_measurement/
-  /// Backend returns: { success: true, risk_level: ..., risk_percentage: ..., message: ... }
-  Future<Map<String, dynamic>> createMeasurement(Measurement measurement) async {
+  /// Backend expects: {type, value1, value2?, unit, context?, patient_id}
+  /// Returns: {success, risk_level?, message}
+  Future<Map<String, dynamic>> createMeasurement(Map<String, dynamic> data) async {
     try {
-      final response = await _dio.post(
-        AppConstants.createMeasurement,
-        data: measurement.toJson(),
-      );
-      if ((response.statusCode == 200 || response.statusCode == 201) && response.data != null) {
-        return response.data as Map<String, dynamic>;
-      }
-      throw Exception('Failed to create measurement');
-    } catch (e) {
-      AppLogger.e('Create measurement failed', e);
-      rethrow;
+      final response = await _dio.post(ApiEndpoints.createMeasurement, data: data);
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
   }
 
-  /// GET /measurements/MeasurementService/{patientId}/get_patient_measurements/
-  /// Backend returns: { success: true, measurements: [...] }
-  Future<List<Measurement>> getMeasurements(int patientId, {String? type}) async {
+  /// GET latest measurements for a patient
+  /// Returns: {success, height, weight, bmi, glycemia_informations, blood_pressure,
+  ///   heart_rate, body_temp, pregnancy_week}
+  Future<Map<String, dynamic>> getLatestMeasurements(int patientId) async {
     try {
-      final url = '${AppConstants.measurementsByPatient}$patientId/get_patient_measurements/';
-      final queryParams = <String, dynamic>{};
-      if (type != null) queryParams['type'] = type;
-      final response = await _dio.get(url, queryParameters: queryParams);
-      if (response.statusCode == 200 && response.data != null) {
-        final data = response.data;
-        if (data is Map<String, dynamic>) {
-          if (data['measurements'] is List) {
-            return (data['measurements'] as List)
-                .map((e) => Measurement.fromJson(e as Map<String, dynamic>))
-                .toList();
-          }
-        }
-        if (data is List) {
-          return data
-              .map((e) => Measurement.fromJson(e as Map<String, dynamic>))
-              .toList();
-        }
-      }
-      return [];
-    } catch (e) {
-      AppLogger.e('Measurements list failed', e);
-      rethrow;
+      final response = await _dio.get(ApiEndpoints.getLatestMeasurements(patientId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
   }
 
-  /// GET /measurements/MeasurementService/{patientId}/get_latest_measurements/
-  /// Backend returns: { success: true, height: ..., weight: ..., bmi: ..., ... }
-  Future<Map<String, dynamic>?> getLatestMeasurements(int patientId) async {
+  /// GET all measurements for a patient
+  /// Returns: {success, measurements: [{id, type, measurement_date, value1, value2, unit, context, patient_id}]}
+  Future<Map<String, dynamic>> getPatientMeasurements(int patientId) async {
     try {
-      final url = '${AppConstants.measurementsLatest}$patientId/get_latest_measurements/';
-      final response = await _dio.get(url);
-      if (response.statusCode == 200 && response.data != null) {
-        final data = response.data;
-        if (data is Map<String, dynamic> && data['success'] == true) {
-          return data;
-        }
-      }
-      return null;
-    } catch (e) {
-      AppLogger.e('Latest measurements failed', e);
-      return null;
+      final response = await _dio.get(ApiEndpoints.getPatientMeasurements(patientId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
   }
 
-  /// GET /measurements/MeasurementService/{patientId}/get_risk_assessment/
-  /// Backend returns: { success: true, risk_assessment: {...} }
-  Future<RiskAssessment?> getLatestRiskAssessment(int patientId) async {
+  /// GET risk assessment for a patient
+  /// Returns: {success, risk_assessment: {assessed_at, global_risk_level, personal_risk_level,
+  ///   personal_risk_note, glucose_used, bp_sys_used, bp_dia_used, heart_rate_used, weight_used}}
+  Future<Map<String, dynamic>> getRiskAssessment(int patientId) async {
     try {
-      final url = '${AppConstants.riskAssessment}$patientId/get_risk_assessment/';
-      final response = await _dio.get(url);
-      if (response.statusCode == 200 && response.data != null) {
-        final data = response.data;
-        if (data is Map<String, dynamic>) {
-          if (data['success'] == true && data['risk_assessment'] != null) {
-            return RiskAssessment.fromJson(data['risk_assessment'] as Map<String, dynamic>);
-          }
-        }
-      }
-      return null;
-    } catch (e) {
-      AppLogger.e('Risk assessment failed', e);
-      return null;
+      final response = await _dio.get(ApiEndpoints.getRiskAssessment(patientId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
+  }
+
+  Map<String, dynamic> _err(DioException e) {
+    if (e.response?.data is Map<String, dynamic>) return e.response!.data;
+    return {'success': false, 'message': e.message ?? 'Erreur réseau'};
   }
 }
-
-final measurementServiceProvider = Provider<MeasurementService>((ref) {
-  return MeasurementService(ref.watch(protectedDioProvider));
-});

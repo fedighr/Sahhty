@@ -1,76 +1,44 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/utils/app_logger.dart';
-import '../models/pregnancy_model.dart';
-import 'dio_client.dart';
+import 'package:sahhty/core/constants/api_endpoints.dart';
+import 'package:sahhty/data/services/dio_client.dart';
 
 class PregnancyService {
-  final Dio _dio;
-  const PregnancyService(this._dio);
+  final Dio _dio = DioClient().dio;
 
-  Future<List<Pregnancy>> getPregnancies(int patientId) async {
+  /// POST create_pregnancy
+  /// Backend expects: {test_date, test_result, start_date?, due_date?, end_date?, patient}
+  Future<Map<String, dynamic>> createPregnancy(Map<String, dynamic> data) async {
     try {
-      // Backend doesn't have a list endpoint; get active pregnancy as a list
-      final pregnancy = await getActivePregnancy(patientId);
-      return pregnancy != null ? [pregnancy] : [];
-    } catch (e) {
-      AppLogger.e('Pregnancies list failed', e);
-      rethrow;
+      final response = await _dio.post(ApiEndpoints.createPregnancy, data: data);
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
   }
 
   /// GET /pregnancies/PregnancyService/{patientId}/get_current_pregnancy/
-  /// Backend returns: { success: true, pregnancy: { ... } }
-  Future<Pregnancy?> getActivePregnancy(int patientId) async {
+  /// Returns: {success, pregnancy: {id, test_date, test_result, start_date, due_date, end_date, patient}}
+  Future<Map<String, dynamic>> getCurrentPregnancy(int patientId) async {
     try {
-      final url = '${AppConstants.activePregnancy}$patientId/get_current_pregnancy/';
-      final response = await _dio.get(url);
-      if (response.statusCode == 200 && response.data != null) {
-        final data = response.data;
-        if (data is Map<String, dynamic>) {
-          // Backend wraps response in { success: true, pregnancy: {...} }
-          if (data['success'] == true && data['pregnancy'] != null) {
-            return Pregnancy.fromJson(data['pregnancy'] as Map<String, dynamic>);
-          }
-          if (data.containsKey('test_date')) {
-            return Pregnancy.fromJson(data);
-          }
-        }
-      }
-      return null;
-    } catch (e) {
-      AppLogger.e('Active pregnancy failed', e);
-      return null; // Return null instead of rethrowing to be graceful
+      final response = await _dio.get(ApiEndpoints.getCurrentPregnancy(patientId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
   }
 
-  Future<Pregnancy> createPregnancy(Pregnancy pregnancy) async {
+  /// PATCH /pregnancies/PregnancyService/{pregnancyId}/update_pregnancy/
+  Future<Map<String, dynamic>> updatePregnancy(int pregnancyId, Map<String, dynamic> data) async {
     try {
-      final response = await _dio.post(AppConstants.pregnancyCreate, data: pregnancy.toJson());
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        if (response.data != null) {
-          final data = response.data;
-          if (data is Map<String, dynamic>) {
-            // Backend wraps in { success: true, pregnancy: {...} }
-            if (data['success'] == true && data['pregnancy'] != null) {
-              return Pregnancy.fromJson(data['pregnancy'] as Map<String, dynamic>);
-            }
-            if (data.containsKey('test_date')) {
-              return Pregnancy.fromJson(data);
-            }
-            return Pregnancy.fromJson(data);
-          }
-        }
-      }
-      throw Exception('Failed to create pregnancy');
-    } catch (e) {
-      AppLogger.w('Create pregnancy failed');
-      rethrow;
+      final response = await _dio.patch(ApiEndpoints.updatePregnancy(pregnancyId), data: data);
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
+  }
+
+  Map<String, dynamic> _err(DioException e) {
+    if (e.response?.data is Map<String, dynamic>) return e.response!.data;
+    return {'success': false, 'message': e.message ?? 'Erreur réseau'};
   }
 }
-
-final pregnancyServiceProvider = Provider<PregnancyService>((ref) {
-  return PregnancyService(ref.watch(protectedDioProvider));
-});

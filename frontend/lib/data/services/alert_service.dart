@@ -1,63 +1,33 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/utils/app_logger.dart';
-import '../models/alert_model.dart';
-import 'dio_client.dart';
+import 'package:sahhty/core/constants/api_endpoints.dart';
+import 'package:sahhty/data/services/dio_client.dart';
 
 class AlertService {
-  final Dio _dio;
-  const AlertService(this._dio);
+  final Dio _dio = DioClient().dio;
 
   /// GET /alerts/AlertService/{userId}/get_alerts_by_user/
-  Future<List<Alert>> getAlerts(int userId) async {
+  /// Returns: {success, alerts: [{id, type, message, level, status, created_at, user: {...}}]}
+  Future<Map<String, dynamic>> getAlertsByUser(int userId) async {
     try {
-      final response = await _dio.get(
-        '${AppConstants.alertsByUser}$userId/get_alerts_by_user/',
-      );
-      if (response.statusCode == 200 && response.data != null) {
-        final data = response.data;
-        if (data is Map<String, dynamic>) {
-          // Backend may wrap: { success: true, alerts: [...] }
-          if (data['alerts'] is List) {
-            return (data['alerts'] as List)
-                .map((e) => Alert.fromJson(e as Map<String, dynamic>))
-                .toList();
-          }
-          if (data['data'] is List) {
-            return (data['data'] as List)
-                .map((e) => Alert.fromJson(e as Map<String, dynamic>))
-                .toList();
-          }
-        }
-        if (data is List) {
-          return data
-              .map((e) => Alert.fromJson(e as Map<String, dynamic>))
-              .toList();
-        }
-      }
-      return [];
-    } catch (e) {
-      AppLogger.e('Alerts list failed', e);
-      return [];
+      final response = await _dio.get(ApiEndpoints.getAlertsByUser(userId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
-  }
-
-  Future<List<Alert>> getUnreadAlerts(int userId) async {
-    final all = await getAlerts(userId);
-    return all.where((a) => a.isNew).toList();
   }
 
   /// PATCH /alerts/AlertService/{alertId}/mark_as_read/
-  Future<void> markAsRead(int alertId) async {
+  Future<Map<String, dynamic>> markAsRead(int alertId) async {
     try {
-      await _dio.patch('${AppConstants.alertMarkRead}$alertId/mark_as_read/');
-    } catch (e) {
-      AppLogger.w('Mark alert as read failed');
+      final response = await _dio.patch(ApiEndpoints.markAlertAsRead(alertId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
     }
   }
-}
 
-final alertServiceProvider = Provider<AlertService>((ref) {
-  return AlertService(ref.watch(protectedDioProvider));
-});
+  Map<String, dynamic> _err(DioException e) {
+    if (e.response?.data is Map<String, dynamic>) return e.response!.data;
+    return {'success': false, 'message': e.message ?? 'Erreur réseau'};
+  }
+}

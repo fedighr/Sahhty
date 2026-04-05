@@ -11,31 +11,41 @@ import 'core/theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint('Firebase init failed (non-critical): $e');
+  }
 
-  // Request notification permission
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  // Request notification permission (non-blocking)
+  try {
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
-  String? token = await FirebaseMessaging.instance.getToken();
-  print('FCM Token: $token');
+    String? token = await FirebaseMessaging.instance.getToken().timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => null,
+    );
+    debugPrint('FCM Token: $token');
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Notification: ${message.notification?.title}');
-  });
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      debugPrint('Notification: ${message.notification?.title}');
+    });
+  } catch (e) {
+    debugPrint('FCM initialization failed (non-critical): $e');
+  }
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
-  // FCM device registration is done after login (in login_screen.dart),
-  // not at startup, because the backend endpoint requires an authenticated user.
+
   runApp(const ProviderScope(child: SahhtyApp()));
 }
 
@@ -57,12 +67,16 @@ class SahhtyApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaler: TextScaler.linear(MediaQuery.of(context).textScaleFactor.clamp(0.8, 1.2)),
-        ),
-        child: child!,
-      ),
+      builder: (context, child) {
+        final scaler = MediaQuery.of(context).textScaler;
+        final scale = scaler.scale(1.0).clamp(0.8, 1.2);
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(scale),
+          ),
+          child: child!,
+        );
+      },
     );
   }
 }

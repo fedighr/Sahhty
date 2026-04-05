@@ -1,233 +1,190 @@
-// lib/data/services/auth_service.dart
-
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/utils/app_failure.dart';
-import '../../core/utils/app_logger.dart';
-import '../models/auth_model.dart';
-import '../repositories/auth_repository.dart';
-import 'dio_client.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sahhty/core/constants/api_endpoints.dart';
+import 'package:sahhty/data/services/dio_client.dart';
 
-abstract class IAuthService {
-  Future<AuthTokensWithRole> signIn(SignInRequest request);
-  Future<void> signUp(SignUpRequest request);
-  Future<void> verifyCode(VerifyCodeRequest request);
-  Future<void> resendCode(EmailRequest request);
-  Future<void> verifyResetEmail(EmailRequest request);
-  Future<void> verifyResetCode(VerifyCodeRequest request);
-  Future<void> forgotPassword(ForgotPasswordRequest request);
-}
+/// Handles login/signup/verify — never uses auth token on its own requests.
+class AuthService {
+  final Dio _dio = DioClient().dio;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  );
 
-class AuthService implements IAuthService {
-  final Dio _dio;
-  const AuthService(this._dio);
-
-  @override
-  Future<AuthTokensWithRole> signIn(SignInRequest request) async {
+  // ── Sign Up ──────────────────────────────────────────────────────────
+  /// Backend expects ALL User model fields: first_name, last_name, birth_date,
+  /// email, phone, gender, role, password
+  Future<Map<String, dynamic>> signup(Map<String, dynamic> data) async {
     try {
-      AppLogger.i('SignIn: ${request.email}');
-      final response = await _dio.post(AppConstants.signinEndpoint, data: request.toJson());
-      return _parseSignInResponse(response);
-    } on DioException catch (e, st) {
-      AppLogger.e('signIn DioException', e, st);
-      throw _mapDioError(e);
-    } catch (e, st) {
-      if (e is AppFailure) rethrow;
-      throw const UnexpectedFailure();
+      final response = await _dio.post(ApiEndpoints.signup, data: data);
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
     }
   }
 
-  @override
-  Future<void> signUp(SignUpRequest request) async {
+  // ── Sign In ──────────────────────────────────────────────────────────
+  /// Backend expects {email, password}. Returns {success, access, refresh}
+  Future<Map<String, dynamic>> signin(String email, String password) async {
     try {
-      final response = await _dio.post(AppConstants.signupEndpoint, data: request.toJson());
-      _assertSuccess(response);
-    } on DioException catch (e, st) {
-      throw _mapDioError(e);
-    } catch (e, st) {
-      if (e is AppFailure) rethrow;
-      throw const UnexpectedFailure();
+      final response = await _dio.post(
+        ApiEndpoints.signin,
+        data: {'email': email, 'password': password},
+      );
+      final data = response.data as Map<String, dynamic>;
+      if (data['success'] == true && data['access'] != null) {
+        await _saveTokens(data['access'], data['refresh']);
+      }
+      return data;
+    } on DioException catch (e) {
+      return _handleError(e);
     }
   }
 
-  @override
-  Future<void> verifyCode(VerifyCodeRequest request) async {
+  // ── Verify Code (after signup) ───────────────────────────────────────
+  Future<Map<String, dynamic>> verifyCode(String email, String code) async {
     try {
-      final response = await _dio.post(AppConstants.verifyCodeEndpoint, data: request.toJson());
-      _assertSuccess(response);
-    } on DioException catch (e, st) { throw _mapDioError(e); }
-    catch (e, st) { if (e is AppFailure) rethrow; throw const UnexpectedFailure(); }
-  }
-
-  @override
-  Future<void> resendCode(EmailRequest request) async {
-    try {
-      final response = await _dio.post(AppConstants.resendCodeEndpoint, data: request.toJson());
-      _assertSuccess(response);
-    } on DioException catch (e, st) { throw _mapDioError(e); }
-    catch (e, st) { if (e is AppFailure) rethrow; throw const UnexpectedFailure(); }
-  }
-
-  @override
-  Future<void> verifyResetEmail(EmailRequest request) async {
-    try {
-      final response = await _dio.post(AppConstants.verifyResetEmail, data: request.toJson());
-      _assertSuccess(response);
-    } on DioException catch (e, st) { throw _mapDioError(e); }
-    catch (e, st) { if (e is AppFailure) rethrow; throw const UnexpectedFailure(); }
-  }
-
-  @override
-  Future<void> verifyResetCode(VerifyCodeRequest request) async {
-    try {
-      final response = await _dio.post(AppConstants.verifyResetCode, data: request.toJson());
-      _assertSuccess(response);
-    } on DioException catch (e, st) { throw _mapDioError(e); }
-    catch (e, st) { if (e is AppFailure) rethrow; throw const UnexpectedFailure(); }
-  }
-
-  @override
-  Future<void> forgotPassword(ForgotPasswordRequest request) async {
-    try {
-      final response = await _dio.post(AppConstants.forgetPassword, data: request.toJson());
-      _assertSuccess(response);
-    } on DioException catch (e, st) { throw _mapDioError(e); }
-    catch (e, st) { if (e is AppFailure) rethrow; throw const UnexpectedFailure(); }
-  }
-
-  // ── Helpers ────────────────────────────────────────────────────────────────
-
-  /// Parse signin response and extract role from JWT payload.
-  /// Backend JWT claims include: email, name — but NOT role.
-  /// Role comes from the User model's `role` field ('P'|'D').
-  /// Since the backend doesn't include role in JWT claims, we decode
-  /// the access token payload to get what's available, then fall back
-  /// to reading the role the user selected during registration.
-  AuthTokensWithRole _parseSignInResponse(Response response) {
-    final statusCode = response.statusCode ?? 0;
-    final body = response.data as Map<String, dynamic>?;
-    if (body == null) throw const ServerFailure(message: 'Réponse vide.');
-
-    final success = body['success'] as bool? ?? false;
-    if (!success || statusCode >= 400) {
-      final msg = body['message'] as String? ?? 'Erreur d\'authentification.';
-      if (statusCode == 403) throw AuthFailure(message: msg, statusCode: 403);
-      throw ServerFailure(message: msg, statusCode: statusCode);
-    }
-
-    final accessToken  = body['access']  as String?;
-    final refreshToken = body['refresh'] as String?;
-    if (accessToken == null || refreshToken == null) {
-      throw const ServerFailure(message: 'Tokens manquants dans la réponse.');
-    }
-
-    // Decode JWT payload to extract role and user_id claims
-    final role = _extractRoleFromJwt(accessToken);
-    final userId = _extractUserIdFromJwt(accessToken);
-    final name = _extractNameFromJwt(accessToken);
-    AppLogger.i('Login role extracted from JWT: $role, userId: $userId, name: $name');
-
-    return AuthTokensWithRole(
-      tokens: AuthTokens(accessToken: accessToken, refreshToken: refreshToken),
-      role: role,
-      userId: userId,
-      name: name,
-    );
-  }
-
-  /// Decodes the JWT payload (base64url) and extracts the `user_id` claim.
-  int? _extractUserIdFromJwt(String token) {
-    try {
-      final parts = token.split('.');
-      if (parts.length != 3) return null;
-      var payload = parts[1];
-      payload = payload.replaceAll('-', '+').replaceAll('_', '/');
-      while (payload.length % 4 != 0) payload += '=';
-      final decoded = utf8.decode(base64Decode(payload));
-      final claims = jsonDecode(decoded) as Map<String, dynamic>;
-      return claims['user_id'] as int?;
-    } catch (e) {
-      AppLogger.w('Could not decode JWT user_id: $e');
-      return null;
+      final response = await _dio.post(
+        ApiEndpoints.verifyCode,
+        data: {'email': email, 'code': code},
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
     }
   }
 
-  /// Decodes the JWT payload (base64url) and extracts the `role` claim.
-  /// Returns 'P' if role claim is absent (safe default).
-  String _extractRoleFromJwt(String token) {
+  // ── Resend Code ──────────────────────────────────────────────────────
+  Future<Map<String, dynamic>> resendCode(String email) async {
     try {
-      final parts = token.split('.');
-      if (parts.length != 3) return 'P';
-      // Base64url decode — pad to multiple of 4
-      var payload = parts[1];
-      payload = payload.replaceAll('-', '+').replaceAll('_', '/');
-      while (payload.length % 4 != 0) payload += '=';
-      final decoded = utf8.decode(base64Decode(payload));
-      final claims = jsonDecode(decoded) as Map<String, dynamic>;
-      // Django SimpleJWT stores custom claims at top level
-      final role = claims['role'] as String?;
-      if (role != null) return role;
-      // Fallback: infer from token claim 'user_role' or similar
-      return 'P';
-    } catch (e) {
-      AppLogger.w('Could not decode JWT role: $e');
-      return 'P';
+      final response = await _dio.post(
+        ApiEndpoints.resendCode,
+        data: {'email': email},
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
     }
   }
 
-  /// Decodes the JWT payload and extracts the `name` claim.
-  String? _extractNameFromJwt(String token) {
+  // ── Verify Reset Email (forgot password step 1) ─────────────────────
+  Future<Map<String, dynamic>> verifyResetEmail(String email) async {
     try {
-      final parts = token.split('.');
-      if (parts.length != 3) return null;
-      var payload = parts[1];
-      payload = payload.replaceAll('-', '+').replaceAll('_', '/');
-      while (payload.length % 4 != 0) payload += '=';
-      final decoded = utf8.decode(base64Decode(payload));
-      final claims = jsonDecode(decoded) as Map<String, dynamic>;
-      return claims['name'] as String?;
-    } catch (e) {
-      AppLogger.w('Could not decode JWT name: $e');
-      return null;
+      final response = await _dio.post(
+        ApiEndpoints.verifyResetEmail,
+        data: {'email': email},
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
     }
   }
 
-  void _assertSuccess(Response response) {
-    final statusCode = response.statusCode ?? 0;
-    final body = response.data;
-    final map = body is Map<String, dynamic> ? body : <String, dynamic>{};
-    final success = map['success'] as bool? ?? false;
-    if (!success || statusCode >= 400) {
-      final msg = map['message'] as String? ?? 'Une erreur est survenue.';
-      if (statusCode == 403) throw AuthFailure(message: msg, statusCode: 403);
-      if (statusCode == 400) throw ValidationFailure(message: msg, statusCode: statusCode);
-      throw ServerFailure(message: msg, statusCode: statusCode);
+  // ── Verify Reset Code (forgot password step 2) ──────────────────────
+  Future<Map<String, dynamic>> verifyResetCode(String email, String code) async {
+    try {
+      final response = await _dio.post(
+        ApiEndpoints.verifyResetCode,
+        data: {'email': email, 'code': code},
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
     }
   }
 
-  AppFailure _mapDioError(DioException e) {
-    switch (e.type) {
-      case DioExceptionType.connectionTimeout:
-      case DioExceptionType.sendTimeout:
-      case DioExceptionType.receiveTimeout:
-      case DioExceptionType.connectionError:
-        return const NetworkFailure();
-      default:
-        final body = e.response?.data;
-        if (body is Map<String, dynamic>) {
-          final msg = body['message'] as String? ?? 'Erreur serveur.';
-          final code = e.response?.statusCode;
-          if (code == 403) return AuthFailure(message: msg, statusCode: code);
-          return ServerFailure(message: msg, statusCode: code);
-        }
-        return const UnexpectedFailure();
+  // ── Forget Password (forgot password step 3) ────────────────────────
+  Future<Map<String, dynamic>> forgetPassword(String email, String password) async {
+    try {
+      final response = await _dio.post(
+        ApiEndpoints.forgetPassword,
+        data: {'email': email, 'password': password},
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
     }
+  }
+
+  // ── Token decode helpers ─────────────────────────────────────────────
+  /// JWT payload decode (the backend puts user info inside the access token)
+  Map<String, dynamic> decodeJwtPayload(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) return {};
+    final payload = parts[1];
+    final normalized = base64Url.normalize(payload);
+    final decoded = utf8.decode(base64Url.decode(normalized));
+    return json.decode(decoded) as Map<String, dynamic>;
+  }
+
+  /// Save tokens + decoded user info to secure storage
+  Future<void> _saveTokens(String access, String refresh) async {
+    await _storage.write(key: StorageKeys.accessToken, value: access);
+    await _storage.write(key: StorageKeys.refreshToken, value: refresh);
+
+    final payload = decodeJwtPayload(access);
+    if (payload.isNotEmpty) {
+      await _storage.write(key: StorageKeys.userEmail, value: payload['email'] ?? '');
+      await _storage.write(key: StorageKeys.userName, value: payload['name'] ?? '');
+      await _storage.write(key: StorageKeys.userRole, value: payload['role'] ?? '');
+      await _storage.write(key: StorageKeys.userId, value: '${payload['user_id'] ?? ''}');
+      await _storage.write(key: StorageKeys.userGender, value: payload['gender'] ?? '');
+      if (payload['patient_id'] != null) {
+        await _storage.write(key: StorageKeys.patientId, value: '${payload['patient_id']}');
+      }
+      if (payload['doctor_id'] != null) {
+        await _storage.write(key: StorageKeys.doctorId, value: '${payload['doctor_id']}');
+      }
+    }
+  }
+
+  // ── FCM Device Registration ──────────────────────────────────────────
+  /// Must be called AFTER login (requires auth token)
+  Future<Map<String, dynamic>> registerFcmDevice(String fcmToken) async {
+    try {
+      final response = await _dio.post(
+        ApiEndpoints.registerDevice,
+        data: {'fcm_token': fcmToken},
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  // ── Logout ───────────────────────────────────────────────────────────
+  Future<void> logout() async {
+    await _storage.deleteAll();
+  }
+
+  // ── Check if logged in ──────────────────────────────────────────────
+  Future<bool> isLoggedIn() async {
+    final token = await _storage.read(key: StorageKeys.accessToken);
+    return token != null && token.isNotEmpty;
+  }
+
+  // ── Get stored user info ────────────────────────────────────────────
+  Future<Map<String, String?>> getStoredUserInfo() async {
+    return {
+      'email': await _storage.read(key: StorageKeys.userEmail),
+      'name': await _storage.read(key: StorageKeys.userName),
+      'role': await _storage.read(key: StorageKeys.userRole),
+      'userId': await _storage.read(key: StorageKeys.userId),
+      'patientId': await _storage.read(key: StorageKeys.patientId),
+      'doctorId': await _storage.read(key: StorageKeys.doctorId),
+      'gender': await _storage.read(key: StorageKeys.userGender),
+    };
+  }
+
+  // ── Error handler ───────────────────────────────────────────────────
+  Map<String, dynamic> _handleError(DioException e) {
+    if (e.response?.data is Map<String, dynamic>) {
+      return e.response!.data as Map<String, dynamic>;
+    }
+    return {
+      'success': false,
+      'message': e.message ?? 'Une erreur réseau est survenue',
+    };
   }
 }
-
-final authServiceProvider = Provider<IAuthService>((ref) {
-  final dio = ref.watch(authDioProvider);
-  return AuthService(dio);
-});

@@ -1,96 +1,78 @@
-// lib/data/services/dio_client.dart
-
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/utils/app_logger.dart';
-import 'auth_interceptor.dart';
-import 'token_storage_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sahhty/core/constants/api_endpoints.dart';
 
-/// Creates and configures the Dio HTTP client.
-/// Separate instances: one for auth endpoints, one for protected endpoints.
 class DioClient {
-  DioClient._();
+  static final DioClient _instance = DioClient._internal();
+  factory DioClient() => _instance;
 
-  static Dio createAuthDio() {
-    final dio = Dio(
+  late final Dio dio;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  );
+
+  DioClient._internal() {
+    dio = Dio(
       BaseOptions(
-        baseUrl: AppConstants.baseUrl,
-        connectTimeout: const Duration(milliseconds: AppConstants.connectTimeout),
-        receiveTimeout: const Duration(milliseconds: AppConstants.receiveTimeout),
-        sendTimeout: const Duration(milliseconds: AppConstants.sendTimeout),
+        baseUrl: ApiEndpoints.baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
         headers: {
-          AppConstants.contentTypeHeader: AppConstants.applicationJson,
-          'Accept': AppConstants.applicationJson,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
-        validateStatus: (status) => status != null && status < 500,
       ),
     );
 
-    if (const bool.fromEnvironment('dart.vm.product') == false) {
-      dio.interceptors.add(
-        LogInterceptor(
-          request: true,
-          requestHeader: false,
-          requestBody: true,
-          responseHeader: false,
-          responseBody: true,
-          error: true,
-          logPrint: (log) => AppLogger.d(log),
-        ),
-      );
-    }
-
-    return dio;
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        final token = await _storage.read(key: StorageKeys.accessToken);
+        if (token != null && token.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
+        handler.next(options);
+      },
+      onError: (error, handler) async {
+        if (error.response?.statusCode == 401) {
+          final refreshed = await _tryRefreshToken();
+          if (refreshed) {
+            // Retry the original request
+            final token = await _storage.read(key: StorageKeys.accessToken);
+            error.requestOptions.headers['Authorization'] = 'Bearer $token';
+            try {
+              final response = await dio.fetch(error.requestOptions);
+              return handler.resolve(response);
+            } catch (e) {
+              return handler.next(error);
+            }
+          }
+        }
+        handler.next(error);
+      },
+    ));
   }
 
-  static Dio createProtectedDio(ITokenStorageService tokenStorage) {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: AppConstants.baseUrl,
-        connectTimeout: const Duration(milliseconds: AppConstants.connectTimeout),
-        receiveTimeout: const Duration(milliseconds: AppConstants.receiveTimeout),
-        sendTimeout: const Duration(milliseconds: AppConstants.sendTimeout),
-        headers: {
-          AppConstants.contentTypeHeader: AppConstants.applicationJson,
-          'Accept': AppConstants.applicationJson,
-        },
-        validateStatus: (status) => status != null && status < 500,
-      ),
-    );
+  Future<bool> _tryRefreshToken() async {
+    try {
+      final refreshToken = await _storage.read(key: StorageKeys.refreshToken);
+      if (refreshToken == null) return false;
 
-    // Inject auth interceptor
-    dio.interceptors.add(
-      AuthInterceptor(tokenStorage: tokenStorage, dio: dio),
-    );
+      final response = await Dio(BaseOptions(
+        baseUrl: ApiEndpoints.baseUrl,
+        headers: {'Content-Type': 'application/json'},
+      )).post(ApiEndpoints.refreshToken, data: {'refresh': refreshToken});
 
-    if (const bool.fromEnvironment('dart.vm.product') == false) {
-      dio.interceptors.add(
-        LogInterceptor(
-          request: true,
-          requestHeader: false,
-          requestBody: false,
-          responseHeader: false,
-          responseBody: false,
-          error: true,
-          logPrint: (log) => AppLogger.d(log),
-        ),
-      );
+      if (response.statusCode == 200 && response.data['access'] != null) {
+        await _storage.write(
+          key: StorageKeys.accessToken,
+          value: response.data['access'],
+        );
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
-
-    return dio;
   }
 }
-
-// ─── Providers ────────────────────────────────────────────────────────────────
-
-/// Unauthenticated Dio — used only for login/signup
-final authDioProvider = Provider<Dio>((ref) {
-  return DioClient.createAuthDio();
-});
-
-/// Authenticated Dio — used for all protected endpoints
-final protectedDioProvider = Provider<Dio>((ref) {
-  final tokenStorage = ref.watch(tokenStorageServiceProvider);
-  return DioClient.createProtectedDio(tokenStorage);
-});
