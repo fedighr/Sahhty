@@ -24,4 +24,4 @@ class RiskAssessmentSerializer(serializers.ModelSerializer):
 
     class Meta : 
         model = RiskAssessment
-        fields = ['assessed_at', 'global_risk_level', 'global_risk_percentage', 'personal_risk_level', 'personal_risk_note', 'glucose_used', 'bp_sys_used', 'bp_dia_used', 'heart_rate_used', 'weight_used', 'patient_id', 'patient']
+        fields = ['assessed_at', 'global_risk_level', 'personal_risk_level', 'personal_risk_note', 'glucose_used', 'bp_sys_used', 'bp_dia_used', 'heart_rate_used', 'weight_used', 'patient_id', 'patient']

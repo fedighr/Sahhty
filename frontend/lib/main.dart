@@ -79,7 +79,7 @@ class _FcmGateState extends ConsumerState<FcmGate> {
 
       // According to requirement: Wait for the backend response
       final response = await dio.post(
-        AppConstants.registerFCMDevice,
+        AppConstants.registerDevice,
         data: {'fcm_token': widget.token},
       );
 

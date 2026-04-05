@@ -106,7 +106,7 @@ class UserAuth(ViewSet):
 
 class FCMDeviceView(ViewSet):
     @extend_schema(request=FCMDeviceSerializer, responses=FCMDeviceSerializer)
-    @action(detail=False, methods=['post'], url_path='register_device', permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=['post'], url_path='register_device', permission_classes=[AllowAny])
     def register_device(self, request):
         serializer = FCMDeviceSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

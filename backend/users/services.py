@@ -56,6 +56,12 @@ class AuthService:
         token['name'] =user.first_name + " " + user.last_name
         token['gender']=user.gender
         token['role']=user.role
+        if(user.role == 'P'):
+            patient_id = Patient.objects.get(user=user).id
+            token['patient_id'] = patient_id
+        elif(user.role == 'D'):
+            doctor_id = Doctor.objects.get(user=user).id
+            token['doctor_id'] = doctor_id
         
         return {
             'data': {

@@ -20,7 +20,7 @@ class DoctorService {
       throw Exception('Failed to load doctors');
     } catch (e) {
       AppLogger.w('Primary doctors list endpoint unavailable, trying fallback');
-      final response = await _dio.get(AppConstants.legacyDoctorsList);
+      final response = await _dio.get(AppConstants.doctorsList);
       if (response.statusCode == 200 && response.data is List) {
         return (response.data as List)
             .map((e) => Doctor.fromJson(e as Map<String, dynamic>))
