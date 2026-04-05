@@ -29,7 +29,8 @@ class AuthTokensWithRole {
   final AuthTokens tokens;
   final String role;
   final int? userId;
-  const AuthTokensWithRole({required this.tokens, required this.role, this.userId});
+  final String? name;
+  const AuthTokensWithRole({required this.tokens, required this.role, this.userId, this.name});
 }
 
 class AuthRepository implements IAuthRepository {
@@ -53,6 +54,10 @@ class AuthRepository implements IAuthRepository {
       // Save userId extracted from JWT
       if (result.userId != null) {
         await _tokenStorage.saveUserId(result.userId!);
+      }
+      // Save display name from JWT
+      if (result.name != null && result.name!.isNotEmpty) {
+        await _tokenStorage.saveUserDisplayName(result.name!);
       }
       AppLogger.i('SignIn successful — role: ${result.role}, userId: ${result.userId}');
       return result;

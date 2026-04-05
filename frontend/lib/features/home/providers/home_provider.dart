@@ -21,6 +21,7 @@ class HomeData {
   final List<Alert> unreadAlerts;
   final bool isLoading;
   final String? error;
+  final String? displayName;
 
   const HomeData({
     this.patient,
@@ -31,6 +32,7 @@ class HomeData {
     this.unreadAlerts = const [],
     this.isLoading = false,
     this.error,
+    this.displayName,
   });
 
   HomeData copyWith({
@@ -42,6 +44,7 @@ class HomeData {
     List<Alert>? unreadAlerts,
     bool? isLoading,
     String? error,
+    String? displayName,
   }) =>
       HomeData(
         patient: patient ?? this.patient,
@@ -52,6 +55,7 @@ class HomeData {
         unreadAlerts: unreadAlerts ?? this.unreadAlerts,
         isLoading: isLoading ?? this.isLoading,
         error: error,
+        displayName: displayName ?? this.displayName,
       );
 }
 
@@ -67,16 +71,17 @@ class HomeNotifier extends Notifier<HomeData> {
       final tokenStorage = ref.read(tokenStorageServiceProvider);
       final storedPatientId = await tokenStorage.getPatientId();
       final userId = await tokenStorage.getUserId();
+      final displayName = await tokenStorage.getUserDisplayName();
+
+      if (userId == null) {
+        state = HomeData(isLoading: false, error: 'Utilisateur non identifié', displayName: displayName);
+        return;
+      }
 
       // Try storedPatientId first, then fall back to userId
       // NOTE: userId (User PK) may differ from patientId (Patient PK).
       // This is a known backend limitation — the login endpoint should return patient_id.
       final patientId = storedPatientId ?? userId;
-
-      if (patientId == null || userId == null) {
-        state = const HomeData(isLoading: false, error: 'Utilisateur non identifié');
-        return;
-      }
 
       final patientService = ref.read(patientServiceProvider);
       final pregnancyService = ref.read(pregnancyServiceProvider);
@@ -84,41 +89,69 @@ class HomeNotifier extends Notifier<HomeData> {
       final appointmentService = ref.read(appointmentServiceProvider);
       final alertService = ref.read(alertServiceProvider);
 
-      // First, try to get the patient profile to validate patientId and save it
+      // First, try to get the patient profile to validate patientId and save it.
       Patient? patient;
+      int? confirmedPatientId;
       try {
         patient = await patientService.getProfile(patientId);
+        confirmedPatientId = patient.id ?? patientId;
         // Save the patientId for future use if it differs from userId
         if (patient.id != null && storedPatientId == null) {
           await tokenStorage.savePatientId(patient.id!);
         }
       } catch (_) {
+        // If patientId == userId and it failed, try to continue with userId.
+        // The patient profile fetch may fail if userId != patientId (backend limitation).
+        confirmedPatientId = patientId;
         patient = null;
       }
 
-      // Use the confirmed patientId (from patient profile or fallback)
-      final confirmedPatientId = patient?.id ?? patientId;
+      // Load remaining data in parallel, catch each individually
+      Pregnancy? activePregnancy;
+      Map<String, dynamic>? latestMeasurementsMap;
+      RiskAssessment? latestRisk;
+      List<Appointment> upcomingAppointments = [];
+      List<Alert> unreadAlerts = [];
 
-      // Load remaining data in parallel
-      final results = await Future.wait([
-        pregnancyService.getActivePregnancy(confirmedPatientId),
-        measurementService.getLatestMeasurements(confirmedPatientId),
-        measurementService.getLatestRiskAssessment(confirmedPatientId),
-        appointmentService.getUpcomingAppointments(),
-        alertService.getUnreadAlerts(userId),
-      ]);
+      try {
+        activePregnancy = await pregnancyService.getActivePregnancy(confirmedPatientId);
+      } catch (_) {}
+
+      try {
+        latestMeasurementsMap = await measurementService.getLatestMeasurements(confirmedPatientId);
+      } catch (_) {}
+
+      try {
+        latestRisk = await measurementService.getLatestRiskAssessment(confirmedPatientId);
+      } catch (_) {}
+
+      try {
+        upcomingAppointments = await appointmentService.getUpcomingAppointments();
+      } catch (_) {}
+
+      try {
+        unreadAlerts = await alertService.getUnreadAlerts(userId);
+      } catch (_) {}
 
       state = HomeData(
         patient: patient,
-        activePregnancy: results[0] as Pregnancy?,
-        recentMeasurements: _buildMeasurementsFromMap(results[1] as Map<String, dynamic>?),
-        latestRisk: results[2] as RiskAssessment?,
-        upcomingAppointments: results[3] as List<Appointment>,
-        unreadAlerts: results[4] as List<Alert>,
+        activePregnancy: activePregnancy,
+        recentMeasurements: _buildMeasurementsFromMap(latestMeasurementsMap),
+        latestRisk: latestRisk,
+        upcomingAppointments: upcomingAppointments,
+        unreadAlerts: unreadAlerts,
         isLoading: false,
+        displayName: displayName,
       );
     } catch (e) {
-      state = HomeData(isLoading: false, error: e.toString());
+      // Even if loading fails, show partial data rather than full error screen
+      final tokenStorage = ref.read(tokenStorageServiceProvider);
+      final displayName = await tokenStorage.getUserDisplayName();
+      state = HomeData(
+        isLoading: false,
+        error: 'Impossible de charger les données. Vérifiez votre connexion.',
+        displayName: displayName,
+      );
     }
   }
 

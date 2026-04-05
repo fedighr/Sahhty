@@ -13,7 +13,6 @@ import '../../../data/models/measurement_model.dart';
 import '../../../data/models/patient_model.dart';
 import '../../../data/models/pregnancy_model.dart';
 import '../../auth/providers/auth_notifier.dart';
-import '../../auth/providers/auth_state.dart';
 import '../providers/home_provider.dart';
 
 class PatientHomeScreen extends ConsumerWidget {
@@ -22,7 +21,7 @@ class PatientHomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeData = ref.watch(homeNotifierProvider);
-    final userName = _extractUserName(ref, homeData.patient);
+    final userName = _extractUserName(ref, homeData);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -106,12 +105,17 @@ class PatientHomeScreen extends ConsumerWidget {
     );
   }
 
-  String _extractUserName(WidgetRef ref, Patient? patient) {
-    final authState = ref.watch(authNotifierProvider);
-    if (authState is AuthSuccess && authState.name.trim().isNotEmpty) {
-      return authState.name.trim();
+  String _extractUserName(WidgetRef ref, HomeData homeData) {
+    // First try the displayName stored during login (from JWT)
+    if (homeData.displayName != null && homeData.displayName!.trim().isNotEmpty) {
+      return homeData.displayName!.trim();
     }
-    return patient != null ? 'Patiente' : 'Chérie';
+    // Then try from patient profile
+    final patient = homeData.patient;
+    if (patient?.firstName != null && patient!.firstName!.isNotEmpty) {
+      return '${patient.firstName} ${patient.lastName ?? ''}'.trim();
+    }
+    return 'Chérie';
   }
 }
 

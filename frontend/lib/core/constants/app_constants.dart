@@ -88,6 +88,7 @@ class AppConstants {
   // ── Secure Storage Keys ───────────────────────────────────────────────────
   static const String userNameKey     = 'sahhty_user_name';
   static const String userGenderKey   = 'sahhty_user_gender';
+  static const String userNameDisplayKey = 'sahhty_user_display_name';
   static const String accessTokenKey  = 'sahhty_access_token';
   static const String refreshTokenKey = 'sahhty_refresh_token';
   static const String userDataKey     = 'sahhty_user_data';

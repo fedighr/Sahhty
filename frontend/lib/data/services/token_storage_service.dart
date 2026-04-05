@@ -21,6 +21,8 @@ abstract class ITokenStorageService {
   Future<int?> getUserId();
   Future<void> savePatientId(int patientId);
   Future<int?> getPatientId();
+  Future<void> saveUserDisplayName(String name);
+  Future<String?> getUserDisplayName();
 }
 
 class TokenStorageService implements ITokenStorageService {
@@ -74,6 +76,7 @@ class TokenStorageService implements ITokenStorageService {
         _storage.delete(key: AppConstants.userEmailKey,    aOptions: _androidOptions, iOptions: _iosOptions),
         _storage.delete(key: AppConstants.userIdKey,       aOptions: _androidOptions, iOptions: _iosOptions),
         _storage.delete(key: AppConstants.patientIdKey,    aOptions: _androidOptions, iOptions: _iosOptions),
+        _storage.delete(key: AppConstants.userNameDisplayKey, aOptions: _androidOptions, iOptions: _iosOptions),
       ]);
     } catch (e, st) { AppLogger.e('Failed to clear tokens', e, st); rethrow; }
   }
@@ -134,6 +137,18 @@ class TokenStorageService implements ITokenStorageService {
       final v = await _storage.read(key: AppConstants.patientIdKey, aOptions: _androidOptions, iOptions: _iosOptions);
       return v != null ? int.tryParse(v) : null;
     } catch (e, st) { AppLogger.e('Failed to read patientId', e, st); return null; }
+  }
+
+  @override
+  Future<void> saveUserDisplayName(String name) async {
+    try { await _storage.write(key: AppConstants.userNameDisplayKey, value: name, aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to save displayName', e, st); }
+  }
+
+  @override
+  Future<String?> getUserDisplayName() async {
+    try { return await _storage.read(key: AppConstants.userNameDisplayKey, aOptions: _androidOptions, iOptions: _iosOptions); }
+    catch (e, st) { AppLogger.e('Failed to read displayName', e, st); return null; }
   }
 }
 

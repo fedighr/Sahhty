@@ -126,12 +126,14 @@ class AuthService implements IAuthService {
     // Decode JWT payload to extract role and user_id claims
     final role = _extractRoleFromJwt(accessToken);
     final userId = _extractUserIdFromJwt(accessToken);
-    AppLogger.i('Login role extracted from JWT: $role, userId: $userId');
+    final name = _extractNameFromJwt(accessToken);
+    AppLogger.i('Login role extracted from JWT: $role, userId: $userId, name: $name');
 
     return AuthTokensWithRole(
       tokens: AuthTokens(accessToken: accessToken, refreshToken: refreshToken),
       role: role,
       userId: userId,
+      name: name,
     );
   }
 
@@ -172,6 +174,23 @@ class AuthService implements IAuthService {
     } catch (e) {
       AppLogger.w('Could not decode JWT role: $e');
       return 'P';
+    }
+  }
+
+  /// Decodes the JWT payload and extracts the `name` claim.
+  String? _extractNameFromJwt(String token) {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) return null;
+      var payload = parts[1];
+      payload = payload.replaceAll('-', '+').replaceAll('_', '/');
+      while (payload.length % 4 != 0) payload += '=';
+      final decoded = utf8.decode(base64Decode(payload));
+      final claims = jsonDecode(decoded) as Map<String, dynamic>;
+      return claims['name'] as String?;
+    } catch (e) {
+      AppLogger.w('Could not decode JWT name: $e');
+      return null;
     }
   }
 

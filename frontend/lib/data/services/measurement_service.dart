@@ -17,7 +17,7 @@ class MeasurementService {
         AppConstants.createMeasurement,
         data: measurement.toJson(),
       );
-      if (response.statusCode == 200 && response.data != null) {
+      if ((response.statusCode == 200 || response.statusCode == 201) && response.data != null) {
         return response.data as Map<String, dynamic>;
       }
       throw Exception('Failed to create measurement');
