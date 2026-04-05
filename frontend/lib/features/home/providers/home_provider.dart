@@ -65,10 +65,15 @@ class HomeNotifier extends Notifier<HomeData> {
   Future<void> _loadData() async {
     try {
       final tokenStorage = ref.read(tokenStorageServiceProvider);
-      final patientId = await tokenStorage.getPatientId() ?? await tokenStorage.getUserId();
+      final storedPatientId = await tokenStorage.getPatientId();
       final userId = await tokenStorage.getUserId();
 
-      if (patientId == null) {
+      // Try storedPatientId first, then fall back to userId
+      // NOTE: userId (User PK) may differ from patientId (Patient PK).
+      // This is a known backend limitation — the login endpoint should return patient_id.
+      final patientId = storedPatientId ?? userId;
+
+      if (patientId == null || userId == null) {
         state = const HomeData(isLoading: false, error: 'Utilisateur non identifié');
         return;
       }
@@ -79,24 +84,37 @@ class HomeNotifier extends Notifier<HomeData> {
       final appointmentService = ref.read(appointmentServiceProvider);
       final alertService = ref.read(alertServiceProvider);
 
+      // First, try to get the patient profile to validate patientId and save it
+      Patient? patient;
+      try {
+        patient = await patientService.getProfile(patientId);
+        // Save the patientId for future use if it differs from userId
+        if (patient.id != null && storedPatientId == null) {
+          await tokenStorage.savePatientId(patient.id!);
+        }
+      } catch (_) {
+        patient = null;
+      }
+
+      // Use the confirmed patientId (from patient profile or fallback)
+      final confirmedPatientId = patient?.id ?? patientId;
+
+      // Load remaining data in parallel
       final results = await Future.wait([
-        patientService.getProfile(patientId).then<Patient?>((v) => v).catchError((_) => null),
-        pregnancyService.getActivePregnancy(patientId),
-        measurementService.getLatestMeasurements(patientId),
-        measurementService.getLatestRiskAssessment(patientId),
+        pregnancyService.getActivePregnancy(confirmedPatientId),
+        measurementService.getLatestMeasurements(confirmedPatientId),
+        measurementService.getLatestRiskAssessment(confirmedPatientId),
         appointmentService.getUpcomingAppointments(),
-        userId != null
-            ? alertService.getUnreadAlerts(userId)
-            : Future.value(<Alert>[]),
+        alertService.getUnreadAlerts(userId),
       ]);
 
       state = HomeData(
-        patient: results[0] as Patient?,
-        activePregnancy: results[1] as Pregnancy?,
-        recentMeasurements: _buildMeasurementsFromMap(results[2] as Map<String, dynamic>?),
-        latestRisk: results[3] as RiskAssessment?,
-        upcomingAppointments: results[4] as List<Appointment>,
-        unreadAlerts: results[5] as List<Alert>,
+        patient: patient,
+        activePregnancy: results[0] as Pregnancy?,
+        recentMeasurements: _buildMeasurementsFromMap(results[1] as Map<String, dynamic>?),
+        latestRisk: results[2] as RiskAssessment?,
+        upcomingAppointments: results[3] as List<Appointment>,
+        unreadAlerts: results[4] as List<Alert>,
         isLoading: false,
       );
     } catch (e) {

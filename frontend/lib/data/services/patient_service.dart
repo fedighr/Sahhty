@@ -31,17 +31,18 @@ class PatientService {
   }
 
   /// PATCH /patients/PatientService/{patientId}/update_patient/
-  /// Backend returns: { success: true, patient: { ... } }
+  /// Backend returns: { success: true, message: '...' } (no patient object)
+  /// We re-fetch the profile after a successful update.
   Future<Patient> updateProfile(int patientId, Map<String, dynamic> data) async {
     try {
       final url = '${AppConstants.patientUpdate}$patientId/update_patient/';
       final response = await _dio.patch(url, data: data);
       if (response.statusCode == 200 && response.data != null) {
         final respData = response.data as Map<String, dynamic>;
-        if (respData['success'] == true && respData['patient'] != null) {
-          return Patient.fromJson(respData['patient'] as Map<String, dynamic>);
+        if (respData['success'] == true) {
+          // Backend doesn't return the patient object, so re-fetch it
+          return await getProfile(patientId);
         }
-        return Patient.fromJson(respData);
       }
       throw Exception('Failed to update profile');
     } catch (e) {

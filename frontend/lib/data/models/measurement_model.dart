@@ -105,7 +105,7 @@ class RiskAssessment extends Equatable {
   final int? id;
   final String? assessedAt;
   final String globalRiskLevel; // LOW, MEDIUM, HIGH
-  final double globalRiskPercentage;
+  final double globalRiskPercentage; // May be 0 if backend doesn't provide it
   final String? personalRiskLevel;
   final String? personalRiskNote;
   final double? glucoseUsed;
@@ -113,13 +113,14 @@ class RiskAssessment extends Equatable {
   final double? bpDiaUsed;
   final double? heartRateUsed;
   final double? weightUsed;
+  final double? bodyTempUsed;
   final int? patientId;
 
   const RiskAssessment({
     this.id,
     this.assessedAt,
     required this.globalRiskLevel,
-    required this.globalRiskPercentage,
+    this.globalRiskPercentage = 0.0,
     this.personalRiskLevel,
     this.personalRiskNote,
     this.glucoseUsed,
@@ -127,6 +128,7 @@ class RiskAssessment extends Equatable {
     this.bpDiaUsed,
     this.heartRateUsed,
     this.weightUsed,
+    this.bodyTempUsed,
     this.patientId,
   });
 
@@ -137,7 +139,9 @@ class RiskAssessment extends Equatable {
         id: json['id'] as int?,
         assessedAt: json['assessed_at'] as String?,
         globalRiskLevel: json['global_risk_level'] as String? ?? 'LOW',
-        globalRiskPercentage: Measurement._parseDouble(json['global_risk_percentage']),
+        globalRiskPercentage: json['global_risk_percentage'] != null
+            ? Measurement._parseDouble(json['global_risk_percentage'])
+            : 0.0,
         personalRiskLevel: json['personal_risk_level'] as String?,
         personalRiskNote: json['personal_risk_note'] as String?,
         glucoseUsed: json['glucose_used'] != null ? Measurement._parseDouble(json['glucose_used']) : null,
@@ -145,6 +149,7 @@ class RiskAssessment extends Equatable {
         bpDiaUsed: json['bp_dia_used'] != null ? Measurement._parseDouble(json['bp_dia_used']) : null,
         heartRateUsed: json['heart_rate_used'] != null ? Measurement._parseDouble(json['heart_rate_used']) : null,
         weightUsed: json['weight_used'] != null ? Measurement._parseDouble(json['weight_used']) : null,
+        bodyTempUsed: json['body_temp_used'] != null ? Measurement._parseDouble(json['body_temp_used']) : null,
         patientId: json['patient_id'] as int? ?? (json['patient'] is Map ? json['patient']['id'] as int? : json['patient'] as int?),
       );
 

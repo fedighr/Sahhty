@@ -174,12 +174,11 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
       final result = await ref.read(measurementServiceProvider).createMeasurement(measurement);
       if (mounted) {
         final riskLevel = (result['risk_level'] as String?)?.toUpperCase() ?? 'LOW';
-        final riskPercentage = _parseRiskPercentage(result['risk_percentage']);
 
         if (riskLevel == 'HIGH') {
           await _showRiskAlertDialog(
             title: 'Risque critique détecté',
-            message: 'Risque élevé détecté ($riskPercentage%) !\nConsultez votre médecin immédiatement.',
+            message: 'Risque élevé détecté !\nConsultez votre médecin immédiatement.',
             icon: Icons.dangerous_rounded,
             iconColor: AppColors.error,
             backgroundColor: AppColors.errorLight,
@@ -190,7 +189,7 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
         } else if (riskLevel == 'MEDIUM') {
           await _showRiskAlertDialog(
             title: 'Attention',
-            message: 'Niveau de risque moyen ($riskPercentage%).\nSurveillez vos constantes de près.',
+            message: 'Niveau de risque moyen.\nSurveillez vos constantes de près.',
             icon: Icons.warning_amber_rounded,
             iconColor: AppColors.warning,
             backgroundColor: const Color(0xFFFFF8E1),
@@ -220,12 +219,6 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
     }
   }
 
-  double _parseRiskPercentage(dynamic value) {
-    if (value is double) return double.parse(value.toStringAsFixed(1));
-    if (value is int) return value.toDouble();
-    if (value is String) return double.tryParse(value) ?? 0.0;
-    return 0.0;
-  }
 
   Future<void> _showRiskAlertDialog({
     required String title,

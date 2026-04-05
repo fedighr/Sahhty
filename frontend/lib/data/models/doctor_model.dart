@@ -30,8 +30,21 @@ class Doctor extends Equatable {
   String get fullName => '${firstName ?? ''} ${lastName ?? ''}'.trim();
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
+    // Backend getAllDoctors returns flat objects: { id, first_name, last_name, speciality: "name", ... }
+    // Backend getDoctorById also returns flat objects
+    // DoctorSerializer would return nested { user: {...}, speciality: {...} }
     final user = json['user'] as Map<String, dynamic>?;
-    final spec = json['speciality'] as Map<String, dynamic>?;
+    final spec = json['speciality'];
+
+    String? specName;
+    int? specId;
+    if (spec is Map<String, dynamic>) {
+      specName = spec['name'] as String?;
+      specId = spec['id'] as int?;
+    } else if (spec is String) {
+      specName = spec;
+    }
+
     return Doctor(
       id: json['id'] as int?,
       ville: json['ville'] as String? ?? '',
@@ -44,10 +57,10 @@ class Doctor extends Equatable {
           : null,
       bio: json['bio'] as String?,
       isAvailable: json['is_available'] as bool? ?? true,
-      firstName: user?['first_name'] as String?,
-      lastName: user?['last_name'] as String?,
-      specialityName: spec?['name'] as String?,
-      specialityId: spec?['id'] as int? ?? json['speciality_id'] as int?,
+      firstName: user?['first_name'] as String? ?? json['first_name'] as String?,
+      lastName: user?['last_name'] as String? ?? json['last_name'] as String?,
+      specialityName: specName,
+      specialityId: specId ?? json['speciality_id'] as int?,
     );
   }
 
