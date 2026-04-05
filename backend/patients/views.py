@@ -19,7 +19,7 @@ class PatientView(ViewSet):
     def create_patient(self, request):
         serializer = PatientSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = PatientService.createPatient(serializer.validated_data)
+        result = PatientService.createPatient(request.data)
         return Response(result['data'], result['status'])
 
     @extend_schema(request=PatientSerializer, responses=PatientSerializer)

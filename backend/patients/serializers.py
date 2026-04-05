@@ -9,17 +9,8 @@ class MenstrualCycleSerializer(serializers.ModelSerializer):
         exclude = ['patient']
 
 class PatientSerializer(serializers.ModelSerializer):
-
-    menstrual_cycle = MenstrualCycleSerializer(read_only=True)
+    menstrual_cycle = MenstrualCycleSerializer(read_only=False, required=False)
     pregnancies = PregnancySerializer(many=True, read_only=True, required=False)
-
-    menstrual_cycle_id = serializers.PrimaryKeyRelatedField(
-        queryset=MenstrualCycle.objects.all(),
-        source='menstrual_cycle',
-        write_only=True,
-        required=False
-    )
-
     email = serializers.EmailField(write_only=True)
 
     class Meta:

@@ -75,6 +75,8 @@ class MeasurementService:
                     'data': {
                         'success': True,
                         'risk_level': risk_level,
+                        'value1' : measurements['value1'],   
+                        'value2' : measurements['value2'] if measurements['value2'] else None,
                         'message': 'Measurement created and risk assessed',
                     },
                     'status': 200,
