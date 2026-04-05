@@ -176,7 +176,6 @@ class MockData {
   static RiskAssessment get latestRisk => const RiskAssessment(
         id: 1,
         globalRiskLevel: 'LOW',
-        globalRiskPercentage: 12.5,
         personalRiskLevel: 'LOW',
         personalRiskNote: 'All values within normal range',
         glucoseUsed: 92,

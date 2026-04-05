@@ -4,12 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/attachment_model.dart';
-import '../../../data/mock/mock_data.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 
 final attachmentsProvider = FutureProvider<List<Attachment>>((ref) async {
-  // Mock data until backend provides endpoint
-  return MockData.attachments;
+  // Backend medical_files module has no endpoints yet
+  // Return empty list until backend implements the API
+  return [];
 });
 
 class MedicalFilesScreen extends ConsumerWidget {
