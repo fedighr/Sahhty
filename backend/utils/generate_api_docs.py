@@ -455,7 +455,7 @@ def build_pdf():
         {'name': 'Measurements', 'count': 4, 'color': (214, 158, 46)},
         {'name': 'Pregnancies', 'count': 4, 'color': (213, 63, 140)},
         {'name': 'Alerts', 'count': 8, 'color': (229, 62, 62)},
-        {'name': 'Medications', 'count': 8, 'color': (49, 130, 206)},
+        {'name': 'Medications', 'count': 9, 'color': (49, 130, 206)},
         {'name': 'DCI', 'count': 1, 'color': (90, 103, 216)},
     ]
     pdf.table_of_contents(sections)
@@ -1161,7 +1161,23 @@ def build_pdf():
         ]
     )
 
-    # 8.8 Search Medications
+    # 8.8 Get Medication By ID
+    pdf.endpoint_card(
+        'GET', '/medications/medicationsService/{id}/get_medication_by_id/',
+        'Get medication details by ID. For female users, includes pregnancy risk data if an active pregnancy exists.',
+        params=[
+            {'name': 'id', 'type': 'integer', 'required': 'Yes', 'desc': 'Medication ID (URL parameter)'},
+        ],
+        success_response={'status': 200, 'body': '{"success": true, "medication": {...}, "pregnancy_data": {...}}'},
+        error_responses=[
+            {'status': 401, 'desc': 'Authentication required'},
+            {'status': 404, 'desc': 'User not found / Medication not found / Patient not found / No active pregnancy found'},
+            {'status': 400, 'desc': 'Unable to determine current trimester'},
+        ],
+        notes='Requires authentication. pregnancy_data is null when no DCI links exist or user is not eligible.'
+    )
+
+    # 8.9 Search Medications
     pdf.endpoint_card(
         'GET', '/medications/medicationsService/search/',
         'Search medications by name, DCI, dosage, or form. Supports fuzzy search and code lookup.',

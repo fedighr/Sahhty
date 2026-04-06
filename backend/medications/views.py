@@ -1,3 +1,4 @@
+from users.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
@@ -12,7 +13,7 @@ from users.serializers import EmailSerializer
 from .search import MedicationSearch
 import os
 import re
-from .services import TreatmentService
+from .services import TreatmentService, MedicationService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from drf_spectacular.utils import extend_schema
 import pandas as pd
@@ -202,6 +203,19 @@ class MedicationView(ViewSet):
     def delete_schedule_by_id(self, request, pk=None):
         result = TreatmentService.deleteScheduleById(pk)
         return Response(result['data'], status=result['status'])
+
+
+    @action(detail=True, methods=['get'], url_path='get_medication_by_id', permission_classes=[AllowAny])  
+    def get_medication_by_id(self, request, pk=None):
+        user_id = request.user.id if request.user.is_authenticated else None
+        if(user_id is None):
+            return Response({'success': False, 'message': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if(not User.objects.filter(id=user_id).exists()):
+            return Response({'success': False, 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        results = MedicationService.getMedicationById(pk, user_id)
+        return Response(results['data'], status=results['status'])
 
 
     @action(detail=False, methods=['get'], url_path="search", permission_classes=[AllowAny])
