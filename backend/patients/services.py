@@ -28,7 +28,7 @@ class PatientService:
 
                 patient = Patient.objects.create(user=user, **data)
 
-                if menstrual_cycle_data and user.gender == 'F':
+                if menstrual_cycle_data and user.gender == 'F':                                                                        
                     MenstrualCycle.objects.create(patient=patient, **menstrual_cycle_data)
 
                 return {'data': {'success': True, 'message': 'Patient created successfully', 'patient_id': patient.id}, 'status': 201}

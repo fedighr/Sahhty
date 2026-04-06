@@ -76,7 +76,7 @@ class MeasurementService:
                         'success': True,
                         'risk_level': risk_level,
                         'value1' : measurements['value1'],   
-                        'value2' : measurements['value2'] if measurements['value2'] else None,
+                        'value2': measurements['value2'] if 'value2' in measurements else None,
                         'message': 'Measurement created and risk assessed',
                     },
                     'status': 200,
@@ -114,17 +114,18 @@ class MeasurementService:
                 return {'data': {'success': False, 'message': 'Patient has incomplete information'}, 'status': 400}
             
             height = float(patient.height)
-            weight = float(patient.weight)
+            weight_measurement = Measurement.objects.filter(patient=patient, type='WEIGHT').order_by('-measurement_date').values('value1', 'unit', 'context', 'measurement_date').first()
+            weight = float(weight_measurement['value1']) if weight_measurement else float(patient.weight)
             bmi = round(weight / ((height / 100) ** 2), 2)
 
 
-            glycemia = Measurement.objects.filter(patient=patient, type='GLYCEMIA').order_by('-measurement_date').values('value1', 'unit', 'context').annotate(measurement_date=TruncDate('measurement_date')).first()
+            glycemia = Measurement.objects.filter(patient=patient, type='GLYCEMIA').order_by('-measurement_date').values('value1', 'unit', 'context', 'measurement_date').first()
 
-            blood_pressure = Measurement.objects.filter(patient=patient, type='BLOOD_PRESSURE', value2__isnull=False).order_by('-measurement_date').values('value1', 'value2', 'unit', 'context').annotate(measurement_date=TruncDate('measurement_date')).first()
+            blood_pressure = Measurement.objects.filter(patient=patient, type='BLOOD_PRESSURE', value2__isnull=False).order_by('-measurement_date').values('value1', 'value2', 'unit', 'context', 'measurement_date').first()
 
-            heart_rate = Measurement.objects.filter(patient=patient, type='HEART_RATE').order_by('-measurement_date').values('value1', 'unit', 'context').annotate(measurement_date=TruncDate('measurement_date')).first()
+            heart_rate = Measurement.objects.filter(patient=patient, type='HEART_RATE').order_by('-measurement_date').values('value1', 'unit', 'context', 'measurement_date').first()
 
-            body_temp = Measurement.objects.filter(patient=patient, type='TEMPERATURE').order_by('-measurement_date').values('value1', 'unit', 'context').annotate(measurement_date=TruncDate('measurement_date')).first()
+            body_temp = Measurement.objects.filter(patient=patient, type='TEMPERATURE').order_by('-measurement_date').values('value1', 'unit', 'context', 'measurement_date').first()
 
             pregnancy_week = None
             if patient.user.gender == 'F':

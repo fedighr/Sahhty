@@ -1,16 +1,18 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.db import IntegrityError, DatabaseError
-from .models import Medication, MedicationDci
-from .serializers import MedicationSerializer
+from .models import Medication, MedicationDci, Treatment, TreatmentSchedule
+from patients.models import Patient
+from .serializers import MedicationSerializer, TreatmentSerializer, TreatmentWithSchedulesSerializer
 from users.serializers import EmailSerializer
+from .search import MedicationSearch
 import os
 import re
-# .services import MedicationService
+from .services import TreatmentService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from drf_spectacular.utils import extend_schema
 import pandas as pd
@@ -150,4 +152,81 @@ class MedicationView(ViewSet):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
+    @action(detail=False, methods=['post'], url_path='create_treatment_with_schedules', permission_classes=[AllowAny])
+    def create_treatment_with_schedules(self, request):
+        try:
+            serializer = TreatmentWithSchedulesSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
 
+            result = TreatmentService.create_treatment_with_schedules(
+                treatment_data=serializer.validated_data['treatment'],
+                schedules_data=serializer.validated_data['schedules']
+            )
+
+            return Response(result['data'], status=result['status'])
+        
+        except IntegrityError:
+            return Response({'success': False, 'message': 'Invalid data or constraint violated'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        except DatabaseError:
+            return Response({'success': False, 'message': 'Database error occurred'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        except Exception as e:
+            return Response({'success': False, 'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
+    @action(detail=True, methods=['get'], url_path='get_treatments_by_patient_id', permission_classes=[AllowAny])
+    def get_treatments_by_patient_id(self, request, pk=None):
+        result = TreatmentService.getTreatmentByPatientId(pk)
+        return Response(result['data'], status=result['status'])
+
+
+    @action(detail=True, methods=['patch'], url_path='update_schedule_by_id', permission_classes=[AllowAny])
+    def update_schedule_by_id(self, request, pk=None):
+        new_time = request.data.get('new_time')
+
+        if not new_time:
+            return Response({'success': False, 'message': 'new_time is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        result = TreatmentService.updateScheduleById(pk, new_time)
+        return Response(result['data'], status=result['status'])
+
+
+    @action(detail=True, methods=['delete'], url_path='delete_treatment_by_id', permission_classes=[AllowAny])
+    def delete_treatment_by_id(self, request, pk=None):
+        result = TreatmentService.deleteTreatmentById(pk)
+        return Response(result['data'], status=result['status'])
+    
+
+    @action(detail=True, methods=['delete'], url_path='delete_schedule_by_id', permission_classes=[AllowAny])
+    def delete_schedule_by_id(self, request, pk=None):
+        result = TreatmentService.deleteScheduleById(pk)
+        return Response(result['data'], status=result['status'])
+
+
+    @action(detail=False, methods=['get'], url_path="search", permission_classes=[AllowAny])
+    def search(self, request):
+        query = request.query_params.get('q', '').strip()
+
+        if len(query) < 2:
+            return Response(
+                {'detail': 'Query must be at least 2 characters.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        medications = list(MedicationSearch.search(query)[:20])
+        if not medications:
+            return Response(
+                {'detail': 'No medications found.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        serializer = MedicationSerializer(medications, many=True)
+
+        return Response({
+            'count': len(medications),
+            'results': serializer.data
+        })
+
+
+    

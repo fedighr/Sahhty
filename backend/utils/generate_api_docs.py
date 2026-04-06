@@ -225,6 +225,8 @@ class SahtyAPIDocs(FPDF):
             'Measurements': 'measurements/MeasurementService',
             'Alerts': 'alerts/AlertService',
             'Pregnancies': 'pregnancies/PregnancyService',
+            'Medications': 'medications/medicationsService',
+            'DCI': 'dci/DCI',
         }
         base_url = url_map.get(title, base)
         self.set_x(10)
@@ -446,13 +448,15 @@ def build_pdf():
     #  TABLE OF CONTENTS
     # ══════════════════════════════════════════════
     sections = [
-        {'name': 'Authentication', 'count': 9, 'color': (90, 103, 216)},
+        {'name': 'Authentication', 'count': 10, 'color': (90, 103, 216)},
         {'name': 'FCM Devices', 'count': 1, 'color': (49, 130, 206)},
         {'name': 'Patients', 'count': 3, 'color': (56, 161, 105)},
         {'name': 'Doctors', 'count': 4, 'color': (128, 90, 213)},
         {'name': 'Measurements', 'count': 4, 'color': (214, 158, 46)},
         {'name': 'Pregnancies', 'count': 4, 'color': (213, 63, 140)},
         {'name': 'Alerts', 'count': 8, 'color': (229, 62, 62)},
+        {'name': 'Medications', 'count': 8, 'color': (49, 130, 206)},
+        {'name': 'DCI', 'count': 1, 'color': (90, 103, 216)},
     ]
     pdf.table_of_contents(sections)
 
@@ -1040,6 +1044,155 @@ def build_pdf():
             {'status': 500, 'desc': 'Database error'},
         ],
         notes='Frontend endpoint: Call when user opens/views an alert.'
+    )
+
+    # ══════════════════════════════════════════════
+    #  8. MEDICATIONS
+    # ══════════════════════════════════════════════
+    pdf.section_header(8, 'Medications',
+        'Medication catalog import, DCI linking, treatment scheduling, and search endpoints.',
+        color=(49, 130, 206))
+
+    # 8.1 Create Medications
+    pdf.endpoint_card(
+        'POST', '/medications/medicationsService/create_medications/',
+        'Load medications from the sources/MED_CNAM.csv file into the database.',
+        success_response={'status': 201, 'body': '{"message": "Medications created successfully"}'},
+        error_responses=[
+            {'status': 404, 'desc': 'CSV file not found'},
+            {'status': 400, 'desc': 'Invalid data / Database integrity error'},
+            {'status': 500, 'desc': 'Database error / Server error'},
+        ],
+        notes='No request body. Intended for initial data load.'
+    )
+
+    # 8.2 Create Medications DCI
+    pdf.endpoint_card(
+        'POST', '/medications/medicationsService/create_medications_dci/',
+        'Create Medication-DCI relationships using sources/special_DCI.txt and existing medications.',
+        success_response={'status': 201, 'body': '{"message": "Medication-DCI relationships created successfully"}'},
+        error_responses=[
+            {'status': 207, 'desc': 'Completed with some unmatched DCIs'},
+            {'status': 404, 'desc': 'special_DCI.txt file not found'},
+            {'status': 400, 'desc': 'Database integrity error'},
+            {'status': 500, 'desc': 'Database error / Server error'},
+        ],
+        notes='No request body. Returns 207 if some DCIs are unmatched.'
+    )
+
+    # 8.3 Create Treatment With Schedules
+    pdf.endpoint_card(
+        'POST', '/medications/medicationsService/create_treatment_with_schedules/',
+        'Create a treatment and its schedules in a single request.',
+        request_body=[
+            {'name': 'treatment', 'type': 'object', 'required': 'Yes', 'desc': 'Treatment details'},
+            {'name': 'treatment.patient_id', 'type': 'integer', 'required': 'Yes', 'desc': 'Patient ID'},
+            {'name': 'treatment.medication_id', 'type': 'integer', 'required': 'Yes', 'desc': 'Medication ID'},
+            {'name': 'treatment.start_date', 'type': 'date', 'required': 'Yes', 'desc': 'Start date (YYYY-MM-DD)'},
+            {'name': 'treatment.end_date', 'type': 'date', 'required': 'No', 'desc': 'End date (optional)'},
+            {'name': 'treatment.dose', 'type': 'string', 'required': 'Yes', 'desc': 'Dose description'},
+            {'name': 'treatment.frequency', 'type': 'string', 'required': 'Yes', 'desc': 'Frequency description'},
+            {'name': 'schedules', 'type': 'array', 'required': 'Yes', 'desc': 'List of schedules'},
+            {'name': 'schedules[].dose_time', 'type': 'time', 'required': 'Yes', 'desc': 'Dose time (HH:MM[:SS])'},
+        ],
+        success_response={'status': 201, 'body': '{"success": true, "message": "Treatment created successfully", "treatment": {...}, "schedules": [...]}'} ,
+        error_responses=[
+            {'status': 400, 'desc': 'Invalid data or constraint violated'},
+            {'status': 500, 'desc': 'Database error / Server error'},
+        ]
+    )
+
+    # 8.4 Get Treatments By Patient ID
+    pdf.endpoint_card(
+        'GET', '/medications/medicationsService/{id}/get_treatments_by_patient_id/',
+        'Retrieve all treatments for a patient, including schedules.',
+        params=[
+            {'name': 'id', 'type': 'integer', 'required': 'Yes', 'desc': 'Patient ID (URL parameter)'},
+        ],
+        success_response={'status': 200, 'body': '{"success": true, "treatments": [{...}, {...}]}'},
+        error_responses=[
+            {'status': 404, 'desc': 'No treatments found for this patient'},
+        ]
+    )
+
+    # 8.5 Update Schedule By ID
+    pdf.endpoint_card(
+        'PATCH', '/medications/medicationsService/{id}/update_schedule_by_id/',
+        'Update the dose time for a specific treatment schedule.',
+        params=[
+            {'name': 'id', 'type': 'integer', 'required': 'Yes', 'desc': 'Schedule ID (URL parameter)'},
+        ],
+        request_body=[
+            {'name': 'new_time', 'type': 'time', 'required': 'Yes', 'desc': 'New dose time (HH:MM[:SS])'},
+        ],
+        success_response={'status': 200, 'body': '{"success": true, "message": "Schedule updated successfully", "schedule": {...}}'},
+        error_responses=[
+            {'status': 400, 'desc': 'new_time is required'},
+            {'status': 404, 'desc': 'Schedule not found'},
+            {'status': 500, 'desc': 'Server error'},
+        ]
+    )
+
+    # 8.6 Delete Treatment By ID
+    pdf.endpoint_card(
+        'DELETE', '/medications/medicationsService/{id}/delete_treatment_by_id/',
+        'Delete a treatment by its ID.',
+        params=[
+            {'name': 'id', 'type': 'integer', 'required': 'Yes', 'desc': 'Treatment ID (URL parameter)'},
+        ],
+        success_response={'status': 200, 'body': '{"success": true, "message": "Treatment deleted successfully"}'},
+        error_responses=[
+            {'status': 404, 'desc': 'Treatment not found'},
+            {'status': 500, 'desc': 'Server error'},
+        ]
+    )
+
+    # 8.7 Delete Schedule By ID
+    pdf.endpoint_card(
+        'DELETE', '/medications/medicationsService/{id}/delete_schedule_by_id/',
+        'Delete a treatment schedule by its ID.',
+        params=[
+            {'name': 'id', 'type': 'integer', 'required': 'Yes', 'desc': 'Schedule ID (URL parameter)'},
+        ],
+        success_response={'status': 200, 'body': '{"success": true, "message": "Schedule deleted successfully"}'},
+        error_responses=[
+            {'status': 404, 'desc': 'Schedule not found'},
+            {'status': 500, 'desc': 'Server error'},
+        ]
+    )
+
+    # 8.8 Search Medications
+    pdf.endpoint_card(
+        'GET', '/medications/medicationsService/search/',
+        'Search medications by name, DCI, dosage, or form. Supports fuzzy search and code lookup.',
+        params=[
+            {'name': 'q', 'type': 'string', 'required': 'Yes', 'desc': 'Search query (min 2 characters)'},
+        ],
+        success_response={'status': 200, 'body': '{"count": 3, "results": [{...}, {...}]}'},
+        error_responses=[
+            {'status': 400, 'desc': 'Query must be at least 2 characters'},
+            {'status': 404, 'desc': 'No medications found'},
+        ]
+    )
+
+    # ══════════════════════════════════════════════
+    #  9. DCI
+    # ══════════════════════════════════════════════
+    pdf.section_header(9, 'DCI',
+        'DCI (drug classification) import endpoint based on sources/classifications.csv.',
+        color=(90, 103, 216))
+
+    # 9.1 Create DCI
+    pdf.endpoint_card(
+        'POST', '/dci/DCI/create_dci/',
+        'Load DCI classifications from CSV and store them in the database.',
+        success_response={'status': 201, 'body': '{"message": "DCIs created successfully"}'},
+        error_responses=[
+            {'status': 404, 'desc': 'CSV file not found'},
+            {'status': 400, 'desc': 'Invalid data / Database integrity error'},
+            {'status': 500, 'desc': 'Database error / Server error'},
+        ],
+        notes='No request body. Intended for initial data load.'
     )
 
     # ══════════════════════════════════════════════
