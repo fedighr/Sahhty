@@ -5,6 +5,7 @@ import 'package:sahhty/data/services/pregnancy_service.dart';
 import 'package:sahhty/data/services/measurement_service.dart';
 import 'package:sahhty/data/services/alert_service.dart';
 import 'package:sahhty/data/services/doctor_service.dart';
+import 'package:sahhty/data/services/medication_service.dart';
 
 /// Single instances of each service
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
@@ -13,3 +14,4 @@ final pregnancyServiceProvider = Provider<PregnancyService>((ref) => PregnancySe
 final measurementServiceProvider = Provider<MeasurementService>((ref) => MeasurementService());
 final alertServiceProvider = Provider<AlertService>((ref) => AlertService());
 final doctorServiceProvider = Provider<DoctorService>((ref) => DoctorService());
+final medicationServiceProvider = Provider<MedicationService>((ref) => MedicationService());

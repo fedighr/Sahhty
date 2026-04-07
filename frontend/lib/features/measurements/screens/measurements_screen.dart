@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
+import 'package:sahhty/core/widgets/animated_background.dart';
+import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
@@ -44,9 +47,18 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
     });
   }
 
-  int? _getPatientId() {
-    final auth = ref.read(authProvider);
-    return int.tryParse(auth.patientId ?? '');
+  int? _getPatientId() => int.tryParse(ref.read(authProvider).patientId ?? '');
+
+  String _emojiForType(String type) {
+    switch (type) {
+      case 'WEIGHT': return '⚖️';
+      case 'BLOOD_PRESSURE': return '❤️';
+      case 'GLYCEMIA': return '🩸';
+      case 'TEMPERATURE': return '🌡️';
+      case 'HEART_RATE': return '💓';
+      case 'OXYGEN': return '🫁';
+      default: return '📊';
+    }
   }
 
   String _formatType(String type) {
@@ -58,18 +70,6 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
       case 'HEART_RATE': return 'Rythme cardiaque';
       case 'OXYGEN': return 'Oxygène';
       default: return type;
-    }
-  }
-
-  IconData _iconForType(String type) {
-    switch (type) {
-      case 'WEIGHT': return Icons.monitor_weight_outlined;
-      case 'BLOOD_PRESSURE': return Icons.favorite_outline;
-      case 'GLYCEMIA': return Icons.bloodtype_outlined;
-      case 'TEMPERATURE': return Icons.thermostat_outlined;
-      case 'HEART_RATE': return Icons.monitor_heart_outlined;
-      case 'OXYGEN': return Icons.air;
-      default: return Icons.analytics_outlined;
     }
   }
 
@@ -98,88 +98,109 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('Ajouter'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 4,
       ),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
-          : _error != null
-              ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.error_outline, size: 48, color: AppColors.error),
-                  const SizedBox(height: 8),
-                  Text(_error!, style: const TextStyle(color: AppColors.error)),
-                  TextButton(onPressed: _loadMeasurements, child: const Text('Réessayer')),
-                ]))
-              : _measurements.isEmpty
+      body: Stack(
+        children: [
+          const AnimatedBackground(showImage: false, imageOpacity: 0),
+          const FloatingParticles(particleCount: 10, maxOpacity: 0.1),
+          _loading
+              ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+              : _error != null
                   ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(Icons.analytics_outlined, size: 64, color: AppColors.primary.withOpacity(0.3)),
-                      const SizedBox(height: 16),
-                      const Text('Aucune mesure', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                      const SizedBox(height: 4),
-                      const Text('Ajoutez votre première mesure', style: TextStyle(color: AppColors.textSecondary)),
+                      const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                      const SizedBox(height: 8),
+                      Text(_error!, style: const TextStyle(color: AppColors.error)),
+                      TextButton(onPressed: _loadMeasurements, child: const Text('Réessayer')),
                     ]))
-                  : RefreshIndicator(
-                      onRefresh: _loadMeasurements,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: _measurements.length,
-                        itemBuilder: (context, i) {
-                          final m = _measurements[i];
-                          final type = m['type'] ?? '';
-                          final value1 = m['value1'];
-                          final value2 = m['value2'];
-                          final unit = m['unit'] ?? '';
-                          final date = m['measurement_date'] ?? '';
-                          final ctxField = m['context'] ?? '';
-
-                          String displayValue = '$value1';
-                          if (value2 != null) displayValue += '/$value2';
-                          displayValue += ' $unit';
-
-                          String dateStr = '';
-                          if (date.isNotEmpty) {
-                            final dt = DateTime.tryParse(date);
-                            if (dt != null) {
-                              dateStr = '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
-                            }
-                          }
-
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, 2))],
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 48, height: 48,
-                                  decoration: BoxDecoration(
-                                    color: _colorForType(type).withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Icon(_iconForType(type), color: _colorForType(type)),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(_formatType(type), style: const TextStyle(fontWeight: FontWeight.w600)),
-                                      const SizedBox(height: 2),
-                                      Text(displayValue, style: TextStyle(color: _colorForType(type), fontWeight: FontWeight.bold)),
-                                      if (ctxField.isNotEmpty)
-                                        Text(ctxField, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-                                    ],
-                                  ),
-                                ),
-                                Text(dateStr, style: const TextStyle(fontSize: 11, color: AppColors.textLight)),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                  : _measurements.isEmpty
+                      ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+                          const Text('📊', style: TextStyle(fontSize: 64)),
+                          const SizedBox(height: 16),
+                          const Text('Aucune mesure', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                          const SizedBox(height: 4),
+                          const Text('Ajoutez votre première mesure', style: TextStyle(color: AppColors.textSecondary)),
+                        ]).animate().fadeIn())
+                      : RefreshIndicator(
+                          onRefresh: _loadMeasurements,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+                            itemCount: _measurements.length,
+                            itemBuilder: (context, i) {
+                              final m = _measurements[i];
+                              return _buildMeasurementCard(m, i);
+                            },
+                          ),
+                        ),
+        ],
+      ),
     );
+  }
+
+  Widget _buildMeasurementCard(dynamic m, int index) {
+    final type = m['type'] ?? '';
+    final value1 = m['value1'];
+    final value2 = m['value2'];
+    final unit = m['unit'] ?? '';
+    final date = m['measurement_date'] ?? '';
+    final ctxField = m['context'] ?? '';
+    final color = _colorForType(type);
+
+    String displayValue = '$value1';
+    if (value2 != null) displayValue += '/$value2';
+    displayValue += ' $unit';
+
+    String dateStr = '';
+    if (date.isNotEmpty) {
+      final dt = DateTime.tryParse(date);
+      if (dt != null) {
+        dateStr = '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
+      }
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 3))],
+        border: Border(left: BorderSide(color: color.withAlpha(128), width: 3)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 50, height: 50,
+            decoration: BoxDecoration(
+              color: color.withAlpha(25),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Center(child: Text(_emojiForType(type), style: const TextStyle(fontSize: 24))),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_formatType(type), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                const SizedBox(height: 2),
+                Text(displayValue, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 16)),
+                if (ctxField.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(ctxField, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                ],
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(dateStr, style: const TextStyle(fontSize: 11, color: AppColors.textLight)),
+            ],
+          ),
+        ],
+      ),
+    ).animate().fadeIn(delay: (60 * index).ms).slideX(begin: 0.06);
   }
 }

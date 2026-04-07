@@ -212,7 +212,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryLight.withOpacity(0.5),
+                    color: AppColors.primaryLight.withAlpha(128),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -449,7 +449,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.accent.withOpacity(0.15),
+              color: AppColors.accent.withAlpha(38),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -473,9 +473,9 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
       Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColors.secondary.withOpacity(0.2),
+          color: AppColors.secondary.withAlpha(51),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.secondary.withOpacity(0.5)),
+          border: Border.all(color: AppColors.secondary.withAlpha(128)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -553,7 +553,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.primaryLight.withOpacity(0.5),
+            color: AppColors.primaryLight.withAlpha(128),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(

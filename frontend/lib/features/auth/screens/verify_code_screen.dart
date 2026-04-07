@@ -103,7 +103,7 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
               Container(
                 width: 80, height: 80,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
+                  color: AppColors.primary.withAlpha(25),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.mark_email_read_outlined, size: 40, color: AppColors.primary),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
+import 'package:sahhty/core/widgets/animated_background.dart';
+import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
 class DoctorsListScreen extends ConsumerStatefulWidget {
@@ -68,7 +71,11 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen> {
         title: const Text('Trouver un médecin'),
         leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new), onPressed: () => context.pop()),
       ),
-      body: Column(
+      body: Stack(
+        children: [
+          const AnimatedBackground(showImage: false, imageOpacity: 0),
+          const FloatingParticles(particleCount: 8, maxOpacity: 0.08),
+          Column(
         children: [
           // Search bar
           Padding(
@@ -101,7 +108,11 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen> {
                         TextButton(onPressed: _loadDoctors, child: const Text('Réessayer')),
                       ]))
                     : _filtered.isEmpty
-                        ? const Center(child: Text('Aucun médecin trouvé', style: TextStyle(color: AppColors.textSecondary)))
+                        ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+                            const Text('👨‍⚕️', style: TextStyle(fontSize: 64)),
+                            const SizedBox(height: 12),
+                            const Text('Aucun médecin trouvé', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                          ]).animate().fadeIn())
                         : RefreshIndicator(
                             onRefresh: _loadDoctors,
                             child: ListView.builder(
@@ -109,11 +120,13 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen> {
                               itemCount: _filtered.length,
                               itemBuilder: (context, i) {
                                 final d = _filtered[i];
-                                return _DoctorCard(doctor: d);
+                                return _DoctorCard(doctor: d).animate().fadeIn(delay: (60 * i).ms).slideX(begin: 0.06);
                               },
                             ),
                           ),
           ),
+        ],
+      ),
         ],
       ),
     );
@@ -138,8 +151,8 @@ class _DoctorCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, 2))],
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 3))],
       ),
       child: Row(
         children: [
@@ -147,10 +160,10 @@ class _DoctorCard extends StatelessWidget {
           Container(
             width: 56, height: 56,
             decoration: BoxDecoration(
-              color: AppColors.accent.withOpacity(0.1),
+              color: AppColors.accent.withAlpha(25),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(Icons.local_hospital, color: AppColors.accent, size: 28),
+            child: const Center(child: Text('👨‍⚕️', style: TextStyle(fontSize: 28))),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -164,13 +177,13 @@ class _DoctorCard extends StatelessWidget {
                 Row(
                   children: [
                     if (ville.isNotEmpty) ...[
-                      const Icon(Icons.location_on_outlined, size: 14, color: AppColors.textSecondary),
+                      const Text('📍', style: TextStyle(fontSize: 12)),
                       const SizedBox(width: 2),
                       Text(ville, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                       const SizedBox(width: 8),
                     ],
                     if (experience != null) ...[
-                      const Icon(Icons.work_outline, size: 14, color: AppColors.textSecondary),
+                      const Text('💼', style: TextStyle(fontSize: 12)),
                       const SizedBox(width: 2),
                       Text('$experience ans', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                     ],
@@ -185,7 +198,7 @@ class _DoctorCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: available ? AppColors.success.withOpacity(0.1) : AppColors.error.withOpacity(0.1),
+                  color: available ? AppColors.success.withAlpha(25) : AppColors.error.withAlpha(25),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(

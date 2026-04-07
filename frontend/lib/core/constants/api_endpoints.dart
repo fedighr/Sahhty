@@ -2,7 +2,7 @@
 class ApiEndpoints {
   ApiEndpoints._();
 
-  static const String baseUrl = 'http://192.168.100.10:8000';
+  static const String baseUrl = 'http://10.0.2.2:8000';
 
   // ── Auth (ViewSet: users/auth/) ──────────────────────────────────────
   static const String signup            = '/users/auth/signup/';
@@ -41,6 +41,14 @@ class ApiEndpoints {
   static String getLatestMeasurements(int pk)       => '/measurements/MeasurementService/$pk/get_latest_measurements/';
   static String getPatientMeasurements(int pk)      => '/measurements/MeasurementService/$pk/get_patient_measurements/';
   static String getRiskAssessment(int pk)           => '/measurements/MeasurementService/$pk/get_risk_assessment/';
+
+  // ── Medications (ViewSet: medications/medicationsService/) ───────────
+  static const String searchMedications             = '/medications/medicationsService/search/';
+  static const String createTreatmentWithSchedules  = '/medications/medicationsService/create_treatment_with_schedules/';
+  static String getTreatmentsByPatientId(int pk)    => '/medications/medicationsService/$pk/get_treatments_by_patient_id/';
+  static String updateScheduleById(int pk)          => '/medications/medicationsService/$pk/update_schedule_by_id/';
+  static String deleteTreatmentById(int pk)         => '/medications/medicationsService/$pk/delete_treatment_by_id/';
+  static String deleteScheduleById(int pk)          => '/medications/medicationsService/$pk/delete_schedule_by_id/';
 
   // ── Alert (ViewSet: alerts/AlertService/) ────────────────────────────
   static String getAlertsByUser(int userId) => '/alerts/AlertService/$userId/get_alerts_by_user/';

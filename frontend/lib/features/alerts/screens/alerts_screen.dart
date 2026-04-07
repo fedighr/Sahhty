@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
+import 'package:sahhty/core/widgets/animated_background.dart';
+import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
@@ -52,11 +55,11 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     _loadAlerts();
   }
 
-  IconData _iconForLevel(String level) {
+  String _emojiForLevel(String level) {
     switch (level) {
-      case 'CRITICAL': return Icons.dangerous_outlined;
-      case 'WARNING': return Icons.warning_amber_rounded;
-      default: return Icons.info_outline;
+      case 'CRITICAL': return '🚨';
+      case 'WARNING': return '⚠️';
+      default: return 'ℹ️';
     }
   }
 
@@ -82,93 +85,124 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Alertes')),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
-          : _error != null
-              ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.error_outline, size: 48, color: AppColors.error),
-                  const SizedBox(height: 8),
-                  Text(_error!, style: const TextStyle(color: AppColors.error)),
-                  TextButton(onPressed: _loadAlerts, child: const Text('Réessayer')),
-                ]))
-              : _alerts.isEmpty
+      body: Stack(
+        children: [
+          const AnimatedBackground(showImage: false, imageOpacity: 0),
+          const FloatingParticles(particleCount: 10, maxOpacity: 0.1),
+          _loading
+              ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+              : _error != null
                   ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(Icons.notifications_off_outlined, size: 64, color: AppColors.primary.withOpacity(0.3)),
-                      const SizedBox(height: 16),
-                      const Text('Aucune alerte', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                      const SizedBox(height: 4),
-                      const Text('Tout est en ordre !', style: TextStyle(color: AppColors.textSecondary)),
+                      const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                      const SizedBox(height: 8),
+                      Text(_error!, style: const TextStyle(color: AppColors.error)),
+                      TextButton(onPressed: _loadAlerts, child: const Text('Réessayer')),
                     ]))
-                  : RefreshIndicator(
-                      onRefresh: _loadAlerts,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: _alerts.length,
-                        itemBuilder: (context, i) {
-                          final alert = _alerts[i];
-                          final level = alert['level'] ?? 'INFO';
-                          final type = alert['type'] ?? '';
-                          final message = alert['message'] ?? '';
-                          final status = alert['status'] ?? '';
-                          final createdAt = alert['created_at'] ?? '';
-                          final id = alert['id'];
-                          final isRead = status == 'READ';
+                  : _alerts.isEmpty
+                      ? Center(
+                          child: Column(mainAxisSize: MainAxisSize.min, children: [
+                            const Text('🔔', style: TextStyle(fontSize: 64)),
+                            const SizedBox(height: 16),
+                            const Text('Aucune alerte', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                            const SizedBox(height: 4),
+                            const Text('Tout est en ordre !', style: TextStyle(color: AppColors.textSecondary)),
+                          ]).animate().fadeIn(),
+                        )
+                      : RefreshIndicator(
+                          onRefresh: _loadAlerts,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: _alerts.length,
+                            itemBuilder: (context, i) {
+                              final alert = _alerts[i];
+                              return _buildAlertCard(alert).animate().fadeIn(delay: (60 * i).ms).slideX(begin: 0.08);
+                            },
+                          ),
+                        ),
+        ],
+      ),
+    );
+  }
 
-                          String dateStr = '';
-                          if (createdAt.isNotEmpty) {
-                            final dt = DateTime.tryParse(createdAt);
-                            if (dt != null) {
-                              dateStr = '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
-                            }
-                          }
+  Widget _buildAlertCard(dynamic alert) {
+    final level = alert['level'] ?? 'INFO';
+    final type = alert['type'] ?? '';
+    final message = alert['message'] ?? '';
+    final status = alert['status'] ?? '';
+    final createdAt = alert['created_at'] ?? '';
+    final id = alert['id'];
+    final isRead = status == 'READ';
+    final color = _colorForLevel(level);
 
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            decoration: BoxDecoration(
-                              color: isRead ? Colors.white : _colorForLevel(level).withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: isRead ? const Color(0xFFE0E0E0) : _colorForLevel(level).withOpacity(0.3),
-                              ),
-                              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 6)],
-                            ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.all(16),
-                              leading: Container(
-                                width: 44, height: 44,
-                                decoration: BoxDecoration(
-                                  color: _colorForLevel(level).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Icon(_iconForLevel(level), color: _colorForLevel(level)),
-                              ),
-                              title: Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: _colorForLevel(level).withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(_formatType(type), style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: _colorForLevel(level))),
-                                  ),
-                                  const Spacer(),
-                                  Text(dateStr, style: const TextStyle(fontSize: 11, color: AppColors.textLight)),
-                                ],
-                              ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Text(message, style: TextStyle(
-                                  color: isRead ? AppColors.textSecondary : AppColors.textPrimary,
-                                  fontWeight: isRead ? FontWeight.normal : FontWeight.w500,
-                                )),
-                              ),
-                              onTap: !isRead && id != null ? () => _markAsRead(id) : null,
-                            ),
-                          );
-                        },
+    String dateStr = '';
+    if (createdAt.isNotEmpty) {
+      final dt = DateTime.tryParse(createdAt);
+      if (dt != null) {
+        dateStr = '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
+      }
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: isRead ? Colors.white : color.withAlpha(10),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: isRead ? const Color(0xFFE0E0E0) : color.withAlpha(64)),
+        boxShadow: [BoxShadow(color: Colors.black.withAlpha(8), blurRadius: 8, offset: const Offset(0, 2))],
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: !isRead && id != null ? () => _markAsRead(id) : null,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 44, height: 44,
+                decoration: BoxDecoration(
+                  color: color.withAlpha(25),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(child: Text(_emojiForLevel(level), style: const TextStyle(fontSize: 22))),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(color: color.withAlpha(25), borderRadius: BorderRadius.circular(8)),
+                          child: Text(_formatType(type), style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: color)),
+                        ),
+                        const Spacer(),
+                        Text(dateStr, style: const TextStyle(fontSize: 11, color: AppColors.textLight)),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      message,
+                      style: TextStyle(
+                        color: isRead ? AppColors.textSecondary : AppColors.textPrimary,
+                        fontWeight: isRead ? FontWeight.normal : FontWeight.w500,
+                        fontSize: 13,
                       ),
                     ),
+                    if (!isRead) ...[
+                      const SizedBox(height: 8),
+                      Text('Appuyez pour marquer comme lu',
+                          style: TextStyle(fontSize: 11, color: color.withAlpha(153), fontStyle: FontStyle.italic)),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

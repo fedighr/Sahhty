@@ -16,6 +16,7 @@ import 'package:sahhty/features/pregnancy/screens/pregnancy_screen.dart';
 import 'package:sahhty/features/alerts/screens/alerts_screen.dart';
 import 'package:sahhty/features/profile/screens/profile_screen.dart';
 import 'package:sahhty/features/doctors/screens/doctors_list_screen.dart';
+import 'package:sahhty/features/medications/screens/medications_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -109,6 +110,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/doctors',
         builder: (context, state) => const DoctorsListScreen(),
+      ),
+      GoRoute(
+        path: '/medications',
+        builder: (context, state) => const MedicationsScreen(),
       ),
     ],
   );

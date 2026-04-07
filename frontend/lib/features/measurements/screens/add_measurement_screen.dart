@@ -28,6 +28,7 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
     'GLYCEMIA': {'label': 'Glycémie', 'unit': 'G_L', 'icon': Icons.bloodtype_outlined, 'hasValue2': false},
     'TEMPERATURE': {'label': 'Température', 'unit': 'C', 'icon': Icons.thermostat_outlined, 'hasValue2': false},
     'HEART_RATE': {'label': 'Rythme cardiaque', 'unit': 'BPM', 'icon': Icons.monitor_heart_outlined, 'hasValue2': false},
+    'OXYGEN': {'label': 'Oxygène (SpO2)', 'unit': 'BPM', 'icon': Icons.air, 'hasValue2': false},
   };
 
   @override
@@ -113,7 +114,7 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: (isHigh ? AppColors.riskHigh : AppColors.riskMedium).withOpacity(0.1),
+                color: (isHigh ? AppColors.riskHigh : AppColors.riskMedium).withAlpha(25),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
