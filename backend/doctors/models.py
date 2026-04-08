@@ -42,4 +42,4 @@ class Doctor(models.Model):
     is_available = models.BooleanField(default=True)
     is_doctor_verified = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="doctor")
-    speciality = models.ForeignKey(Speciality, on_delete=models.PROTECT)
+    speciality = models.ForeignKey(Speciality, on_delete=models.CASCADE, related_name="doctors")

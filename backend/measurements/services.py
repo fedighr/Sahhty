@@ -51,7 +51,7 @@ class MeasurementService:
                 }
 
                 risk_level, new_heart_rate = predict_risk(risk_data)
-                note = MeasurementService.generate_risk_note(glucose, bp_sys, bp_dia, new_heart_rate, bmi)
+                note = MeasurementService.generate_risk_note(glucose, bp_sys, bp_dia, new_heart_rate, body_temp, risk_level)
 
                 RiskAssessment.objects.create(
                     patient=patient,
@@ -75,6 +75,7 @@ class MeasurementService:
                     'data': {
                         'success': True,
                         'risk_level': risk_level,
+                        'note': note,
                         'value1' : measurements['value1'],   
                         'value2': measurements['value2'] if 'value2' in measurements else None,
                         'message': 'Measurement created and risk assessed',
@@ -192,21 +193,55 @@ class MeasurementService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}    
 
     @staticmethod
-    def generate_risk_note(glucose, bp_sys, bp_dia, heart_rate, bmi):
+    def generate_risk_note(glucose, bp_sys, bp_dia, heart_rate, body_temp, risk_level):
         notes = []
-        if glucose > 140:
-            notes.append("high glucose")
-        if bp_sys > 140 or bp_dia > 90:
-            notes.append("high blood pressure")
-        if heart_rate > 100:
-            notes.append("high heart rate")
-        if bmi > 30:
-            notes.append("high BMI")
+
+        if risk_level == 'HIGH':
+            if glucose is not None and glucose > 180:
+                notes.append(f"Glycémie critique ({glucose} mg/dL) — attention immédiate requise")
+            if glucose is not None and glucose < 70:
+                notes.append(f"Glycémie basse ({glucose} mg/dL) — risque d'hypoglycémie")
+            if bp_sys is not None and bp_dia is not None and (bp_sys >= 140 or bp_dia >= 90):
+                notes.append(f"Hypertension de stade 2 ({bp_sys}/{bp_dia} mmHg) — consultation médicale urgente requise")
+            if bp_sys is not None and bp_dia is not None and (bp_sys < 90 or bp_dia < 60):
+                notes.append(f"Tension artérielle basse ({bp_sys}/{bp_dia} mmHg) — risque d'hypotension")
+            if heart_rate is not None and heart_rate > 130:
+                notes.append(f"Fréquence cardiaque critique ({heart_rate} bpm) — attention immédiate requise")
+            if heart_rate is not None and heart_rate < 60:
+                notes.append(f"Fréquence cardiaque basse ({heart_rate} bpm) — bradycardie possible")
+            if body_temp is not None and body_temp >= 39.5:
+                notes.append(f"Température corporelle très élevée ({body_temp}°C) — risque d'hyperthermie")
+            if body_temp is not None and body_temp < 35:
+                notes.append(f"Température corporelle basse ({body_temp}°C) — risque d'hypothermie")
+
+        elif risk_level == 'MEDIUM':
+            if glucose is not None and 126 <= glucose <= 180:
+                notes.append(f"Glycémie élevée ({glucose} mg/dL) — diabète possible")
+            if glucose is not None and 100 <= glucose <= 125:
+                notes.append(f"Glycémie pré-diabétique ({glucose} mg/dL) — surveiller de près")
+            if bp_sys is not None and bp_dia is not None and (130 <= bp_sys <= 139 or 80 <= bp_dia <= 89):
+                notes.append(f"Hypertension de stade 1 ({bp_sys}/{bp_dia} mmHg) — consultation médicale recommandée")
+            if bp_sys is not None and bp_dia is not None and (bp_sys <= 129 and bp_dia < 80):
+                notes.append(f"Tension artérielle élevée ({bp_sys}/{bp_dia} mmHg) — changements de mode de vie conseillés")
+            if heart_rate is not None and 101 <= heart_rate <= 130:
+                notes.append(f"Fréquence cardiaque élevée ({heart_rate} bpm) — tachycardie possible")
+            if body_temp is not None and 38 <= body_temp < 39.5:
+                notes.append(f"Fièvre détectée ({body_temp}°C) — consultation médicale recommandée")
+            if body_temp is not None and 35 <= body_temp < 36:
+                notes.append(f"Température corporelle légèrement basse ({body_temp}°C) — surveiller de près")
+
+        elif risk_level == 'INFO':
+            if glucose is not None and 70 <= glucose <= 99:
+                notes.append(f"Glycémie à jeun normale ({glucose} mg/dL)")
+            if bp_sys is not None and bp_dia is not None and bp_sys <= 120 and bp_dia <= 80:
+                notes.append(f"Tension artérielle normale ({bp_sys}/{bp_dia} mmHg)")
+            if heart_rate is not None and 60 <= heart_rate <= 100:
+                notes.append(f"Fréquence cardiaque normale ({heart_rate} bpm)")
+            if body_temp is not None and 36 <= body_temp < 38:
+                notes.append(f"Température corporelle normale ({body_temp}°C)")
 
         if not notes:
-            return "All values within normal range"
-        
-        return f"Detected: {', '.join(notes)}"        
+            return "Aucun résultat significatif détecté"
 
-
+        return " | ".join(notes)
 

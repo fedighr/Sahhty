@@ -64,6 +64,11 @@ class AlertService:
                                 Alert.objects.create(type='REMINDER', message=f"Medication reminder: Take {medication_name} at {time}", level='INFO', status='NEW', user=User.objects.get(email=patient_email))
                                 schedule.last_sent_at = now
                                 schedule.save(update_fields=['last_sent_at'])
+                                send_push_notification_to_user(
+                                    user=treatment.patient.user,
+                                    title="Medication Reminder",
+                                    body=f"You have a medication reminder to take medication",
+                                )
 
                     break  # Only check the next upcoming dose for each treatment
             return {'data': {'success': True, 'message': 'Medication reminders processed successfully'}, 'status': 200}

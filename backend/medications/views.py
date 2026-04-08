@@ -20,6 +20,49 @@ import pandas as pd
 from dci.models import DCI
 from dci.serializers import DCISerializer
 
+
+def extract_dci_names(raw_dci, special_dcis):
+    raw_dci = raw_dci.strip()
+    upper_dci = raw_dci.upper()
+
+    if upper_dci in special_dcis:
+        return [raw_dci]
+
+    if upper_dci.startswith('VACCIN :') or upper_dci.startswith('VACCIN:'):
+        parts = re.split(r'\+', raw_dci)
+        result = []
+        for part in parts:
+            part = part.strip()
+            cleaned = re.sub(r'(?i)vaccin\s*:\s*', '', part).strip()
+            if cleaned:
+                result.append(cleaned)
+        return result
+
+    if re.search(r'[+/]', raw_dci):
+        parts = re.split(r'[+/]', raw_dci)
+        result = []
+        for part in parts:
+            part = part.strip()
+            if not part:
+                continue
+            part_upper = part.upper()
+            if part_upper in special_dcis:
+                result.append(part)
+            elif re.search(r'[-:]', part):
+                sub = re.split(r'[-:]', part, maxsplit=1)
+                result.append(sub[-1].strip())
+            else:
+                result.append(part)
+        return result
+
+    if re.search(r'[-:]', raw_dci):
+        if upper_dci in special_dcis:
+            return [raw_dci]
+        parts = re.split(r'[-:]', raw_dci, maxsplit=1)
+        return [parts[-1].strip()]
+
+    return [raw_dci]
+
 class MedicationView(ViewSet):
     @action(detail=False, methods=['post'], url_path="create_medications", permission_classes=[AllowAny])
     def create_medications(self, request):
@@ -72,48 +115,6 @@ class MedicationView(ViewSet):
             total = medications.count()
             not_found = []
 
-            def extract_dci_names(raw_dci):
-                raw_dci = raw_dci.strip()
-                upper_dci = raw_dci.upper()
-
-                if upper_dci in special_dcis:
-                    return [raw_dci]
-
-                if upper_dci.startswith('VACCIN :') or upper_dci.startswith('VACCIN:'):
-                    parts = re.split(r'\+', raw_dci)
-                    result = []
-                    for part in parts:
-                        part = part.strip()
-                        cleaned = re.sub(r'(?i)vaccin\s*:\s*', '', part).strip()
-                        if cleaned:
-                            result.append(cleaned)
-                    return result
-
-                if re.search(r'[+/]', raw_dci):
-                    parts = re.split(r'[+/]', raw_dci)
-                    result = []
-                    for part in parts:
-                        part = part.strip()
-                        if not part:
-                            continue
-                        part_upper = part.upper()
-                        if part_upper in special_dcis:
-                            result.append(part)
-                        elif re.search(r'[-:]', part):
-                            sub = re.split(r'[-:]', part, maxsplit=1)
-                            result.append(sub[-1].strip())
-                        else:
-                            result.append(part)
-                    return result
-
-                if re.search(r'[-:]', raw_dci):
-                    if upper_dci in special_dcis:
-                        return [raw_dci]
-                    parts = re.split(r'[-:]', raw_dci, maxsplit=1)
-                    return [parts[-1].strip()]
-
-                return [raw_dci]
-
             for i, value in enumerate(medications, start=1):
                 print(f"{i}/{total}")
 
@@ -121,7 +122,7 @@ class MedicationView(ViewSet):
                 if not raw_dci:
                     continue
 
-                dci_names = extract_dci_names(raw_dci)
+                dci_names = extract_dci_names(raw_dci, special_dcis)
 
                 for dci_name in dci_names:
                     try:

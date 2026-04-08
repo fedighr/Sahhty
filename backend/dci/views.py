@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.db import IntegrityError, DatabaseError
 from .models import DCI
-from .serializers import DCISerializer
+from .serializers import DCISerializer, DCIInteractionSerializer
 from users.serializers import EmailSerializer
 import os
 # .services import DCIService
@@ -48,3 +48,38 @@ class DCIView(ViewSet):
             return Response({"error": "Database integrity error"}, status=status.HTTP_400_BAD_REQUEST)
         except DatabaseError:
             return Response({"error": "Database error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['post'], url_path="create_dci_interaction", permission_classes=[AllowAny])
+    def create_dci_interaction(self, request):
+        try:
+            current_folder = os.path.dirname(os.path.abspath(__file__))
+            file_path = os.path.join(current_folder, '..', 'sources', 'interactions_valid.csv')
+            dataset = pd.read_csv(file_path)
+            for index, row in dataset.iterrows():
+                print(str(index) +"/"+ str(len(dataset)))
+                dci1 = get_object_or_404(DCI, name=row['dci_a'])
+                dci2 = get_object_or_404(DCI, name=row['dci_b'])
+                interaction_data = {
+                    'dci1': dci1.id,
+                    'dci2': dci2.id,
+                    'severity': row['severity'],
+                    'description': row['description'] if pd.notna(row['description']) else None
+                }
+                serializer = DCIInteractionSerializer(data=interaction_data)
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "DCI interactions created successfully"}, status=status.HTTP_201_CREATED)
+
+        except FileNotFoundError:
+            return Response({"error": "CSV file not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Http404:
+            return Response({"error": "DCI not found for interaction"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except IntegrityError:
+            return Response({"error": "Database integrity error"}, status=status.HTTP_400_BAD_REQUEST)
+        except DatabaseError:
+            return Response({"error": "Database error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        

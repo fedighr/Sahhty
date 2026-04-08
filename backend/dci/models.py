@@ -18,3 +18,17 @@ class DCI(models.Model):
     summary = models.TextField(null=True, blank=True)
     source_url = models.URLField(null=True, blank=True)
 
+class DciInteraction(models.Model):
+    SEVERITY_CHOICES = [
+        ("CONTRE_INDICATION", "Contre-indication"),
+        ("PRECAUTION_EMPLOI", "Précaution d'emploi"),
+        ("DECONSEILLEE", "Déconseillée"),
+        ("A_PRENDRE_EN_COMPTE", "À prendre en compte"),
+        ("NON_SIGNIFICATIVE", "Non significative"),
+    ]
+
+    dci1 = models.ForeignKey(DCI, on_delete=models.CASCADE, related_name='dci1_interactions')
+    dci2 = models.ForeignKey(DCI, on_delete=models.CASCADE, related_name='dci2_interactions')
+    severity = models.CharField(max_length=50, choices=SEVERITY_CHOICES)
+    description = models.TextField(null=True, blank=True)
+

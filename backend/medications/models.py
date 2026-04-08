@@ -39,7 +39,7 @@ class Treatment(models.Model):
     dose = models.CharField(max_length=255)
     frequency = models.CharField(max_length=255)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='treatments')
-    medication = models.ForeignKey(Medication, on_delete=models.PROTECT, related_name='treatments')
+    medication = models.ForeignKey(Medication, on_delete=models.CASCADE, related_name='treatments')
 
 class TreatmentSchedule (models.Model):
     dose_time = models.TimeField()

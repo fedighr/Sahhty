@@ -1,6 +1,7 @@
 import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+from alerts.reminders import createMedicationReminder
 from django_apscheduler.jobstores import DjangoJobStore
 from utils.firebase import send_push_notification_to_user
 from django_apscheduler.models import DjangoJobExecution
@@ -18,7 +19,6 @@ def delete_old_job_executions(max_age=604_800):
         DjangoJobExecution.objects.delete_old_job_executions(max_age)
     finally:
         db.close_old_connections()
-
 
 def start():
     global _scheduler_started
@@ -89,12 +89,11 @@ def start():
 
     scheduler.add_job(
         createMedicationReminder, #WORKING! but still some fixes needed to avoid duplicate reminders
-        trigger=CronTrigger(minute=0),
+        trigger=CronTrigger(hour=4,minute=43),
         id="createMedicationReminder",
         name="Create Medication Reminders",
         jobstore="default",
         replace_existing=True,
-        
     )
 
     # --- Cleanup old job execution logs (runs weekly) ---
