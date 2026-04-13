@@ -2,7 +2,7 @@
 class ApiEndpoints {
   ApiEndpoints._();
 
-  static const String baseUrl = 'http://192.168.100.10:8000';
+  static const String baseUrl = 'http://10.0.2.2:8000';
 
   // ── Auth (ViewSet: users/auth/) ──────────────────────────────────────
   static const String signup            = '/users/auth/signup/';
@@ -15,6 +15,7 @@ class ApiEndpoints {
   static const String forgetPassword    = '/users/auth/forget_password/';
   static const String isEmailAvailable  = '/users/auth/is_email_available/';
   static const String verifyPhone       = '/users/auth/verify_phone/';
+  static String deleteAccount(int userId) => '/users/auth/$userId/delete_account/';
 
   // ── FCM Device (ViewSet: users/devices/) ──────────────────────────────
   static const String registerDevice    = '/users/devices/register_device/';
@@ -46,6 +47,7 @@ class ApiEndpoints {
   static const String searchMedications             = '/medications/medicationsService/search/';
   static const String createTreatmentWithSchedules  = '/medications/medicationsService/create_treatment_with_schedules/';
   static String getTreatmentsByPatientId(int pk)    => '/medications/medicationsService/$pk/get_treatments_by_patient_id/';
+  static String getMedicationById(int pk)           => '/medications/medicationsService/$pk/get_medication_by_id/';
   static String updateScheduleById(int pk)          => '/medications/medicationsService/$pk/update_schedule_by_id/';
   static String deleteTreatmentById(int pk)         => '/medications/medicationsService/$pk/delete_treatment_by_id/';
   static String deleteScheduleById(int pk)          => '/medications/medicationsService/$pk/delete_schedule_by_id/';

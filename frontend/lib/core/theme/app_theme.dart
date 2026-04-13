@@ -37,6 +37,13 @@ class AppColors {
   static const Color riskLow       = Color(0xFF66BB6A);
   static const Color riskMedium    = Color(0xFFFFA726);
   static const Color riskHigh      = Color(0xFFEF5350);
+
+  // Drug interaction severity
+  static const Color interactionContraindication = Color(0xFFD32F2F); // CONTRE_INDICATION
+  static const Color interactionDiscouraged      = Color(0xFFE65100); // DECONSEILLEE
+  static const Color interactionPrecaution       = Color(0xFFF9A825); // PRECAUTION_EMPLOI
+  static const Color interactionConsideration    = Color(0xFF1976D2); // A_PRENDRE_EN_COMPTE
+  static const Color interactionNone             = Color(0xFF9E9E9E); // NON_SIGNIFICATIVE
 }
 
 class AppTheme {

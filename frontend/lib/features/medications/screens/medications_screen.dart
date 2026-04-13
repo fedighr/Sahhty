@@ -6,6 +6,9 @@ import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
+import 'package:sahhty/features/medications/widgets/interaction_helpers.dart';
+import 'package:sahhty/features/medications/widgets/medication_detail_sheet.dart';
+import 'package:sahhty/features/medications/widgets/compare_tab.dart';
 
 class MedicationsScreen extends ConsumerStatefulWidget {
   const MedicationsScreen({super.key});
@@ -33,7 +36,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
   @override
   void initState() {
     super.initState();
-    _tabCtrl = TabController(length: 2, vsync: this);
+    _tabCtrl = TabController(length: 3, vsync: this);
     _loadTreatments();
   }
 
@@ -136,8 +139,44 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
     _loadTreatments();
   }
 
-  // ── Show "Add Treatment" bottom sheet when a search result is tapped ──
-  void _onSearchResultTapped(Map<String, dynamic> medication) {
+  // ── Show medication detail (with interactions) before add ──────────
+  void _onSearchResultTapped(Map<String, dynamic> medication) async {
+    final medId = medication['id'] as int?;
+    if (medId == null) return;
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+    );
+
+    final detail = await ref.read(medicationServiceProvider).getMedicationById(medId);
+    if (!mounted) return;
+    Navigator.pop(context); // Dismiss loading
+
+    final detailMed = detail['medication'] as Map<String, dynamic>? ?? medication;
+    final pregnancyData = detail['pregnancy_data'] as Map<String, dynamic>?;
+    final interactions = detail['medication_interactions'] as List<dynamic>? ?? [];
+
+    if (!mounted) return;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => MedicationDetailSheet(
+        medication: detailMed,
+        pregnancyData: pregnancyData,
+        interactions: interactions,
+        onAddTreatment: () {
+          Navigator.pop(context); // Close detail sheet
+          _showAddTreatmentSheet(medication);
+        },
+      ),
+    );
+  }
+
+  void _showAddTreatmentSheet(Map<String, dynamic> medication) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -154,7 +193,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
     );
   }
 
-  // ── Show treatment detail bottom sheet when a treatment card is tapped ──
+  // ── Show treatment detail bottom sheet ────────────────────────────
   void _onTreatmentTapped(Map<String, dynamic> t) {
     showModalBottomSheet(
       context: context,
@@ -193,8 +232,9 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
           indicatorColor: AppColors.primary,
           indicatorSize: TabBarIndicatorSize.label,
           tabs: const [
-            Tab(text: 'Mes traitements', icon: Icon(Icons.medication_outlined, size: 20)),
+            Tab(text: 'Traitements', icon: Icon(Icons.medication_outlined, size: 20)),
             Tab(text: 'Rechercher', icon: Icon(Icons.search_outlined, size: 20)),
+            Tab(text: 'Comparer', icon: Icon(Icons.compare_arrows, size: 20)),
           ],
         ),
       ),
@@ -206,6 +246,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
             children: [
               _buildTreatmentsTab(),
               _buildSearchTab(),
+              CompareTab(medicationService: ref.read(medicationServiceProvider)),
             ],
           ),
         ],
@@ -269,6 +310,18 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
     final med = t['medication'] as Map<String, dynamic>?;
     final schedules = t['schedules'] as List<dynamic>? ?? [];
     final active = _isActive(t);
+    final interactions = t['interactions'] as List<dynamic>? ?? [];
+
+    // Find the worst interaction
+    int worstPriority = 0;
+    for (final inter in interactions) {
+      if (inter is Map<String, dynamic>) {
+        final p = InteractionHelpers.severityPriority(inter['severity']?.toString());
+        if (p > worstPriority) {
+          worstPriority = p;
+        }
+      }
+    }
 
     return GestureDetector(
       onTap: () => _onTreatmentTapped(t),
@@ -278,7 +331,13 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: active ? AppColors.primary.withAlpha(38) : const Color(0xFFE0E0E0)),
+          border: Border.all(
+            color: worstPriority >= 4
+                ? AppColors.riskHigh.withAlpha(64)
+                : active
+                    ? AppColors.primary.withAlpha(38)
+                    : const Color(0xFFE0E0E0),
+          ),
           boxShadow: [BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 3))],
         ),
         child: Column(
@@ -371,9 +430,15 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                 }).toList(),
               ),
             ],
+            // ── Pregnancy risk badge ──────
             if (t['pregnancy_data'] != null && t['pregnancy_data'] is Map<String, dynamic>) ...[
               const SizedBox(height: 10),
               _buildPregnancyRiskBadge(t['pregnancy_data'] as Map<String, dynamic>),
+            ],
+            // ── Interactions badges ──────
+            if (interactions.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              _buildInteractionsBadges(interactions),
             ],
             const SizedBox(height: 8),
             Row(
@@ -387,6 +452,62 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildInteractionsBadges(List<dynamic> interactions) {
+    final sorted = List<dynamic>.from(interactions);
+    sorted.sort((a, b) {
+      final pa = InteractionHelpers.severityPriority((a as Map<String, dynamic>)['severity']?.toString());
+      final pb = InteractionHelpers.severityPriority((b as Map<String, dynamic>)['severity']?.toString());
+      return pb.compareTo(pa);
+    });
+
+    final shown = sorted.take(3).toList();
+    final remaining = sorted.length - shown.length;
+
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      children: [
+        ...shown.map((i) {
+          final inter = i as Map<String, dynamic>;
+          final severity = inter['severity']?.toString();
+          final color = InteractionHelpers.severityColor(severity);
+          final userMed = inter['user_medication']?.toString() ?? '?';
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: color.withAlpha(15),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: color.withAlpha(51)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(InteractionHelpers.severityIcon(severity), size: 12, color: color),
+                const SizedBox(width: 4),
+                Text(
+                  '⇌ $userMed',
+                  style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          );
+        }),
+        if (remaining > 0)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppColors.textSecondary.withAlpha(20),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              '+$remaining',
+              style: const TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w600),
+            ),
+          ),
+      ],
     );
   }
 
@@ -442,7 +563,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                 Text('Tapez au moins 2 caractères pour chercher',
                     style: TextStyle(color: AppColors.textSecondary.withAlpha(178), fontSize: 13)),
                 const SizedBox(height: 8),
-                Text('Appuyez sur un résultat pour l\'ajouter',
+                Text('Appuyez sur un résultat pour voir les détails',
                     style: TextStyle(color: AppColors.primary.withAlpha(128), fontSize: 12)),
               ]).animate().fadeIn(),
             ),
@@ -549,9 +670,9 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.add_circle_outline, size: 14, color: AppColors.primary),
+                      Icon(Icons.visibility_outlined, size: 14, color: AppColors.primary),
                       SizedBox(width: 4),
-                      Text('Ajouter comme traitement', style: TextStyle(fontSize: 11, color: AppColors.primary, fontWeight: FontWeight.w600)),
+                      Text('Voir détails & interactions', style: TextStyle(fontSize: 11, color: AppColors.primary, fontWeight: FontWeight.w600)),
                     ],
                   ),
                 ),
@@ -586,19 +707,9 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
     final currentTrimester = pregnancyData['current_trimester'] as String?;
     if (trimesterRisk == null) return const SizedBox.shrink();
 
-    Color color;
-    IconData icon;
-    String riskLabel;
-    switch (trimesterRisk) {
-      case 'UNSAFE':
-        color = AppColors.riskHigh; icon = Icons.dangerous_outlined; riskLabel = 'Dangereux'; break;
-      case 'CAUTION':
-        color = AppColors.riskMedium; icon = Icons.warning_amber_rounded; riskLabel = 'Prudence'; break;
-      case 'SAFE':
-        color = AppColors.riskLow; icon = Icons.check_circle_outline; riskLabel = 'Sûr'; break;
-      default:
-        color = AppColors.textSecondary; icon = Icons.help_outline; riskLabel = trimesterRisk;
-    }
+    final color = InteractionHelpers.pregnancyRiskColor(trimesterRisk);
+    final icon = InteractionHelpers.pregnancyRiskIcon(trimesterRisk);
+    final riskLabel = InteractionHelpers.pregnancyRiskLabel(trimesterRisk);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -797,7 +908,7 @@ class _AddTreatmentSheetState extends State<_AddTreatmentSheet> {
 
             // Frequency
             DropdownButtonFormField<String>(
-              initialValue: _frequency,
+              value: _frequency,
               decoration: const InputDecoration(
                 labelText: 'Fréquence',
                 prefixIcon: Icon(Icons.repeat, color: AppColors.primary),
@@ -939,7 +1050,7 @@ class _AddTreatmentSheetState extends State<_AddTreatmentSheet> {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// TREATMENT DETAIL BOTTOM SHEET
+// TREATMENT DETAIL BOTTOM SHEET (with interactions)
 // ═══════════════════════════════════════════════════════════════════════
 class _TreatmentDetailSheet extends StatelessWidget {
   final Map<String, dynamic> treatment;
@@ -950,6 +1061,7 @@ class _TreatmentDetailSheet extends StatelessWidget {
     final med = treatment['medication'] as Map<String, dynamic>?;
     final schedules = treatment['schedules'] as List<dynamic>? ?? [];
     final pregnancyData = treatment['pregnancy_data'] as Map<String, dynamic>?;
+    final interactions = treatment['interactions'] as List<dynamic>? ?? [];
 
     final medName = (med?['commercial_name'] ?? med?['name'] ?? 'Médicament inconnu').toString();
     final medDci = (med?['dci'] ?? '').toString();
@@ -971,103 +1083,149 @@ class _TreatmentDetailSheet extends StatelessWidget {
       default: freqLabel = freq;
     }
 
+    // Sort interactions by severity
+    final sortedInteractions = List<dynamic>.from(interactions);
+    sortedInteractions.sort((a, b) {
+      final pa = InteractionHelpers.severityPriority((a as Map<String, dynamic>)['severity']?.toString());
+      final pb = InteractionHelpers.severityPriority((b as Map<String, dynamic>)['severity']?.toString());
+      return pb.compareTo(pa);
+    });
+
     return Container(
+      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
       ),
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(width: 40, height: 4, decoration: BoxDecoration(color: AppColors.textLight, borderRadius: BorderRadius.circular(2))),
-            ),
-            const SizedBox(height: 20),
-
-            // Medication header
-            Row(
-              children: [
-                Container(
-                  width: 56, height: 56,
-                  decoration: BoxDecoration(
-                    color: AppColors.accent.withAlpha(30),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Center(child: Text('💊', style: TextStyle(fontSize: 28))),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Container(width: 40, height: 4, decoration: BoxDecoration(color: AppColors.textLight, borderRadius: BorderRadius.circular(2))),
+          ),
+          Flexible(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Medication header
+                  Row(
                     children: [
-                      Text(medName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-                      if (medDci.isNotEmpty)
-                        Text(medDci, style: const TextStyle(fontSize: 13, color: AppColors.primary, fontWeight: FontWeight.w500)),
+                      Container(
+                        width: 56, height: 56,
+                        decoration: BoxDecoration(
+                          color: AppColors.accent.withAlpha(30),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Center(child: Text('💊', style: TextStyle(fontSize: 28))),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(medName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                            if (medDci.isNotEmpty)
+                              Text(medDci, style: const TextStyle(fontSize: 13, color: AppColors.primary, fontWeight: FontWeight.w500)),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const Divider(),
-            const SizedBox(height: 12),
+                  const SizedBox(height: 16),
+                  const Divider(),
+                  const SizedBox(height: 12),
 
-            // Info grid
-            _DetailRow(icon: Icons.straighten_outlined, label: 'Dose', value: dose),
-            _DetailRow(icon: Icons.repeat, label: 'Fréquence', value: freqLabel),
-            _DetailRow(icon: Icons.calendar_today_outlined, label: 'Date début', value: startDate),
-            _DetailRow(icon: Icons.event_outlined, label: 'Date fin', value: endDate ?? 'En cours'),
-            if (medForm.isNotEmpty) _DetailRow(icon: Icons.local_pharmacy_outlined, label: 'Forme', value: medForm),
-            if (medDosage.isNotEmpty) _DetailRow(icon: Icons.science_outlined, label: 'Dosage', value: medDosage),
-            if (medPrice != null) _DetailRow(icon: Icons.attach_money, label: 'Prix public', value: '$medPrice DT'),
+                  // Info grid
+                  _DetailRow(icon: Icons.straighten_outlined, label: 'Dose', value: dose),
+                  _DetailRow(icon: Icons.repeat, label: 'Fréquence', value: freqLabel),
+                  _DetailRow(icon: Icons.calendar_today_outlined, label: 'Date début', value: startDate),
+                  _DetailRow(icon: Icons.event_outlined, label: 'Date fin', value: endDate ?? 'En cours'),
+                  if (medForm.isNotEmpty) _DetailRow(icon: Icons.local_pharmacy_outlined, label: 'Forme', value: medForm),
+                  if (medDosage.isNotEmpty) _DetailRow(icon: Icons.science_outlined, label: 'Dosage', value: medDosage),
+                  if (medPrice != null) _DetailRow(icon: Icons.attach_money, label: 'Prix public', value: '$medPrice DT'),
 
-            if (schedules.isNotEmpty) ...[
-              const SizedBox(height: 16),
-              const Text('Horaires de prise', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8, runSpacing: 8,
-                children: schedules.map((s) {
-                  final time = (s['dose_time'] ?? '--').toString();
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withAlpha(20),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.primary.withAlpha(38)),
+                  if (schedules.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    const Text('Horaires de prise', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8, runSpacing: 8,
+                      children: schedules.map((s) {
+                        final time = (s['dose_time'] ?? '--').toString();
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withAlpha(20),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppColors.primary.withAlpha(38)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.alarm, size: 16, color: AppColors.primary),
+                              const SizedBox(width: 6),
+                              Text(time, style: const TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        );
+                      }).toList(),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.alarm, size: 16, color: AppColors.primary),
-                        const SizedBox(width: 6),
-                        Text(time, style: const TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.w600)),
-                      ],
+                  ],
+
+                  // ── Pregnancy risk ──────────────────────
+                  if (pregnancyData != null) ...[
+                    const SizedBox(height: 20),
+                    _buildPregnancyRiskSection(pregnancyData),
+                  ],
+
+                  // ── Interactions ────────────────────────
+                  if (sortedInteractions.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    _buildInteractionsSection(sortedInteractions),
+                  ],
+
+                  if (sortedInteractions.isEmpty) ...[
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withAlpha(12),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: AppColors.success.withAlpha(38)),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.check_circle_outline, color: AppColors.success, size: 20),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Aucune interaction détectée avec vos traitements actuels',
+                              style: TextStyle(fontSize: 13, color: AppColors.success, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                }).toList(),
-              ),
-            ],
+                  ],
 
-            // Pregnancy risk
-            if (pregnancyData != null) ...[
-              const SizedBox(height: 20),
-              _buildPregnancyRiskSection(pregnancyData),
-            ],
-
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Fermer'),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Fermer'),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -1078,15 +1236,9 @@ class _TreatmentDetailSheet extends StatelessWidget {
     final currentTrimester = data['current_trimester'] as String?;
     if (trimesterRisk == null || dciRisk == null) return const SizedBox.shrink();
 
-    Color riskColor;
-    IconData riskIcon;
-    String riskLabel;
-    switch (trimesterRisk) {
-      case 'UNSAFE': riskColor = AppColors.riskHigh; riskIcon = Icons.dangerous_outlined; riskLabel = 'Dangereux'; break;
-      case 'CAUTION': riskColor = AppColors.riskMedium; riskIcon = Icons.warning_amber_rounded; riskLabel = 'Prudence'; break;
-      case 'SAFE': riskColor = AppColors.riskLow; riskIcon = Icons.check_circle_outline; riskLabel = 'Sûr'; break;
-      default: riskColor = AppColors.textSecondary; riskIcon = Icons.help_outline; riskLabel = trimesterRisk;
-    }
+    final riskColor = InteractionHelpers.pregnancyRiskColor(trimesterRisk);
+    final riskIcon = InteractionHelpers.pregnancyRiskIcon(trimesterRisk);
+    final riskLabel = InteractionHelpers.pregnancyRiskLabel(trimesterRisk);
 
     return Container(
       width: double.infinity,
@@ -1118,12 +1270,110 @@ class _TreatmentDetailSheet extends StatelessWidget {
           ),
           if (dciRisk['overall'] != null) ...[
             const SizedBox(height: 6),
-            Text('Statut global : ${dciRisk['overall']}', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+            Text('Statut global : ${InteractionHelpers.pregnancyRiskLabel(dciRisk['overall']?.toString())}',
+                style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
           ],
           if (dciRisk['summary'] != null && dciRisk['summary'].toString().isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(dciRisk['summary'].toString(), style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
           ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInteractionsSection(List<dynamic> interactions) {
+    final hasHighRisk = interactions.any((i) =>
+        InteractionHelpers.severityPriority((i as Map<String, dynamic>)['severity']?.toString()) >= 4);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: hasHighRisk ? AppColors.riskHigh.withAlpha(8) : AppColors.riskMedium.withAlpha(8),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: hasHighRisk ? AppColors.riskHigh.withAlpha(38) : AppColors.riskMedium.withAlpha(38),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                hasHighRisk ? Icons.warning_amber_rounded : Icons.compare_arrows,
+                size: 20,
+                color: hasHighRisk ? AppColors.riskHigh : AppColors.riskMedium,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Interactions médicamenteuses (${interactions.length})',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: hasHighRisk ? AppColors.riskHigh : AppColors.riskMedium,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ...interactions.map((i) {
+            final inter = i as Map<String, dynamic>;
+            final severity = inter['severity']?.toString();
+            final color = InteractionHelpers.severityColor(severity);
+            final userMed = inter['user_medication']?.toString() ?? 'Inconnu';
+            final description = inter['description'] ?? inter['interaction'] ?? '';
+            final dci1 = inter['dci1']?.toString() ?? '';
+            final dci2 = inter['dci2']?.toString() ?? '';
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: color.withAlpha(51)),
+                boxShadow: [BoxShadow(color: color.withAlpha(10), blurRadius: 4, offset: const Offset(0, 2))],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(InteractionHelpers.severityIcon(severity), size: 16, color: color),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          'Avec : $userMed',
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: color),
+                        ),
+                      ),
+                      InteractionHelpers.severityBadge(severity, compact: true),
+                    ],
+                  ),
+                  if (dci1.isNotEmpty && dci2.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      '$dci1 ↔ $dci2',
+                      style: const TextStyle(fontSize: 11, color: AppColors.textSecondary, fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                  if (description.toString().isNotEmpty) ...[
+                    const SizedBox(height: 6),
+                    Text(
+                      description.toString(),
+                      style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.3),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ],
+              ),
+            );
+          }),
         ],
       ),
     );

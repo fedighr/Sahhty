@@ -1,0 +1,1381 @@
+%% ============================================================================
+%%  Rapport de Projet – Sahhty : Application Mobile de Suivi de Santé
+%%                     pour Femmes Enceintes
+%% ============================================================================
+\documentclass[12pt,a4paper,twoside]{report}
+
+%% ── Packages ────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm, headheight=15pt}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pifont}
+\usepackage{fontawesome5}
+\usepackage{tcolorbox}
+\usepackage{array}
+\usepackage{multirow}
+
+%% ── Couleurs du projet ─────────────────────────────────────────────────────
+\definecolor{sahhtyPrimary}{HTML}{E8878F}
+\definecolor{sahhtyDark}{HTML}{C75B6A}
+\definecolor{sahhtyAccent}{HTML}{80CBC4}
+\definecolor{sahhtyBg}{HTML}{FFF5F5}
+\definecolor{codeGray}{HTML}{F5F5F5}
+\definecolor{codeBorder}{HTML}{E0E0E0}
+\definecolor{riskLow}{HTML}{66BB6A}
+\definecolor{riskMedium}{HTML}{FFA726}
+\definecolor{riskHigh}{HTML}{EF5350}
+
+%% ── Hyperref ────────────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=sahhtyDark,
+  urlcolor=sahhtyAccent,
+  citecolor=sahhtyPrimary,
+  pdftitle={Rapport Sahhty},
+  pdfauthor={Équipe Sahhty},
+}
+
+%% ── Listings (code) ────────────────────────────────────────────────────────
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codeGray},
+  frame=single,
+  rulecolor=\color{codeBorder},
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{sahhtyDark}\bfseries,
+  stringstyle=\color{sahhtyAccent},
+  commentstyle=\color{gray}\itshape,
+}
+
+%% ── En-têtes / pieds de page ────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ── tcolorbox styles ───────────────────────────────────────────────────────
+\newtcolorbox{infobox}[1][]{
+  colback=sahhtyBg,
+  colframe=sahhtyPrimary,
+  fonttitle=\bfseries,
+  title=#1,
+  rounded corners,
+  boxrule=0.8pt,
+}
+
+\newtcolorbox{techbox}[1][]{
+  colback=blue!3,
+  colframe=sahhtyAccent!80!black,
+  fonttitle=\bfseries,
+  title=#1,
+  rounded corners,
+  boxrule=0.8pt,
+}
+
+%% ============================================================================
+%%                          DÉBUT DU DOCUMENT
+%% ============================================================================
+\begin{document}
+
+%% ── PAGE DE TITRE ───────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{1cm}
+
+  % Logo placeholder
+  % \includegraphics[width=0.3\textwidth]{images/logo_universite.png}\\[1cm]
+
+  {\Large\textsc{Université / École}\\[0.3cm]}
+  {\large\textsc{Département d'Informatique}\\[2cm]}
+
+  \rule{\textwidth}{1.5pt}\\[0.5cm]
+  {\Huge\bfseries\textcolor{sahhtyPrimary}{Sahhty}\\[0.3cm]}
+  {\LARGE Application Mobile de Suivi de Santé\\pour Femmes Enceintes\\[0.5cm]}
+  \rule{\textwidth}{1.5pt}\\[2cm]
+
+  {\large\textbf{Rapport de Projet de Fin d'Études}\\[1.5cm]}
+
+  \begin{tabular}{rl}
+    \textbf{Réalisé par :}   & [Nom Étudiant 1] \\
+                              & [Nom Étudiant 2] \\[0.5cm]
+    \textbf{Encadré par :}   & [Nom Encadrant] \\[0.5cm]
+    \textbf{Année universitaire :} & 2025 -- 2026 \\
+  \end{tabular}
+
+  \vfill
+  {\small Avril 2026}
+\end{titlepage}
+
+%% ── DÉDICACES (optionnel) ───────────────────────────────────────────────────
+\chapter*{Dédicaces}
+\addcontentsline{toc}{chapter}{Dédicaces}
+\vspace{2cm}
+\begin{center}
+\textit{À nos familles, pour leur soutien inconditionnel\ldots}
+\end{center}
+\newpage
+
+%% ── REMERCIEMENTS ───────────────────────────────────────────────────────────
+\chapter*{Remerciements}
+\addcontentsline{toc}{chapter}{Remerciements}
+Nous tenons à remercier notre encadrant pour son accompagnement tout au long de ce projet. Nous remercions également l'ensemble du corps enseignant pour la formation de qualité reçue.
+\newpage
+
+%% ── TABLE DES MATIÈRES ─────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+\newpage
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 1 — INTRODUCTION GÉNÉRALE
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Introduction Générale}
+
+\section{Contexte}
+La santé maternelle représente un enjeu majeur de santé publique à l'échelle mondiale. Selon l'Organisation Mondiale de la Santé (OMS), environ 295\,000 femmes décèdent chaque année de causes liées à la grossesse ou à l'accouchement. La majorité de ces décès sont évitables grâce à un suivi médical régulier et une détection précoce des facteurs de risque.
+
+Dans les pays en développement, et notamment en Tunisie, l'accès à un suivi personnalisé reste limité par des contraintes géographiques, économiques et organisationnelles. L'essor des technologies mobiles offre une opportunité unique de combler ce fossé en proposant des solutions de télésanté accessibles et ergonomiques.
+
+\section{Problématique}
+Les femmes enceintes doivent surveiller régulièrement plusieurs paramètres de santé (tension artérielle, glycémie, poids, température, fréquence cardiaque, saturation en oxygène). Le manque de suivi continu entre les consultations médicales peut conduire à une détection tardive de complications telles que la pré-éclampsie, le diabète gestationnel ou les anomalies cardiaques fœtales.
+
+\textbf{Comment offrir aux femmes enceintes un outil intelligent de suivi de santé capable de détecter automatiquement les niveaux de risque et d'alerter les patientes et leurs médecins en temps réel~?}
+
+\section{Objectifs du projet}
+Le projet \textbf{Sahhty} (صحّتي — «~ma santé~» en arabe tunisien) vise à développer une application mobile complète permettant~:
+
+\begin{enumerate}[label=\textcolor{sahhtyPrimary}{\arabic*.}]
+  \item \textbf{Enregistrement et suivi des mesures de santé} — tension, glycémie, poids, température, rythme cardiaque et oxygène.
+  \item \textbf{Évaluation automatique du risque} via un moteur de Machine Learning entraîné sur le \emph{Maternal Health Risk Data Set}.
+  \item \textbf{Système d'alertes intelligentes} — alertes de santé, rappels de médicaments, rappels de rendez-vous, alertes système.
+  \item \textbf{Gestion des rendez-vous} entre patientes et médecins.
+  \item \textbf{Recherche de médicaments} avec vérification de sécurité par trimestre de grossesse via la base DCI.
+  \item \textbf{Suivi de grossesse} avec calcul automatique des semaines et dates clés.
+  \item \textbf{Notifications push en temps réel} via Firebase Cloud Messaging (FCM).
+\end{enumerate}
+
+\section{Méthodologie}
+Le développement a suivi une approche \textbf{Agile} avec des sprints itératifs. L'équipe est composée de deux développeurs~:
+\begin{itemize}
+  \item \textbf{Développeur Backend} — responsable de l'API REST Django, du moteur ML et de l'infrastructure Firebase.
+  \item \textbf{Développeur Frontend} — responsable de l'application Flutter, de l'intégration API et du design UI/UX.
+\end{itemize}
+
+\section{Plan du rapport}
+Ce rapport est organisé comme suit~:
+\begin{itemize}
+  \item \textbf{Chapitre 2} — Analyse des besoins fonctionnels et non fonctionnels.
+  \item \textbf{Chapitre 3} — Architecture système globale.
+  \item \textbf{Chapitre 4} — Implémentation du backend Django.
+  \item \textbf{Chapitre 5} — Moteur de Machine Learning.
+  \item \textbf{Chapitre 6} — Implémentation du frontend Flutter.
+  \item \textbf{Chapitre 7} — Intégration Firebase et notifications.
+  \item \textbf{Chapitre 8} — Design UI/UX et animations.
+  \item \textbf{Chapitre 9} — Tests et validation.
+  \item \textbf{Chapitre 10} — Conclusion et perspectives.
+\end{itemize}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 2 — ANALYSE DES BESOINS
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Analyse des Besoins}
+
+\section{Acteurs du système}
+\begin{table}[H]
+\centering
+\caption{Acteurs principaux du système Sahhty}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Acteur} & \textbf{Description} \\
+\midrule
+Patiente       & Femme enceinte utilisant l'application pour suivre sa santé. \\
+Médecin        & Professionnel de santé consultant les données de ses patientes. \\
+Administrateur & Gère les utilisateurs, les spécialités et les médicaments. \\
+Système        & Déclenche les alertes automatiques et les évaluations de risque. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Besoins fonctionnels}
+
+\subsection{Module Authentification}
+\begin{itemize}
+  \item Inscription avec vérification OTP par email (via Brevo SMTP).
+  \item Connexion par email/mot de passe avec jetons JWT (access + refresh).
+  \item Mot de passe oublié avec vérification par code OTP.
+  \item Vérification de disponibilité d'email et de téléphone.
+  \item Suppression de compte avec double confirmation.
+\end{itemize}
+
+\subsection{Module Profil Patient}
+\begin{itemize}
+  \item Création du profil médical~: taille, poids, groupe sanguin, maladies chroniques, allergies, médicaments actuels.
+  \item Saisie du cycle menstruel~: statut (actif, ménopause, prépubère), dates de début et fin.
+  \item Modification de toutes les informations personnelles et médicales.
+\end{itemize}
+
+\subsection{Module Grossesse}
+\begin{itemize}
+  \item Déclaration de grossesse avec date de test, résultat, date de début et date prévue d'accouchement.
+  \item Calcul automatique de la semaine de grossesse actuelle.
+  \item Suivi de l'évolution par trimestre avec images illustratives.
+  \item Modification et suppression de grossesse.
+\end{itemize}
+
+\subsection{Module Mesures de Santé}
+\begin{itemize}
+  \item Saisie de 6 types de mesures~: poids (kg), tension artérielle (mmHg), glycémie (g/L), température (°C), fréquence cardiaque (bpm), saturation en oxygène.
+  \item Évaluation automatique du risque (LOW, MEDIUM, HIGH) après chaque saisie via le moteur ML.
+  \item Historique complet des mesures avec filtrage par type.
+  \item Affichage du dernier bilan de santé sur la page d'accueil.
+\end{itemize}
+
+\subsection{Module Médicaments et Traitements}
+\begin{itemize}
+  \item Recherche de médicaments par nom, DCI, dosage ou forme (recherche trigram PostgreSQL).
+  \item Affichage des détails~: nom commercial, forme, dosage, prix, catégorie.
+  \item Vérification de sécurité par trimestre de grossesse (via base DCI).
+  \item Création de traitements avec planification horaire (schedules).
+  \item Consultation et suppression des traitements en cours.
+\end{itemize}
+
+\subsection{Module Rendez-vous}
+\begin{itemize}
+  \item Création de rendez-vous avec un médecin (date, motif).
+  \item Gestion des statuts~: en attente, confirmé, annulé, terminé.
+  \item Rappels automatiques la veille des rendez-vous confirmés.
+\end{itemize}
+
+\subsection{Module Alertes}
+\begin{itemize}
+  \item 4 types d'alertes~: santé (HEALTH), rappel (REMINDER), message médecin (DOCTOR\_MESSAGE), système (SYSTEM).
+  \item 3 niveaux~: information (INFO), avertissement (WARNING), critique (CRITICAL).
+  \item 3 états~: nouvelle (NEW), lue (READ), résolue (RESOLVED).
+  \item Alertes automatiques~:
+    \begin{itemize}
+      \item Mesures manquantes depuis 7 jours.
+      \item Rendez-vous non confirmé la veille.
+      \item Aucun rendez-vous depuis 14 jours pour une grossesse active.
+      \item Rappels de prise de médicaments.
+      \item Rappels de rendez-vous.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Module Paramètres}
+\begin{itemize}
+  \item Modification du profil personnel (nom, téléphone, date de naissance).
+  \item Modification des informations médicales (taille, poids, groupe sanguin, allergies, etc.).
+  \item Modification du cycle menstruel.
+  \item Modification de la grossesse en cours.
+  \item Changement de mot de passe.
+  \item Suppression de compte.
+  \item Déconnexion.
+\end{itemize}
+
+\section{Besoins non fonctionnels}
+\begin{table}[H]
+\centering
+\caption{Exigences non fonctionnelles}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Exigence} & \textbf{Description} \\
+\midrule
+Sécurité         & Authentification JWT avec refresh token automatique. Stockage sécurisé (FlutterSecureStorage). \\
+Performance      & Temps de réponse API < 2s. Timeout de 30 secondes. \\
+Ergonomie        & Interface intuitive, thème adapté aux femmes enceintes, animations fluides. \\
+Scalabilité      & Architecture service-layer découplée côté backend. \\
+Fiabilité        & Gestion d'erreurs exhaustive, graceful degradation. \\
+Disponibilité    & Scheduler APScheduler pour les tâches automatisées. \\
+Compatibilité    & Android et iOS via Flutter cross-platform. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 3 — ARCHITECTURE SYSTÈME
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Architecture Système}
+
+\section{Architecture globale}
+Le système Sahhty adopte une architecture \textbf{trois-tiers} classique~:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners, minimum width=5cm, minimum height=1.5cm, align=center, font=\small\bfseries},
+  arrow/.style={->, >=stealth, thick}
+]
+  \node[box, fill=sahhtyPrimary!20] (frontend) at (0,6) {Frontend Flutter\\{\footnotesize Application Mobile}};
+  \node[box, fill=sahhtyAccent!20] (backend) at (0,3) {Backend Django REST\\{\footnotesize API REST + ML Engine}};
+  \node[box, fill=yellow!15] (db) at (-3.5,0) {PostgreSQL\\{\footnotesize Base de données}};
+  \node[box, fill=orange!15] (firebase) at (3.5,0) {Firebase\\{\footnotesize FCM + Cloud}};
+
+  \draw[arrow] (frontend) -- node[right, font=\footnotesize] {HTTP/JSON} (backend);
+  \draw[arrow] (backend) -- node[left, font=\footnotesize] {ORM Django} (db);
+  \draw[arrow] (backend) -- node[right, font=\footnotesize] {firebase-admin} (firebase);
+  \draw[arrow, dashed] (firebase) -- node[right, font=\footnotesize] {Push} (frontend);
+\end{tikzpicture}
+\caption{Architecture trois-tiers de Sahhty}
+\end{figure}
+
+\section{Stack technologique}
+\begin{table}[H]
+\centering
+\caption{Technologies utilisées dans le projet Sahhty}
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Couche} & \textbf{Technologie} & \textbf{Version / Détail} \\
+\midrule
+\multirow{4}{*}{Backend} & Django          & 6.0.2 \\
+                          & Django REST Framework & 3.16.1 \\
+                          & SimpleJWT       & 5.5.1 — Authentification JWT \\
+                          & APScheduler     & 3.11.2 — Tâches planifiées \\
+\midrule
+\multirow{4}{*}{Frontend} & Flutter         & SDK $\geq$ 3.3.0 \\
+                           & Riverpod       & 2.6.1 — Gestion d'état \\
+                           & Go Router      & 14.8.1 — Navigation déclarative \\
+                           & Dio            & 5.7.0 — Client HTTP \\
+\midrule
+Base de données & PostgreSQL & Hébergée (Neon / cloud) \\
+\midrule
+ML              & scikit-learn & Random Forest, SVM, etc. \\
+\midrule
+\multirow{2}{*}{Firebase} & firebase-admin (Python) & 7.2.0 \\
+                           & firebase\_core (Flutter) & 3.15.2 \\
+\midrule
+Documentation API & drf-spectacular & 0.29.0 — Swagger/OpenAPI \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Architecture Backend}
+Le backend suit le pattern \textbf{Service Layer}. Chaque application Django est organisée en~:
+
+\begin{itemize}
+  \item \texttt{models.py} — Modèles de données (ORM Django).
+  \item \texttt{serializers.py} — Validation et sérialisation (DRF).
+  \item \texttt{services.py} — Logique métier isolée.
+  \item \texttt{views.py} — Points d'entrée API (ViewSets).
+  \item \texttt{urls.py} — Routage via \texttt{DefaultRouter}.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Applications Django du projet}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Application} & \textbf{Responsabilité} \\
+\midrule
+\texttt{users}          & Authentification, gestion des comptes, dispositifs FCM \\
+\texttt{patients}       & Profils patients, cycles menstruels \\
+\texttt{doctors}        & Profils médecins, spécialités, villes \\
+\texttt{Pregnancies}    & Suivi des grossesses \\
+\texttt{measurements}   & Mesures de santé, évaluation de risque \\
+\texttt{medications}    & Médicaments, traitements, planifications \\
+\texttt{dci}            & DCI (sécurité par trimestre), interactions \\
+\texttt{alerts}         & Alertes, rappels, scheduler \\
+\texttt{appointments}   & Gestion des rendez-vous \\
+\texttt{medical\_files} & Fichiers médicaux (rapports, échographies) \\
+\texttt{ml\_engine}     & Moteur de Machine Learning \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Architecture Frontend}
+L'application Flutter adopte une architecture \textbf{Feature-First} combinée avec une couche \texttt{data} centralisée~:
+
+\begin{verbatim}
+lib/
+├── core/
+│   ├── constants/     → ApiEndpoints, StorageKeys
+│   ├── routes/        → GoRouter configuration
+│   ├── theme/         → AppColors, AppTheme (Material 3)
+│   ├── utils/         → Utilitaires
+│   └── widgets/       → Widgets réutilisables animés
+├── data/
+│   ├── providers/     → Service providers (Riverpod)
+│   └── services/      → Services API (Dio)
+├── features/
+│   ├── auth/          → Login, Register, Verify, Setup
+│   ├── home/          → MainShell, PatientHomeScreen
+│   ├── measurements/  → Mesures, Ajout de mesure
+│   ├── medications/   → Médicaments, recherche, traitements
+│   ├── pregnancy/     → Suivi grossesse
+│   ├── alerts/        → Notifications & alertes
+│   ├── profile/       → Profil utilisateur
+│   ├── doctors/       → Liste des médecins
+│   ├── settings/      → Paramètres CRUD complet
+│   └── splash/        → Écran de démarrage
+└── main.dart          → Point d'entrée, Firebase init
+\end{verbatim}
+
+\section{Schéma de la base de données}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  entity/.style={draw, rectangle, rounded corners=3pt, fill=sahhtyPrimary!10, minimum width=3.5cm, minimum height=0.8cm, font=\small\bfseries},
+  rel/.style={->, >=stealth, thick, gray}
+]
+  % Entities
+  \node[entity] (user) at (0,8) {User};
+  \node[entity] (fcm) at (4,8) {FCMDevice};
+  \node[entity] (patient) at (-3,6) {Patient};
+  \node[entity] (doctor) at (3,6) {Doctor};
+  \node[entity] (speciality) at (6,6) {Speciality};
+  \node[entity] (menstrual) at (-6,4) {MenstrualCycle};
+  \node[entity] (pregnancy) at (-3,4) {Pregnancy};
+  \node[entity] (measurement) at (0,2) {Measurement};
+  \node[entity] (risk) at (3,2) {RiskAssessment};
+  \node[entity] (treatment) at (-3,0) {Treatment};
+  \node[entity] (medication) at (0,0) {Medication};
+  \node[entity] (schedule) at (-6,0) {TreatmentSchedule};
+  \node[entity] (alert) at (6,4) {Alert};
+  \node[entity] (appointment) at (0,4) {Appointment};
+  \node[entity] (dci) at (3,0) {DCI};
+  \node[entity] (attachment) at (6,2) {Attachment};
+
+  % Relations
+  \draw[rel] (fcm) -- (user);
+  \draw[rel] (patient) -- (user);
+  \draw[rel] (doctor) -- (user);
+  \draw[rel] (doctor) -- (speciality);
+  \draw[rel] (menstrual) -- (patient);
+  \draw[rel] (pregnancy) -- (patient);
+  \draw[rel] (measurement) -- (patient);
+  \draw[rel] (risk) -- (patient);
+  \draw[rel] (treatment) -- (patient);
+  \draw[rel] (treatment) -- (medication);
+  \draw[rel] (schedule) -- (treatment);
+  \draw[rel] (alert) -- (user);
+  \draw[rel] (appointment) -- (patient);
+  \draw[rel] (appointment) -- (doctor);
+  \draw[rel] (attachment) -- (patient);
+\end{tikzpicture}
+\caption{Schéma entité-relation simplifié de la base de données}
+\end{figure}
+
+\section{API REST — Endpoints principaux}
+\begin{longtable}{p{2cm}p{6.5cm}p{4cm}}
+\caption{Principaux endpoints de l'API REST Sahhty} \\
+\toprule
+\textbf{Méthode} & \textbf{Endpoint} & \textbf{Description} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Méthode} & \textbf{Endpoint} & \textbf{Description} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\multicolumn{3}{l}{\textbf{Authentification (\texttt{/users/auth/})}} \\
+\midrule
+POST & \texttt{/users/auth/signup/} & Inscription \\
+POST & \texttt{/users/auth/signin/} & Connexion \\
+POST & \texttt{/users/auth/verify\_code/} & Vérification OTP \\
+POST & \texttt{/users/auth/resend\_code/} & Renvoi du code OTP \\
+POST & \texttt{/users/auth/verify\_reset\_email/} & Vérification email (reset) \\
+POST & \texttt{/users/auth/verify\_reset\_code/} & Vérification code (reset) \\
+POST & \texttt{/users/auth/forget\_password/} & Nouveau mot de passe \\
+POST & \texttt{/users/auth/is\_email\_available/} & Vérifier email \\
+POST & \texttt{/users/auth/verify\_phone/} & Vérifier téléphone \\
+DELETE & \texttt{/users/auth/\{id\}/delete\_account/} & Supprimer compte \\
+POST & \texttt{/users/refresh/} & Rafraîchir token JWT \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{Dispositifs FCM (\texttt{/users/devices/})}} \\
+\midrule
+POST & \texttt{/users/devices/register\_device/} & Enregistrer token FCM \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{Patients (\texttt{/patients/PatientService/})}} \\
+\midrule
+POST & \texttt{.../create\_patient/} & Créer profil patient \\
+GET  & \texttt{.../\{pk\}/get\_patient\_by\_id/} & Obtenir profil patient \\
+PUT  & \texttt{.../\{pk\}/update\_patient/} & Modifier profil patient \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{Grossesses (\texttt{/pregnancies/PregnancyService/})}} \\
+\midrule
+POST & \texttt{.../create\_pregnancy/} & Déclarer grossesse \\
+GET  & \texttt{.../\{pk\}/get\_current\_pregnancy/} & Grossesse en cours \\
+PUT  & \texttt{.../\{pk\}/update\_pregnancy/} & Modifier grossesse \\
+DELETE & \texttt{.../\{pk\}/delete\_pregnancy/} & Supprimer grossesse \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{Mesures (\texttt{/measurements/MeasurementService/})}} \\
+\midrule
+POST & \texttt{.../create\_measurement/} & Saisir une mesure \\
+GET  & \texttt{.../\{pk\}/get\_latest\_measurements/} & Dernières mesures \\
+GET  & \texttt{.../\{pk\}/get\_patient\_measurements/} & Historique complet \\
+GET  & \texttt{.../\{pk\}/get\_risk\_assessment/} & Évaluation de risque \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{Médicaments (\texttt{/medications/medicationsService/})}} \\
+\midrule
+GET  & \texttt{.../search/?q=} & Recherche médicaments \\
+POST & \texttt{.../create\_treatment\_with\_schedules/} & Créer traitement \\
+GET  & \texttt{.../\{pk\}/get\_treatments\_by\_patient\_id/} & Traitements patient \\
+DELETE & \texttt{.../\{pk\}/delete\_treatment\_by\_id/} & Supprimer traitement \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{Alertes (\texttt{/alerts/AlertService/})}} \\
+\midrule
+GET  & \texttt{.../\{userId\}/get\_alerts\_by\_user/} & Alertes utilisateur \\
+PUT  & \texttt{.../\{alertId\}/mark\_as\_read/} & Marquer comme lue \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{Médecins (\texttt{/doctors/DoctorService/})}} \\
+\midrule
+GET  & \texttt{.../get\_all\_doctors/} & Tous les médecins \\
+GET  & \texttt{.../\{pk\}/get\_doctor\_by\_id/} & Détails médecin \\
+\end{longtable}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 4 — IMPLÉMENTATION BACKEND
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Implémentation du Backend}
+
+\section{Configuration du projet Django}
+Le projet Django est configuré dans \texttt{config/settings.py} avec les éléments clés suivants~:
+
+\begin{itemize}
+  \item \textbf{Base de données} — PostgreSQL hébergée dans le cloud (URL configurée via variable d'environnement \texttt{DATABASE\_URL}).
+  \item \textbf{Authentification} — \texttt{rest\_framework\_simplejwt} avec un access token de 30 minutes et un refresh token de 7 jours.
+  \item \textbf{CORS} — \texttt{django-cors-headers} avec \texttt{CORS\_ALLOW\_ALL\_ORIGINS = True} pour le développement.
+  \item \textbf{Documentation API} — \texttt{drf-spectacular} générant automatiquement un schéma OpenAPI 3 et une interface Swagger accessible à \texttt{/api/docs/}.
+  \item \textbf{Tâches planifiées} — \texttt{django-apscheduler} pour le stockage persistant des jobs.
+\end{itemize}
+
+\section{Module Utilisateurs (\texttt{users})}
+
+\subsection{Modèle \texttt{User}}
+Le modèle utilisateur personnalisé hérite de \texttt{AbstractBaseUser} et \texttt{PermissionsMixin}~:
+
+\begin{table}[H]
+\centering
+\caption{Champs du modèle User}
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Champ} & \textbf{Type} & \textbf{Description} \\
+\midrule
+\texttt{first\_name}       & CharField(25) & Prénom (lettres uniquement) \\
+\texttt{last\_name}        & CharField(25) & Nom (lettres uniquement) \\
+\texttt{birth\_date}       & DateField     & Date de naissance \\
+\texttt{email}             & EmailField    & Email unique — identifiant \\
+\texttt{phone}             & CharField(30) & Téléphone unique \\
+\texttt{gender}            & CharField(1)  & M (Homme) / F (Femme) \\
+\texttt{role}              & CharField(1)  & P (Patient) / D (Docteur) \\
+\texttt{is\_verified}      & BooleanField  & Email vérifié par OTP \\
+\texttt{verification\_code}& CharField(6)  & Code OTP temporaire \\
+\texttt{expiration\_date}  & DateTimeField & Expiration du code OTP \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Modèle \texttt{FCMDevice}}
+Stocke les tokens Firebase Cloud Messaging pour les notifications push~:
+\begin{itemize}
+  \item \texttt{fcm\_token} — Token FCM unique.
+  \item \texttt{user} — Clé étrangère vers \texttt{User} (relation many-to-one).
+\end{itemize}
+
+\subsection{Service d'authentification}
+Le \texttt{AuthService} implémente la logique métier~:
+\begin{enumerate}
+  \item \textbf{Inscription} — Vérification de l'unicité email/téléphone, création de l'utilisateur, envoi du code OTP par email.
+  \item \textbf{Connexion} — Vérification des identifiants, génération des tokens JWT enrichis (email, nom, genre, rôle, patient\_id ou doctor\_id).
+  \item \textbf{Vérification OTP} — Validation du code avec gestion de l'expiration et renvoi automatique.
+  \item \textbf{Réinitialisation du mot de passe} — Flux en 3 étapes (vérification email → code OTP → nouveau mot de passe).
+\end{enumerate}
+
+\section{Module Patients (\texttt{patients})}
+
+\subsection{Modèle \texttt{Patient}}
+\begin{itemize}
+  \item \texttt{height} (IntegerField) — Taille en cm.
+  \item \texttt{weight} (DecimalField) — Poids en kg.
+  \item \texttt{blood\_type} — Groupe sanguin (8 choix : A+, A-, B+, B-, AB+, AB-, O+, O-).
+  \item \texttt{chronic\_diseases}, \texttt{allergies}, \texttt{current\_medications} — Champs texte libres.
+  \item \texttt{family\_doctor\_name} — Nom du médecin traitant.
+  \item \texttt{user} — OneToOneField vers \texttt{User}.
+\end{itemize}
+
+\subsection{Modèle \texttt{MenstrualCycle}}
+\begin{itemize}
+  \item \texttt{menstrual\_status} — Actif, Ménopause, ou Prépubère.
+  \item \texttt{start\_date}, \texttt{end\_date} — Dates du cycle.
+  \item \texttt{patient} — OneToOneField vers \texttt{Patient}.
+\end{itemize}
+
+\section{Module Médecins (\texttt{doctors})}
+\begin{itemize}
+  \item \textbf{Modèle \texttt{Speciality}} — Nom et description d'une spécialité médicale.
+  \item \textbf{Modèle \texttt{Doctor}} — Ville (24 villes tunisiennes), adresse, expérience, prix de consultation, bio, disponibilité, vérification. Lié à \texttt{User} (OneToOne) et \texttt{Speciality} (ForeignKey).
+\end{itemize}
+
+\section{Module Grossesses (\texttt{Pregnancies})}
+Le modèle \texttt{Pregnancy} contient~:
+\begin{itemize}
+  \item \texttt{test\_date} — Date du test de grossesse.
+  \item \texttt{test\_result} — Résultat du test (booléen).
+  \item \texttt{start\_date} — Date estimée de début de grossesse.
+  \item \texttt{due\_date} — Date prévue d'accouchement.
+  \item \texttt{end\_date} — Date de fin (null si grossesse en cours).
+  \item \texttt{patient} — ForeignKey vers \texttt{Patient} (une patiente peut avoir plusieurs grossesses).
+\end{itemize}
+
+\section{Module Mesures (\texttt{measurements})}
+
+\subsection{Modèle \texttt{Measurement}}
+\begin{table}[H]
+\centering
+\caption{Types de mesures supportés}
+\begin{tabular}{llll}
+\toprule
+\textbf{Type} & \textbf{Unité} & \textbf{value1} & \textbf{value2} \\
+\midrule
+WEIGHT           & kg   & Poids           & —         \\
+BLOOD\_PRESSURE  & mmHg & Systolique      & Diastolique \\
+GLYCEMIA         & g/L  & Glycémie        & —         \\
+TEMPERATURE      & °C   & Température     & —         \\
+HEART\_RATE      & bpm  & Fréquence card. & —         \\
+OXYGEN           & \%   & Saturation O₂   & —         \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Modèle \texttt{RiskAssessment}}
+Chaque évaluation de risque stocke~:
+\begin{itemize}
+  \item \texttt{global\_risk\_level} — LOW, MEDIUM ou HIGH (calculé par le ML).
+  \item \texttt{personal\_risk\_level}, \texttt{personal\_risk\_note} — Analyse personnalisée.
+  \item Les valeurs utilisées pour la prédiction~: glycémie, tension, fréquence cardiaque, poids, température.
+\end{itemize}
+
+\subsection{Flux de création de mesure}
+À chaque nouvelle mesure saisie, le service~:
+\begin{enumerate}
+  \item Enregistre la mesure en base de données.
+  \item Récupère les dernières mesures de chaque type pour cette patiente.
+  \item Calcule l'âge, le BMI et la semaine de grossesse.
+  \item Appelle le moteur ML (\texttt{predict\_risk}).
+  \item Crée un \texttt{RiskAssessment}.
+  \item Si le risque est MEDIUM ou HIGH, déclenche une alerte par email et notification push.
+\end{enumerate}
+
+\section{Module Médicaments (\texttt{medications})}
+
+\subsection{Modèle \texttt{Medication}}
+Contient les informations de la nomenclature nationale~: code, nom, nom commercial, forme, dosage, conditionnement, prix public, tarif de référence, catégorie (vital, essentiel, etc.), DCI, nécessité d'approbation préalable.
+
+\subsection{Recherche Trigram}
+La recherche utilise la fonctionnalité PostgreSQL \texttt{pg\_trgm} pour une recherche floue~:
+\begin{lstlisting}[language=Python, caption=Algorithme de recherche de médicaments]
+Medication.objects
+  .annotate(
+    name_sim=TrigramSimilarity('name', query),
+    dci_sim=TrigramSimilarity('dci', query),
+  )
+  .annotate(best_score=Greatest('name_sim', 'dci_sim'))
+  .filter(
+    Q(name_sim__gte=0.4) | Q(dci_sim__gte=0.4) |
+    Q(dosage__icontains=query) | Q(form__icontains=query)
+  )
+  .order_by('-best_score')
+\end{lstlisting}
+
+\subsection{Modèle \texttt{Treatment} et \texttt{TreatmentSchedule}}
+\begin{itemize}
+  \item \texttt{Treatment} — Lie un médicament à une patiente avec dates, dose et fréquence.
+  \item \texttt{TreatmentSchedule} — Heures de prise (\texttt{dose\_time}) avec suivi de la dernière notification envoyée.
+\end{itemize}
+
+\section{Module DCI (\texttt{dci})}
+\begin{itemize}
+  \item \textbf{Modèle \texttt{DCI}} — Dénomination Commune Internationale avec statut de sécurité par trimestre~: \texttt{first\_trimester\_status}, \texttt{second\_trimester\_status}, \texttt{third\_trimester\_status}, \texttt{delivery\_status}. Valeurs~: SAFE, UNSAFE, UNKNOWN, CAUTION, NOT\_APPLICABLE.
+  \item \textbf{Modèle \texttt{DciInteraction}} — Interactions entre deux DCI avec niveaux de sévérité~: contre-indication, précaution d'emploi, déconseillée, à prendre en compte, non significative.
+\end{itemize}
+
+\section{Module Alertes (\texttt{alerts})}
+
+\subsection{Modèle \texttt{Alert}}
+4 types $\times$ 3 niveaux $\times$ 3 états = système flexible de notifications.
+
+\subsection{Scheduler APScheduler}
+Le scheduler s'exécute en arrière-plan et déclenche 6 tâches cron~:
+
+\begin{table}[H]
+\centering
+\caption{Tâches planifiées du scheduler}
+\begin{tabularx}{\textwidth}{lllX}
+\toprule
+\textbf{Tâche} & \textbf{Heure} & \textbf{Type} & \textbf{Description} \\
+\midrule
+Mesures manquantes    & 09:00 & SYSTEM  & Alerte si aucune mesure depuis 7 jours \\
+RDV non confirmé      & 09:15 & SYSTEM  & Alerte si RDV du lendemain en PENDING \\
+Grossesse sans RDV    & 09:30 & SYSTEM  & Alerte si aucun RDV depuis 14 jours \\
+Rappel RDV            & 18:00 & REMINDER & Rappel la veille du RDV confirmé \\
+Rappel médicament     & 04:43 & REMINDER & Rappel avant chaque prise \\
+Nettoyage logs        & Hebdo & — & Suppression des anciens logs d'exécution \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Module Rendez-vous (\texttt{appointments})}
+Le modèle \texttt{Appointment} lie une patiente à un médecin avec~:
+\begin{itemize}
+  \item \texttt{appointment\_date} — Date et heure.
+  \item \texttt{status} — PENDING, CONFIRMED, CANCELLED, COMPLETED.
+  \item \texttt{reason} — Motif de la consultation.
+  \item \texttt{is\_reminder\_sent} — Flag pour éviter les rappels dupliqués.
+\end{itemize}
+
+\section{Module Fichiers médicaux (\texttt{medical\_files})}
+Le modèle \texttt{Attachment} permet le stockage de~:
+\begin{itemize}
+  \item \textbf{REPORT} — Rapports médicaux.
+  \item \textbf{ULTRASOUND} — Échographies.
+\end{itemize}
+Les fichiers sont stockés dans le répertoire \texttt{attachments/}.
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 5 — MOTEUR DE MACHINE LEARNING
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Moteur de Machine Learning}
+
+\section{Contexte et objectif}
+Le moteur ML de Sahhty a pour objectif de classifier automatiquement le niveau de risque d'une femme enceinte en trois catégories~: \textbf{\textcolor{riskLow}{LOW}}, \textbf{\textcolor{riskMedium}{MEDIUM}} et \textbf{\textcolor{riskHigh}{HIGH}}, à partir de ses mesures de santé.
+
+\section{Dataset}
+Le modèle est entraîné sur le \textbf{Maternal Health Risk Data Set}, contenant~:
+\begin{itemize}
+  \item \textbf{3\,600 enregistrements} répartis équitablement (1\,200 par classe).
+  \item \textbf{6 features de base}~: Age, SystolicBP, DiastolicBP, BS (glycémie), BodyTemp, HeartRate.
+  \item \textbf{3 classes cibles}~: LOW, MEDIUM, HIGH.
+\end{itemize}
+
+\section{Feature Engineering}
+10 features dérivées sont calculées pour enrichir les données~:
+
+\begin{table}[H]
+\centering
+\caption{Features dérivées pour le modèle ML}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Feature} & \textbf{Formule} \\
+\midrule
+PulsePressure & $SystolicBP - DiastolicBP$ \\
+BP\_Ratio     & $SystolicBP / DiastolicBP$ \\
+MAP           & $(2 \times DiastolicBP + SystolicBP) / 3$ \\
+ShockIndex    & $HeartRate / SystolicBP$ \\
+TempHigh      & $\mathbb{1}[BodyTemp \geq 101°F]$ \\
+BS\_High      & $\mathbb{1}[BS \geq 8.0]$ \\
+HR\_BP\_Ratio & $HeartRate / DiastolicBP$ \\
+BS\_Temp      & $BS \times BodyTemp$ \\
+BP\_Age       & $SystolicBP \times Age$ \\
+AgeGroup      & Discrétisation en 6 groupes d'âge \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Modèles comparés}
+Quatre algorithmes de classification ont été évalués~:
+
+\begin{table}[H]
+\centering
+\caption{Comparaison des modèles de classification}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Modèle} & \textbf{Configuration clé} & \textbf{Accuracy} \\
+\midrule
+\textbf{Random Forest}     & 400 arbres, depth=14, balanced & \textbf{75.19\%} \\
+Logistic Regression         & max\_iter=4000, balanced & — \\
+SVM (RBF)                   & C=3.0, balanced & — \\
+XGBoost                     & 300 estimators, depth=7 & — \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Résultats du meilleur modèle (Random Forest)}
+
+\begin{table}[H]
+\centering
+\caption{Métriques détaillées du Random Forest}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Classe} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\midrule
+\textcolor{riskHigh}{HIGH}     & 0.850 & 0.862 & \textbf{0.856} \\
+\textcolor{riskLow}{LOW}       & 0.775 & 0.783 & \textbf{0.779} \\
+\textcolor{riskMedium}{MEDIUM} & 0.640 & 0.578 & \textbf{0.608} \\
+\midrule
+\textbf{Accuracy globale} & \multicolumn{3}{c}{\textbf{75.19\%}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=20pt,
+    ylabel={Score},
+    symbolic x coords={HIGH, LOW, MEDIUM},
+    xtick=data,
+    ymin=0, ymax=1,
+    nodes near coords,
+    nodes near coords align={vertical},
+    legend style={at={(0.5,-0.15)}, anchor=north, legend columns=-1},
+    width=10cm, height=7cm,
+]
+\addplot[fill=sahhtyPrimary!60] coordinates {(HIGH,0.856) (LOW,0.779) (MEDIUM,0.608)};
+\addplot[fill=sahhtyAccent!60] coordinates {(HIGH,0.850) (LOW,0.775) (MEDIUM,0.640)};
+\addplot[fill=yellow!60] coordinates {(HIGH,0.862) (LOW,0.783) (MEDIUM,0.578)};
+\legend{F1-Score, Precision, Recall}
+\end{axis}
+\end{tikzpicture}
+\caption{Métriques par classe du modèle Random Forest}
+\end{figure}
+
+\section{Pipeline de prédiction}
+Le processus de prédiction en production suit ces étapes~:
+
+\begin{enumerate}
+  \item \textbf{Validation des entrées} — Vérification des champs requis (Age, BS, SystolicBP, DiastolicBP).
+  \item \textbf{Conversion d'unités} — Température Celsius $\rightarrow$ Fahrenheit si $< 45°$.
+  \item \textbf{Conversion glycémie} — Si BS $> 30$, division par 18 (mg/dL $\rightarrow$ mmol/L).
+  \item \textbf{Imputation} — HeartRate absent $\rightarrow$ médiane du dataset. BodyTemp absent $\rightarrow$ 98.6°F.
+  \item \textbf{Validation physiologique} — Bornes physiologiques pour chaque paramètre.
+  \item \textbf{Feature engineering} — Calcul des 10 features dérivées.
+  \item \textbf{Prédiction} — Passage dans le classificateur Random Forest.
+  \item \textbf{Décodage} — \texttt{LabelEncoder.inverse\_transform} $\rightarrow$ LOW / MEDIUM / HIGH.
+\end{enumerate}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 6 — IMPLÉMENTATION FRONTEND
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Implémentation du Frontend Flutter}
+
+\section{Gestion d'état — Riverpod}
+L'application utilise \textbf{Riverpod} comme solution de gestion d'état~:
+
+\begin{itemize}
+  \item \texttt{StateNotifierProvider<AuthNotifier, AuthState>} — Gère l'état d'authentification global avec 7 statuts~: initial, loading, authenticated, unauthenticated, needsVerification, needsProfileSetup, error.
+  \item \texttt{Provider<Service>} — Instances singleton pour chaque service API.
+\end{itemize}
+
+\section{Client HTTP — Dio avec intercepteur JWT}
+Le \texttt{DioClient} est un singleton qui~:
+\begin{enumerate}
+  \item Attache automatiquement le token JWT à chaque requête via un intercepteur.
+  \item Gère le rafraîchissement automatique du token en cas de réponse 401.
+  \item Retry la requête originale après rafraîchissement réussi.
+  \item Configure des timeouts de 30 secondes (connect, receive, send).
+\end{enumerate}
+
+\section{Navigation — Go Router}
+La navigation est gérée par \textbf{Go Router} avec~:
+\begin{itemize}
+  \item \textbf{Redirect guard} — Redirige vers \texttt{/home} si authentifié et sur une route d'auth.
+  \item \textbf{ShellRoute} — Barre de navigation inférieure (Home, Mesures, Grossesse, Alertes, Profil).
+  \item \textbf{Routes imbriquées} — Sous-routes pour les paramètres (edit profile, edit medical, etc.).
+\end{itemize}
+
+\section{Services API}
+8 services communiquent avec le backend~:
+
+\begin{table}[H]
+\centering
+\caption{Services Flutter et leurs responsabilités}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Service} & \textbf{Endpoints utilisés} \\
+\midrule
+\texttt{AuthService}        & signup, signin, verify, reset password, logout, delete account \\
+\texttt{PatientService}     & create, get, update patient \\
+\texttt{PregnancyService}   & create, get, update, delete pregnancy \\
+\texttt{MeasurementService} & create measurement, get latest, get all, get risk assessment \\
+\texttt{MedicationService}  & search, create treatment, get treatments, delete treatment \\
+\texttt{AlertService}       & get alerts, mark as read \\
+\texttt{DoctorService}      & get all doctors, get doctor by id \\
+\texttt{DioClient}          & Singleton HTTP avec intercepteur JWT refresh \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Écrans principaux}
+
+\subsection{Flux d'authentification}
+\begin{enumerate}
+  \item \textbf{SplashScreen} — Initialisation Firebase + vérification de session existante.
+  \item \textbf{LoginScreen} — Saisie email/mot de passe, gestion des erreurs.
+  \item \textbf{RegisterScreen} — Formulaire complet (nom, prénom, date naissance, email, téléphone, genre, mot de passe).
+  \item \textbf{VerifyCodeScreen} — Saisie du code OTP à 6 chiffres avec option de renvoi.
+  \item \textbf{PatientSetupScreen} — Création du profil médical post-inscription (taille, poids, groupe sanguin, maladies, allergies, cycle menstruel).
+\end{enumerate}
+
+% Placeholder pour capture d'écran
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.6\textwidth}{\centering\vspace{3cm}\textit{Capture d'écran : Écran de connexion}\vspace{3cm}}}
+\caption{Écran de connexion de l'application Sahhty}
+\label{fig:login}
+\end{figure}
+
+\subsection{Page d'accueil (\texttt{PatientHomeScreen})}
+La page d'accueil affiche~:
+\begin{itemize}
+  \item Message de bienvenue personnalisé avec le nom de la patiente.
+  \item Compteur animé de la semaine de grossesse.
+  \item Résumé des dernières mesures de santé (poids, BMI, glycémie, tension, etc.).
+  \item Niveau de risque actuel avec code couleur.
+  \item Accès rapide aux fonctionnalités principales.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.6\textwidth}{\centering\vspace{3cm}\textit{Capture d'écran : Page d'accueil}\vspace{3cm}}}
+\caption{Page d'accueil avec résumé de santé}
+\label{fig:home}
+\end{figure}
+
+\subsection{Mesures de santé (\texttt{MeasurementsScreen})}
+\begin{itemize}
+  \item Formulaire de saisie adaptatif selon le type de mesure.
+  \item Affichage du résultat de l'évaluation de risque après soumission.
+  \item Historique complet avec filtrage par type et tri chronologique.
+\end{itemize}
+
+\subsection{Médicaments (\texttt{MedicationsScreen})}
+\begin{itemize}
+  \item Barre de recherche avec requête trigram vers le backend.
+  \item Résultats affichés en cartes avec nom, forme, dosage, prix.
+  \item Section traitements en cours avec possibilité de suppression.
+  \item Formulaire de création de traitement avec horaires de prise.
+\end{itemize}
+
+\subsection{Grossesse (\texttt{PregnancyScreen})}
+\begin{itemize}
+  \item Compteur de semaines animé (\texttt{AnimatedWeekCounter}).
+  \item Image du bébé correspondant au trimestre actuel.
+  \item Informations clés~: date de début, date prévue, trimestre actuel.
+  \item Particules flottantes et animations pour une ambiance chaleureuse.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.6\textwidth}{\centering\vspace{3cm}\textit{Capture d'écran : Suivi de grossesse}\vspace{3cm}}}
+\caption{Écran de suivi de grossesse avec compteur animé}
+\label{fig:pregnancy}
+\end{figure}
+
+\subsection{Alertes (\texttt{AlertsScreen})}
+\begin{itemize}
+  \item Liste des alertes avec code couleur par niveau (INFO=bleu, WARNING=orange, CRITICAL=rouge).
+  \item Marquage comme lu au clic.
+  \item Compteur de notifications non lues.
+\end{itemize}
+
+\subsection{Profil (\texttt{ProfileScreen})}
+\begin{itemize}
+  \item Informations personnelles récupérées depuis le backend.
+  \item Informations médicales (groupe sanguin, allergies, etc.).
+  \item Accès aux paramètres.
+\end{itemize}
+
+\subsection{Paramètres (\texttt{SettingsScreen})}
+Le module paramètres offre un CRUD complet~:
+\begin{itemize}
+  \item \textbf{Modifier le profil} — Nom, prénom, téléphone, date de naissance.
+  \item \textbf{Modifier les infos médicales} — Taille, poids, groupe sanguin, maladies, allergies.
+  \item \textbf{Modifier le cycle menstruel} — Statut, dates.
+  \item \textbf{Modifier la grossesse} — Dates, résultat du test.
+  \item \textbf{Changer le mot de passe} — Via le flux de réinitialisation.
+  \item \textbf{Supprimer le compte} — Double confirmation avant suppression.
+  \item \textbf{Déconnexion} — Nettoyage du stockage sécurisé.
+\end{itemize}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 7 — FIREBASE ET NOTIFICATIONS
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Intégration Firebase et Notifications Push}
+
+\section{Architecture Firebase}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners, minimum width=4cm, minimum height=1.2cm, align=center, font=\small},
+  arrow/.style={->, >=stealth, thick}
+]
+  \node[box, fill=sahhtyPrimary!20] (app) at (0,4) {Application Flutter};
+  \node[box, fill=orange!15] (fcm) at (0,2) {Firebase Cloud Messaging};
+  \node[box, fill=sahhtyAccent!20] (django) at (0,0) {Backend Django\\{\footnotesize firebase-admin SDK}};
+
+  \draw[arrow] (app) -- node[right, font=\footnotesize] {Token FCM} (fcm);
+  \draw[arrow] (django) -- node[right, font=\footnotesize] {messaging.send()} (fcm);
+  \draw[arrow, dashed] (fcm) -- node[left, font=\footnotesize] {Push Notification} ++(3,2) -- (app);
+\end{tikzpicture}
+\caption{Flux des notifications push Firebase}
+\end{figure}
+
+\section{Côté Flutter (Client)}
+\begin{enumerate}
+  \item \textbf{Initialisation} — \texttt{Firebase.initializeApp()} dans \texttt{main.dart}.
+  \item \textbf{Permission} — Demande de permission notification à l'utilisateur.
+  \item \textbf{Token FCM} — Récupération via \texttt{FirebaseMessaging.instance.getToken()}.
+  \item \textbf{Enregistrement} — Envoi du token au backend via \texttt{POST /users/devices/register\_device/}.
+  \item \textbf{Écoute} — \texttt{FirebaseMessaging.onMessage.listen()} pour les notifications en premier plan.
+\end{enumerate}
+
+\section{Côté Django (Serveur)}
+\begin{enumerate}
+  \item \textbf{Initialisation} — \texttt{firebase\_admin.initialize\_app()} avec \texttt{firebase\_credentials.json}.
+  \item \textbf{Envoi} — Fonction \texttt{send\_push\_notification\_to\_user()} qui~:
+    \begin{itemize}
+      \item Récupère tous les \texttt{FCMDevice} de l'utilisateur.
+      \item Envoie un message via \texttt{messaging.send()}.
+      \item Supprime automatiquement les tokens invalides (\texttt{UnregisteredError}).
+    \end{itemize}
+  \item \textbf{Cas d'usage} — Rappels de médicaments, rappels de rendez-vous, alertes de risque élevé.
+\end{enumerate}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 8 — DESIGN UI/UX ET ANIMATIONS
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Design UI/UX et Animations}
+
+\section{Thème et identité visuelle}
+L'application adopte un thème \textbf{Material 3} personnalisé, conçu pour évoquer la douceur et la sérénité associées à la maternité~:
+
+\begin{table}[H]
+\centering
+\caption{Palette de couleurs Sahhty}
+\begin{tabular}{lll}
+\toprule
+\textbf{Couleur} & \textbf{Code hex} & \textbf{Usage} \\
+\midrule
+\colorbox{sahhtyPrimary}{\color{white}\textbf{Primary}} & \texttt{\#E8878F} & Boutons, accents principaux \\
+\colorbox{sahhtyDark}{\color{white}\textbf{Primary Dark}} & \texttt{\#C75B6A} & Textes importants, headers \\
+\colorbox{sahhtyAccent}{\color{white}\textbf{Accent}} & \texttt{\#80CBC4} & Contrastes, éléments secondaires \\
+\colorbox{sahhtyBg}{\textbf{Background}} & \texttt{\#FFF5F5} & Fond de l'application \\
+\colorbox{riskLow}{\color{white}\textbf{Risque bas}} & \texttt{\#66BB6A} & Indicateurs positifs \\
+\colorbox{riskMedium}{\color{white}\textbf{Risque moyen}} & \texttt{\#FFA726} & Avertissements \\
+\colorbox{riskHigh}{\color{white}\textbf{Risque élevé}} & \texttt{\#EF5350} & Alertes critiques \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Police et typographie}
+L'application utilise la police \textbf{Poppins} (via Google Fonts) pour l'ensemble de l'interface, offrant une lisibilité optimale et une esthétique moderne.
+
+\section{Widgets animés personnalisés}
+
+\subsection{AnimatedBackground}
+Un widget de fond qui superpose~:
+\begin{itemize}
+  \item Un dégradé vertical (rose clair $\rightarrow$ blanc).
+  \item Une image optionnelle (\texttt{mother\_baby.png}) avec opacité réduite.
+  \item Un overlay gradient pour lisibilité du contenu.
+\end{itemize}
+
+\subsection{AnimatedWeekCounter}
+Un compteur de semaines de grossesse avec~:
+\begin{itemize}
+  \item \textbf{TweenAnimationBuilder} — Animation de comptage de 0 à N.
+  \item \textbf{Anneau pulsant} — Animation \texttt{scale} en boucle avec \texttt{flutter\_animate}.
+  \item \textbf{Cercle lumineux interne} — Gradient radial pour effet de lueur.
+\end{itemize}
+
+\subsection{FloatingParticles}
+Des particules flottantes (cœurs et cercles) qui~:
+\begin{itemize}
+  \item Dérivent vers le haut avec mouvement sinusoïdal horizontal.
+  \item Ont des tailles, vitesses et opacités aléatoires.
+  \item Créent une ambiance onirique et premium.
+\end{itemize}
+
+\subsection{WaveClipper}
+Un \texttt{CustomClipper} en forme de vague utilisé pour les headers des écrans.
+
+\section{Images et assets}
+L'application intègre 8 images thématiques réelles~:
+
+\begin{table}[H]
+\centering
+\caption{Assets images de l'application}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Fichier} & \textbf{Usage} \\
+\midrule
+\texttt{mother\_baby.png.jpg}               & Fond animé de la page d'accueil et du profil \\
+\texttt{login\_illustration.png.jpg}        & Illustration de l'écran de connexion \\
+\texttt{baby\_trimestre1.png.jpg}           & Image bébé — 1\textsuperscript{er} trimestre \\
+\texttt{baby\_trimestre2.png.png}           & Image bébé — 2\textsuperscript{e} trimestre \\
+\texttt{baby\_trimestre3.png.png}           & Image bébé — 3\textsuperscript{e} trimestre \\
+\texttt{health\_measures.png.png}           & Illustration écran mesures \\
+\texttt{medications\_illustration.png.png}  & Illustration écran médicaments \\
+\texttt{floral\_pattern.png.png}            & Motif floral décoratif \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 9 — TESTS ET VALIDATION
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Tests et Validation}
+
+\section{Tests Backend}
+Chaque application Django dispose d'un fichier \texttt{tests.py} pour les tests unitaires et d'intégration. Les tests couvrent~:
+\begin{itemize}
+  \item Validation des serializers (champs requis, contraintes).
+  \item Logique des services (création, mise à jour, suppression).
+  \item Endpoints API via le client de test DRF.
+  \item Scénarios d'erreur (données invalides, utilisateur non trouvé, etc.).
+\end{itemize}
+
+\section{Tests Frontend}
+Le projet Flutter utilise \textbf{mocktail} pour les tests unitaires~:
+\begin{itemize}
+  \item Mock des services API.
+  \item Tests des providers Riverpod.
+  \item Tests de widgets.
+\end{itemize}
+
+\section{Documentation API}
+L'API est documentée automatiquement via \textbf{drf-spectacular} qui génère~:
+\begin{itemize}
+  \item Un schéma OpenAPI 3 accessible à \texttt{/api/schema/}.
+  \item Une interface Swagger interactive à \texttt{/api/docs/}.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{Capture d'écran : Interface Swagger API}\vspace{3cm}}}
+\caption{Documentation Swagger de l'API Sahhty}
+\label{fig:swagger}
+\end{figure}
+
+\section{Validation de l'intégration Frontend-Backend}
+La compatibilité entre le frontend et le backend a été validée par~:
+\begin{enumerate}
+  \item Vérification de la correspondance exacte de chaque endpoint API.
+  \item Validation des formats de requête/réponse JSON.
+  \item Test du flux complet~: inscription $\rightarrow$ vérification $\rightarrow$ création profil $\rightarrow$ connexion.
+  \item Test du rafraîchissement automatique des tokens JWT.
+  \item Test des notifications push de bout en bout.
+\end{enumerate}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  CHAPITRE 10 — CONCLUSION ET PERSPECTIVES
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Conclusion et Perspectives}
+
+\section{Bilan}
+Le projet Sahhty a permis de développer une application mobile complète de suivi de santé pour femmes enceintes, intégrant~:
+\begin{itemize}
+  \item Un \textbf{backend robuste} avec 10 applications Django, une architecture service-layer propre et une API REST documentée.
+  \item Un \textbf{moteur de Machine Learning} basé sur le Random Forest atteignant une accuracy de 75.19\% pour la classification du risque maternel.
+  \item Un \textbf{frontend Flutter} avec un design soigné adapté aux femmes enceintes, des animations fluides et une intégration API complète.
+  \item Un \textbf{système d'alertes intelligent} avec 6 tâches automatisées, des notifications push Firebase et des emails personnalisés.
+  \item Une \textbf{recherche de médicaments avancée} utilisant la similarité trigram de PostgreSQL.
+\end{itemize}
+
+\section{Difficultés rencontrées}
+\begin{itemize}
+  \item \textbf{Compatibilité frontend-backend} — L'alignement des modèles de données, des endpoints et des formats de réponse a nécessité plusieurs itérations de refactoring.
+  \item \textbf{Gestion des tokens JWT} — L'implémentation du rafraîchissement automatique avec retry des requêtes a été complexe.
+  \item \textbf{Modèle ML} — La classe MEDIUM présente un F1-score plus faible (0.608), indiquant une difficulté de séparation entre les niveaux de risque intermédiaires.
+\end{itemize}
+
+\section{Perspectives}
+Plusieurs améliorations sont envisagées~:
+\begin{enumerate}
+  \item \textbf{Amélioration du modèle ML} — Utilisation de datasets plus larges, techniques de deep learning, et intégration de données temporelles.
+  \item \textbf{Téléconsultation} — Intégration d'un module de visioconférence médecin-patiente.
+  \item \textbf{Dispositifs connectés (IoT)} — Connexion avec des tensiomètres, glucomètres et montres connectées via Bluetooth.
+  \item \textbf{Multilingue} — Support complet arabe, français et anglais.
+  \item \textbf{Mode hors ligne} — Synchronisation des données en mode déconnecté.
+  \item \textbf{Tableau de bord médecin} — Interface web pour les professionnels de santé.
+  \item \textbf{Analyses prédictives avancées} — Suivi des tendances et prédiction de complications à long terme.
+\end{enumerate}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  BIBLIOGRAPHIE
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter*{Bibliographie}
+\addcontentsline{toc}{chapter}{Bibliographie}
+
+\begin{enumerate}[label={[\arabic*]}]
+  \item Organisation Mondiale de la Santé, «~Mortalité maternelle~», Aide-mémoire, 2023. \url{https://www.who.int/fr/news-room/fact-sheets/detail/maternal-mortality}
+  \item Ahmed M., et al., «~Maternal Health Risk Data Set~», UCI Machine Learning Repository, 2020. \url{https://archive.ics.uci.edu/dataset/863/maternal+health+risk+data+set}
+  \item Django Software Foundation, «~Django Documentation~», 2024. \url{https://docs.djangoproject.com/}
+  \item Google, «~Flutter Documentation~», 2024. \url{https://flutter.dev/docs}
+  \item Riverpod — State Management for Flutter. \url{https://riverpod.dev/}
+  \item Firebase Cloud Messaging. \url{https://firebase.google.com/docs/cloud-messaging}
+  \item scikit-learn — Machine Learning in Python. \url{https://scikit-learn.org/}
+  \item PostgreSQL pg\_trgm Extension. \url{https://www.postgresql.org/docs/current/pgtrgm.html}
+  \item Django REST Framework. \url{https://www.django-rest-framework.org/}
+  \item Simple JWT — Authentication for DRF. \url{https://django-rest-framework-simplejwt.readthedocs.io/}
+\end{enumerate}
+
+
+%% ════════════════════════════════════════════════════════════════════════════
+%%  ANNEXES
+%% ════════════════════════════════════════════════════════════════════════════
+\appendix
+\chapter{Annexes}
+
+\section{Extrait de code — Prédiction ML}
+\begin{lstlisting}[language=Python, caption=Fonction predict\_risk (predictor.py)]
+def predict_risk(data):
+    prepared = validate_and_prepare_input(data)
+
+    base_columns = ["Age", "BS", "SystolicBP",
+                    "DiastolicBP", "HeartRate", "BodyTemp"]
+    patient = pd.DataFrame(
+        [{key: prepared[key] for key in base_columns}]
+    )
+    patient = add_features(patient)
+
+    model_columns = [
+        "Age", "SystolicBP", "DiastolicBP", "BS",
+        "BodyTemp", "HeartRate", "PulsePressure",
+        "BP_Ratio", "MAP", "ShockIndex", "TempHigh",
+        "BS_High", "HR_BP_Ratio", "BS_Temp",
+        "BP_Age", "AgeGroup"
+    ]
+    patient = patient[model_columns]
+
+    risk_level = label_encoder.inverse_transform(
+        classifier.predict(patient)
+    )[0]
+    return risk_level, prepared["HeartRate"]
+\end{lstlisting}
+
+\section{Extrait de code — Intercepteur JWT (Dio)}
+\begin{lstlisting}[language=Java, caption=DioClient avec refresh automatique (dio\_client.dart)]
+dio.interceptors.add(InterceptorsWrapper(
+  onRequest: (options, handler) async {
+    final token = await _storage.read(
+      key: StorageKeys.accessToken);
+    if (token != null && token.isNotEmpty) {
+      options.headers['Authorization'] =
+        'Bearer $token';
+    }
+    handler.next(options);
+  },
+  onError: (error, handler) async {
+    if (error.response?.statusCode == 401) {
+      final refreshed = await _tryRefreshToken();
+      if (refreshed) {
+        // Retry the original request
+        final token = await _storage.read(
+          key: StorageKeys.accessToken);
+        error.requestOptions.headers['Authorization']
+          = 'Bearer $token';
+        final response = await dio.fetch(
+          error.requestOptions);
+        return handler.resolve(response);
+      }
+    }
+    handler.next(error);
+  },
+));
+\end{lstlisting}
+
+\section{Extrait de code — Recherche Trigram}
+\begin{lstlisting}[language=Python, caption=Recherche floue de médicaments (medications/search.py)]
+Medication.objects
+  .annotate(
+    name_sim=TrigramSimilarity('name', query),
+    dci_sim=TrigramSimilarity('dci', query),
+  )
+  .annotate(
+    best_score=Greatest('name_sim', 'dci_sim')
+  )
+  .filter(
+    Q(name_sim__gte=0.4) |
+    Q(dci_sim__gte=0.4)  |
+    Q(dosage__icontains=query) |
+    Q(form__icontains=query)
+  )
+  .order_by('-best_score')
+\end{lstlisting}
+
+\section{Captures d'écran de l'application}
+\textit{Note~: Insérer ici les captures d'écran réelles de l'application. Créer un dossier \texttt{images/screenshots/} et utiliser les commandes suivantes~:}
+
+\begin{verbatim}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/screenshots/nom_ecran.png}
+  \caption{Description de l'écran}
+\end{figure}
+\end{verbatim}
+
+\textbf{Captures recommandées~:}
+\begin{enumerate}
+  \item Écran Splash / Démarrage
+  \item Écran de connexion
+  \item Écran d'inscription
+  \item Écran de vérification OTP
+  \item Configuration du profil patient
+  \item Page d'accueil
+  \item Écran des mesures de santé
+  \item Ajout d'une nouvelle mesure
+  \item Résultat d'évaluation de risque
+  \item Écran de grossesse avec compteur animé
+  \item Recherche de médicaments
+  \item Détails d'un traitement
+  \item Liste des alertes
+  \item Profil utilisateur
+  \item Écran des paramètres
+  \item Interface Swagger API
+\end{enumerate}
+
+\end{document}

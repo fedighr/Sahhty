@@ -92,6 +92,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha(40),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.settings, color: Colors.white, size: 22),
+            ),
+            onPressed: () => context.push('/settings'),
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: Stack(
         children: [

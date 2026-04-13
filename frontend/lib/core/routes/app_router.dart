@@ -17,6 +17,12 @@ import 'package:sahhty/features/alerts/screens/alerts_screen.dart';
 import 'package:sahhty/features/profile/screens/profile_screen.dart';
 import 'package:sahhty/features/doctors/screens/doctors_list_screen.dart';
 import 'package:sahhty/features/medications/screens/medications_screen.dart';
+import 'package:sahhty/features/settings/screens/settings_screen.dart';
+import 'package:sahhty/features/settings/screens/edit_profile_screen.dart';
+import 'package:sahhty/features/settings/screens/edit_medical_screen.dart';
+import 'package:sahhty/features/settings/screens/edit_menstrual_screen.dart';
+import 'package:sahhty/features/settings/screens/edit_pregnancy_screen.dart';
+import 'package:sahhty/features/settings/screens/change_password_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -114,6 +120,30 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/medications',
         builder: (context, state) => const MedicationsScreen(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/settings/edit-profile',
+        builder: (context, state) => const EditProfileScreen(),
+      ),
+      GoRoute(
+        path: '/settings/edit-medical',
+        builder: (context, state) => const EditMedicalScreen(),
+      ),
+      GoRoute(
+        path: '/settings/edit-menstrual',
+        builder: (context, state) => const EditMenstrualScreen(),
+      ),
+      GoRoute(
+        path: '/settings/edit-pregnancy',
+        builder: (context, state) => const EditPregnancyScreen(),
+      ),
+      GoRoute(
+        path: '/settings/change-password',
+        builder: (context, state) => const ChangePasswordScreen(),
       ),
     ],
   );

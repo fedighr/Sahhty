@@ -153,6 +153,16 @@ class AuthService {
     }
   }
 
+  // ── Delete Account ───────────────────────────────────────────────────
+  Future<Map<String, dynamic>> deleteAccount(int userId) async {
+    try {
+      final response = await _dio.delete(ApiEndpoints.deleteAccount(userId));
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
+    }
+  }
+
   // ── Logout ───────────────────────────────────────────────────────────
   Future<void> logout() async {
     await _storage.deleteAll();

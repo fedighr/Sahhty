@@ -54,6 +54,40 @@ class MedicationService {
     }
   }
 
+  /// GET /medications/medicationsService/{medId}/get_medication_by_id/
+  /// Returns: {success, medication: {...}, pregnancy_data: {...}, medication_interactions: [...]}
+  Future<Map<String, dynamic>> getMedicationById(int medId) async {
+    try {
+      final response = await _dio.get(ApiEndpoints.getMedicationById(medId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
+  /// PATCH /medications/medicationsService/{scheduleId}/update_schedule_by_id/
+  Future<Map<String, dynamic>> updateScheduleById(int scheduleId, String newTime) async {
+    try {
+      final response = await _dio.patch(
+        ApiEndpoints.updateScheduleById(scheduleId),
+        data: {'new_time': newTime},
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
+  /// DELETE /medications/medicationsService/{scheduleId}/delete_schedule_by_id/
+  Future<Map<String, dynamic>> deleteScheduleById(int scheduleId) async {
+    try {
+      final response = await _dio.delete(ApiEndpoints.deleteScheduleById(scheduleId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   Map<String, dynamic> _err(DioException e) {
     if (e.response?.data is Map<String, dynamic>) return e.response!.data;
     return {'success': false, 'message': e.message ?? 'Erreur réseau'};

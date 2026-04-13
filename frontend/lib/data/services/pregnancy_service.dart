@@ -37,6 +37,16 @@ class PregnancyService {
     }
   }
 
+  /// DELETE /pregnancies/PregnancyService/{pregnancyId}/delete_pregnancy/
+  Future<Map<String, dynamic>> deletePregnancy(int pregnancyId) async {
+    try {
+      final response = await _dio.delete(ApiEndpoints.deletePregnancy(pregnancyId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   Map<String, dynamic> _err(DioException e) {
     if (e.response?.data is Map<String, dynamic>) return e.response!.data;
     return {'success': false, 'message': e.message ?? 'Erreur réseau'};
