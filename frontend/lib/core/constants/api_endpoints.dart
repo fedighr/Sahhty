@@ -2,7 +2,7 @@
 class ApiEndpoints {
   ApiEndpoints._();
 
-  static const String baseUrl = 'http://10.0.2.2:8000';
+  static const String baseUrl = 'http://192.168.43.26:8000';
 
   // ── Auth (ViewSet: users/auth/) ──────────────────────────────────────
   static const String signup            = '/users/auth/signup/';
@@ -42,6 +42,43 @@ class ApiEndpoints {
   static String getLatestMeasurements(int pk)       => '/measurements/MeasurementService/$pk/get_latest_measurements/';
   static String getPatientMeasurements(int pk)      => '/measurements/MeasurementService/$pk/get_patient_measurements/';
   static String getRiskAssessment(int pk)           => '/measurements/MeasurementService/$pk/get_risk_assessment/';
+
+  // ── Smartwatch Vitals (ViewSet: measurements/MeasurementService/) ────
+  // Single endpoint: POST latest heart rate from Health Connect → backend saves it
+  // and returns the saved Measurement object on 201.
+  //
+  // POST /measurements/MeasurementService/sync_smartwatch/
+  // Body:
+  // {
+  //   "patient_id": int,
+  //   "readings": [
+  //     {
+  //       "type": "HEART_RATE",
+  //       "value1": "72.00",
+  //       "unit": "BPM",
+  //       "context": "smartwatch data"
+  //     }
+  //   ]
+  // }
+  //
+  // Response 201:
+  // {
+  //   "saved": int,
+  //   "measurements": [             // the newly created Measurement rows
+  //     {
+  //       "id": int,
+  //       "type": "HEART_RATE",
+  //       "measurement_date": "2026-04-16T10:30:00Z",
+  //       "value1": "72.00",
+  //       "value2": null,
+  //       "unit": "BPM",
+  //       "context": "smartwatch_Samsung Health",
+  //       "patient": int
+  //     }
+  //   ]
+  // }
+  static const String syncSmartwatch = '/measurements/MeasurementService/create_measurement/';
+
 
   // ── Medications (ViewSet: medications/medicationsService/) ───────────
   static const String searchMedications             = '/medications/medicationsService/search/';

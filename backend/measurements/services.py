@@ -190,7 +190,8 @@ class MeasurementService:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
 
         except Exception as e:
-            return {'data': {'success': False, 'message': str(e)}, 'status': 500}    
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+
 
     @staticmethod
     def generate_risk_note(glucose, bp_sys, bp_dia, heart_rate, body_temp, risk_level):
@@ -244,4 +245,5 @@ class MeasurementService:
             return "Aucun résultat significatif détecté"
 
         return " | ".join(notes)
+
 

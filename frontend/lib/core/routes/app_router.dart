@@ -23,6 +23,7 @@ import 'package:sahhty/features/settings/screens/edit_medical_screen.dart';
 import 'package:sahhty/features/settings/screens/edit_menstrual_screen.dart';
 import 'package:sahhty/features/settings/screens/edit_pregnancy_screen.dart';
 import 'package:sahhty/features/settings/screens/change_password_screen.dart';
+import 'package:sahhty/features/smartwatch/screens/smartwatch_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -144,6 +145,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/settings/change-password',
         builder: (context, state) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
+        path: '/smartwatch',
+        builder: (context, state) => const SmartwatchScreen(),
       ),
     ],
   );

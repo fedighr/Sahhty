@@ -52,6 +52,29 @@ class MeasurementService {
     }
   }
 
+  /// POST /measurements/MeasurementService/sync_smartwatch/
+  /// Sends a batch of readings from Health Connect. Backend saves them and returns
+  /// the newly created Measurement objects on 201.
+  /// Body: { patient_id: int, readings: [{type, value1, value2?, unit, context?}] }
+  /// Response 201: { saved: int, measurements: [...] }
+  Future<Map<String, dynamic>> syncSmartwatch({
+    required int patientId,
+    required List<Map<String, dynamic>> readings,
+  }) async {
+    try {
+      final response = await _dio.post(
+        ApiEndpoints.syncSmartwatch,
+        data: {
+          'patient_id': patientId,
+          'readings': readings,
+        },
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   Map<String, dynamic> _err(DioException e) {
     if (e.response?.data is Map<String, dynamic>) return e.response!.data;
     return {'success': false, 'message': e.message ?? 'Erreur réseau'};
