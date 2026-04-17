@@ -9,6 +9,7 @@ import 'package:sahhty/core/widgets/wave_clipper.dart';
 import 'package:sahhty/core/widgets/animated_week_counter.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
+import 'package:sahhty/data/services/wearable_service.dart';
 
 class PatientHomeScreen extends ConsumerStatefulWidget {
   const PatientHomeScreen({super.key});
@@ -36,6 +37,100 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
       duration: const Duration(seconds: 4),
     )..repeat(reverse: true);
     _loadData();
+    _checkWearableApp();
+  }
+
+  Future<void> _checkWearableApp() async {
+    final result = await WearableService.checkWatchApp();
+    if (!mounted) return;
+    switch (result.status) {
+      case WatchAppStatus.installed:
+        // Silently continue — watch app is ready
+        debugPrint('[Wearable] Watch app installed.');
+        break;
+      case WatchAppStatus.notInstalled:
+        _showWatchInstallDialog();
+        break;
+      case WatchAppStatus.noWatch:
+        // No watch paired — show info dialog
+        _showNoWatchDialog(result.message);
+        break;
+      case WatchAppStatus.error:
+        debugPrint('[Wearable] Check error: ${result.message}');
+        break;
+    }
+  }
+
+  void _showWatchInstallDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(Icons.watch, color: AppColors.primary),
+            const SizedBox(width: 8),
+            const Text('Application Montre'),
+          ],
+        ),
+        content: const Text(
+          'Votre montre est connectée mais l\'application Sahhty n\'est pas encore installée. '
+          'Voulez-vous l\'installer maintenant ?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Plus tard'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            onPressed: () async {
+              Navigator.of(ctx).pop();
+              final sent = await WearableService.triggerWatchAppInstall();
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(sent
+                      ? 'Demande d\'installation envoyée à la montre ✓'
+                      : 'Impossible d\'envoyer la demande. Réessayez.'),
+                ));
+              }
+            },
+            child: const Text('Installer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showNoWatchDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(Icons.watch_off, color: Colors.orange.shade700),
+            const SizedBox(width: 8),
+            const Text('Aucune montre'),
+          ],
+        ),
+        content: Text(
+          '$message\n\nPour utiliser les fonctionnalités de suivi automatique, '
+          'connectez une montre Wear OS compatible.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

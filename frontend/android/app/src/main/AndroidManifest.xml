@@ -41,6 +41,20 @@
             </intent-filter>
         </activity-alias>
 
+        <!-- Wear OS Data Layer listener — receives HR from paired watch -->
+        <service
+            android:name=".PhoneWearListenerService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <data
+                    android:host="*"
+                    android:pathPrefix="/sahhty"
+                    android:scheme="wear" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="flutterEmbedding"
             android:value="2"/>
@@ -48,6 +62,7 @@
 
     <queries>
         <package android:name="com.google.android.apps.healthdata"/>
+        <package android:name="com.google.android.wearable.app"/>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
