@@ -1,0 +1,11 @@
+﻿
+
+    Répertoire : C:\Sahhty\wearos\gradle\wrapper
+
+
+Mode                 LastWriteTime         Length Name                                                               
+----                 -------------         ------ ----                                                               
+-a----         4/17/2026   8:34 PM          63721 gradle-wrapper.jar                                                 
+-a----         4/17/2026   7:53 PM            205 gradle-wrapper.properties                                          
+
+
