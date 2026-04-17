@@ -53,32 +53,25 @@ class VitalsSyncService {
         return SyncResult(errors: ['Impossible de lire la valeur du rythme cardiaque']);
       }
 
-      final readings = [
-        {
-          'type': 'HEART_RATE',
-          'value1': value.toStringAsFixed(2),
-          'unit': 'BPM',
-          'context': 'smartwatch data',
-        }
-      ];
+    final payload = {
+      'type': 'HEART_RATE',
+      'value1': value.toStringAsFixed(2),
+      'unit': 'BPM',
+      'context': 'smartwatch data',
+      'patient_id': patientId,
+    };
 
-      // Single POST to backend
-      final result = await _measurementService.syncSmartwatch(
-        patientId: patientId,
-        readings: readings,
+    // Single POST to backend
+    final result = await _measurementService.syncSmartwatch(payload: payload);
+
+    if (result['success'] == true || result['id'] != null) {
+      return SyncResult(
+        sent: 1,
+        measurements: [Map<String, dynamic>.from(result)],
       );
-
-      if (result['saved'] != null) {
-        final measurements = (result['measurements'] as List?)
-            ?.map((m) => Map<String, dynamic>.from(m))
-            .toList() ?? [];
-        return SyncResult(
-          sent: result['saved'] as int,
-          measurements: measurements,
-        );
-      } else {
-        return SyncResult(errors: [result['message']?.toString() ?? 'Erreur inconnue']);
-      }
+    } else {
+      return SyncResult(errors: [result['message']?.toString() ?? 'Erreur inconnue']);
+    }
     } catch (e) {
       debugPrint('[VitalsSync] Error: $e');
       return SyncResult(errors: [e.toString()]);

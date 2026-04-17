@@ -2,7 +2,7 @@
 class ApiEndpoints {
   ApiEndpoints._();
 
-  static const String baseUrl = 'http://192.168.43.26:8000';
+  static const String baseUrl = 'http://192.168.43.103:8000';
 
   // ── Auth (ViewSet: users/auth/) ──────────────────────────────────────
   static const String signup            = '/users/auth/signup/';

@@ -43,20 +43,26 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
   Future<void> _checkAvailability() async {
     final hc = ref.read(healthConnectServiceProvider);
     final available = await hc.isAvailable();
+    final alreadyGranted = available ? await hc.hasPermissions() : false;
     if (!mounted) return;
     setState(() {
       _checking = false;
       _available = available;
+      _permissionsGranted = alreadyGranted;
     });
   }
 
   Future<void> _requestPermissions() async {
     final hc = ref.read(healthConnectServiceProvider);
-    final granted = await hc.requestPermissions();
+    await hc.requestPermissions();
+    final alreadyGranted = await hc.hasPermissions();
     if (!mounted) return;
-    setState(() => _permissionsGranted = granted);
-    if (!granted) {
-      _showSnack('Permissions refusées. Activez-les dans les paramètres Health Connect.', isError: true);
+    setState(() => _permissionsGranted = alreadyGranted);
+    if (!alreadyGranted) {
+      _showSnack(
+        'Permissions refusées. Activez-les dans les paramètres Health Connect.',
+        isError: true,
+      );
     }
   }
 

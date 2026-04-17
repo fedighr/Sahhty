@@ -58,16 +58,12 @@ class MeasurementService {
   /// Body: { patient_id: int, readings: [{type, value1, value2?, unit, context?}] }
   /// Response 201: { saved: int, measurements: [...] }
   Future<Map<String, dynamic>> syncSmartwatch({
-    required int patientId,
-    required List<Map<String, dynamic>> readings,
+    required Map<String, dynamic> payload,
   }) async {
     try {
       final response = await _dio.post(
         ApiEndpoints.syncSmartwatch,
-        data: {
-          'patient_id': patientId,
-          'readings': readings,
-        },
+        data: payload,
       );
       return response.data;
     } on DioException catch (e) {

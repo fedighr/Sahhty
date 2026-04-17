@@ -34,6 +34,21 @@ class HealthConnectService {
     }
   }
 
+    /// Check if permissions are already granted.
+  Future<bool> hasPermissions() async {
+    try {
+      await _ensureConfigured();
+      final result = await _health.hasPermissions(
+        supportedTypes,
+        permissions: supportedTypes.map((_) => HealthDataAccess.READ).toList(),
+      );
+      return result == true;
+    } catch (e) {
+      debugPrint('[HealthConnect] hasPermissions error: $e');
+      return false;
+    }
+  }
+
   /// Check if Health Connect is available on this device.
   Future<bool> isAvailable() async {
     try {
