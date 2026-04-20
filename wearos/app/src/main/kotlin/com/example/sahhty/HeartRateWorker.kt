@@ -1,12 +1,16 @@
 package com.example.sahhty
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.PutDataMapRequest
@@ -25,34 +29,78 @@ class HeartRateWorker(
         private const val TAG = "HeartRateWorker"
         private const val TIMEOUT_MS = 30_000L
         private const val DATA_PATH = "/sahhty/heart_rate"
+        private const val CHANNEL_ID = "sahhty_monitor"
+        private const val NOTIFICATION_ID = 1
+    }
+
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        val manager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE)
+                as NotificationManager
+
+        if (manager.getNotificationChannel(CHANNEL_ID) == null) {
+            manager.createNotificationChannel(
+                NotificationChannel(
+                    CHANNEL_ID,
+                    "Sahhty Monitor",
+                    NotificationManager.IMPORTANCE_LOW
+                )
+            )
+        }
+
+        val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+            .setContentTitle("Sahhty")
+            .setContentText("Mesure du rythme cardiaque...")
+            .setSmallIcon(android.R.drawable.ic_menu_compass)
+            .build()
+
+        return ForegroundInfo(NOTIFICATION_ID, notification)
     }
 
     override suspend fun doWork(): Result {
-        Log.d(TAG, "HeartRateWorker started")
+        setForeground(getForegroundInfo())
+        Log.d(TAG, "HeartRateWorker started — ${System.currentTimeMillis()}")
 
         val heartRate = readHeartRate()
+
         if (heartRate == null) {
             Log.w(TAG, "No heart rate reading within timeout")
-            return Result.retry()
+            scheduleNext()
+            return Result.success()
         }
 
-        Log.d(TAG, "Heart rate measured: $heartRate BPM")
+        Log.d(TAG, "Heart rate measured: $heartRate BPM — sending to phone")
 
         return try {
             sendToPhone(heartRate)
-            Log.d(TAG, "Heart rate sent to phone successfully")
+            Log.d(TAG, "Sent successfully")
+            scheduleNext()
             Result.success()
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to send to phone: ${e.message}")
-            Result.retry()
+            Log.e(TAG, "Failed to send: ${e.message}")
+            scheduleNext()
+            Result.success()
         }
     }
 
+    private fun scheduleNext() {
+        val nextWork = androidx.work.OneTimeWorkRequestBuilder<HeartRateWorker>()
+            .setInitialDelay(MainActivity.INTERVAL_MINUTES, java.util.concurrent.TimeUnit.MINUTES)
+            .build()
+
+        androidx.work.WorkManager.getInstance(applicationContext).enqueueUniqueWork(
+            "sahhty_heart_rate_monitor",
+            androidx.work.ExistingWorkPolicy.REPLACE,
+            nextWork
+        )
+    }
+
     private suspend fun readHeartRate(): Float? {
-        val sensorManager = applicationContext.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val sensorManager = applicationContext
+            .getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
         val heartRateSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)
             ?: run {
-                Log.e(TAG, "Heart rate sensor not available on this device")
+                Log.e(TAG, "Heart rate sensor not available")
                 return null
             }
 
@@ -61,13 +109,17 @@ class HeartRateWorker(
                 val listener = object : SensorEventListener {
                     override fun onSensorChanged(event: SensorEvent?) {
                         val value = event?.values?.firstOrNull()
-                        if (value != null && value > 0f) {
+                        if (value != null && value > 0f &&
+                            event.accuracy >= SensorManager.SENSOR_STATUS_ACCURACY_LOW
+                        ) {
                             sensorManager.unregisterListener(this)
                             if (cont.isActive) cont.resume(value)
                         }
                     }
 
-                    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+                    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+                        Log.d(TAG, "Accuracy: $accuracy")
+                    }
                 }
 
                 sensorManager.registerListener(
@@ -85,6 +137,7 @@ class HeartRateWorker(
 
     private suspend fun sendToPhone(heartRate: Float) {
         val dataClient: DataClient = Wearable.getDataClient(applicationContext)
+
         val putDataReq = PutDataMapRequest.create(DATA_PATH).apply {
             dataMap.putFloat("heart_rate", heartRate)
             dataMap.putLong("timestamp", System.currentTimeMillis())

@@ -94,6 +94,8 @@ class AuthService {
     }
   }
 
+  
+
   // ── Forget Password (forgot password step 3) ────────────────────────
   Future<Map<String, dynamic>> forgetPassword(String email, String password) async {
     try {

@@ -2,7 +2,7 @@
 class ApiEndpoints {
   ApiEndpoints._();
 
-  static const String baseUrl = 'http://192.168.43.103:8000';
+  static const String baseUrl = 'http://192.168.100.10:8000';
 
   // ── Auth (ViewSet: users/auth/) ──────────────────────────────────────
   static const String signup            = '/users/auth/signup/';
@@ -73,7 +73,7 @@ class ApiEndpoints {
   //       "value2": null,
   //       "unit": "BPM",
   //       "context": "smartwatch_Samsung Health",
-  //       "patient": int
+  //       "patient_id": int
   //     }
   //   ]
   // }

@@ -46,10 +46,49 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    private val riskAlertReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == PhoneWearListenerService.ACTION_RISK_ALERT) {
+                val riskLevel = intent.getStringExtra(PhoneWearListenerService.EXTRA_RISK_LEVEL)
+                val note = intent.getStringExtra(PhoneWearListenerService.EXTRA_RISK_NOTE)
+                val heartRate = intent.getFloatExtra(PhoneWearListenerService.EXTRA_HEART_RATE, 0f)
+
+                val data = mapOf(
+                    "risk_level" to riskLevel,
+                    "note" to note,
+                    "heart_rate" to heartRate.toDouble()
+                )
+                wearMethodChannel?.invokeMethod("onRiskAlert", data)
+            }
+        }
+    }
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        wearMethodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WEAR_CHANNEL)
+        wearMethodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WEAR_CHANNEL).also { ch ->
+            ch.setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "setCredentials" -> {
+                        val args = call.arguments as Map<*, *>
+                        val token = args["token"] as? String
+                        val patientId = args["patient_id"] as? String
+                        if (token != null && patientId != null) {
+                            getSharedPreferences("sahhty_prefs", Context.MODE_PRIVATE)
+                                .edit()
+                                .putString("token", token)
+                                .putString("patient_id", patientId)
+                                .apply()
+                            Log.d(TAG, "Credentials saved for background service")
+                            result.success(true)
+                        } else {
+                            result.error("INVALID", "Token or patient_id is null", null)
+                        }
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+        }
 
         wearableMethodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WEARABLE_CHANNEL).also { ch ->
             ch.setMethodCallHandler { call, result ->
@@ -64,16 +103,22 @@ class MainActivity : FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val filter = IntentFilter(PhoneWearListenerService.ACTION_HEART_RATE)
+
+        val heartFilter = IntentFilter(PhoneWearListenerService.ACTION_HEART_RATE)
+        val riskFilter = IntentFilter(PhoneWearListenerService.ACTION_RISK_ALERT)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(heartRateReceiver, filter, RECEIVER_NOT_EXPORTED)
+            registerReceiver(heartRateReceiver, heartFilter, RECEIVER_NOT_EXPORTED)
+            registerReceiver(riskAlertReceiver, riskFilter, RECEIVER_NOT_EXPORTED)
         } else {
-            registerReceiver(heartRateReceiver, filter)
+            registerReceiver(heartRateReceiver, heartFilter)
+            registerReceiver(riskAlertReceiver, riskFilter)
         }
     }
 
     override fun onDestroy() {
         unregisterReceiver(heartRateReceiver)
+        unregisterReceiver(riskAlertReceiver)
         scope.cancel()
         super.onDestroy()
     }

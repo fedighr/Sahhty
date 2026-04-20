@@ -1,0 +1,50 @@
+[
+  {
+    "dci_name": "LITHIUM CARBONATE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Le lithium peut être utilisé pendant la grossesse uniquement si aucune alternative plus sûre n'est disponible, avec surveillance prénatale rapprochée.",
+    "source_url": "https://www.lecrat.fr/11974/"
+  },
+  {
+    "dci_name": "TESTOSTERONE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "UNSAFE",
+      "T2": "UNSAFE",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "La testostérone est tératogène et doit être évitée pendant toute la grossesse, notamment en raison de ses effets sur les fœtus féminins.",
+    "source_url": "https://www.lecrat.fr/3147/"
+  },
+  {
+    "dci_name": "DANAZOL",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "UNSAFE",
+      "T2": "UNSAFE",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Le danazol est tératogène et contre-indiqué pendant toute la grossesse, surtout pour les fœtus féminins.",
+    "source_url": "https://www.lecrat.fr/3147/"
+  },
+  {
+    "dci_name": "ALLOPURINOL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "L'allopurinol peut être utilisé seulement en absence d'alternative plus sûre, avec une surveillance prénatale ciblée, particulièrement au premier trimestre.",
+    "source_url": "https://www.lecrat.fr/3147/"
+  }
+]

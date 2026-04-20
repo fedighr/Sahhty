@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sahhty/core/constants/api_endpoints.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/data/services/vitals_sync_service.dart';
@@ -17,12 +20,24 @@ class SmartwatchScreen extends ConsumerStatefulWidget {
 
 class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
     with SingleTickerProviderStateMixin {
+
+  static const _wearChannel = MethodChannel('com.example.sahhty/wear');
+  static const _wearableChannel = MethodChannel('com.sahhty/wearable');
+  static const _storage = FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  );
+
   bool _checking = true;
   bool _available = false;
   bool _permissionsGranted = false;
   bool _syncing = false;
   SyncResult? _lastResult;
   late AnimationController _pulseController;
+
+  // Watch status
+  String _watchStatus = 'checking';
+  String _watchMessage = 'Vérification...';
+  DateTime? _lastAutoSync;
 
   @override
   void initState() {
@@ -31,13 +46,58 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
-    _checkAvailability();
+
+    _initialize();
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
     super.dispose();
+  }
+
+  Future<void> _initialize() async {
+    await Future.wait([
+      _sendCredentialsToNative(),
+      _checkAvailability(),
+      _checkWatchStatus(),
+    ]);
+  }
+
+  Future<void> _sendCredentialsToNative() async {
+    try {
+      final token = await _storage.read(key: StorageKeys.accessToken);
+      final patientId = await _storage.read(key: StorageKeys.patientId);
+      if (token != null && patientId != null) {
+        await _wearChannel.invokeMethod('setCredentials', {
+          'token': token,
+          'patient_id': patientId,
+        });
+        debugPrint('[SmartwatchScreen] Credentials sent to native ✅');
+      }
+    } catch (e) {
+      debugPrint('[SmartwatchScreen] Failed to send credentials: $e');
+    }
+  }
+
+  Future<void> _checkWatchStatus() async {
+    try {
+      final result = await _wearableChannel.invokeMethod('checkWatchAppInstalled');
+      final status = result['status'] as String;
+      final message = result['message'] as String;
+
+      if (!mounted) return;
+      setState(() {
+        _watchStatus = status;
+        _watchMessage = message;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _watchStatus = 'no_watch';
+        _watchMessage = 'Aucune montre détectée';
+      });
+    }
   }
 
   Future<void> _checkAvailability() async {
@@ -85,10 +145,16 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
     setState(() {
       _syncing = false;
       _lastResult = result;
+      if (result.success) _lastAutoSync = DateTime.now();
     });
+  }
 
-    if (result.measurements.isNotEmpty) {
-      // Measurements are returned by the backend — no second call needed
+  Future<void> _installWatchApp() async {
+    try {
+      await _wearableChannel.invokeMethod('openPlayStoreOnWatch');
+      _showSnack('Demande envoyée à la montre');
+    } catch (e) {
+      _showSnack('Impossible d\'envoyer la demande', isError: true);
     }
   }
 
@@ -111,15 +177,25 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => context.pop(),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _initialize,
+            tooltip: 'Actualiser',
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              // Hero illustration
               _buildHeroCard(),
               const SizedBox(height: 24),
+
+              // Watch connection status
+              _buildWatchStatusCard(),
+              const SizedBox(height: 16),
 
               if (_checking)
                 const Center(child: CircularProgressIndicator())
@@ -140,6 +216,120 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
         ),
       ),
     );
+  }
+
+  Widget _buildWatchStatusCard() {
+    IconData icon;
+    Color color;
+    String title;
+    Widget? actionButton;
+
+    switch (_watchStatus) {
+      case 'installed':
+        icon = Icons.watch;
+        color = AppColors.success;
+        title = 'Montre connectée';
+        actionButton = null;
+        break;
+      case 'not_installed':
+        icon = Icons.watch_off;
+        color = AppColors.warning;
+        title = 'Application non installée';
+        actionButton = ElevatedButton.icon(
+          onPressed: _installWatchApp,
+          icon: const Icon(Icons.download, size: 16),
+          label: const Text('Installer'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.warning,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+        break;
+      case 'no_watch':
+        icon = Icons.watch_off;
+        color = AppColors.textSecondary;
+        title = 'Aucune montre détectée';
+        actionButton = null;
+        break;
+      case 'checking':
+      default:
+        icon = Icons.watch;
+        color = AppColors.primary;
+        title = 'Vérification...';
+        actionButton = null;
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withAlpha(80)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(8),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withAlpha(30),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 24),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  _watchMessage,
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+                if (_lastAutoSync != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    'Dernière sync: ${_formatTime(_lastAutoSync!)}',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          if (actionButton != null) actionButton,
+        ],
+      ),
+    ).animate().fadeIn(duration: 400.ms);
+  }
+
+  String _formatTime(DateTime dt) {
+    final now = DateTime.now();
+    final diff = now.difference(dt);
+    if (diff.inMinutes < 1) return 'À l\'instant';
+    if (diff.inMinutes < 60) return 'Il y a ${diff.inMinutes} min';
+    return '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
   }
 
   Widget _buildHeroCard() {
@@ -170,11 +360,17 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
                 child: child,
               );
             },
-            child: const Icon(Icons.watch, size: 64, color: Colors.white),
+            child: Icon(
+              _watchStatus == 'installed'
+                  ? Icons.watch
+                  : Icons.watch_off,
+              size: 64,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 16),
           const Text(
-            'Health Connect',
+            'Sahhty Watch',
             style: TextStyle(
               color: Colors.white,
               fontSize: 22,
@@ -183,7 +379,9 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
           ),
           const SizedBox(height: 8),
           Text(
-            'Synchronisez votre rythme cardiaque depuis votre montre connectée',
+            _watchStatus == 'installed'
+                ? 'Surveillance automatique active — mesure toutes les 5 min'
+                : 'Connectez votre montre pour activer la surveillance automatique',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white.withAlpha(200), fontSize: 14),
           ),
@@ -226,7 +424,11 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(color: Colors.black.withAlpha(12), blurRadius: 12, offset: const Offset(0, 4)),
+          BoxShadow(
+            color: Colors.black.withAlpha(12),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
         ],
       ),
       child: Column(
@@ -269,7 +471,10 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
             ? const SizedBox(
                 width: 20,
                 height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
               )
             : const Icon(Icons.sync),
         label: Text(_syncing ? 'Synchronisation...' : 'Synchroniser maintenant'),
@@ -304,8 +509,16 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
       child: Column(
         children: [
           Icon(
-            isSuccess ? Icons.check_circle : isEmpty ? Icons.info_outline : Icons.error_outline,
-            color: isSuccess ? AppColors.success : isEmpty ? AppColors.warning : AppColors.error,
+            isSuccess
+                ? Icons.check_circle
+                : isEmpty
+                    ? Icons.info_outline
+                    : Icons.error_outline,
+            color: isSuccess
+                ? AppColors.success
+                : isEmpty
+                    ? AppColors.warning
+                    : AppColors.error,
             size: 40,
           ),
           const SizedBox(height: 12),
@@ -323,15 +536,20 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
               child: Text(
                 result.errors.first,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 13,
+                ),
               ),
             ),
-          // Display measurements returned by the backend
           if (result.measurements.isNotEmpty) ...[
             const SizedBox(height: 16),
             const Divider(),
             const SizedBox(height: 8),
-            const Text('Mesures enregistrées', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            const Text(
+              'Mesures enregistrées',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
             const SizedBox(height: 8),
             ...result.measurements.map((m) => _buildMeasurementTile(m)),
           ],
@@ -381,7 +599,11 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Icon(icons[type] ?? Icons.monitor_heart, size: 20, color: AppColors.primary),
+          Icon(
+            icons[type] ?? Icons.monitor_heart,
+            size: 20,
+            color: AppColors.primary,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -412,14 +634,34 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
             children: [
               Icon(Icons.info_outline, color: AppColors.primary, size: 20),
               SizedBox(width: 8),
-              Text('Comment ça marche ?', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryDark)),
+              Text(
+                'Comment ça marche ?',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryDark,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
-          _infoRow(Icons.watch, 'Votre montre mesure automatiquement votre rythme cardiaque'),
-          _infoRow(Icons.sync_alt, 'Le dernier rythme cardiaque est récupéré depuis Health Connect'),
-          _infoRow(Icons.cloud_upload_outlined, 'Appuyez sur Synchroniser pour envoyer la dernière mesure'),
-          _infoRow(Icons.shield_outlined, 'Vos données restent sécurisées et privées'),
+          _infoRow(
+            Icons.watch,
+            _watchStatus == 'installed'
+                ? 'Votre montre mesure automatiquement votre rythme cardiaque toutes les 5 minutes'
+                : 'Installez l\'application sur votre montre pour la surveillance automatique',
+          ),
+          _infoRow(
+            Icons.sync_alt,
+            'Le rythme cardiaque est envoyé automatiquement à votre médecin',
+          ),
+          _infoRow(
+            Icons.cloud_upload_outlined,
+            'Appuyez sur Synchroniser pour forcer une synchronisation immédiate',
+          ),
+          _infoRow(
+            Icons.shield_outlined,
+            'Vos données restent sécurisées et privées',
+          ),
         ],
       ),
     ).animate().fadeIn(duration: 500.ms, delay: 200.ms);
@@ -432,7 +674,15 @@ class _SmartwatchScreenState extends ConsumerState<SmartwatchScreen>
         children: [
           Icon(icon, size: 18, color: AppColors.primary),
           const SizedBox(width: 10),
-          Expanded(child: Text(text, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary))),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
         ],
       ),
     );

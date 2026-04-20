@@ -206,23 +206,23 @@ class MeasurementService:
                 combinations.append("Tachycardie et hypertension détectées simultanément")
 
         if body_temp is not None and heart_rate is not None:
-            if body_temp >= 37.5 and heart_rate > 100:
+            if body_temp >= 37.8 and heart_rate > 100:
                 combinations.append("Fièvre et tachycardie détectées simultanément")
 
         if glucose is not None and bp_sys is not None and bp_dia is not None:
-            if glucose > 126 and (bp_sys >= 140 or bp_dia >= 90):
-                combinations.append("Glycémie élevée et hypertension détectées simultanément")
+            if glucose >= 126 and (bp_sys >= 140 or bp_dia >= 90):
+                combinations.append("Hyperglycémie et hypertension détectées simultanément")
 
         if glucose is not None and body_temp is not None:
-            if glucose > 126 and body_temp >= 37.5:
-                combinations.append("Glycémie élevée et fièvre détectées simultanément")
+            if glucose >= 126 and body_temp >= 37.8:
+                combinations.append("Hyperglycémie et fièvre détectées simultanément")
 
         if risk_level == 'HIGH':
 
             if glucose is not None:
                 if glucose >= 200:
                     add(f"Glycémie très élevée ({glucose} mg/dL)", 3)
-                elif glucose > 126:
+                elif glucose >= 126:
                     add(f"Glycémie élevée ({glucose} mg/dL)", 2)
                 elif glucose < 54:
                     add(f"Glycémie très basse ({glucose} mg/dL)", 3)
@@ -250,46 +250,60 @@ class MeasurementService:
                     add(f"Fréquence cardiaque basse ({heart_rate} bpm)", 2)
 
             if body_temp is not None:
-                if body_temp >= 40:
-                    add(f"Température corporelle très élevée ({body_temp}°C)", 3)
-                elif body_temp >= 38:
-                    add(f"Température corporelle élevée ({body_temp}°C)", 2)
-                elif body_temp < 35:
-                    add(f"Température corporelle très basse ({body_temp}°C)", 3)
-                elif body_temp < 36:
-                    add(f"Température corporelle basse ({body_temp}°C)", 2)
+                if body_temp >= 39.5:
+                    add(f"Température très élevée ({body_temp}°C)", 3)
+                elif body_temp >= 37.8:
+                    add(f"Température élevée ({body_temp}°C)", 2)
+                elif body_temp < 35.0:
+                    add(f"Température très basse ({body_temp}°C)", 3)
+                elif body_temp < 36.0:
+                    add(f"Température basse ({body_temp}°C)", 2)
 
         elif risk_level == 'MEDIUM':
 
             if glucose is not None:
                 if is_fasting:
-                    if 92 <= glucose <= 126:
+                    if glucose >= 126:
+                        add(f"Glycémie à jeun élevée ({glucose} mg/dL)", 3)
+                    elif glucose >= 92:
                         add(f"Glycémie à jeun légèrement élevée ({glucose} mg/dL)", 2)
+                    elif glucose < 70:
+                        add(f"Glycémie à jeun basse ({glucose} mg/dL)", 2)
                     elif 70 <= glucose < 92:
                         add(f"Glycémie à jeun dans la limite basse ({glucose} mg/dL)", 1)
                 else:
-                    if 120 <= glucose <= 199:
+                    if glucose >= 200:
+                        add(f"Glycémie très élevée ({glucose} mg/dL)", 3)
+                    elif glucose >= 140:
                         add(f"Glycémie postprandiale élevée ({glucose} mg/dL)", 2)
+                    elif glucose >= 120:
+                        add(f"Glycémie postprandiale légèrement élevée ({glucose} mg/dL)", 1)
 
             if bp_sys is not None and bp_dia is not None:
-                if 130 <= bp_sys <= 139 or 80 <= bp_dia <= 89:
+                if bp_sys >= 140 or bp_dia >= 90:
+                    add(f"Tension artérielle élevée ({bp_sys}/{bp_dia} mmHg)", 3)
+                elif bp_sys >= 130 or bp_dia >= 80:
                     add(f"Tension artérielle légèrement élevée ({bp_sys}/{bp_dia} mmHg)", 2)
                 elif 120 <= bp_sys <= 129 and bp_dia < 80:
                     add(f"Tension artérielle dans la limite haute ({bp_sys}/{bp_dia} mmHg)", 1)
+                elif bp_sys < 90 or bp_dia < 60:
+                    add(f"Tension artérielle basse ({bp_sys}/{bp_dia} mmHg)", 2)
 
             if heart_rate is not None:
-                if 101 <= heart_rate <= 130:
-                    add(f"Fréquence cardiaque légèrement élevée ({heart_rate} bpm)", 1)
-                elif 50 <= heart_rate < 60:
-                    add(f"Fréquence cardiaque légèrement basse ({heart_rate} bpm)", 1)
+                if heart_rate > 100:
+                    add(f"Fréquence cardiaque élevée ({heart_rate} bpm)", 2)
+                elif heart_rate < 60:
+                    add(f"Fréquence cardiaque basse ({heart_rate} bpm)", 1)
 
             if body_temp is not None:
-                if 37.5 <= body_temp < 38:
-                    add(f"Température corporelle légèrement élevée ({body_temp}°C)", 1)
-                elif 38 <= body_temp < 40:
-                    add(f"Température corporelle élevée ({body_temp}°C)", 2)
-                elif 35 <= body_temp < 36:
-                    add(f"Température corporelle légèrement basse ({body_temp}°C)", 1)
+                if body_temp >= 39.5:
+                    add(f"Température très élevée ({body_temp}°C)", 3)
+                elif body_temp >= 37.8:
+                    add(f"Température élevée ({body_temp}°C)", 2)
+                elif body_temp >= 37.5:
+                    add(f"Température légèrement élevée ({body_temp}°C)", 1)
+                elif body_temp < 36.0:
+                    add(f"Température basse ({body_temp}°C)", 1)
 
         elif risk_level == 'INFO':
 
@@ -310,7 +324,7 @@ class MeasurementService:
                     add(f"Fréquence cardiaque normale ({heart_rate} bpm)")
 
             if body_temp is not None:
-                if 36 <= body_temp <= 37.5:
+                if 36.0 <= body_temp <= 37.5:
                     add(f"Température corporelle normale ({body_temp}°C)")
 
         notes.sort(key=lambda x: x[0], reverse=True)
@@ -318,6 +332,10 @@ class MeasurementService:
         all_notes = combinations + final_notes
 
         if not all_notes:
+            if risk_level == 'HIGH':
+                return "Les mesures semblent dans les limites normales, mais le niveau de risque global est élevé — consultez un médecin dès que possible"
+            elif risk_level == 'MEDIUM':
+                return "Toutes les mesures sont dans les limites normales — restez vigilante et consultez un médecin prochainement"
             return "Aucun résultat significatif détecté"
 
         return " | ".join(all_notes)

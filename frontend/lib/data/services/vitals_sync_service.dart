@@ -58,7 +58,7 @@ class VitalsSyncService {
       'value1': value.toStringAsFixed(2),
       'unit': 'BPM',
       'context': 'smartwatch data',
-      'patient': patientId,
+      'patient_id': patientId,
     };
 
     // Single POST to backend

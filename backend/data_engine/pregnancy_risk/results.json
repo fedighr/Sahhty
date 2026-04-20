@@ -1,0 +1,1466 @@
+[
+    {
+        "dci": "ACEBUTOLOL",
+        "url": "https://www.lecrat.fr/7141/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACENOCOUMAROL",
+        "url": "https://www.lecrat.fr/10077/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACETAZOLAMIDE",
+        "url": "https://www.lecrat.fr/7458/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACICLOVIR",
+        "url": "https://www.lecrat.fr/8587/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACIDE ACETYLSALICYLIQUE",
+        "url": "https://www.lecrat.fr/4172/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACIDE CLAVULANIQUE",
+        "url": "https://www.lecrat.fr/6705/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACIDE FUSIDIQUE",
+        "url": "https://www.lecrat.fr/7467/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACIDE IOXITALAMIQUE",
+        "url": "https://www.lecrat.fr/9780/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Produits de contraste iodés hydrosolubles"
+    },
+    {
+        "dci": "ACIDE MEFENAMIQUE",
+        "url": "https://www.lecrat.fr/7481/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACIDE N-ACETYL-ASPARTYL-GLUTAMIQUE",
+        "url": "https://www.lecrat.fr/6940/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACIDE NIFLUMIQUE",
+        "url": "https://www.lecrat.fr/15389/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACIDE TIAPROFENIQUE",
+        "url": "https://www.lecrat.fr/7497/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACIDE VALPROIQUE",
+        "url": "https://www.lecrat.fr/12594/",
+        "status": "exact"
+    },
+    {
+        "dci": "ACITRETINE",
+        "url": "https://www.lecrat.fr/10880/",
+        "status": "exact"
+    },
+    {
+        "dci": "ADAPALENE",
+        "url": "https://www.lecrat.fr/6371/",
+        "status": "exact"
+    },
+    {
+        "dci": "ALBENDAZOLE",
+        "url": "https://www.lecrat.fr/7580/",
+        "status": "exact"
+    },
+    {
+        "dci": "ALENDRONATE",
+        "url": "https://www.lecrat.fr/11484/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Acide alendronique"
+    },
+    {
+        "dci": "ALFUZOSINE",
+        "url": "https://www.lecrat.fr/7679/",
+        "status": "exact"
+    },
+    {
+        "dci": "ALPRAZOLAM",
+        "url": "https://www.lecrat.fr/6046/",
+        "status": "exact"
+    },
+    {
+        "dci": "ALTIZIDE",
+        "url": "https://www.lecrat.fr/11553/",
+        "status": "exact"
+    },
+    {
+        "dci": "AMILORIDE",
+        "url": "https://www.lecrat.fr/7417/",
+        "status": "exact"
+    },
+    {
+        "dci": "AMISULPRIDE",
+        "url": "https://www.lecrat.fr/12031/",
+        "status": "exact"
+    },
+    {
+        "dci": "AMITRIPTYLINE",
+        "url": "https://www.lecrat.fr/4145/",
+        "status": "exact"
+    },
+    {
+        "dci": "AMLODIPINE",
+        "url": "https://www.lecrat.fr/7335/",
+        "status": "exact"
+    },
+    {
+        "dci": "AMOROLFINE",
+        "url": "https://www.lecrat.fr/10280/",
+        "status": "exact"
+    },
+    {
+        "dci": "AMOXICILLINE",
+        "url": "https://www.lecrat.fr/6654/",
+        "status": "exact"
+    },
+    {
+        "dci": "AMPHOTERICINE B",
+        "url": "https://www.lecrat.fr/10226/",
+        "status": "exact"
+    },
+    {
+        "dci": "AMPICILLINE",
+        "url": "https://www.lecrat.fr/13210/",
+        "status": "exact"
+    },
+    {
+        "dci": "ARIPIPRAZOLE",
+        "url": "https://www.lecrat.fr/12062/",
+        "status": "exact"
+    },
+    {
+        "dci": "ATENOLOL",
+        "url": "https://www.lecrat.fr/9259/",
+        "status": "exact"
+    },
+    {
+        "dci": "ATORVASTATINE",
+        "url": "https://www.lecrat.fr/8611/",
+        "status": "exact"
+    },
+    {
+        "dci": "AZATHIOPRINE",
+        "url": "https://www.lecrat.fr/8894/",
+        "status": "exact"
+    },
+    {
+        "dci": "AZELASTINE",
+        "url": "https://www.lecrat.fr/4986/",
+        "status": "exact"
+    },
+    {
+        "dci": "AZITHROMYCINE",
+        "url": "https://www.lecrat.fr/6362/",
+        "status": "exact"
+    },
+    {
+        "dci": "BACLOFENE",
+        "url": "https://www.lecrat.fr/9133/",
+        "status": "exact"
+    },
+    {
+        "dci": "BECLOMETASONE",
+        "url": "https://www.lecrat.fr/8199/",
+        "status": "exact"
+    },
+    {
+        "dci": "BENZATHINE BENZYLPENICILLINE",
+        "url": "https://www.lecrat.fr/13304/",
+        "status": "exact"
+    },
+    {
+        "dci": "BENZOATE DE BENZYLE",
+        "url": "https://www.lecrat.fr/7606/",
+        "status": "exact"
+    },
+    {
+        "dci": "BENZYLPENICILLINE",
+        "url": "https://www.lecrat.fr/13304/",
+        "status": "exact"
+    },
+    {
+        "dci": "BETAMETHASONE",
+        "url": "https://www.lecrat.fr/5016/",
+        "status": "exact"
+    },
+    {
+        "dci": "BETAXOLOL",
+        "url": "https://www.lecrat.fr/9257/",
+        "status": "exact"
+    },
+    {
+        "dci": "BIMATOPROST",
+        "url": "https://www.lecrat.fr/9985/",
+        "status": "exact"
+    },
+    {
+        "dci": "BIPERIDENE",
+        "url": "https://www.lecrat.fr/10172/",
+        "status": "exact"
+    },
+    {
+        "dci": "BISOPROLOL",
+        "url": "https://www.lecrat.fr/7432/",
+        "status": "exact"
+    },
+    {
+        "dci": "BRIMONIDINE",
+        "url": "https://www.lecrat.fr/9937/",
+        "status": "exact"
+    },
+    {
+        "dci": "BRINZOLAMIDE",
+        "url": "https://www.lecrat.fr/9948/",
+        "status": "exact"
+    },
+    {
+        "dci": "BROMAZEPAM",
+        "url": "https://www.lecrat.fr/6057/",
+        "status": "exact"
+    },
+    {
+        "dci": "BROMHEXINE",
+        "url": "https://www.lecrat.fr/11818/",
+        "status": "exact"
+    },
+    {
+        "dci": "BROMOCRIPTINE",
+        "url": "https://www.lecrat.fr/8972/",
+        "status": "exact"
+    },
+    {
+        "dci": "BUDESONIDE",
+        "url": "https://www.lecrat.fr/8207/",
+        "status": "exact"
+    },
+    {
+        "dci": "COQUELUCHE",
+        "url": "https://www.lecrat.fr/9429/",
+        "status": "exact"
+    },
+    {
+        "dci": "CAFEINE",
+        "url": "https://www.lecrat.fr/4278/",
+        "status": "exact"
+    },
+    {
+        "dci": "CALCIPOTRIOL",
+        "url": "https://www.lecrat.fr/10888/",
+        "status": "exact"
+    },
+    {
+        "dci": "CANDESARTAN",
+        "url": "https://www.lecrat.fr/7366/",
+        "status": "exact"
+    },
+    {
+        "dci": "CANDESARTAN  HYDROCHLOROTHIAZIDE",
+        "url": "https://www.lecrat.fr/7226/",
+        "status": "exact"
+    },
+    {
+        "dci": "CAPTOPRIL",
+        "url": "https://www.lecrat.fr/7199/",
+        "status": "exact"
+    },
+    {
+        "dci": "CARBAMAZEPINE",
+        "url": "https://www.lecrat.fr/12249/",
+        "status": "exact"
+    },
+    {
+        "dci": "CARTEOLOL",
+        "url": "https://www.lecrat.fr/9916/",
+        "status": "exact"
+    },
+    {
+        "dci": "CARVEDILOL",
+        "url": "https://www.lecrat.fr/9281/",
+        "status": "exact"
+    },
+    {
+        "dci": "CEFADROXIL",
+        "url": "https://www.lecrat.fr/13206/",
+        "status": "exact"
+    },
+    {
+        "dci": "CEFAZOLINE",
+        "url": "https://www.lecrat.fr/13273/",
+        "status": "exact"
+    },
+    {
+        "dci": "CEFIXIME",
+        "url": "https://www.lecrat.fr/13143/",
+        "status": "exact"
+    },
+    {
+        "dci": "CEFOTAXIME",
+        "url": "https://www.lecrat.fr/3062/",
+        "status": "exact"
+    },
+    {
+        "dci": "CEFPODOXIME",
+        "url": "https://www.lecrat.fr/13321/",
+        "status": "exact"
+    },
+    {
+        "dci": "CEFUROXIME",
+        "url": "https://www.lecrat.fr/13343/",
+        "status": "exact"
+    },
+    {
+        "dci": "CELECOXIB",
+        "url": "https://www.lecrat.fr/15396/",
+        "status": "exact"
+    },
+    {
+        "dci": "CELIPROLOL",
+        "url": "https://www.lecrat.fr/9275/",
+        "status": "exact"
+    },
+    {
+        "dci": "CETIRIZINE",
+        "url": "https://www.lecrat.fr/3084/",
+        "status": "exact"
+    },
+    {
+        "dci": "CHLORDIAZEPOXIDE",
+        "url": "https://www.lecrat.fr/6979/",
+        "status": "exact"
+    },
+    {
+        "dci": "CHLOROTHIAZIDE",
+        "url": "https://www.lecrat.fr/7226/",
+        "status": "fuzzy-groq-confirmed(85%)",
+        "matched_name": "Hydrochlorothiazide"
+    },
+    {
+        "dci": "CHLORPROMAZINE",
+        "url": "https://www.lecrat.fr/3580/",
+        "status": "exact"
+    },
+    {
+        "dci": "CIMETIDINE",
+        "url": "https://www.lecrat.fr/12801/",
+        "status": "exact"
+    },
+    {
+        "dci": "CIPROFLOXACINE",
+        "url": "https://www.lecrat.fr/6630/",
+        "status": "exact"
+    },
+    {
+        "dci": "CITALOPRAM",
+        "url": "https://www.lecrat.fr/3961/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLARITHROMYCINE",
+        "url": "https://www.lecrat.fr/13419/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLINDAMYCINE",
+        "url": "https://www.lecrat.fr/6313/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLOBAZAM",
+        "url": "https://www.lecrat.fr/12497/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLOBETASOL",
+        "url": "https://www.lecrat.fr/5165/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLOMIPRAMINE",
+        "url": "https://www.lecrat.fr/4100/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLONAZEPAM",
+        "url": "https://www.lecrat.fr/11239/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLORAZEPATE DIPOTASSIQUE",
+        "url": "https://www.lecrat.fr/3878/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLOTRIMAZOLE",
+        "url": "https://www.lecrat.fr/10189/",
+        "status": "exact"
+    },
+    {
+        "dci": "CLOZAPINE",
+        "url": "https://www.lecrat.fr/12027/",
+        "status": "exact"
+    },
+    {
+        "dci": "CODEINE",
+        "url": "https://www.lecrat.fr/4478/",
+        "status": "exact"
+    },
+    {
+        "dci": "COLCHICINE",
+        "url": "https://www.lecrat.fr/9166/",
+        "status": "exact"
+    },
+    {
+        "dci": "COTRIMOXAZOLE",
+        "url": "https://www.lecrat.fr/6660/",
+        "status": "exact"
+    },
+    {
+        "dci": "CROMOGLYCATE DE SODIUM",
+        "url": "https://www.lecrat.fr/4745/",
+        "status": "fuzzy(95%)",
+        "matched_name": "Cromoglicate de sodium"
+    },
+    {
+        "dci": "CYPROHEPTADINE",
+        "url": "https://www.lecrat.fr/6794/",
+        "status": "exact"
+    },
+    {
+        "dci": "Cabergoline",
+        "url": "https://www.lecrat.fr/8978/",
+        "status": "exact"
+    },
+    {
+        "dci": "DESLORATADINE",
+        "url": "https://www.lecrat.fr/3662/",
+        "status": "exact"
+    },
+    {
+        "dci": "DESOGESTREL",
+        "url": "https://www.lecrat.fr/6224/",
+        "status": "exact"
+    },
+    {
+        "dci": "DESONIDE",
+        "url": "https://www.lecrat.fr/5170/",
+        "status": "exact"
+    },
+    {
+        "dci": "DEXAMETHASONE",
+        "url": "https://www.lecrat.fr/5021/",
+        "status": "exact"
+    },
+    {
+        "dci": "DEXCHLORPHENIRAMINE",
+        "url": "https://www.lecrat.fr/6800/",
+        "status": "exact"
+    },
+    {
+        "dci": "DIAZEPAM",
+        "url": "https://www.lecrat.fr/3869/",
+        "status": "exact"
+    },
+    {
+        "dci": "DICLOFENAC",
+        "url": "https://www.lecrat.fr/15298/",
+        "status": "exact"
+    },
+    {
+        "dci": "DILTIAZEM",
+        "url": "https://www.lecrat.fr/9322/",
+        "status": "exact"
+    },
+    {
+        "dci": "DIMETICONE",
+        "url": "https://www.lecrat.fr/12157/",
+        "status": "exact"
+    },
+    {
+        "dci": "DIPHTERIE",
+        "url": "https://www.lecrat.fr/9526/",
+        "status": "exact"
+    },
+    {
+        "dci": "DIPHENHYDRAMINE",
+        "url": "https://www.lecrat.fr/3474/",
+        "status": "exact"
+    },
+    {
+        "dci": "DOCUSATE SODIQUE",
+        "url": "https://www.lecrat.fr/8801/",
+        "status": "exact"
+    },
+    {
+        "dci": "DOMPERIDONE",
+        "url": "https://www.lecrat.fr/3446/",
+        "status": "exact"
+    },
+    {
+        "dci": "DORZOLAMIDE",
+        "url": "https://www.lecrat.fr/9981/",
+        "status": "exact"
+    },
+    {
+        "dci": "DOXYCYCLINE",
+        "url": "https://www.lecrat.fr/6396/",
+        "status": "exact"
+    },
+    {
+        "dci": "DYDROGESTERONE",
+        "url": "https://www.lecrat.fr/11321/",
+        "status": "exact"
+    },
+    {
+        "dci": "ECONAZOLE",
+        "url": "https://www.lecrat.fr/10272/",
+        "status": "exact"
+    },
+    {
+        "dci": "ELETRIPTAN",
+        "url": "https://www.lecrat.fr/10981/",
+        "status": "exact"
+    },
+    {
+        "dci": "ENALAPRIL",
+        "url": "https://www.lecrat.fr/7208/",
+        "status": "exact"
+    },
+    {
+        "dci": "ERYTHROMYCINE",
+        "url": "https://www.lecrat.fr/6322/",
+        "status": "exact"
+    },
+    {
+        "dci": "ESCITALOPRAM",
+        "url": "https://www.lecrat.fr/4018/",
+        "status": "exact"
+    },
+    {
+        "dci": "ESOMEPRAZOLE",
+        "url": "https://www.lecrat.fr/12852/",
+        "status": "exact"
+    },
+    {
+        "dci": "ESTRADIOL",
+        "url": "https://www.lecrat.fr/6218/",
+        "status": "exact"
+    },
+    {
+        "dci": "ETHINYLESTRADIOL",
+        "url": "https://www.lecrat.fr/6225/",
+        "status": "exact"
+    },
+    {
+        "dci": "FAMOTIDINE",
+        "url": "https://www.lecrat.fr/12839/",
+        "status": "exact"
+    },
+    {
+        "dci": "FENOTEROL",
+        "url": "https://www.lecrat.fr/8070/",
+        "status": "exact"
+    },
+    {
+        "dci": "FEXOFENADINE",
+        "url": "https://www.lecrat.fr/4981/",
+        "status": "exact"
+    },
+    {
+        "dci": "FLECAINIDE",
+        "url": "https://www.lecrat.fr/9320/",
+        "status": "exact"
+    },
+    {
+        "dci": "FLUCONAZOLE",
+        "url": "https://www.lecrat.fr/10230/",
+        "status": "exact"
+    },
+    {
+        "dci": "FLUOROMETHOLONE",
+        "url": "https://www.lecrat.fr/5070/",
+        "status": "exact"
+    },
+    {
+        "dci": "FLUOXETINE",
+        "url": "https://www.lecrat.fr/4025/",
+        "status": "exact"
+    },
+    {
+        "dci": "FLURBIPROFENE",
+        "url": "https://www.lecrat.fr/15293/",
+        "status": "exact"
+    },
+    {
+        "dci": "FLUTICASONE",
+        "url": "https://www.lecrat.fr/8107/",
+        "status": "exact"
+    },
+    {
+        "dci": "FLUVASTATINE",
+        "url": "https://www.lecrat.fr/8632/",
+        "status": "exact"
+    },
+    {
+        "dci": "FLUVOXAMINE",
+        "url": "https://www.lecrat.fr/12211/",
+        "status": "exact"
+    },
+    {
+        "dci": "FORMOTEROL",
+        "url": "https://www.lecrat.fr/8043/",
+        "status": "exact"
+    },
+    {
+        "dci": "FOSFOMYCINE",
+        "url": "https://www.lecrat.fr/6678/",
+        "status": "exact"
+    },
+    {
+        "dci": "FRAMYCETINE",
+        "url": "https://www.lecrat.fr/13362/",
+        "status": "exact"
+    },
+    {
+        "dci": "FROVATRIPTAN",
+        "url": "https://www.lecrat.fr/11003/",
+        "status": "exact"
+    },
+    {
+        "dci": "FUROSEMIDE",
+        "url": "https://www.lecrat.fr/11557/",
+        "status": "exact"
+    },
+    {
+        "dci": "GABAPENTINE",
+        "url": "https://www.lecrat.fr/12557/",
+        "status": "exact"
+    },
+    {
+        "dci": "GENTAMICINE",
+        "url": "https://www.lecrat.fr/7712/",
+        "status": "exact"
+    },
+    {
+        "dci": "GLIBENCLAMIDE",
+        "url": "https://www.lecrat.fr/9002/",
+        "status": "exact"
+    },
+    {
+        "dci": "HALOPERIDOL",
+        "url": "https://www.lecrat.fr/12044/",
+        "status": "exact"
+    },
+    {
+        "dci": "HEPTAMINOL",
+        "url": "https://www.lecrat.fr/8537/",
+        "status": "exact"
+    },
+    {
+        "dci": "HYDROCHLOROTHIAZIDE",
+        "url": "https://www.lecrat.fr/7226/",
+        "status": "exact"
+    },
+    {
+        "dci": "HYDROCORTISONE",
+        "url": "https://www.lecrat.fr/5077/",
+        "status": "exact"
+    },
+    {
+        "dci": "HYDROXYCHLOROQUINE",
+        "url": "https://www.lecrat.fr/3386/",
+        "status": "exact"
+    },
+    {
+        "dci": "HYDROXYZINE",
+        "url": "https://www.lecrat.fr/3899/",
+        "status": "exact"
+    },
+    {
+        "dci": "IBUPROFEN",
+        "url": "https://www.lecrat.fr/15292/",
+        "status": "fuzzy(95%)",
+        "matched_name": "Ibuprofène"
+    },
+    {
+        "dci": "INDACATEROL",
+        "url": "https://www.lecrat.fr/8024/",
+        "status": "exact"
+    },
+    {
+        "dci": "INDAPAMIDE",
+        "url": "https://www.lecrat.fr/11551/",
+        "status": "exact"
+    },
+    {
+        "dci": "INDOMETACINE",
+        "url": "https://www.lecrat.fr/13468/",
+        "status": "exact"
+    },
+    {
+        "dci": "IOBITRIDOL",
+        "url": "https://www.lecrat.fr/9780/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Produits de contraste iodés hydrosolubles"
+    },
+    {
+        "dci": "IOPAMIDOL",
+        "url": "https://www.lecrat.fr/9780/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Produits de contraste iodés hydrosolubles"
+    },
+    {
+        "dci": "IRBESARTAN",
+        "url": "https://www.lecrat.fr/7378/",
+        "status": "exact"
+    },
+    {
+        "dci": "ISOCONAZOLE",
+        "url": "https://www.lecrat.fr/10276/",
+        "status": "exact"
+    },
+    {
+        "dci": "ISONIAZIDE",
+        "url": "https://www.lecrat.fr/8414/",
+        "status": "exact"
+    },
+    {
+        "dci": "ISOTRETINOINE",
+        "url": "https://www.lecrat.fr/6376/",
+        "status": "exact"
+    },
+    {
+        "dci": "ISRADIPINE",
+        "url": "https://www.lecrat.fr/9379/",
+        "status": "exact"
+    },
+    {
+        "dci": "KETOCONAZOLE",
+        "url": "https://www.lecrat.fr/7564/",
+        "status": "exact"
+    },
+    {
+        "dci": "KETOPROFENE",
+        "url": "https://www.lecrat.fr/15338/",
+        "status": "exact"
+    },
+    {
+        "dci": "KETOTIFENE",
+        "url": "https://www.lecrat.fr/6804/",
+        "status": "exact"
+    },
+    {
+        "dci": "LAMOTRIGINE",
+        "url": "https://www.lecrat.fr/7035/",
+        "status": "exact"
+    },
+    {
+        "dci": "LANSOPRAZOLE",
+        "url": "https://www.lecrat.fr/12850/",
+        "status": "exact"
+    },
+    {
+        "dci": "LATANOPROST",
+        "url": "https://www.lecrat.fr/9944/",
+        "status": "exact"
+    },
+    {
+        "dci": "LEFLUNOMIDE",
+        "url": "https://www.lecrat.fr/10803/",
+        "status": "exact"
+    },
+    {
+        "dci": "LERCANIDIPINE",
+        "url": "https://www.lecrat.fr/7234/",
+        "status": "exact"
+    },
+    {
+        "dci": "LEVETIRACETAM",
+        "url": "https://www.lecrat.fr/7045/",
+        "status": "exact"
+    },
+    {
+        "dci": "LEVOCABASTINE",
+        "url": "https://www.lecrat.fr/6924/",
+        "status": "exact"
+    },
+    {
+        "dci": "LEVOCETIRIZINE",
+        "url": "https://www.lecrat.fr/3101/",
+        "status": "exact"
+    },
+    {
+        "dci": "LEVOFLOXACINE",
+        "url": "https://www.lecrat.fr/13191/",
+        "status": "exact"
+    },
+    {
+        "dci": "LEVOMEPROMAZINE",
+        "url": "https://www.lecrat.fr/12107/",
+        "status": "exact"
+    },
+    {
+        "dci": "LEVONORGESTREL",
+        "url": "https://www.lecrat.fr/19659/",
+        "status": "exact"
+    },
+    {
+        "dci": "LIDOCAINE",
+        "url": "https://www.lecrat.fr/8323/",
+        "status": "exact"
+    },
+    {
+        "dci": "LOPERAMIDE",
+        "url": "https://www.lecrat.fr/6597/",
+        "status": "exact"
+    },
+    {
+        "dci": "LORATADINE",
+        "url": "https://www.lecrat.fr/3673/",
+        "status": "exact"
+    },
+    {
+        "dci": "LORAZEPAM",
+        "url": "https://www.lecrat.fr/6061/",
+        "status": "exact"
+    },
+    {
+        "dci": "LOSARTAN",
+        "url": "https://www.lecrat.fr/7384/",
+        "status": "exact"
+    },
+    {
+        "dci": "MANIDIPINE",
+        "url": "https://www.lecrat.fr/9381/",
+        "status": "exact"
+    },
+    {
+        "dci": "MEBENDAZOLE",
+        "url": "https://www.lecrat.fr/7657/",
+        "status": "exact"
+    },
+    {
+        "dci": "MEDROGESTONE",
+        "url": "https://www.lecrat.fr/11315/",
+        "status": "exact"
+    },
+    {
+        "dci": "MELOXICAM",
+        "url": "https://www.lecrat.fr/15368/",
+        "status": "exact"
+    },
+    {
+        "dci": "MEQUITAZINE",
+        "url": "https://www.lecrat.fr/6812/",
+        "status": "exact"
+    },
+    {
+        "dci": "MESALAZINE",
+        "url": "https://www.lecrat.fr/10857/",
+        "status": "exact"
+    },
+    {
+        "dci": "METFORMINE",
+        "url": "https://www.lecrat.fr/8992/",
+        "status": "exact"
+    },
+    {
+        "dci": "METHOTREXATE",
+        "url": "https://www.lecrat.fr/3331/",
+        "status": "exact"
+    },
+    {
+        "dci": "METHYLDOPA",
+        "url": "https://www.lecrat.fr/7193/",
+        "status": "exact"
+    },
+    {
+        "dci": "METHYLPREDNISOLONE",
+        "url": "https://www.lecrat.fr/3521/",
+        "status": "exact"
+    },
+    {
+        "dci": "METOCLOPRAMIDE",
+        "url": "https://www.lecrat.fr/3419/",
+        "status": "exact"
+    },
+    {
+        "dci": "METOPROLOL",
+        "url": "https://www.lecrat.fr/4326/",
+        "status": "exact"
+    },
+    {
+        "dci": "METRONIDAZOLE",
+        "url": "https://www.lecrat.fr/10412/",
+        "status": "exact"
+    },
+    {
+        "dci": "MICONAZOLE",
+        "url": "https://www.lecrat.fr/7524/",
+        "status": "exact"
+    },
+    {
+        "dci": "MIRTAZAPINE",
+        "url": "https://www.lecrat.fr/4116/",
+        "status": "exact"
+    },
+    {
+        "dci": "MISOPROSTOL",
+        "url": "https://www.lecrat.fr/3357/",
+        "status": "exact"
+    },
+    {
+        "dci": "MIZOLASTINE",
+        "url": "https://www.lecrat.fr/6826/",
+        "status": "exact"
+    },
+    {
+        "dci": "MOMETASONE",
+        "url": "https://www.lecrat.fr/8128/",
+        "status": "exact"
+    },
+    {
+        "dci": "MONTELUKAST",
+        "url": "https://www.lecrat.fr/4943/",
+        "status": "exact"
+    },
+    {
+        "dci": "MORPHINE",
+        "url": "https://www.lecrat.fr/4552/",
+        "status": "exact"
+    },
+    {
+        "dci": "MOXONIDINE",
+        "url": "https://www.lecrat.fr/9383/",
+        "status": "exact"
+    },
+    {
+        "dci": "MUPIROCINE",
+        "url": "https://www.lecrat.fr/13403/",
+        "status": "exact"
+    },
+    {
+        "dci": "NAPROXENE",
+        "url": "https://www.lecrat.fr/15359/",
+        "status": "exact"
+    },
+    {
+        "dci": "NEBIVOLOL",
+        "url": "https://www.lecrat.fr/7442/",
+        "status": "exact"
+    },
+    {
+        "dci": "NEFOPAM",
+        "url": "https://www.lecrat.fr/7885/",
+        "status": "exact"
+    },
+    {
+        "dci": "NEOMYCINE",
+        "url": "https://www.lecrat.fr/5053/",
+        "status": "exact"
+    },
+    {
+        "dci": "NICARDIPINE",
+        "url": "https://www.lecrat.fr/7162/",
+        "status": "exact"
+    },
+    {
+        "dci": "NIFEDIPINE",
+        "url": "https://www.lecrat.fr/7173/",
+        "status": "exact"
+    },
+    {
+        "dci": "NITRENDIPINE",
+        "url": "https://www.lecrat.fr/9377/",
+        "status": "exact"
+    },
+    {
+        "dci": "NITROFURANTOINE",
+        "url": "https://www.lecrat.fr/6683/",
+        "status": "exact"
+    },
+    {
+        "dci": "NOMEGESTROL",
+        "url": "https://www.lecrat.fr/11370/",
+        "status": "exact"
+    },
+    {
+        "dci": "NORFLOXACINE",
+        "url": "https://www.lecrat.fr/12885/",
+        "status": "exact"
+    },
+    {
+        "dci": "NYSTATINE",
+        "url": "https://www.lecrat.fr/10278/",
+        "status": "exact"
+    },
+    {
+        "dci": "OFLOXACINE",
+        "url": "https://www.lecrat.fr/6625/",
+        "status": "exact"
+    },
+    {
+        "dci": "OLANZAPINE",
+        "url": "https://www.lecrat.fr/12025/",
+        "status": "exact"
+    },
+    {
+        "dci": "OLMESARTAN",
+        "url": "https://www.lecrat.fr/7392/",
+        "status": "exact"
+    },
+    {
+        "dci": "OLOPATADINE",
+        "url": "https://www.lecrat.fr/6930/",
+        "status": "exact"
+    },
+    {
+        "dci": "OMEPRAZOLE",
+        "url": "https://www.lecrat.fr/12876/",
+        "status": "exact"
+    },
+    {
+        "dci": "PANTOPRAZOLE",
+        "url": "https://www.lecrat.fr/12889/",
+        "status": "exact"
+    },
+    {
+        "dci": "PARACETAMOL",
+        "url": "https://www.lecrat.fr/4165/",
+        "status": "exact"
+    },
+    {
+        "dci": "PAROXETINE",
+        "url": "https://www.lecrat.fr/4033/",
+        "status": "exact"
+    },
+    {
+        "dci": "PERINDOPRIL",
+        "url": "https://www.lecrat.fr/7320/",
+        "status": "exact"
+    },
+    {
+        "dci": "PEROXYDE DE BENZOYLE",
+        "url": "https://www.lecrat.fr/6314/",
+        "status": "exact"
+    },
+    {
+        "dci": "PHENOBARBITAL",
+        "url": "https://www.lecrat.fr/8134/",
+        "status": "exact"
+    },
+    {
+        "dci": "PHENYTOINE",
+        "url": "https://www.lecrat.fr/7086/",
+        "status": "exact"
+    },
+    {
+        "dci": "PILOCARPINE",
+        "url": "https://www.lecrat.fr/9942/",
+        "status": "exact"
+    },
+    {
+        "dci": "PIMOZIDE",
+        "url": "https://www.lecrat.fr/12033/",
+        "status": "exact"
+    },
+    {
+        "dci": "PIPAMPERONE",
+        "url": "https://www.lecrat.fr/12085/",
+        "status": "exact"
+    },
+    {
+        "dci": "PIPOTIAZINE",
+        "url": "https://www.lecrat.fr/12064/",
+        "status": "exact"
+    },
+    {
+        "dci": "PIRACETAM",
+        "url": "https://www.lecrat.fr/10379/",
+        "status": "exact"
+    },
+    {
+        "dci": "PIROXICAM",
+        "url": "https://www.lecrat.fr/15336/",
+        "status": "exact"
+    },
+    {
+        "dci": "PIZOTIFENE",
+        "url": "https://www.lecrat.fr/4381/",
+        "status": "exact"
+    },
+    {
+        "dci": "POLIOMYELITE",
+        "url": "https://www.lecrat.fr/9583/",
+        "status": "exact"
+    },
+    {
+        "dci": "POLYETHYLENE GLYCOL",
+        "url": "https://www.lecrat.fr/8711/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Laxatifs"
+    },
+    {
+        "dci": "POLYMYXINE B",
+        "url": "https://www.lecrat.fr/5046/",
+        "status": "exact"
+    },
+    {
+        "dci": "PRAVASTATINE",
+        "url": "https://www.lecrat.fr/8622/",
+        "status": "exact"
+    },
+    {
+        "dci": "PRAZEPAM",
+        "url": "https://www.lecrat.fr/3817/",
+        "status": "exact"
+    },
+    {
+        "dci": "PRAZOSINE",
+        "url": "https://www.lecrat.fr/9350/",
+        "status": "exact"
+    },
+    {
+        "dci": "PREDNISOLONE",
+        "url": "https://www.lecrat.fr/3509/",
+        "status": "exact"
+    },
+    {
+        "dci": "PREDNISONE",
+        "url": "https://www.lecrat.fr/3515/",
+        "status": "exact"
+    },
+    {
+        "dci": "PREGABALINE",
+        "url": "https://www.lecrat.fr/12574/",
+        "status": "exact"
+    },
+    {
+        "dci": "PRISTINAMYCINE",
+        "url": "https://www.lecrat.fr/13417/",
+        "status": "exact"
+    },
+    {
+        "dci": "PROGESTERONE",
+        "url": "https://www.lecrat.fr/11307/",
+        "status": "exact"
+    },
+    {
+        "dci": "PROMETHAZINE",
+        "url": "https://www.lecrat.fr/3528/",
+        "status": "exact"
+    },
+    {
+        "dci": "PROPERICIAZINE",
+        "url": "https://www.lecrat.fr/12066/",
+        "status": "exact"
+    },
+    {
+        "dci": "PROPRANOLOL",
+        "url": "https://www.lecrat.fr/4317/",
+        "status": "exact"
+    },
+    {
+        "dci": "PYRANTEL",
+        "url": "https://www.lecrat.fr/7588/",
+        "status": "exact"
+    },
+    {
+        "dci": "PYRIDOSTIGMINE BROMURE",
+        "url": "https://www.lecrat.fr/3376/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Pyridostigmine"
+    },
+    {
+        "dci": "QUETIAPINE",
+        "url": "https://www.lecrat.fr/12060/",
+        "status": "exact"
+    },
+    {
+        "dci": "RACECADOTRIL",
+        "url": "https://www.lecrat.fr/6606/",
+        "status": "exact"
+    },
+    {
+        "dci": "RAMIPRIL",
+        "url": "https://www.lecrat.fr/7328/",
+        "status": "exact"
+    },
+    {
+        "dci": "RANITIDINE",
+        "url": "https://www.lecrat.fr/12805/",
+        "status": "exact"
+    },
+    {
+        "dci": "RIFAMPICINE",
+        "url": "https://www.lecrat.fr/8385/",
+        "status": "exact"
+    },
+    {
+        "dci": "RIFAMYCINE",
+        "url": "https://www.lecrat.fr/8385/",
+        "status": "fuzzy-groq-confirmed(86%)",
+        "matched_name": "Rifampicine"
+    },
+    {
+        "dci": "RISEDRONATE",
+        "url": "https://www.lecrat.fr/11521/",
+        "status": "exact"
+    },
+    {
+        "dci": "RISPERIDONE",
+        "url": "https://www.lecrat.fr/11946/",
+        "status": "exact"
+    },
+    {
+        "dci": "ROSUVASTATINE",
+        "url": "https://www.lecrat.fr/8643/",
+        "status": "exact"
+    },
+    {
+        "dci": "ROXITHROMYCINE",
+        "url": "https://www.lecrat.fr/13450/",
+        "status": "exact"
+    },
+    {
+        "dci": "SALBUTAMOL",
+        "url": "https://www.lecrat.fr/8048/",
+        "status": "exact"
+    },
+    {
+        "dci": "SALMETEROL",
+        "url": "https://www.lecrat.fr/8053/",
+        "status": "exact"
+    },
+    {
+        "dci": "SERTRALINE",
+        "url": "https://www.lecrat.fr/4044/",
+        "status": "exact"
+    },
+    {
+        "dci": "SILODOSINE",
+        "url": "https://www.lecrat.fr/11950/",
+        "status": "exact"
+    },
+    {
+        "dci": "SIMETICONE",
+        "url": "https://www.lecrat.fr/12157/",
+        "status": "exact"
+    },
+    {
+        "dci": "SIMVASTATINE",
+        "url": "https://www.lecrat.fr/8653/",
+        "status": "exact"
+    },
+    {
+        "dci": "SOTALOL",
+        "url": "https://www.lecrat.fr/9279/",
+        "status": "exact"
+    },
+    {
+        "dci": "SPIRAMYCINE",
+        "url": "https://www.lecrat.fr/13448/",
+        "status": "exact"
+    },
+    {
+        "dci": "SPIRONOLACTONE",
+        "url": "https://www.lecrat.fr/11555/",
+        "status": "exact"
+    },
+    {
+        "dci": "SULFASALAZINE",
+        "url": "https://www.lecrat.fr/10827/",
+        "status": "exact"
+    },
+    {
+        "dci": "SULFIRAME",
+        "url": "https://www.lecrat.fr/12788/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Disulfirame"
+    },
+    {
+        "dci": "SULPIRIDE",
+        "url": "https://www.lecrat.fr/11994/",
+        "status": "exact"
+    },
+    {
+        "dci": "TETANOS",
+        "url": "https://www.lecrat.fr/9640/",
+        "status": "exact"
+    },
+    {
+        "dci": "TAMSULOSINE",
+        "url": "https://www.lecrat.fr/7685/",
+        "status": "exact"
+    },
+    {
+        "dci": "TELMISARTAN",
+        "url": "https://www.lecrat.fr/7398/",
+        "status": "exact"
+    },
+    {
+        "dci": "TERBINAFINE",
+        "url": "https://www.lecrat.fr/10267/",
+        "status": "exact"
+    },
+    {
+        "dci": "TERBUTALINE",
+        "url": "https://www.lecrat.fr/8060/",
+        "status": "exact"
+    },
+    {
+        "dci": "THEOPHYLLINE",
+        "url": "https://www.lecrat.fr/4958/",
+        "status": "exact"
+    },
+    {
+        "dci": "THIAMAZOLE",
+        "url": "https://www.lecrat.fr/8685/",
+        "status": "exact"
+    },
+    {
+        "dci": "THIOCOLCHICOSIDE",
+        "url": "https://www.lecrat.fr/9127/",
+        "status": "exact"
+    },
+    {
+        "dci": "TIANEPTINE",
+        "url": "https://www.lecrat.fr/12492/",
+        "status": "exact"
+    },
+    {
+        "dci": "TIAPRIDE",
+        "url": "https://www.lecrat.fr/12029/",
+        "status": "exact"
+    },
+    {
+        "dci": "TIMOLOL",
+        "url": "https://www.lecrat.fr/7450/",
+        "status": "exact"
+    },
+    {
+        "dci": "TINIDAZOLE",
+        "url": "https://www.lecrat.fr/10416/",
+        "status": "exact"
+    },
+    {
+        "dci": "TIOTROPIUM",
+        "url": "https://www.lecrat.fr/4928/",
+        "status": "exact"
+    },
+    {
+        "dci": "TIXOCORTOL",
+        "url": "https://www.lecrat.fr/5082/",
+        "status": "exact"
+    },
+    {
+        "dci": "TOBRAMYCINE",
+        "url": "https://www.lecrat.fr/7735/",
+        "status": "exact"
+    },
+    {
+        "dci": "TOLTERODINE",
+        "url": "https://www.lecrat.fr/11929/",
+        "status": "exact"
+    },
+    {
+        "dci": "TRAMADOL",
+        "url": "https://www.lecrat.fr/4541/",
+        "status": "exact"
+    },
+    {
+        "dci": "TRANDOLAPRIL",
+        "url": "https://www.lecrat.fr/7344/",
+        "status": "exact"
+    },
+    {
+        "dci": "TRAVOPROST",
+        "url": "https://www.lecrat.fr/9946/",
+        "status": "exact"
+    },
+    {
+        "dci": "TRIAMCINOLONE",
+        "url": "https://www.lecrat.fr/5000/",
+        "status": "exact"
+    },
+    {
+        "dci": "TRIAMTERENE",
+        "url": "https://www.lecrat.fr/7422/",
+        "status": "exact"
+    },
+    {
+        "dci": "TRIHEXYPHENIDYLE",
+        "url": "https://www.lecrat.fr/10183/",
+        "status": "exact"
+    },
+    {
+        "dci": "TRIMEBUTINE",
+        "url": "https://www.lecrat.fr/20035/",
+        "status": "exact"
+    },
+    {
+        "dci": "TRIMETHYLPHLOROGLUCINOL",
+        "url": "https://www.lecrat.fr/11748/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Phloroglucinol-triméthylphloroglucinol"
+    },
+    {
+        "dci": "TRIMIPRAMINE",
+        "url": "https://www.lecrat.fr/12507/",
+        "status": "exact"
+    },
+    {
+        "dci": "URSODESOXYCHOLIQUE ACIDE",
+        "url": "https://www.lecrat.fr/9013/",
+        "status": "exact"
+    },
+    {
+        "dci": "VALACICLOVIR",
+        "url": "https://www.lecrat.fr/8595/",
+        "status": "exact"
+    },
+    {
+        "dci": "VALPROMIDE",
+        "url": "https://www.lecrat.fr/12594/",
+        "status": "single-result-groq-confirmed",
+        "matched_name": "Acide valproïque"
+    },
+    {
+        "dci": "VALSARTAN",
+        "url": "https://www.lecrat.fr/7406/",
+        "status": "exact"
+    },
+    {
+        "dci": "VENLAFAXINE",
+        "url": "https://www.lecrat.fr/4091/",
+        "status": "exact"
+    },
+    {
+        "dci": "VIGABATRIN",
+        "url": "https://www.lecrat.fr/8176/",
+        "status": "fuzzy(95%)",
+        "matched_name": "Vigabatrine"
+    },
+    {
+        "dci": "ZOFENOPRIL",
+        "url": "https://www.lecrat.fr/7360/",
+        "status": "exact"
+    }
+]
