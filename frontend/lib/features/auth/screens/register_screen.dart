@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 
@@ -103,7 +104,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       appBar: AppBar(
         title: const Text('Inscription'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new),
+          icon: const Icon(Iconsax.arrow_left, size: 24),
           onPressed: () => context.pop(),
         ),
       ),
@@ -186,14 +187,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       TextFormField(
         controller: _firstNameCtrl,
         textCapitalization: TextCapitalization.words,
-        decoration: const InputDecoration(labelText: 'Prénom', prefixIcon: Icon(Icons.person_outline, color: AppColors.primary)),
+        decoration: const InputDecoration(labelText: 'Prénom', prefixIcon: Icon(Iconsax.user, color: AppColors.primary, size: 20)),
         validator: (v) => v == null || v.isEmpty ? 'Prénom requis' : null,
       ),
       const SizedBox(height: 16),
       TextFormField(
         controller: _lastNameCtrl,
         textCapitalization: TextCapitalization.words,
-        decoration: const InputDecoration(labelText: 'Nom', prefixIcon: Icon(Icons.person_outline, color: AppColors.primary)),
+        decoration: const InputDecoration(labelText: 'Nom', prefixIcon: Icon(Iconsax.user, color: AppColors.primary, size: 20)),
         validator: (v) => v == null || v.isEmpty ? 'Nom requis' : null,
       ),
       const SizedBox(height: 16),
@@ -205,7 +206,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               labelText: _birthDate != null
                   ? '${_birthDate!.day}/${_birthDate!.month}/${_birthDate!.year}'
                   : 'Date de naissance',
-              prefixIcon: const Icon(Icons.calendar_today, color: AppColors.primary),
+              prefixIcon: const Icon(Iconsax.calendar, color: AppColors.primary, size: 20),
             ),
           ),
         ),
@@ -220,7 +221,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       TextFormField(
         controller: _emailCtrl,
         keyboardType: TextInputType.emailAddress,
-        decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.email_outlined, color: AppColors.primary)),
+        decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Iconsax.sms, color: AppColors.primary, size: 20)),
         validator: (v) {
           if (v == null || v.isEmpty) return 'Email requis';
           if (!v.contains('@')) return 'Email invalide';
@@ -231,7 +232,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       TextFormField(
         controller: _phoneCtrl,
         keyboardType: TextInputType.phone,
-        decoration: const InputDecoration(labelText: 'Téléphone', prefixIcon: Icon(Icons.phone_outlined, color: AppColors.primary), hintText: '+216...'),
+        decoration: const InputDecoration(labelText: 'Téléphone', prefixIcon: Icon(Iconsax.call, color: AppColors.primary, size: 20), hintText: '+216...'),
         validator: (v) => v == null || v.isEmpty ? 'Téléphone requis' : null,
       ),
       const SizedBox(height: 16),
@@ -268,9 +269,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         obscureText: _obscure1,
         decoration: InputDecoration(
           labelText: 'Mot de passe',
-          prefixIcon: const Icon(Icons.lock_outlined, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.lock, color: AppColors.primary, size: 20),
           suffixIcon: IconButton(
-            icon: Icon(_obscure1 ? Icons.visibility_off : Icons.visibility, color: AppColors.textLight),
+            icon: Icon(_obscure1 ? Iconsax.eye_slash : Iconsax.eye, color: AppColors.textLight),
             onPressed: () => setState(() => _obscure1 = !_obscure1),
           ),
         ),
@@ -286,9 +287,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         obscureText: _obscure2,
         decoration: InputDecoration(
           labelText: 'Confirmer le mot de passe',
-          prefixIcon: const Icon(Icons.lock_outlined, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.lock, color: AppColors.primary, size: 20),
           suffixIcon: IconButton(
-            icon: Icon(_obscure2 ? Icons.visibility_off : Icons.visibility, color: AppColors.textLight),
+            icon: Icon(_obscure2 ? Iconsax.eye_slash : Iconsax.eye, color: AppColors.textLight),
             onPressed: () => setState(() => _obscure2 = !_obscure2),
           ),
         ),

@@ -38,6 +38,9 @@ dependencies:
   # Fonts
   google_fonts: ^6.2.1
 
+  # Icons
+  iconsax: ^0.0.8
+
   # Health Connect (smartwatch)
   health: ^13.3.1
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
@@ -45,14 +46,12 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
     if (!mounted) return;
     switch (result.status) {
       case WatchAppStatus.installed:
-        // Silently continue — watch app is ready
         debugPrint('[Wearable] Watch app installed.');
         break;
       case WatchAppStatus.notInstalled:
         _showWatchInstallDialog();
         break;
       case WatchAppStatus.noWatch:
-        // No watch paired — show info dialog
         _showNoWatchDialog(result.message);
         break;
       case WatchAppStatus.error:
@@ -69,14 +68,14 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
-            Icon(Icons.watch, color: AppColors.primary),
+            Icon(Iconsax.watch, color: AppColors.primary),
             const SizedBox(width: 8),
             const Text('Application Montre'),
           ],
         ),
         content: const Text(
           'Votre montre est connectée mais l\'application Sahhty n\'est pas encore installée. '
-          'Voulez-vous l\'installer maintenant ?',
+              'Voulez-vous l\'installer maintenant ?',
         ),
         actions: [
           TextButton(
@@ -114,14 +113,14 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
-            Icon(Icons.watch_off, color: Colors.orange.shade700),
+            Icon(Iconsax.watch, color: Colors.orange.shade700),
             const SizedBox(width: 8),
             const Text('Aucune montre'),
           ],
         ),
         content: Text(
           '$message\n\nPour utiliser les fonctionnalités de suivi automatique, '
-          'connectez une montre Wear OS compatible.',
+              'connectez une montre Wear OS compatible.',
         ),
         actions: [
           TextButton(
@@ -201,11 +200,8 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
     return Scaffold(
       body: Stack(
         children: [
-          // Beautiful image background with soft overlay
           const AnimatedBackground(showImage: true, imageOpacity: 0.10),
-          // Light floating particles
           const FloatingParticles(particleCount: 22, maxOpacity: 0.25),
-          // Content
           SafeArea(
             child: RefreshIndicator(
               onRefresh: _loadData,
@@ -213,31 +209,31 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
               child: _loading
                   ? _buildShimmerLoading()
                   : SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildTopHeader(auth),
-                          if (_error != null) ...[
-                            _buildErrorBanner(),
-                          ] else ...[
-                            if (_pregnancyData != null) _buildPregnancyBanner(),
-                            if (_riskData != null)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: _buildRiskCard(),
-                              ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.1),
-                            const SizedBox(height: 20),
-                            _buildQuickActions(),
-                            const SizedBox(height: 24),
-                            _buildMeasurementsSection(),
-                            const SizedBox(height: 16),
-                            _buildMotivationalCard(),
-                          ],
-                          const SizedBox(height: 24),
-                        ],
-                      ),
-                    ),
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTopHeader(auth),
+                    if (_error != null) ...[
+                      _buildErrorBanner(),
+                    ] else ...[
+                      if (_pregnancyData != null) _buildPregnancyBanner(),
+                      if (_riskData != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: _buildRiskCard(),
+                        ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.1),
+                      const SizedBox(height: 20),
+                      _buildQuickActions(),
+                      const SizedBox(height: 24),
+                      _buildMeasurementsSection(),
+                      const SizedBox(height: 16),
+                      _buildMotivationalCard(),
+                    ],
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -248,10 +244,10 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
   // ── MOTIVATIONAL CARD ───────────────────────────────────────────────
   Widget _buildMotivationalCard() {
     final messages = [
-      'Vous êtes incroyable 💕 Chaque jour compte !',
-      'Prenez soin de vous et de votre bébé 🌸',
-      'Vous faites un travail extraordinaire 🦋',
-      'Votre santé est notre priorité 💖',
+      'Vous êtes incroyable ! Chaque jour compte !',
+      'Prenez soin de vous et de votre bébé',
+      'Vous faites un travail extraordinaire',
+      'Votre santé est notre priorité',
     ];
     final msg = messages[DateTime.now().day % messages.length];
     return Padding(
@@ -273,7 +269,14 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
         ),
         child: Row(
           children: [
-            const Text('🌷', style: TextStyle(fontSize: 36))
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withAlpha(20),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(Iconsax.heart, color: AppColors.primary, size: 28),
+            )
                 .animate(onPlay: (c) => c.repeat(reverse: true))
                 .rotate(begin: -0.03, end: 0.03, duration: 2000.ms, curve: Curves.easeInOut),
             const SizedBox(width: 14),
@@ -362,16 +365,20 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
     final name = auth.name ?? 'Utilisateur';
     final hour = DateTime.now().hour;
     String greeting;
-    String greetEmoji;
+    IconData greetIcon;
+    Color greetColor;
     if (hour < 12) {
       greeting = 'Bonjour';
-      greetEmoji = '☀️';
+      greetIcon = Iconsax.sun_1;
+      greetColor = Colors.orange;
     } else if (hour < 18) {
       greeting = 'Bon après-midi';
-      greetEmoji = '🌤️';
+      greetIcon = Iconsax.cloud_sunny;
+      greetColor = Colors.amber;
     } else {
       greeting = 'Bonsoir';
-      greetEmoji = '🌙';
+      greetIcon = Iconsax.moon;
+      greetColor = Colors.indigo;
     }
 
     return Column(
@@ -391,7 +398,6 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
           ),
           child: Row(
             children: [
-              // Avatar with breathing animation
               AnimatedBuilder(
                 animation: _breatheController,
                 builder: (context, _) {
@@ -432,7 +438,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
                   children: [
                     Row(
                       children: [
-                        Text(greetEmoji, style: const TextStyle(fontSize: 16)),
+                        Icon(greetIcon, size: 16, color: greetColor),
                         const SizedBox(width: 4),
                         Text(greeting, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary)),
                       ],
@@ -441,10 +447,10 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
                   ],
                 ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1),
               ),
-              _HeaderButton(icon: Icons.search_outlined, onTap: () => context.push('/medications'), tooltip: 'Rechercher')
+              _HeaderButton(icon: Iconsax.search_normal, onTap: () => context.push('/medications'), tooltip: 'Rechercher')
                   .animate().fadeIn(delay: 350.ms).scale(begin: const Offset(0.5, 0.5), duration: 400.ms, curve: Curves.elasticOut),
               const SizedBox(width: 8),
-              _HeaderButton(icon: Icons.local_hospital_outlined, onTap: () => context.push('/doctors'), tooltip: 'Médecins')
+              _HeaderButton(icon: Iconsax.hospital, onTap: () => context.push('/doctors'), tooltip: 'Médecins')
                   .animate().fadeIn(delay: 450.ms).scale(begin: const Offset(0.5, 0.5), duration: 400.ms, curve: Curves.elasticOut),
             ],
           ),
@@ -493,7 +499,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
                     children: [
                       Row(
                         children: [
-                          const Text('🤰', style: TextStyle(fontSize: 16)),
+                          const Icon(Iconsax.heart_add, color: Colors.white70, size: 16),
                           const SizedBox(width: 4),
                           const Text('Ma grossesse', style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w500)),
                         ],
@@ -506,7 +512,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(color: Colors.white.withAlpha(38), shape: BoxShape.circle),
-                  child: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 14),
+                  child: const Icon(Iconsax.arrow_right_3, color: Colors.white, size: 14),
                 )
                     .animate(onPlay: (c) => c.repeat(reverse: true))
                     .moveX(begin: 0, end: 3, duration: 1500.ms, curve: Curves.easeInOut),
@@ -541,7 +547,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('⏳', style: TextStyle(fontSize: 12)),
+                        const Icon(Iconsax.clock, color: Colors.white, size: 12),
                         const SizedBox(width: 4),
                         Text('$daysLeft jours restants', style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)),
                       ],
@@ -565,14 +571,13 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
     Color riskColor;
     IconData riskIcon;
     String riskLabel;
-    String riskEmoji;
     switch (level) {
       case 'HIGH':
-        riskColor = AppColors.riskHigh; riskIcon = Icons.dangerous_outlined; riskLabel = 'Risque élevé'; riskEmoji = '🚨'; break;
+        riskColor = AppColors.riskHigh; riskIcon = Iconsax.warning_2; riskLabel = 'Risque élevé'; break;
       case 'MEDIUM':
-        riskColor = AppColors.riskMedium; riskIcon = Icons.warning_amber_rounded; riskLabel = 'Risque modéré'; riskEmoji = '⚠️'; break;
+        riskColor = AppColors.riskMedium; riskIcon = Iconsax.warning_2; riskLabel = 'Risque modéré'; break;
       default:
-        riskColor = AppColors.riskLow; riskIcon = Icons.check_circle_outline; riskLabel = 'Risque faible'; riskEmoji = '✅';
+        riskColor = AppColors.riskLow; riskIcon = Iconsax.tick_circle; riskLabel = 'Risque faible';
     }
     return Container(
       width: double.infinity,
@@ -587,7 +592,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(color: riskColor.withAlpha(30), borderRadius: BorderRadius.circular(12)),
-            child: Text(riskEmoji, style: const TextStyle(fontSize: 24)),
+            child: Icon(riskIcon, size: 24, color: riskColor),
           )
               .animate(onPlay: (c) => c.repeat(reverse: true))
               .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 1500.ms),
@@ -618,7 +623,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
         children: [
           Row(
             children: [
-              const Text('✨', style: TextStyle(fontSize: 18)),
+              const Icon(Iconsax.flash_1, color: AppColors.primary, size: 20),
               const SizedBox(width: 6),
               const Text('Actions rapides', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             ],
@@ -626,13 +631,13 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
           const SizedBox(height: 14),
           Row(
             children: [
-              Expanded(child: _QuickActionCard(emoji: '📏', label: 'Nouvelle\nmesure', color: AppColors.primary, onTap: () => context.push('/add-measurement')).animate().fadeIn(delay: 100.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
+              Expanded(child: _QuickActionCard(icon: Iconsax.ruler, label: 'Nouvelle\nmesure', color: AppColors.primary, onTap: () => context.push('/add-measurement')).animate().fadeIn(delay: 100.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
-              Expanded(child: _QuickActionCard(emoji: '⌚', label: 'Montre\nconnectée', color: AppColors.accentDark, onTap: () => context.push('/smartwatch')).animate().fadeIn(delay: 150.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
+              Expanded(child: _QuickActionCard(icon: Iconsax.watch, label: 'Montre\nconnectée', color: AppColors.accentDark, onTap: () => context.push('/smartwatch')).animate().fadeIn(delay: 150.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
-              Expanded(child: _QuickActionCard(emoji: '💊', label: 'Mes\nmédicaments', color: AppColors.accent, onTap: () => context.push('/medications')).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
+              Expanded(child: _QuickActionCard(icon: Iconsax.health, label: 'Mes\nmédicaments', color: AppColors.accent, onTap: () => context.push('/medications')).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
-              Expanded(child: _QuickActionCard(emoji: '🔔', label: 'Mes\nalertes', color: AppColors.warning, onTap: () => context.go('/alerts')).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
+              Expanded(child: _QuickActionCard(icon: Iconsax.notification, label: 'Mes\nalertes', color: AppColors.warning, onTap: () => context.go('/alerts')).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
             ],
           ),
         ],
@@ -652,7 +657,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
             children: [
               Row(
                 children: [
-                  const Text('📊', style: TextStyle(fontSize: 18)),
+                  const Icon(Iconsax.chart_2, color: AppColors.primary, size: 20),
                   const SizedBox(width: 6),
                   const Text('Dernières mesures', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 ],
@@ -660,7 +665,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
               TextButton.icon(
                 onPressed: () => context.go('/measurements'),
                 icon: const Text('Voir tout', style: TextStyle(color: AppColors.primary, fontSize: 13, fontWeight: FontWeight.w600)),
-                label: const Icon(Icons.arrow_forward_ios, size: 12, color: AppColors.primary),
+                label: const Icon(Iconsax.arrow_right_3, size: 12, color: AppColors.primary),
               ),
             ],
           ).animate().fadeIn(delay: 350.ms),
@@ -674,16 +679,16 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
   Widget _buildMeasurementsGrid() {
     final data = _latestData!;
     final items = <_MeasureData>[
-      _MeasureData(emoji: '⚖️', label: 'Poids', value: '${data['weight'] ?? '--'}', unit: 'kg', color: AppColors.primary),
-      _MeasureData(emoji: '📊', label: 'IMC', value: '${data['bmi'] ?? '--'}', unit: '', color: AppColors.accent),
-      _MeasureData(emoji: '🩸', label: 'Glycémie',
-        value: data['glycemia_informations'] != null ? '${data['glycemia_informations']['value1']}' : '--',
-        unit: data['glycemia_informations'] != null ? '${data['glycemia_informations']['unit'] ?? ''}' : '', color: AppColors.info),
-      _MeasureData(emoji: '❤️', label: 'Tension',
-        value: data['blood_pressure'] != null ? '${data['blood_pressure']['value1']}/${data['blood_pressure']['value2']}' : '--',
-        unit: 'mmHg', color: AppColors.error),
-      _MeasureData(emoji: '💓', label: 'Rythme', value: data['heart_rate'] != null ? '${data['heart_rate']['value1']}' : '--', unit: 'bpm', color: AppColors.primaryDark),
-      _MeasureData(emoji: '🌡️', label: 'Temp.', value: data['body_temp'] != null ? '${data['body_temp']['value1']}' : '--', unit: '°C', color: AppColors.warning),
+      _MeasureData(icon: Iconsax.weight, label: 'Poids', value: '${data['weight'] ?? '--'}', unit: 'kg', color: AppColors.primary),
+      _MeasureData(icon: Iconsax.chart_2, label: 'IMC', value: '${data['bmi'] ?? '--'}', unit: '', color: AppColors.accent),
+      _MeasureData(icon: Iconsax.drop, label: 'Glycémie',
+          value: data['glycemia_informations'] != null ? '${data['glycemia_informations']['value1']}' : '--',
+          unit: data['glycemia_informations'] != null ? '${data['glycemia_informations']['unit'] ?? ''}' : '', color: AppColors.info),
+      _MeasureData(icon: Iconsax.heart, label: 'Tension',
+          value: data['blood_pressure'] != null ? '${data['blood_pressure']['value1']}/${data['blood_pressure']['value2']}' : '--',
+          unit: 'mmHg', color: AppColors.error),
+      _MeasureData(icon: Iconsax.activity, label: 'Rythme', value: data['heart_rate'] != null ? '${data['heart_rate']['value1']}' : '--', unit: 'bpm', color: AppColors.primaryDark),
+      _MeasureData(icon: Iconsax.health, label: 'Temp.', value: data['body_temp'] != null ? '${data['body_temp']['value1']}' : '--', unit: '°C', color: AppColors.warning),
     ];
     return Column(
       children: [
@@ -715,7 +720,14 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
       ),
       child: Column(
         children: [
-          const Text('📏', style: TextStyle(fontSize: 48))
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withAlpha(20),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(Iconsax.ruler, size: 48, color: AppColors.primary),
+          )
               .animate(onPlay: (c) => c.repeat(reverse: true))
               .rotate(begin: -0.05, end: 0.05, duration: 2000.ms),
           const SizedBox(height: 12),
@@ -725,7 +737,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
           const SizedBox(height: 16),
           ElevatedButton.icon(
             onPressed: () => context.push('/add-measurement'),
-            icon: const Icon(Icons.add, size: 18),
+            icon: const Icon(Iconsax.add_circle, size: 18),
             label: const Text('Ajouter une mesure'),
             style: ElevatedButton.styleFrom(minimumSize: const Size(200, 44), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
           ),
@@ -746,13 +758,13 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
         ),
         child: Column(
           children: [
-            const Icon(Icons.cloud_off_outlined, color: AppColors.error, size: 48),
+            const Icon(Iconsax.close_circle, color: AppColors.error, size: 48),
             const SizedBox(height: 12),
             Text(_error ?? 'Erreur', style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600), textAlign: TextAlign.center),
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: _loadData,
-              icon: const Icon(Icons.refresh, size: 18),
+              icon: const Icon(Iconsax.refresh_2, size: 18),
               label: const Text('Réessayer'),
               style: ElevatedButton.styleFrom(backgroundColor: AppColors.error, minimumSize: const Size(160, 44), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
             ),
@@ -791,11 +803,11 @@ class _HeaderButton extends StatelessWidget {
 }
 
 class _QuickActionCard extends StatefulWidget {
-  final String emoji;
+  final IconData icon;
   final String label;
   final Color color;
   final VoidCallback onTap;
-  const _QuickActionCard({required this.emoji, required this.label, required this.color, required this.onTap});
+  const _QuickActionCard({required this.icon, required this.label, required this.color, required this.onTap});
 
   @override
   State<_QuickActionCard> createState() => _QuickActionCardState();
@@ -829,7 +841,7 @@ class _QuickActionCardState extends State<_QuickActionCard> {
           ),
           child: Column(
             children: [
-              Text(widget.emoji, style: const TextStyle(fontSize: 28)),
+              Icon(widget.icon, size: 28, color: widget.color),
               const SizedBox(height: 8),
               Text(widget.label, textAlign: TextAlign.center, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: widget.color, height: 1.3)),
             ],
@@ -841,12 +853,12 @@ class _QuickActionCardState extends State<_QuickActionCard> {
 }
 
 class _MeasureData {
-  final String emoji;
+  final IconData icon;
   final String label;
   final String value;
   final String unit;
   final Color color;
-  const _MeasureData({required this.emoji, required this.label, required this.value, required this.unit, required this.color});
+  const _MeasureData({required this.icon, required this.label, required this.value, required this.unit, required this.color});
 }
 
 class _MeasureCard extends StatelessWidget {
@@ -878,7 +890,7 @@ class _MeasureCard extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Center(child: Text(data.emoji, style: const TextStyle(fontSize: 18))),
+            child: Center(child: Icon(data.icon, size: 18, color: data.color)),
           ),
           const SizedBox(height: 12),
           Text(data.label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),

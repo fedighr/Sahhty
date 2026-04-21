@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
@@ -232,9 +233,9 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
           indicatorColor: AppColors.primary,
           indicatorSize: TabBarIndicatorSize.label,
           tabs: const [
-            Tab(text: 'Traitements', icon: Icon(Icons.medication_outlined, size: 20)),
-            Tab(text: 'Rechercher', icon: Icon(Icons.search_outlined, size: 20)),
-            Tab(text: 'Comparer', icon: Icon(Icons.compare_arrows, size: 20)),
+            Tab(text: 'Traitements', icon: Icon(Iconsax.health, size: 20)),
+            Tab(text: 'Rechercher', icon: Icon(Iconsax.search_normal, size: 20)),
+            Tab(text: 'Comparer', icon: Icon(Iconsax.chart_2, size: 20)),
           ],
         ),
       ),
@@ -264,7 +265,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
     if (_treatmentsError != null) {
       return Center(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+          const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
           const SizedBox(height: 8),
           Text(_treatmentsError!, style: const TextStyle(color: AppColors.error)),
           TextButton(onPressed: _loadTreatments, child: const Text('Réessayer')),
@@ -274,7 +275,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
     if (_treatments.isEmpty) {
       return Center(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          const Text('💊', style: TextStyle(fontSize: 64)),
+          const Icon(Iconsax.health, size: 64, color: AppColors.primary),
           const SizedBox(height: 16),
           const Text('Aucun traitement', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 4),
@@ -282,7 +283,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
           const SizedBox(height: 20),
           ElevatedButton.icon(
             onPressed: () => _tabCtrl.animateTo(1),
-            icon: const Icon(Icons.search, size: 18),
+            icon: const Icon(Iconsax.search_normal, size: 18),
             label: const Text('Rechercher un médicament'),
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(240, 48),
@@ -351,7 +352,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                     color: AppColors.accent.withAlpha(25),
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Center(child: Text('💊', style: TextStyle(fontSize: 24))),
+                  child: const Center(child: Icon(Iconsax.health, size: 24, color: AppColors.primary)),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -381,7 +382,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                 const SizedBox(width: 8),
                 GestureDetector(
                   onTap: () => _deleteTreatment(t['id'] as int),
-                  child: const Icon(Icons.delete_outline, color: AppColors.error, size: 20),
+                  child: const Icon(Iconsax.trash, color: AppColors.error, size: 20),
                 ),
               ],
             ),
@@ -390,15 +391,15 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
             const SizedBox(height: 12),
             Row(
               children: [
-                _infoChip(Icons.straighten_outlined, t['dose'] ?? '--'),
+                _infoChip(Iconsax.ruler, t['dose'] ?? '--'),
                 const SizedBox(width: 8),
-                _infoChip(Icons.repeat, _frequencyLabel(t['frequency'] ?? '')),
+                _infoChip(Iconsax.refresh_2, _frequencyLabel(t['frequency'] ?? '')),
               ],
             ),
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(Icons.calendar_today_outlined, size: 14, color: AppColors.textSecondary),
+                const Icon(Iconsax.calendar, size: 14, color: AppColors.textSecondary),
                 const SizedBox(width: 4),
                 Text('${t['start_date'] ?? '--'} → ${t['end_date'] ?? 'En cours'}',
                   style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
@@ -421,7 +422,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.alarm, size: 12, color: AppColors.primary),
+                        const Icon(Iconsax.clock, size: 12, color: AppColors.primary),
                         const SizedBox(width: 4),
                         Text(time.toString(), style: const TextStyle(fontSize: 12, color: AppColors.primary, fontWeight: FontWeight.w500)),
                       ],
@@ -446,7 +447,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
               children: [
                 Text('Voir détails', style: TextStyle(fontSize: 11, color: AppColors.primary.withAlpha(153), fontWeight: FontWeight.w500)),
                 const SizedBox(width: 2),
-                Icon(Icons.arrow_forward_ios, size: 10, color: AppColors.primary.withAlpha(153)),
+                Icon(Iconsax.arrow_right_3, size: 10, color: AppColors.primary.withAlpha(153)),
               ],
             ),
           ],
@@ -524,7 +525,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
             onChanged: _onSearchChanged,
             decoration: InputDecoration(
               hintText: 'Rechercher un médicament (nom, DCI...)...',
-              prefixIcon: const Icon(Icons.search, color: AppColors.primary),
+              prefixIcon: const Icon(Iconsax.search_normal, color: AppColors.primary, size: 20),
               suffixIcon: _searchCtrl.text.isNotEmpty
                   ? IconButton(
                       icon: const Icon(Icons.clear),
@@ -546,7 +547,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
           Expanded(
             child: Center(
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                const Text('🔍', style: TextStyle(fontSize: 48)),
+                const Icon(Iconsax.search_normal, size: 48, color: AppColors.primary),
                 const SizedBox(height: 12),
                 Text(_searchError!, style: const TextStyle(color: AppColors.textSecondary), textAlign: TextAlign.center),
               ]),
@@ -556,7 +557,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
           Expanded(
             child: Center(
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                const Text('💊', style: TextStyle(fontSize: 64)),
+                const Icon(Iconsax.health, size: 64, color: AppColors.primary),
                 const SizedBox(height: 16),
                 const Text('Recherche de médicaments', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 4),
@@ -622,7 +623,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                     color: AppColors.accent.withAlpha(25),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Center(child: Text('💊', style: TextStyle(fontSize: 22))),
+                  child: const Center(child: Icon(Iconsax.health, size: 22, color: AppColors.primary)),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -721,7 +722,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('🤰', style: TextStyle(fontSize: 14)),
+          const Icon(Iconsax.personalcard, size: 14, color: AppColors.primary),
           const SizedBox(width: 4),
           Text('$currentTrimester : $riskLabel', style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w600)),
           const SizedBox(width: 4),
@@ -1120,7 +1121,7 @@ class _TreatmentDetailSheet extends StatelessWidget {
                           color: AppColors.accent.withAlpha(30),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Center(child: Text('💊', style: TextStyle(fontSize: 28))),
+                        child: const Center(child: Icon(Iconsax.health, size: 28, color: AppColors.primary)),
                       ),
                       const SizedBox(width: 14),
                       Expanded(
@@ -1253,7 +1254,7 @@ class _TreatmentDetailSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('🤰', style: TextStyle(fontSize: 20)),
+              const Icon(Iconsax.personalcard, size: 20, color: AppColors.primary),
               const SizedBox(width: 8),
               Text('Risque grossesse', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: riskColor)),
             ],

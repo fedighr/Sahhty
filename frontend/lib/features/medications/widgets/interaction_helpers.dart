@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 
 /// Helper class for medication interaction UI elements
@@ -27,17 +28,17 @@ class InteractionHelpers {
   static IconData severityIcon(String? severity) {
     switch (severity?.toUpperCase()) {
       case 'CONTRE_INDICATION':
-        return Icons.block;
+        return Iconsax.close_circle;
       case 'DECONSEILLEE':
-        return Icons.dangerous_outlined;
+        return Iconsax.warning_2;
       case 'PRECAUTION_EMPLOI':
-        return Icons.warning_amber_rounded;
+        return Iconsax.warning_2;
       case 'A_PRENDRE_EN_COMPTE':
-        return Icons.info_outline;
+        return Iconsax.info_circle;
       case 'NON_SIGNIFICATIVE':
-        return Icons.check_circle_outline;
+        return Iconsax.tick_circle;
       default:
-        return Icons.help_outline;
+        return Iconsax.info_circle;
     }
   }
 
@@ -115,13 +116,13 @@ class InteractionHelpers {
   static IconData pregnancyRiskIcon(String? risk) {
     switch (risk?.toUpperCase()) {
       case 'UNSAFE':
-        return Icons.dangerous_outlined;
+        return Iconsax.warning_2;
       case 'CAUTION':
-        return Icons.warning_amber_rounded;
+        return Iconsax.warning_2;
       case 'SAFE':
-        return Icons.check_circle_outline;
+        return Iconsax.tick_circle;
       default:
-        return Icons.help_outline;
+        return Iconsax.info_circle;
     }
   }
 

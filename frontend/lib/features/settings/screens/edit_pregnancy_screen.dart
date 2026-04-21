@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
@@ -136,8 +137,8 @@ class _EditPregnancyScreenState extends ConsumerState<EditPregnancyScreen> {
     if (result['success'] == true) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(children: [
-            Icon(Icons.check_circle, color: Colors.white, size: 20),
+            content: const Row(children: [
+            Icon(Iconsax.tick_circle, color: Colors.white, size: 20),
             SizedBox(width: 8),
             Text('Grossesse mise à jour !'),
           ]),
@@ -223,7 +224,7 @@ class _EditPregnancyScreenState extends ConsumerState<EditPregnancyScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(children: [
-                                      Icon(_testResult ? Icons.check_circle : Icons.cancel,
+                                      Icon(_testResult ? Iconsax.tick_circle : Iconsax.close_circle,
                                           color: _testResult ? AppColors.success : AppColors.error),
                                       const SizedBox(width: 12),
                                       Text(_testResult ? 'Positif' : 'Négatif',
@@ -257,8 +258,8 @@ class _EditPregnancyScreenState extends ConsumerState<EditPregnancyScreen> {
                                 validator: (v) => (v == null || v.trim().isEmpty) ? 'Requis' : null,
                                 decoration: const InputDecoration(
                                   hintText: 'AAAA-MM-JJ',
-                                  prefixIcon: Icon(Icons.science_outlined, color: AppColors.info),
-                                  suffixIcon: Icon(Icons.calendar_today_outlined, color: AppColors.textLight),
+                                  prefixIcon: const Icon(Iconsax.health, color: AppColors.info, size: 20),
+                                  suffixIcon: const Icon(Iconsax.calendar, color: AppColors.textLight, size: 20),
                                 ),
                               ).animate().fadeIn(delay: 250.ms).slideX(begin: 0.05),
                               const SizedBox(height: 20),
@@ -276,8 +277,8 @@ class _EditPregnancyScreenState extends ConsumerState<EditPregnancyScreen> {
                                 ),
                                 decoration: const InputDecoration(
                                   hintText: 'AAAA-MM-JJ (optionnel)',
-                                  prefixIcon: Icon(Icons.event, color: AppColors.info),
-                                  suffixIcon: Icon(Icons.calendar_today_outlined, color: AppColors.textLight),
+                                  prefixIcon: const Icon(Iconsax.calendar, color: AppColors.info, size: 20),
+                                  suffixIcon: const Icon(Iconsax.calendar, color: AppColors.textLight, size: 20),
                                 ),
                               ).animate().fadeIn(delay: 300.ms).slideX(begin: 0.05),
                               const SizedBox(height: 20),
@@ -295,8 +296,8 @@ class _EditPregnancyScreenState extends ConsumerState<EditPregnancyScreen> {
                                 ),
                                 decoration: const InputDecoration(
                                   hintText: 'AAAA-MM-JJ (optionnel)',
-                                  prefixIcon: Icon(Icons.child_care, color: AppColors.info),
-                                  suffixIcon: Icon(Icons.calendar_today_outlined, color: AppColors.textLight),
+                                  prefixIcon: Icon(Iconsax.heart, color: AppColors.info, size: 20),
+                                  suffixIcon: Icon(Iconsax.calendar, color: AppColors.textLight, size: 20),
                                 ),
                               ).animate().fadeIn(delay: 350.ms).slideX(begin: 0.05),
                               const SizedBox(height: 20),
@@ -314,8 +315,8 @@ class _EditPregnancyScreenState extends ConsumerState<EditPregnancyScreen> {
                                 ),
                                 decoration: const InputDecoration(
                                   hintText: 'AAAA-MM-JJ (optionnel)',
-                                  prefixIcon: Icon(Icons.event_available, color: AppColors.info),
-                                  suffixIcon: Icon(Icons.calendar_today_outlined, color: AppColors.textLight),
+                                  prefixIcon: Icon(Iconsax.calendar, color: AppColors.info, size: 20),
+                                  suffixIcon: Icon(Iconsax.calendar, color: AppColors.textLight, size: 20),
                                 ),
                               ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.05),
                               const SizedBox(height: 40),
@@ -333,7 +334,7 @@ class _EditPregnancyScreenState extends ConsumerState<EditPregnancyScreen> {
                                       ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                                       : const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [Icon(Icons.save_outlined, color: Colors.white), SizedBox(width: 8), Text('Enregistrer', style: TextStyle(color: Colors.white))],
+                                          children: [Icon(Iconsax.tick_circle, color: Colors.white), SizedBox(width: 8), Text('Enregistrer', style: TextStyle(color: Colors.white))],
                                         ),
                                 ),
                               ).animate().fadeIn(delay: 450.ms).slideY(begin: 0.1),

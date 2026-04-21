@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
@@ -263,7 +264,7 @@ class _EditMenstrualScreenState extends ConsumerState<EditMenstrualScreen> {
                                       ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                                       : const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [Icon(Icons.save_outlined, color: Colors.white), SizedBox(width: 8), Text('Enregistrer', style: TextStyle(color: Colors.white))],
+                                          children: [Icon(Iconsax.tick_circle, color: Colors.white), SizedBox(width: 8), Text('Enregistrer', style: TextStyle(color: Colors.white))],
                                         ),
                                 ),
                               ).animate().fadeIn(delay: 350.ms).slideY(begin: 0.1),

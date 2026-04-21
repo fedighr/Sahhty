@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
@@ -100,7 +101,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
     if (result['success'] == true) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(children: [Icon(Icons.check_circle, color: Colors.white, size: 20), SizedBox(width: 8), Text('Informations médicales mises à jour !')]),
+          content: const Row(children: [Icon(Iconsax.tick_circle, color: Colors.white, size: 20), SizedBox(width: 8), Text('Informations médicales mises à jour !')]),
           backgroundColor: AppColors.success,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -126,7 +127,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(color: Colors.white.withAlpha(200), borderRadius: BorderRadius.circular(12)),
-            child: const Icon(Icons.arrow_back_ios_new, size: 18),
+            child: const Icon(Iconsax.arrow_left, size: 18),
           ),
           onPressed: () => context.pop(),
         ),
@@ -138,7 +139,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
               ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
               : _error != null
                   ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                      const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
                       const SizedBox(height: 8),
                       Text(_error!, style: const TextStyle(color: AppColors.error)),
                       TextButton(onPressed: _loadData, child: const Text('Réessayer')),
@@ -155,7 +156,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                 child: Container(
                                   padding: const EdgeInsets.all(20),
                                   decoration: BoxDecoration(color: AppColors.accent.withAlpha(15), shape: BoxShape.circle),
-                                  child: const Icon(Icons.medical_information_outlined, color: AppColors.accent, size: 48),
+                                  child: const Icon(Iconsax.hospital, color: AppColors.accent, size: 48),
                                 ),
                               ).animate().fadeIn().scale(begin: const Offset(0.8, 0.8), duration: 400.ms, curve: Curves.elasticOut),
                               const SizedBox(height: 24),
@@ -178,7 +179,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                           keyboardType: TextInputType.number,
                                           decoration: const InputDecoration(
                                             hintText: '165',
-                                            prefixIcon: Icon(Icons.height, color: AppColors.primary),
+                                            prefixIcon: const Icon(Iconsax.ruler, color: AppColors.primary, size: 20),
                                           ),
                                           validator: (v) {
                                             if (v == null || v.trim().isEmpty) return 'Requis';
@@ -201,7 +202,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                           keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                           decoration: const InputDecoration(
                                             hintText: '65.5',
-                                            prefixIcon: Icon(Icons.monitor_weight_outlined, color: AppColors.primary),
+                                            prefixIcon: const Icon(Iconsax.weight, color: AppColors.primary, size: 20),
                                           ),
                                           validator: (v) {
                                             if (v == null || v.trim().isEmpty) return 'Requis';
@@ -224,7 +225,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                 onChanged: (v) => setState(() => _selectedBloodType = v),
                                 decoration: const InputDecoration(
                                   hintText: 'Sélectionner',
-                                  prefixIcon: Icon(Icons.bloodtype, color: AppColors.error),
+                                  prefixIcon: const Icon(Iconsax.health, color: AppColors.error, size: 20),
                                 ),
                               ).animate().fadeIn(delay: 250.ms).slideX(begin: 0.05),
                               const SizedBox(height: 20),
@@ -236,7 +237,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                 maxLines: 2,
                                 decoration: const InputDecoration(
                                   hintText: 'Ex: Diabète, Hypertension...',
-                                  prefixIcon: Padding(padding: EdgeInsets.only(bottom: 24), child: Icon(Icons.healing, color: AppColors.warning)),
+                                  prefixIcon: Padding(padding: const EdgeInsets.only(bottom: 24), child: const Icon(Iconsax.hospital, color: AppColors.warning, size: 20)),
                                 ),
                               ).animate().fadeIn(delay: 300.ms).slideX(begin: 0.05),
                               const SizedBox(height: 20),
@@ -248,7 +249,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                 maxLines: 2,
                                 decoration: const InputDecoration(
                                   hintText: 'Ex: Pénicilline, Arachides...',
-                                  prefixIcon: Padding(padding: EdgeInsets.only(bottom: 24), child: Icon(Icons.warning_amber, color: AppColors.warning)),
+                                  prefixIcon: Padding(padding: const EdgeInsets.only(bottom: 24), child: const Icon(Iconsax.warning_2, color: AppColors.warning, size: 20)),
                                 ),
                               ).animate().fadeIn(delay: 350.ms).slideX(begin: 0.05),
                               const SizedBox(height: 20),
@@ -260,7 +261,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                 maxLines: 2,
                                 decoration: const InputDecoration(
                                   hintText: 'Médicaments que vous prenez actuellement...',
-                                  prefixIcon: Padding(padding: EdgeInsets.only(bottom: 24), child: Icon(Icons.medication, color: AppColors.accent)),
+                                  prefixIcon: Padding(padding: const EdgeInsets.only(bottom: 24), child: const Icon(Iconsax.health, color: AppColors.accent, size: 20)),
                                 ),
                               ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.05),
                               const SizedBox(height: 20),
@@ -271,7 +272,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                 controller: _doctorNameCtrl,
                                 decoration: const InputDecoration(
                                   hintText: 'Nom du médecin',
-                                  prefixIcon: Icon(Icons.local_hospital_outlined, color: AppColors.info),
+                                  prefixIcon: const Icon(Iconsax.hospital, color: AppColors.info, size: 20),
                                 ),
                               ).animate().fadeIn(delay: 450.ms).slideX(begin: 0.05),
                               const SizedBox(height: 40),
@@ -286,7 +287,7 @@ class _EditMedicalScreenState extends ConsumerState<EditMedicalScreen> {
                                       ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                                       : const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [Icon(Icons.save_outlined), SizedBox(width: 8), Text('Enregistrer')],
+                                          children: [Icon(Iconsax.tick_circle), SizedBox(width: 8), Text('Enregistrer')],
                                         ),
                                 ),
                               ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.1),

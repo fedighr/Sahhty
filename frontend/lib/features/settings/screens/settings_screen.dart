@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
@@ -228,7 +229,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       SnackBar(
         content: Row(
           children: [
-            Icon(isError ? Icons.error_outline : Icons.check_circle_outline, color: Colors.white, size: 20),
+            Icon(isError ? Iconsax.close_circle : Iconsax.tick_circle, color: Colors.white, size: 20),
             const SizedBox(width: 8),
             Expanded(child: Text(message)),
           ],
@@ -258,7 +259,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               color: Colors.white.withAlpha(200),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.arrow_back_ios_new, size: 18),
+            child: const Icon(Iconsax.arrow_left, size: 18),
           ),
           onPressed: () => context.pop(),
         ),
@@ -294,11 +295,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 28),
 
                   // ── Section: Profil & Compte ──
-                  _buildSectionTitle('👤', 'Profil & Compte')
+                  _buildSectionTitle(Iconsax.user, 'Profil & Compte')
                       .animate().fadeIn(delay: 100.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
-                    icon: Icons.person_outline,
+                    icon: Iconsax.user,
                     iconColor: AppColors.primary,
                     title: 'Modifier mon profil',
                     subtitle: 'Nom, téléphone, date de naissance',
@@ -306,7 +307,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ).animate().fadeIn(delay: 150.ms).slideX(begin: 0.05),
                   const SizedBox(height: 8),
                   _SettingsTile(
-                    icon: Icons.medical_information_outlined,
+                    icon: Iconsax.hospital,
                     iconColor: AppColors.accent,
                     title: 'Informations médicales',
                     subtitle: 'Taille, poids, groupe sanguin, allergies',
@@ -315,7 +316,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   if (authState.gender == 'F')
                     _SettingsTile(
-                      icon: Icons.calendar_month_outlined,
+                      icon: Iconsax.calendar,
                       iconColor: AppColors.secondary,
                       title: 'Cycle menstruel',
                       subtitle: 'Statut, dates, durée du cycle',
@@ -325,11 +326,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
                   // ── Section: Grossesse ──
                   if (authState.gender == 'F') ...[
-                    _buildSectionTitle('🤰', 'Grossesse')
+                    _buildSectionTitle(Iconsax.heart, 'Grossesse')
                         .animate().fadeIn(delay: 300.ms).slideX(begin: -0.05),
                     const SizedBox(height: 12),
                     _SettingsTile(
-                      icon: Icons.edit_calendar_outlined,
+                      icon: Iconsax.edit_2,
                       iconColor: AppColors.info,
                       title: 'Modifier la grossesse',
                       subtitle: 'Dates, résultat du test',
@@ -337,7 +338,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ).animate().fadeIn(delay: 350.ms).slideX(begin: 0.05),
                     const SizedBox(height: 8),
                     _SettingsTile(
-                      icon: Icons.delete_outline,
+                      icon: Iconsax.trash,
                       iconColor: AppColors.error,
                       title: 'Supprimer la grossesse',
                       subtitle: 'Supprimer les données de la grossesse actuelle',
@@ -348,11 +349,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ],
 
                   // ── Section: Traitements ──
-                  _buildSectionTitle('💊', 'Traitements & Médicaments')
+                  _buildSectionTitle(Iconsax.health, 'Traitements & Médicaments')
                       .animate().fadeIn(delay: 450.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
-                    icon: Icons.medication_outlined,
+                    icon: Iconsax.health,
                     iconColor: AppColors.accent,
                     title: 'Gérer mes traitements',
                     subtitle: 'Voir, ajouter ou supprimer des traitements',
@@ -361,11 +362,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 24),
 
                   // ── Section: Médecins ──
-                  _buildSectionTitle('👨‍⚕️', 'Médecins')
+                  _buildSectionTitle(Iconsax.hospital, 'Médecins')
                       .animate().fadeIn(delay: 550.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
-                    icon: Icons.local_hospital_outlined,
+                    icon: Iconsax.hospital,
                     iconColor: AppColors.info,
                     title: 'Trouver un médecin',
                     subtitle: 'Rechercher par nom, spécialité, ville',
@@ -374,11 +375,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 24),
 
                   // ── Section: Sécurité ──
-                  _buildSectionTitle('🔐', 'Sécurité & Confidentialité')
+                  _buildSectionTitle(Iconsax.lock, 'Sécurité & Confidentialité')
                       .animate().fadeIn(delay: 650.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
-                    icon: Icons.lock_outline,
+                    icon: Iconsax.lock,
                     iconColor: AppColors.warning,
                     title: 'Changer le mot de passe',
                     subtitle: 'Modifier votre mot de passe actuel',
@@ -386,7 +387,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ).animate().fadeIn(delay: 700.ms).slideX(begin: 0.05),
                   const SizedBox(height: 8),
                   _SettingsTile(
-                    icon: Icons.logout_rounded,
+                    icon: Iconsax.logout,
                     iconColor: AppColors.warning,
                     title: 'Se déconnecter',
                     subtitle: 'Fermer votre session',
@@ -394,7 +395,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ).animate().fadeIn(delay: 750.ms).slideX(begin: 0.05),
                   const SizedBox(height: 8),
                   _SettingsTile(
-                    icon: Icons.delete_forever_outlined,
+                    icon: Iconsax.trash,
                     iconColor: AppColors.error,
                     title: 'Supprimer mon compte',
                     subtitle: 'Suppression définitive de toutes vos données',
@@ -468,17 +469,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               color: AppColors.primary.withAlpha(15),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Icons.settings, color: AppColors.primary, size: 22),
+            child: const Icon(Iconsax.setting_2, color: AppColors.primary, size: 22),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSectionTitle(String emoji, String title) {
+  Widget _buildSectionTitle(IconData icon, String title) {
     return Row(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 20)),
+        Icon(icon, size: 20, color: AppColors.primary),
         const SizedBox(width: 8),
         Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ],
@@ -579,7 +580,7 @@ class _SettingsTileState extends State<_SettingsTile> {
                 ),
               ),
               Icon(
-                Icons.chevron_right_rounded,
+                Iconsax.arrow_right_3,
                 color: widget.isDanger ? AppColors.error.withAlpha(100) : AppColors.textLight,
               ),
             ],

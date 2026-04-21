@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
@@ -49,15 +50,15 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
 
   int? _getPatientId() => int.tryParse(ref.read(authProvider).patientId ?? '');
 
-  String _emojiForType(String type) {
+  IconData _iconForType(String type) {
     switch (type) {
-      case 'WEIGHT': return '⚖️';
-      case 'BLOOD_PRESSURE': return '❤️';
-      case 'GLYCEMIA': return '🩸';
-      case 'TEMPERATURE': return '🌡️';
-      case 'HEART_RATE': return '💓';
-      case 'OXYGEN': return '🫁';
-      default: return '📊';
+      case 'WEIGHT': return Iconsax.weight;
+      case 'BLOOD_PRESSURE': return Iconsax.heart;
+      case 'GLYCEMIA': return Iconsax.health;
+      case 'TEMPERATURE': return Iconsax.health;
+      case 'HEART_RATE': return Iconsax.activity;
+      case 'OXYGEN': return Iconsax.activity;
+      default: return Iconsax.chart_2;
     }
   }
 
@@ -96,7 +97,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
         },
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
-        icon: const Icon(Icons.add),
+        icon: const Icon(Iconsax.add_circle),
         label: const Text('Ajouter'),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 4,
@@ -109,14 +110,14 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
               ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
               : _error != null
                   ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                      const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
                       const SizedBox(height: 8),
                       Text(_error!, style: const TextStyle(color: AppColors.error)),
                       TextButton(onPressed: _loadMeasurements, child: const Text('Réessayer')),
                     ]))
                   : _measurements.isEmpty
                       ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                          const Text('📊', style: TextStyle(fontSize: 64)),
+                          const Icon(Iconsax.chart_2, size: 64, color: AppColors.primary),
                           const SizedBox(height: 16),
                           const Text('Aucune mesure', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                           const SizedBox(height: 4),
@@ -176,7 +177,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
               color: color.withAlpha(25),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Center(child: Text(_emojiForType(type), style: const TextStyle(fontSize: 24))),
+            child: Center(child: Icon(_iconForType(type), size: 24, color: color)),
           ),
           const SizedBox(width: 12),
           Expanded(

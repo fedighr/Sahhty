@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
@@ -217,7 +218,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.info_outline, color: AppColors.primary),
+                      const Icon(Iconsax.info_circle, color: AppColors.primary),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -303,7 +304,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           labelText: 'Taille (cm) *',
-          prefixIcon: Icon(Icons.height, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.ruler, color: AppColors.primary, size: 20),
         ),
         validator: (v) {
           if (v == null || v.isEmpty) return 'Taille requise';
@@ -318,7 +319,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         decoration: const InputDecoration(
           labelText: 'Poids (kg) *',
-          prefixIcon: Icon(Icons.monitor_weight_outlined, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.weight, color: AppColors.primary, size: 20),
         ),
         validator: (v) {
           if (v == null || v.isEmpty) return 'Poids requis';
@@ -333,7 +334,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         value: _bloodType,
         decoration: const InputDecoration(
           labelText: 'Groupe sanguin',
-          prefixIcon: Icon(Icons.bloodtype_outlined, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.health, color: AppColors.primary, size: 20),
         ),
         items: _bloodTypes.map((b) => DropdownMenuItem(value: b, child: Text(b))).toList(),
         onChanged: (v) => setState(() => _bloodType = v),
@@ -345,7 +346,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         maxLines: 2,
         decoration: const InputDecoration(
           labelText: 'Maladies chroniques',
-          prefixIcon: Icon(Icons.medical_information_outlined, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.hospital, color: AppColors.primary, size: 20),
         ),
       ),
       const SizedBox(height: 16),
@@ -354,7 +355,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         maxLines: 2,
         decoration: const InputDecoration(
           labelText: 'Allergies',
-          prefixIcon: Icon(Icons.warning_amber, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.warning_2, color: AppColors.primary, size: 20),
         ),
       ),
       const SizedBox(height: 16),
@@ -363,7 +364,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         maxLines: 2,
         decoration: const InputDecoration(
           labelText: 'Médicaments actuels',
-          prefixIcon: Icon(Icons.medication_outlined, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.health, color: AppColors.primary, size: 20),
         ),
       ),
       const SizedBox(height: 16),
@@ -371,7 +372,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         controller: _doctorNameCtrl,
         decoration: const InputDecoration(
           labelText: 'Nom du médecin traitant',
-          prefixIcon: Icon(Icons.person_outline, color: AppColors.primary),
+          prefixIcon: const Icon(Iconsax.user, color: AppColors.primary, size: 20),
         ),
       ),
     ];
@@ -454,7 +455,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.access_time, color: AppColors.accentDark, size: 20),
+                const Icon(Iconsax.clock, color: AppColors.accentDark, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   'Durée du cycle : ${_cycleEndDate!.difference(_cycleStartDate!).inDays} jours',
@@ -561,7 +562,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.pregnant_woman, color: AppColors.primary),
+                  const Icon(Iconsax.heart, color: AppColors.primary),
                   const SizedBox(width: 8),
                   Text(
                     'Résumé de la grossesse',
@@ -603,7 +604,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
         ),
         child: Row(
           children: [
-            const Icon(Icons.calendar_today, color: AppColors.primary, size: 20),
+            const Icon(Iconsax.calendar, color: AppColors.primary, size: 20),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
@@ -614,7 +615,7 @@ class _PatientSetupScreenState extends ConsumerState<PatientSetupScreen> {
                 ),
               ),
             ),
-            const Icon(Icons.arrow_drop_down, color: AppColors.textLight),
+            const Icon(Iconsax.arrow_down, color: AppColors.textLight),
           ],
         ),
       ),

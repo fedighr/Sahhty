@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 
 class MainShell extends StatelessWidget {
@@ -41,11 +42,11 @@ class MainShell extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _NavItem(emoji: '🏠', icon: Icons.home, label: 'Accueil', isSelected: index == 0, onTap: () => context.go('/home')),
-                  _NavItem(emoji: '📊', icon: Icons.monitor_heart, label: 'Mesures', isSelected: index == 1, onTap: () => context.go('/measurements')),
-                  _NavItem(emoji: '🤰', icon: Icons.pregnant_woman, label: 'Grossesse', isSelected: index == 2, onTap: () => context.go('/pregnancy')),
-                  _NavItem(emoji: '🔔', icon: Icons.notifications, label: 'Alertes', isSelected: index == 3, onTap: () => context.go('/alerts')),
-                  _NavItem(emoji: '👤', icon: Icons.person, label: 'Profil', isSelected: index == 4, onTap: () => context.go('/profile')),
+                  _NavItem(icon: Iconsax.home_2, label: 'Accueil', isSelected: index == 0, onTap: () => context.go('/home')),
+                  _NavItem(icon: Iconsax.activity, label: 'Mesures', isSelected: index == 1, onTap: () => context.go('/measurements')),
+                  _NavItem(icon: Iconsax.heart, label: 'Grossesse', isSelected: index == 2, onTap: () => context.go('/pregnancy')),
+                  _NavItem(icon: Iconsax.notification, label: 'Alertes', isSelected: index == 3, onTap: () => context.go('/alerts')),
+                  _NavItem(icon: Iconsax.user, label: 'Profil', isSelected: index == 4, onTap: () => context.go('/profile')),
                 ],
               ),
             ),
@@ -57,13 +58,12 @@ class MainShell extends StatelessWidget {
 }
 
 class _NavItem extends StatefulWidget {
-  final String emoji;
   final IconData icon;
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _NavItem({required this.emoji, required this.icon, required this.label, required this.isSelected, required this.onTap});
+  const _NavItem({required this.icon, required this.label, required this.isSelected, required this.onTap});
 
   @override
   State<_NavItem> createState() => _NavItemState();

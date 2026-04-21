@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -115,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             BoxShadow(color: AppColors.primary.withAlpha(77), blurRadius: 20, offset: const Offset(0, 8)),
                           ],
                         ),
-                        child: const Icon(Icons.favorite, size: 44, color: Colors.white),
+                        child: const Icon(Iconsax.heart5, size: 44, color: Colors.white),
                       ),
                     )
                         .animate()
@@ -148,7 +149,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         labelText: 'Email',
-                        prefixIcon: Icon(Icons.email_outlined, color: AppColors.primary),
+                        prefixIcon: const Icon(Iconsax.sms, color: AppColors.primary, size: 20),
                       ),
                       validator: (v) {
                         if (v == null || v.isEmpty) return 'Email requis';
@@ -164,11 +165,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         labelText: 'Mot de passe',
-                        prefixIcon: const Icon(Icons.lock_outlined, color: AppColors.primary),
+                        prefixIcon: const Icon(Iconsax.lock, color: AppColors.primary, size: 20),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            _obscurePassword ? Iconsax.eye_slash : Iconsax.eye,
                             color: AppColors.textLight,
+                            size: 20,
                           ),
                           onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/features/medications/widgets/interaction_helpers.dart';
 
@@ -29,7 +30,6 @@ class MedicationDetailSheet extends StatelessWidget {
     final category = (medication['category'] ?? '').toString();
     final pkg = (medication['package'] ?? '').toString();
 
-    // Sort interactions by severity (most dangerous first)
     final sortedInteractions = List<dynamic>.from(interactions);
     sortedInteractions.sort((a, b) {
       final pa = InteractionHelpers.severityPriority(a['severity']?.toString());
@@ -38,7 +38,7 @@ class MedicationDetailSheet extends StatelessWidget {
     });
 
     final hasHighRisk = sortedInteractions.any((i) =>
-        InteractionHelpers.severityPriority(i['severity']?.toString()) >= 4);
+    InteractionHelpers.severityPriority(i['severity']?.toString()) >= 4);
 
     return Container(
       constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
@@ -89,7 +89,7 @@ class MedicationDetailSheet extends StatelessWidget {
                           borderRadius: BorderRadius.circular(18),
                         ),
                         child: const Center(
-                          child: Text('💊', style: TextStyle(fontSize: 30)),
+                          child: Icon(Iconsax.health, size: 30, color: AppColors.accent),
                         ),
                       ),
                       const SizedBox(width: 14),
@@ -126,12 +126,12 @@ class MedicationDetailSheet extends StatelessWidget {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      if (form.isNotEmpty) _infoChip(Icons.local_pharmacy_outlined, form),
-                      if (dosage.isNotEmpty) _infoChip(Icons.straighten_outlined, dosage),
-                      if (pkg.isNotEmpty) _infoChip(Icons.inventory_2_outlined, pkg),
-                      if (category.isNotEmpty) _infoChip(Icons.category_outlined, _categoryLabel(category)),
-                      if (price != null)
-                        _infoChip(Icons.attach_money, '$price DT', color: AppColors.success),
+                      if (form.isNotEmpty) _infoChip(Iconsax.health, form),
+                      if (dosage.isNotEmpty) _infoChip(Iconsax.ruler, dosage),
+                      if (pkg.isNotEmpty) _infoChip(Iconsax.note, pkg),
+                      if (category.isNotEmpty) _infoChip(Iconsax.category, _categoryLabel(category)),
+                      if (price > 0)
+                        _infoChip(Iconsax.tag, '$price DT', color: AppColors.success),
                     ],
                   ).animate().fadeIn(delay: 100.ms),
 
@@ -166,7 +166,7 @@ class MedicationDetailSheet extends StatelessWidget {
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.check_circle_outline, color: AppColors.success, size: 22),
+                          Icon(Iconsax.tick_circle, color: AppColors.success, size: 22),
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
@@ -194,11 +194,11 @@ class MedicationDetailSheet extends StatelessWidget {
                         ),
                         child: const Row(
                           children: [
-                            Icon(Icons.warning_amber_rounded, color: AppColors.riskHigh, size: 20),
+                            Icon(Iconsax.warning_2, color: AppColors.riskHigh, size: 20),
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                '⚠️ Attention : des interactions graves ont été détectées. Consultez votre médecin avant d\'ajouter ce traitement.',
+                                'Attention : des interactions graves ont été détectées. Consultez votre médecin avant d\'ajouter ce traitement.',
                                 style: TextStyle(fontSize: 12, color: AppColors.riskHigh, fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -211,7 +211,7 @@ class MedicationDetailSheet extends StatelessWidget {
                       height: 52,
                       child: ElevatedButton.icon(
                         onPressed: onAddTreatment,
-                        icon: const Icon(Icons.add_circle_outline, size: 20),
+                        icon: const Icon(Iconsax.add_circle, size: 20),
                         label: const Text('Ajouter comme traitement'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: hasHighRisk ? AppColors.riskMedium : AppColors.primary,
@@ -294,7 +294,14 @@ class MedicationDetailSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('🤰', style: TextStyle(fontSize: 20)),
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: riskColor.withAlpha(20),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(Iconsax.heart_add, size: 18, color: riskColor),
+              ),
               const SizedBox(width: 8),
               Text(
                 'Risque grossesse',
@@ -396,7 +403,7 @@ class MedicationDetailSheet extends StatelessWidget {
           Row(
             children: [
               Icon(
-                hasHighRisk ? Icons.warning_amber_rounded : Icons.compare_arrows,
+                hasHighRisk ? Iconsax.warning_2 : Iconsax.chart_2,
                 size: 20,
                 color: hasHighRisk ? AppColors.riskHigh : AppColors.riskMedium,
               ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/data/services/medication_service.dart';
 import 'package:sahhty/features/medications/widgets/interaction_helpers.dart';
@@ -21,8 +22,8 @@ class _CompareTabState extends State<CompareTab> {
   List<dynamic> _leftSearchResults = [];
   bool _leftSearching = false;
   Timer? _leftDebounce;
-  Map<String, dynamic>? _leftMed; // from search result
-  Map<String, dynamic>? _leftDetail; // full detail from API
+  Map<String, dynamic>? _leftMed;
+  Map<String, dynamic>? _leftDetail;
   bool _leftLoading = false;
 
   // ── Right medication ──
@@ -150,7 +151,7 @@ class _CompareTabState extends State<CompareTab> {
             ),
             child: const Column(
               children: [
-                Icon(Icons.compare_arrows, size: 36, color: AppColors.primary),
+                Icon(Iconsax.chart_2, size: 36, color: AppColors.primary),
                 SizedBox(height: 8),
                 Text(
                   'Comparer deux médicaments',
@@ -198,32 +199,38 @@ class _CompareTabState extends State<CompareTab> {
     final searching = isLeft ? _leftSearching : _rightSearching;
     final selected = isLeft ? _leftMed : _rightMed;
     final loading = isLeft ? _leftLoading : _rightLoading;
+    final color = isLeft ? AppColors.primary : AppColors.accent;
 
     return Column(
       children: [
-        // Label
         Text(
           isLeft ? 'Médicament 1' : 'Médicament 2',
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w600,
-            color: isLeft ? AppColors.primary : AppColors.accent,
+            color: color,
           ),
         ),
         const SizedBox(height: 8),
 
-        // Search or selected
         if (selected != null)
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: (isLeft ? AppColors.primary : AppColors.accent).withAlpha(15),
+              color: color.withAlpha(15),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: (isLeft ? AppColors.primary : AppColors.accent).withAlpha(38)),
+              border: Border.all(color: color.withAlpha(38)),
             ),
             child: Column(
               children: [
-                const Text('💊', style: TextStyle(fontSize: 28)),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: color.withAlpha(20),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Iconsax.health, size: 28, color: color),
+                ),
                 const SizedBox(height: 6),
                 Text(
                   (selected['commercial_name'] ?? selected['name'] ?? '').toString(),
@@ -266,16 +273,16 @@ class _CompareTabState extends State<CompareTab> {
             decoration: InputDecoration(
               hintText: 'Chercher...',
               hintStyle: const TextStyle(fontSize: 12),
-              prefixIcon: Icon(Icons.search, size: 18, color: isLeft ? AppColors.primary : AppColors.accent),
+              prefixIcon: Icon(Iconsax.search_normal, size: 18, color: color),
               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               suffixIcon: ctrl.text.isNotEmpty
                   ? IconButton(
-                      icon: const Icon(Icons.clear, size: 16),
-                      onPressed: () {
-                        ctrl.clear();
-                        _onSearchChanged('', isLeft);
-                      },
-                    )
+                icon: const Icon(Iconsax.close_circle, size: 16),
+                onPressed: () {
+                  ctrl.clear();
+                  _onSearchChanged('', isLeft);
+                },
+              )
                   : null,
             ),
           ),
@@ -339,10 +346,9 @@ class _CompareTabState extends State<CompareTab> {
 
     return Column(
       children: [
-        // ── Basic Info Comparison ────
         _comparisonSection(
           title: 'Informations générales',
-          icon: Icons.info_outline,
+          icon: Iconsax.info_circle,
           rows: [
             _compRow('Nom', leftMed['name']?.toString(), rightMed['name']?.toString()),
             _compRow('Nom commercial', leftMed['commercial_name']?.toString(), rightMed['commercial_name']?.toString()),
@@ -354,17 +360,14 @@ class _CompareTabState extends State<CompareTab> {
         ),
         const SizedBox(height: 16),
 
-        // ── Price Comparison ────
         _buildPriceComparison(leftMed, rightMed),
         const SizedBox(height: 16),
 
-        // ── Pregnancy Risk Comparison ────
         if (leftPreg != null || rightPreg != null) ...[
           _buildPregnancyComparison(leftPreg, rightPreg, leftMed, rightMed),
           const SizedBox(height: 16),
         ],
 
-        // ── Interactions Summary ────
         _buildInteractionsComparison(leftInteractions, rightInteractions, leftMed, rightMed),
       ],
     );
@@ -390,7 +393,6 @@ class _CompareTabState extends State<CompareTab> {
             ],
           ),
           const SizedBox(height: 12),
-          // Table header
           Row(
             children: [
               const SizedBox(width: 100),
@@ -449,20 +451,18 @@ class _CompareTabState extends State<CompareTab> {
 
     Color leftColor = AppColors.textPrimary;
     Color rightColor = AppColors.textPrimary;
-    String leftIcon = '';
-    String rightIcon = '';
+    bool leftCheaper = false;
+    bool rightCheaper = false;
 
     if (leftPrice != null && rightPrice != null) {
       if (leftPrice < rightPrice) {
         leftColor = AppColors.success;
         rightColor = AppColors.riskMedium;
-        leftIcon = ' ✓';
-        rightIcon = '';
+        leftCheaper = true;
       } else if (rightPrice < leftPrice) {
         rightColor = AppColors.success;
         leftColor = AppColors.riskMedium;
-        rightIcon = ' ✓';
-        leftIcon = '';
+        rightCheaper = true;
       }
     }
 
@@ -478,7 +478,7 @@ class _CompareTabState extends State<CompareTab> {
         children: [
           const Row(
             children: [
-              Icon(Icons.attach_money, size: 18, color: AppColors.primary),
+              Icon(Iconsax.tag, size: 18, color: AppColors.primary),
               SizedBox(width: 8),
               Text('Comparaison de prix', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ],
@@ -496,9 +496,18 @@ class _CompareTabState extends State<CompareTab> {
                   ),
                   child: Column(
                     children: [
-                      Text(
-                        leftPrice != null ? '${leftPrice.toStringAsFixed(3)} DT$leftIcon' : 'N/A',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: leftColor),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            leftPrice != null ? '${leftPrice.toStringAsFixed(3)} DT' : 'N/A',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: leftColor),
+                          ),
+                          if (leftCheaper) ...[
+                            const SizedBox(width: 4),
+                            Icon(Iconsax.tick_circle, size: 14, color: leftColor),
+                          ],
+                        ],
                       ),
                       if (leftMed['tarif_reference'] != null)
                         Text('Réf: ${leftMed['tarif_reference']} DT',
@@ -521,9 +530,18 @@ class _CompareTabState extends State<CompareTab> {
                   ),
                   child: Column(
                     children: [
-                      Text(
-                        rightPrice != null ? '${rightPrice.toStringAsFixed(3)} DT$rightIcon' : 'N/A',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: rightColor),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            rightPrice != null ? '${rightPrice.toStringAsFixed(3)} DT' : 'N/A',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: rightColor),
+                          ),
+                          if (rightCheaper) ...[
+                            const SizedBox(width: 4),
+                            Icon(Iconsax.tick_circle, size: 14, color: rightColor),
+                          ],
+                        ],
                       ),
                       if (rightMed['tarif_reference'] != null)
                         Text('Réf: ${rightMed['tarif_reference']} DT',
@@ -540,11 +558,11 @@ class _CompareTabState extends State<CompareTab> {
   }
 
   Widget _buildPregnancyComparison(
-    Map<String, dynamic>? leftPreg,
-    Map<String, dynamic>? rightPreg,
-    Map<String, dynamic> leftMed,
-    Map<String, dynamic> rightMed,
-  ) {
+      Map<String, dynamic>? leftPreg,
+      Map<String, dynamic>? rightPreg,
+      Map<String, dynamic> leftMed,
+      Map<String, dynamic> rightMed,
+      ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -558,13 +576,12 @@ class _CompareTabState extends State<CompareTab> {
         children: [
           const Row(
             children: [
-              Text('🤰', style: TextStyle(fontSize: 18)),
+              Icon(Iconsax.heart_add, size: 18, color: AppColors.primary),
               SizedBox(width: 8),
               Text('Risque grossesse', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 12),
-          // Header
           Row(
             children: [
               const SizedBox(width: 60),
@@ -596,8 +613,8 @@ class _CompareTabState extends State<CompareTab> {
               trimester == 'overall'
                   ? 'Global'
                   : trimester == 'Delivery'
-                      ? 'Accouchement'
-                      : trimester,
+                  ? 'Accouchement'
+                  : trimester,
               leftPreg?['dci_risk']?[trimester]?.toString(),
               rightPreg?['dci_risk']?[trimester]?.toString(),
             ),
@@ -667,11 +684,11 @@ class _CompareTabState extends State<CompareTab> {
   }
 
   Widget _buildInteractionsComparison(
-    List<dynamic> leftInter,
-    List<dynamic> rightInter,
-    Map<String, dynamic> leftMed,
-    Map<String, dynamic> rightMed,
-  ) {
+      List<dynamic> leftInter,
+      List<dynamic> rightInter,
+      Map<String, dynamic> leftMed,
+      Map<String, dynamic> rightMed,
+      ) {
     final leftName = (leftMed['commercial_name'] ?? leftMed['name'] ?? 'Méd 1').toString();
     final rightName = (rightMed['commercial_name'] ?? rightMed['name'] ?? 'Méd 2').toString();
 
@@ -688,7 +705,7 @@ class _CompareTabState extends State<CompareTab> {
         children: [
           const Row(
             children: [
-              Icon(Icons.compare_arrows, size: 18, color: AppColors.primary),
+              Icon(Iconsax.chart_2, size: 18, color: AppColors.primary),
               SizedBox(width: 8),
               Text('Interactions avec vos traitements', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ],
@@ -712,7 +729,7 @@ class _CompareTabState extends State<CompareTab> {
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.check_circle_outline, size: 12, color: AppColors.success),
+                            Icon(Iconsax.tick_circle, size: 12, color: AppColors.success),
                             SizedBox(width: 4),
                             Text('Aucune', style: TextStyle(fontSize: 10, color: AppColors.success, fontWeight: FontWeight.w500)),
                           ],
@@ -741,7 +758,7 @@ class _CompareTabState extends State<CompareTab> {
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.check_circle_outline, size: 12, color: AppColors.success),
+                            Icon(Iconsax.tick_circle, size: 12, color: AppColors.success),
                             SizedBox(width: 4),
                             Text('Aucune', style: TextStyle(fontSize: 10, color: AppColors.success, fontWeight: FontWeight.w500)),
                           ],

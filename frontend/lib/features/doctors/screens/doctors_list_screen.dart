@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
@@ -69,7 +70,7 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trouver un médecin'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(Iconsax.arrow_left, size: 24), onPressed: () => context.pop()),
       ),
       body: Stack(
         children: [
@@ -85,10 +86,10 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen> {
               onChanged: _filter,
               decoration: InputDecoration(
                 hintText: 'Rechercher par nom, spécialité, ville...',
-                prefixIcon: const Icon(Icons.search, color: AppColors.primary),
+                prefixIcon: const Icon(Iconsax.search_normal, color: AppColors.primary, size: 20),
                 suffixIcon: _searchCtrl.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const Icon(Iconsax.close_circle, size: 20),
                         onPressed: () { _searchCtrl.clear(); _filter(''); },
                       )
                     : null,
@@ -102,14 +103,14 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen> {
                 ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
                 : _error != null
                     ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                        const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
                         const SizedBox(height: 8),
                         Text(_error!, style: const TextStyle(color: AppColors.error)),
                         TextButton(onPressed: _loadDoctors, child: const Text('Réessayer')),
                       ]))
                     : _filtered.isEmpty
                         ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                            const Text('👨‍⚕️', style: TextStyle(fontSize: 64)),
+                            const Icon(Iconsax.hospital, size: 64, color: AppColors.primary),
                             const SizedBox(height: 12),
                             const Text('Aucun médecin trouvé', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                           ]).animate().fadeIn())
@@ -163,7 +164,7 @@ class _DoctorCard extends StatelessWidget {
               color: AppColors.accent.withAlpha(25),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Center(child: Text('👨‍⚕️', style: TextStyle(fontSize: 28))),
+            child: const Center(child: Icon(Iconsax.user, size: 28, color: AppColors.accent)),
           ),
           const SizedBox(width: 12),
           Expanded(

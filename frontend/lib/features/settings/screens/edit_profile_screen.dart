@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
@@ -114,7 +115,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     if (result['success'] == true) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(children: [Icon(Icons.check_circle, color: Colors.white, size: 20), SizedBox(width: 8), Text('Profil mis à jour !')]),
+          content: const Row(children: [Icon(Iconsax.tick_circle, color: Colors.white, size: 20), SizedBox(width: 8), Text('Profil mis à jour !')]),
           backgroundColor: AppColors.success,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -145,7 +146,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(color: Colors.white.withAlpha(200), borderRadius: BorderRadius.circular(12)),
-            child: const Icon(Icons.arrow_back_ios_new, size: 18),
+            child: const Icon(Iconsax.arrow_left, size: 18),
           ),
           onPressed: () => context.pop(),
         ),
@@ -157,7 +158,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
               : _error != null
                   ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                      const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
                       const SizedBox(height: 8),
                       Text(_error!, style: const TextStyle(color: AppColors.error)),
                       TextButton(onPressed: _loadPatientData, child: const Text('Réessayer')),
@@ -178,7 +179,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                     color: AppColors.primary.withAlpha(15),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(Icons.person_outline, color: AppColors.primary, size: 48),
+                                  child: const Icon(Iconsax.user, color: AppColors.primary, size: 48),
                                 ),
                               ).animate().fadeIn().scale(begin: const Offset(0.8, 0.8), duration: 400.ms, curve: Curves.elasticOut),
                               const SizedBox(height: 24),
@@ -197,7 +198,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 controller: _firstNameCtrl,
                                 decoration: const InputDecoration(
                                   hintText: 'Votre prénom',
-                                  prefixIcon: Icon(Icons.person_outline, color: AppColors.primary),
+                                  prefixIcon: const Icon(Iconsax.user, color: AppColors.primary, size: 20),
                                 ),
                                 validator: (v) => (v == null || v.trim().isEmpty) ? 'Requis' : null,
                               ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.05),
@@ -209,7 +210,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 controller: _lastNameCtrl,
                                 decoration: const InputDecoration(
                                   hintText: 'Votre nom',
-                                  prefixIcon: Icon(Icons.person_outline, color: AppColors.primary),
+                                  prefixIcon: Icon(Iconsax.user, color: AppColors.primary, size: 20),
                                 ),
                                 validator: (v) => (v == null || v.trim().isEmpty) ? 'Requis' : null,
                               ).animate().fadeIn(delay: 250.ms).slideX(begin: 0.05),
@@ -222,7 +223,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 keyboardType: TextInputType.phone,
                                 decoration: const InputDecoration(
                                   hintText: '+213 XX XXX XXXX',
-                                  prefixIcon: Icon(Icons.phone_outlined, color: AppColors.primary),
+                                  prefixIcon: const Icon(Iconsax.call, color: AppColors.primary, size: 20),
                                 ),
                               ).animate().fadeIn(delay: 300.ms).slideX(begin: 0.05),
                               const SizedBox(height: 20),
@@ -235,8 +236,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 onTap: _pickBirthDate,
                                 decoration: const InputDecoration(
                                   hintText: 'Sélectionner une date',
-                                  prefixIcon: Icon(Icons.cake_outlined, color: AppColors.primary),
-                                  suffixIcon: Icon(Icons.calendar_today, color: AppColors.textLight),
+                                  prefixIcon: const Icon(Iconsax.calendar, color: AppColors.primary, size: 20),
+                                  suffixIcon: const Icon(Iconsax.calendar, color: AppColors.textLight, size: 20),
                                 ),
                               ).animate().fadeIn(delay: 350.ms).slideX(begin: 0.05),
                               const SizedBox(height: 40),
@@ -254,7 +255,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                       : const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.save_outlined),
+                                            Icon(Iconsax.tick_circle),
                                             SizedBox(width: 8),
                                             Text('Enregistrer'),
                                           ],

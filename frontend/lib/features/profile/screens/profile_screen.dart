@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
@@ -127,13 +128,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                 )
               : _error != null
                   ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      const Text('😢', style: TextStyle(fontSize: 64)),
+                      const Icon(Iconsax.close_circle, size: 64, color: AppColors.error),
                       const SizedBox(height: 12),
                       Text(_error!, style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 12),
                       ElevatedButton.icon(
                         onPressed: _loadProfile,
-                        icon: const Icon(Icons.refresh),
+                        icon: const Icon(Iconsax.refresh_2, size: 20),
                         label: const Text('Réessayer'),
                       ),
                     ]).animate().fadeIn().shake(hz: 1, offset: const Offset(4, 0)))
@@ -156,38 +157,38 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                 const SizedBox(height: 16),
                               ],
 
-                              _buildSection('👤', 'Informations personnelles', [
-                                _infoRow('📧', 'Email', _patientData!['email'] ?? '--'),
-                                _infoRow('📱', 'Téléphone', _patientData!['phone'] ?? '--'),
-                                _infoRow('🎂', 'Date de naissance', '${_patientData!['birth_date'] ?? '--'}'),
-                                _infoRow('🕐', 'Âge', '${_patientData!['age'] ?? '--'} ans'),
+                              _buildSection(Iconsax.user, 'Informations personnelles', [
+                                _infoRow(Iconsax.sms, 'Email', _patientData!['email'] ?? '--'),
+                                _infoRow(Iconsax.call, 'Téléphone', _patientData!['phone'] ?? '--'),
+                                _infoRow(Iconsax.calendar, 'Date de naissance', '${_patientData!['birth_date'] ?? '--'}'),
+                                _infoRow(Iconsax.clock, 'Âge', '${_patientData!['age'] ?? '--'} ans'),
                               ]).animate().fadeIn(delay: 250.ms).slideY(begin: 0.08),
                               const SizedBox(height: 16),
 
-                              _buildSection('🏥', 'Informations médicales', [
-                                _infoRow('📏', 'Taille', '${_patientData!['height'] ?? '--'} cm'),
-                                _infoRow('⚖️', 'Poids', '${_patientData!['weight'] ?? '--'} kg'),
-                                _infoRow('🩸', 'Groupe sanguin', _patientData!['blood_type'] ?? 'Non renseigné'),
+                              _buildSection(Iconsax.hospital, 'Informations médicales', [
+                                _infoRow(Iconsax.ruler, 'Taille', '${_patientData!['height'] ?? '--'} cm'),
+                                _infoRow(Iconsax.weight, 'Poids', '${_patientData!['weight'] ?? '--'} kg'),
+                                _infoRow(Iconsax.health, 'Groupe sanguin', _patientData!['blood_type'] ?? 'Non renseigné'),
                                 if (_patientData!['chronic_diseases'] != null && _patientData!['chronic_diseases'].toString().isNotEmpty)
-                                  _infoRow('💊', 'Maladies chroniques', _patientData!['chronic_diseases']),
+                                  _infoRow(Iconsax.health, 'Maladies chroniques', _patientData!['chronic_diseases']),
                                 if (_patientData!['allergies'] != null && _patientData!['allergies'].toString().isNotEmpty)
-                                  _infoRow('⚠️', 'Allergies', _patientData!['allergies']),
+                                  _infoRow(Iconsax.warning_2, 'Allergies', _patientData!['allergies']),
                                 if (_patientData!['current_medications'] != null && _patientData!['current_medications'].toString().isNotEmpty)
-                                  _infoRow('💉', 'Médicaments actuels', _patientData!['current_medications']),
+                                  _infoRow(Iconsax.health, 'Médicaments actuels', _patientData!['current_medications']),
                                 if (_patientData!['family_doctor_name'] != null && _patientData!['family_doctor_name'].toString().isNotEmpty)
-                                  _infoRow('👨‍⚕️', 'Médecin traitant', _patientData!['family_doctor_name']),
+                                  _infoRow(Iconsax.user, 'Médecin traitant', _patientData!['family_doctor_name']),
                               ]).animate().fadeIn(delay: 350.ms).slideY(begin: 0.08),
 
                               if (_patientData!['menstrual_cycle'] != null) ...[
                                 const SizedBox(height: 16),
-                                _buildSection('🔄', 'Cycle menstruel', [
-                                  _infoRow('📊', 'Statut', _menstrualStatusLabel(_patientData!['menstrual_cycle']['menstrual_status'])),
+                                _buildSection(Iconsax.calendar, 'Cycle menstruel', [
+                                  _infoRow(Iconsax.chart_2, 'Statut', _menstrualStatusLabel(_patientData!['menstrual_cycle']['menstrual_status'])),
                                   if (_patientData!['menstrual_cycle']['start_date'] != null)
-                                    _infoRow('📅', 'Dernier début de cycle', '${_patientData!['menstrual_cycle']['start_date']}'),
+                                    _infoRow(Iconsax.calendar, 'Dernier début de cycle', '${_patientData!['menstrual_cycle']['start_date']}'),
                                   if (_patientData!['menstrual_cycle']['end_date'] != null)
-                                    _infoRow('📅', 'Dernière fin de cycle', '${_patientData!['menstrual_cycle']['end_date']}'),
+                                    _infoRow(Iconsax.calendar, 'Dernière fin de cycle', '${_patientData!['menstrual_cycle']['end_date']}'),
                                   if (_patientData!['menstrual_cycle']['cycle_length'] != null)
-                                    _infoRow('⏱️', 'Durée du cycle', '${_patientData!['menstrual_cycle']['cycle_length']} jours'),
+                                    _infoRow(Iconsax.clock, 'Durée du cycle', '${_patientData!['menstrual_cycle']['cycle_length']} jours'),
                                 ]).animate().fadeIn(delay: 450.ms).slideY(begin: 0.08),
                               ],
                             ],
@@ -195,9 +196,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                             const SizedBox(height: 24),
                             Row(
                               children: [
-                                Expanded(child: _ShortcutButton(emoji: '💊', label: 'Médicaments', color: AppColors.accent, onTap: () => context.push('/medications'))),
+                                Expanded(child: _ShortcutButton(icon: Iconsax.health, label: 'Médicaments', color: AppColors.accent, onTap: () => context.push('/medications'))),
                                 const SizedBox(width: 12),
-                                Expanded(child: _ShortcutButton(emoji: '👨‍⚕️', label: 'Médecins', color: AppColors.info, onTap: () => context.push('/doctors'))),
+                                Expanded(child: _ShortcutButton(icon: Iconsax.hospital, label: 'Médecins', color: AppColors.info, onTap: () => context.push('/doctors'))),
                               ],
                             ).animate().fadeIn(delay: 550.ms).slideY(begin: 0.1),
                             const SizedBox(height: 32),
@@ -208,7 +209,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                 if (!context.mounted) return;
                                 context.go('/login');
                               },
-                              icon: const Icon(Icons.logout, color: AppColors.error),
+                              icon: const Icon(Iconsax.logout, color: AppColors.error, size: 24),
                               label: const Text('Déconnexion', style: TextStyle(color: AppColors.error)),
                               style: OutlinedButton.styleFrom(
                                 side: const BorderSide(color: AppColors.error),
@@ -264,7 +265,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
               children: [
                 const Row(
                   children: [
-                    Text('🤰', style: TextStyle(fontSize: 20)),
+                    Icon(Iconsax.heart5, size: 20, color: Colors.white),
                     SizedBox(width: 6),
                     Text('Grossesse en cours', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
                   ],
@@ -280,7 +281,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('⏳', style: TextStyle(fontSize: 12)),
+                        const Icon(Iconsax.clock, size: 12, color: Colors.white),
                         const SizedBox(width: 4),
                         Text('$daysLeft jours restants', style: TextStyle(color: Colors.white.withAlpha(230), fontSize: 13, fontWeight: FontWeight.w600)),
                       ],
@@ -362,8 +363,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: AppColors.primary.withAlpha(51)),
           ),
-          child: Text(
-            gender == 'F' ? '👩 Patiente' : '🧑 Patient',
+            child: Text(
+              gender == 'F' ? 'Patiente' : 'Patient',
             style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 13),
           ),
         ).animate().fadeIn(delay: 300.ms).scale(begin: const Offset(0.8, 0.8), duration: 400.ms, curve: Curves.elasticOut),
@@ -371,7 +372,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     );
   }
 
-  Widget _buildSection(String emoji, String title, List<Widget> children) {
+  Widget _buildSection(IconData icon, String title, List<Widget> children) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -386,7 +387,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         children: [
           Row(
             children: [
-              Text(emoji, style: const TextStyle(fontSize: 20)),
+              Icon(icon, size: 20, color: AppColors.primary),
               const SizedBox(width: 8),
               Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             ],
@@ -398,7 +399,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     );
   }
 
-  Widget _infoRow(String emoji, String label, String value) {
+  Widget _infoRow(IconData icon, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Container(
@@ -417,7 +418,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                 color: AppColors.primary.withAlpha(20),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Center(child: Text(emoji, style: const TextStyle(fontSize: 18))),
+              child: Center(child: Icon(icon, size: 18, color: AppColors.primary)),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -438,11 +439,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 }
 
 class _ShortcutButton extends StatefulWidget {
-  final String emoji;
+  final IconData icon;
   final String label;
   final Color color;
   final VoidCallback onTap;
-  const _ShortcutButton({required this.emoji, required this.label, required this.color, required this.onTap});
+  const _ShortcutButton({required this.icon, required this.label, required this.color, required this.onTap});
 
   @override
   State<_ShortcutButton> createState() => _ShortcutButtonState();
@@ -470,7 +471,7 @@ class _ShortcutButtonState extends State<_ShortcutButton> {
           ),
           child: Column(
             children: [
-              Text(widget.emoji, style: const TextStyle(fontSize: 28)),
+              Icon(widget.icon, size: 28, color: widget.color),
               const SizedBox(height: 6),
               Text(widget.label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: widget.color)),
             ],

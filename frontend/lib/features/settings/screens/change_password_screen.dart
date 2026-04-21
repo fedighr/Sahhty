@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
@@ -87,7 +88,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Row(children: [
-            Icon(Icons.check_circle, color: Colors.white, size: 20),
+            Icon(Iconsax.tick_circle, color: Colors.white, size: 20),
             SizedBox(width: 8),
             Text('Mot de passe changé avec succès !'),
           ]),
@@ -130,7 +131,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(color: Colors.white.withAlpha(200), borderRadius: BorderRadius.circular(12)),
-            child: const Icon(Icons.arrow_back_ios_new, size: 18),
+            child: const Icon(Iconsax.arrow_left, size: 18),
           ),
           onPressed: () => context.pop(),
         ),
@@ -149,7 +150,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(color: AppColors.warning.withAlpha(15), shape: BoxShape.circle),
-                      child: const Icon(Icons.lock_outline, color: AppColors.warning, size: 48),
+                      child: const Icon(Iconsax.lock, color: AppColors.warning, size: 48),
                     ),
                   ).animate().fadeIn().scale(begin: const Offset(0.8, 0.8), duration: 400.ms, curve: Curves.elasticOut),
                   const SizedBox(height: 24),
@@ -198,7 +199,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.info_outline, color: AppColors.info),
+              const Icon(Iconsax.info_circle, color: AppColors.info),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -223,7 +224,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                 : const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Icon(Icons.send, color: Colors.white), SizedBox(width: 8), Text('Envoyer le code', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))],
+                    children: [Icon(Iconsax.sms, color: Colors.white), SizedBox(width: 8), Text('Envoyer le code', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))],
                   ),
           ),
         ).animate().fadeIn(delay: 250.ms).slideY(begin: 0.1),
@@ -243,7 +244,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
           maxLength: 6,
           decoration: const InputDecoration(
             hintText: 'Saisissez le code reçu',
-            prefixIcon: Icon(Icons.pin, color: AppColors.warning),
+            prefixIcon: const Icon(Iconsax.lock, color: AppColors.warning, size: 20),
           ),
         ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.05),
         const SizedBox(height: 24),
@@ -276,9 +277,9 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
           obscureText: _obscureNew,
           decoration: InputDecoration(
             hintText: 'Minimum 8 caractères',
-            prefixIcon: const Icon(Icons.lock_outline, color: AppColors.warning),
+            prefixIcon: const Icon(Iconsax.lock, color: AppColors.warning, size: 20),
             suffixIcon: IconButton(
-              icon: Icon(_obscureNew ? Icons.visibility_off : Icons.visibility, color: AppColors.textLight),
+              icon: Icon(_obscureNew ? Iconsax.eye_slash : Iconsax.eye, color: AppColors.textLight),
               onPressed: () => setState(() => _obscureNew = !_obscureNew),
             ),
           ),
@@ -291,9 +292,9 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
           obscureText: _obscureConfirm,
           decoration: InputDecoration(
             hintText: 'Retapez le mot de passe',
-            prefixIcon: const Icon(Icons.lock_outline, color: AppColors.warning),
+            prefixIcon: const Icon(Iconsax.lock, color: AppColors.warning, size: 20),
             suffixIcon: IconButton(
-              icon: Icon(_obscureConfirm ? Icons.visibility_off : Icons.visibility, color: AppColors.textLight),
+              icon: Icon(_obscureConfirm ? Iconsax.eye_slash : Iconsax.eye, color: AppColors.textLight),
               onPressed: () => setState(() => _obscureConfirm = !_obscureConfirm),
             ),
           ),
@@ -312,7 +313,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                 : const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Icon(Icons.check, color: Colors.white), SizedBox(width: 8), Text('Changer le mot de passe', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))],
+                    children: [Icon(Iconsax.tick_circle, color: Colors.white), SizedBox(width: 8), Text('Changer le mot de passe', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))],
                   ),
           ),
         ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),

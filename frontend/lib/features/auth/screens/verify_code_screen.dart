@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
@@ -92,7 +93,7 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vérification'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(Iconsax.arrow_left, size: 24), onPressed: () => context.pop()),
       ),
       body: SafeArea(
         child: Padding(
@@ -106,7 +107,7 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                   color: AppColors.primary.withAlpha(25),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.mark_email_read_outlined, size: 40, color: AppColors.primary),
+                child: const Icon(Iconsax.sms, size: 40, color: AppColors.primary),
               ),
               const SizedBox(height: 24),
               Text('Vérifiez votre email', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),

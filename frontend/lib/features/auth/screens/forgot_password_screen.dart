@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
@@ -92,7 +93,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mot de passe oublié'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(Iconsax.arrow_left, size: 24), onPressed: () => context.pop()),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -102,7 +103,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             children: [
               const SizedBox(height: 20),
               Icon(
-                _step == 0 ? Icons.email_outlined : _step == 1 ? Icons.pin_outlined : Icons.lock_reset,
+                _step == 0 ? Iconsax.sms : _step == 1 ? Iconsax.lock : Iconsax.lock,
                 size: 60,
                 color: AppColors.primary,
               ),
@@ -116,7 +117,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 TextFormField(
                   controller: _emailCtrl,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.email_outlined, color: AppColors.primary)),
+                  decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Iconsax.sms, color: AppColors.primary, size: 20)),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -136,7 +137,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   controller: _codeCtrl,
                   keyboardType: TextInputType.number,
                   maxLength: 6,
-                  decoration: const InputDecoration(labelText: 'Code de vérification', prefixIcon: Icon(Icons.pin_outlined, color: AppColors.primary)),
+                  decoration: const InputDecoration(labelText: 'Code de vérification', prefixIcon: Icon(Iconsax.lock, color: AppColors.primary, size: 20)),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -155,9 +156,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   obscureText: _obscure,
                   decoration: InputDecoration(
                     labelText: 'Nouveau mot de passe',
-                    prefixIcon: const Icon(Icons.lock_outlined, color: AppColors.primary),
+                    prefixIcon: const Icon(Iconsax.lock, color: AppColors.primary, size: 20),
                     suffixIcon: IconButton(
-                      icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
+                      icon: Icon(_obscure ? Iconsax.eye_slash : Iconsax.eye),
                       onPressed: () => setState(() => _obscure = !_obscure),
                     ),
                   ),
@@ -168,7 +169,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'Confirmer',
-                    prefixIcon: Icon(Icons.lock_outlined, color: AppColors.primary),
+                    prefixIcon: Icon(Iconsax.lock, color: AppColors.primary, size: 20),
                   ),
                 ),
                 const SizedBox(height: 24),

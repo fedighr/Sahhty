@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
@@ -144,50 +145,50 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
           const FloatingParticles(particleCount: 20, maxOpacity: 0.22),
           _loading
               ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const CircularProgressIndicator(color: AppColors.primary),
-                      const SizedBox(height: 16),
-                      const Text('Chargement...', style: TextStyle(color: AppColors.textSecondary)),
-                    ],
-                  ).animate().fadeIn(),
-                )
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(color: AppColors.primary),
+                const SizedBox(height: 16),
+                const Text('Chargement...', style: TextStyle(color: AppColors.textSecondary)),
+              ],
+            ).animate().fadeIn(),
+          )
               : _error != null
-                  ? _buildErrorState()
-                  : _noPregnancy
-                      ? _buildNoPregnancy()
-                      : RefreshIndicator(
-                          onRefresh: _loadPregnancy,
-                          child: SingleChildScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                _buildWeekHero().animate().fadeIn(duration: 500.ms).slideY(begin: 0.15)
-                                    .then()
-                                    .animate(onPlay: (c) => c.repeat(reverse: true))
-                                    .moveY(begin: 0, end: -4, duration: 3500.ms, curve: Curves.easeInOut),
-                                const SizedBox(height: 20),
-                                _buildBabySizeCard().animate().fadeIn(delay: 100.ms).slideX(begin: 0.1),
-                                const SizedBox(height: 16),
-                                _buildTrimesterImageCard().animate().fadeIn(delay: 150.ms).scale(begin: const Offset(0.9, 0.9), duration: 500.ms, curve: Curves.easeOutBack),
-                                const SizedBox(height: 16),
-                                _buildProgressSection().animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
-                                const SizedBox(height: 16),
-                                _buildDateCards().animate().fadeIn(delay: 300.ms),
-                                const SizedBox(height: 16),
-                                _buildStatsRow().animate().fadeIn(delay: 350.ms).scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1), duration: 500.ms, curve: Curves.easeOutBack),
-                                const SizedBox(height: 16),
-                                _buildTrimesterInfo().animate().fadeIn(delay: 400.ms).slideX(begin: -0.05),
-                                const SizedBox(height: 16),
-                                if (_pregnancy?['test_date'] != null)
-                                  _buildTestResultCard().animate().fadeIn(delay: 450.ms),
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                        ),
+              ? _buildErrorState()
+              : _noPregnancy
+              ? _buildNoPregnancy()
+              : RefreshIndicator(
+            onRefresh: _loadPregnancy,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  _buildWeekHero().animate().fadeIn(duration: 500.ms).slideY(begin: 0.15)
+                      .then()
+                      .animate(onPlay: (c) => c.repeat(reverse: true))
+                      .moveY(begin: 0, end: -4, duration: 3500.ms, curve: Curves.easeInOut),
+                  const SizedBox(height: 20),
+                  _buildBabySizeCard().animate().fadeIn(delay: 100.ms).slideX(begin: 0.1),
+                  const SizedBox(height: 16),
+                  _buildTrimesterImageCard().animate().fadeIn(delay: 150.ms).scale(begin: const Offset(0.9, 0.9), duration: 500.ms, curve: Curves.easeOutBack),
+                  const SizedBox(height: 16),
+                  _buildProgressSection().animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
+                  const SizedBox(height: 16),
+                  _buildDateCards().animate().fadeIn(delay: 300.ms),
+                  const SizedBox(height: 16),
+                  _buildStatsRow().animate().fadeIn(delay: 350.ms).scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1), duration: 500.ms, curve: Curves.easeOutBack),
+                  const SizedBox(height: 16),
+                  _buildTrimesterInfo().animate().fadeIn(delay: 400.ms).slideX(begin: -0.05),
+                  const SizedBox(height: 16),
+                  if (_pregnancy?['test_date'] != null)
+                    _buildTestResultCard().animate().fadeIn(delay: 450.ms),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -196,13 +197,20 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
   Widget _buildErrorState() {
     return Center(
       child: Column(mainAxisSize: MainAxisSize.min, children: [
-        const Text('😢', style: TextStyle(fontSize: 64)),
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.error.withAlpha(20),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(Iconsax.close_circle, size: 64, color: AppColors.error),
+        ),
         const SizedBox(height: 12),
         Text(_error!, style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600)),
         const SizedBox(height: 12),
         ElevatedButton.icon(
           onPressed: _loadPregnancy,
-          icon: const Icon(Icons.refresh),
+          icon: const Icon(Iconsax.refresh_2, size: 18),
           label: const Text('Réessayer'),
         ),
       ]).animate().fadeIn(),
@@ -216,7 +224,14 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('🤰', style: TextStyle(fontSize: 80))
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withAlpha(20),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Iconsax.heart_add, size: 80, color: AppColors.primary),
+            )
                 .animate(onPlay: (c) => c.repeat(reverse: true))
                 .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 2000.ms),
             const SizedBox(height: 20),
@@ -250,7 +265,6 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
       ),
       child: Column(
         children: [
-          // Baby emoji with halo glow
           Stack(
             alignment: Alignment.center,
             children: [
@@ -258,9 +272,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
                 width: 80, height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [Colors.white.withAlpha(38), Colors.transparent],
-                  ),
+                  color: Colors.white.withAlpha(30),
                 ),
               )
                   .animate(onPlay: (c) => c.repeat(reverse: true))
@@ -283,7 +295,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('⏳', style: TextStyle(fontSize: 18)),
+                  const Icon(Iconsax.clock, color: Colors.white, size: 18),
                   const SizedBox(width: 8),
                   Text(
                     '${_daysUntilDue!} jours restants',
@@ -315,7 +327,9 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
               fit: BoxFit.cover,
               errorBuilder: (_, __, ___) => Container(
                 color: _trimesterColor.withAlpha(30),
-                child: Center(child: Text('🤰', style: TextStyle(fontSize: 64))),
+                child: Center(
+                  child: Text(_babyEmoji, style: const TextStyle(fontSize: 64)),
+                ),
               ),
             ),
             Container(
@@ -323,10 +337,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withAlpha(128),
-                  ],
+                  colors: [Colors.transparent, Colors.black.withAlpha(128)],
                 ),
               ),
             ),
@@ -461,14 +472,14 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
   Widget _buildDateCards() {
     return Row(
       children: [
-        Expanded(child: _dateCard('📅', 'Date début', _pregnancy?['start_date']?.toString() ?? '--', AppColors.accent)),
+        Expanded(child: _dateCard(Iconsax.calendar, 'Date début', _pregnancy?['start_date']?.toString() ?? '--', AppColors.accent)),
         const SizedBox(width: 12),
-        Expanded(child: _dateCard('🗓️', 'Date prévue', _pregnancy?['due_date']?.toString() ?? '--', AppColors.primary)),
+        Expanded(child: _dateCard(Iconsax.calendar_1, 'Date prévue', _pregnancy?['due_date']?.toString() ?? '--', AppColors.primary)),
       ],
     );
   }
 
-  Widget _dateCard(String emoji, String label, String value, Color color) {
+  Widget _dateCard(IconData icon, String label, String value, Color color) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -479,7 +490,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 24)),
+          Icon(icon, size: 24, color: color),
           const SizedBox(height: 8),
           Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
           const SizedBox(height: 4),
@@ -492,16 +503,16 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
   Widget _buildStatsRow() {
     return Row(
       children: [
-        Expanded(child: _statCard('$_weeks', 'semaines', '📆', AppColors.primary)),
+        Expanded(child: _statCard('$_weeks', 'semaines', Iconsax.calendar, AppColors.primary)),
         const SizedBox(width: 10),
-        Expanded(child: _statCard(_daysUntilDue != null ? '$_daysUntilDue' : '--', 'jours restants', '⏳', AppColors.warning)),
+        Expanded(child: _statCard(_daysUntilDue != null ? '$_daysUntilDue' : '--', 'jours restants', Iconsax.clock, AppColors.warning)),
         const SizedBox(width: 10),
-        Expanded(child: _statCard('${(_weeks / 40 * 100).toInt()}', '% complété', '✅', AppColors.success)),
+        Expanded(child: _statCard('${(_weeks / 40 * 100).toInt()}', '% complété', Iconsax.tick_circle, AppColors.success)),
       ],
     );
   }
 
-  Widget _statCard(String value, String label, String emoji, Color color) {
+  Widget _statCard(String value, String label, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -511,7 +522,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
       ),
       child: Column(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 20)),
+          Icon(icon, size: 20, color: color),
           const SizedBox(height: 6),
           Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color)),
           Text(label, textAlign: TextAlign.center, style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
@@ -537,7 +548,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
               color: _trimesterColor.withAlpha(30),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(Icons.info_outline, color: _trimesterColor, size: 24),
+            child: Icon(Iconsax.info_circle, color: _trimesterColor, size: 24),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -570,7 +581,14 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
       ),
       child: Row(
         children: [
-          const Text('🧪', style: TextStyle(fontSize: 28)),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.info.withAlpha(20),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Iconsax.health, size: 28, color: AppColors.info),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -579,13 +597,23 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
                 const Text('Test de grossesse', style: TextStyle(fontWeight: FontWeight.bold)),
                 Text('Date : $testDate', style: const TextStyle(fontSize: 13, color: AppColors.textSecondary)),
                 if (testResult != null)
-                  Text(
-                    'Résultat : ${testResult == true ? '✅ Positif' : '❌ Négatif'}',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: testResult == true ? AppColors.success : AppColors.error,
-                    ),
+                  Row(
+                    children: [
+                      Icon(
+                        testResult == true ? Iconsax.tick_circle : Iconsax.close_circle,
+                        size: 14,
+                        color: testResult == true ? AppColors.success : AppColors.error,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Résultat : ${testResult == true ? 'Positif' : 'Négatif'}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: testResult == true ? AppColors.success : AppColors.error,
+                        ),
+                      ),
+                    ],
                   ),
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
@@ -55,11 +56,11 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     _loadAlerts();
   }
 
-  String _emojiForLevel(String level) {
+  IconData _iconForLevel(String level) {
     switch (level) {
-      case 'CRITICAL': return '🚨';
-      case 'WARNING': return '⚠️';
-      default: return 'ℹ️';
+      case 'CRITICAL': return Iconsax.warning_2;
+      case 'WARNING': return Iconsax.warning_2;
+      default: return Iconsax.info_circle;
     }
   }
 
@@ -93,7 +94,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
               ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
               : _error != null
                   ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                      const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
                       const SizedBox(height: 8),
                       Text(_error!, style: const TextStyle(color: AppColors.error)),
                       TextButton(onPressed: _loadAlerts, child: const Text('Réessayer')),
@@ -101,7 +102,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                   : _alerts.isEmpty
                       ? Center(
                           child: Column(mainAxisSize: MainAxisSize.min, children: [
-                            const Text('🔔', style: TextStyle(fontSize: 64)),
+                            const Icon(Iconsax.notification, size: 64, color: AppColors.primary),
                             const SizedBox(height: 16),
                             const Text('Aucune alerte', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                             const SizedBox(height: 4),
@@ -164,7 +165,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                   color: color.withAlpha(25),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Center(child: Text(_emojiForLevel(level), style: const TextStyle(fontSize: 22))),
+                child: Center(child: Icon(_iconForLevel(level), size: 22, color: color)),
               ),
               const SizedBox(width: 12),
               Expanded(

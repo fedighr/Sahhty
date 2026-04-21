@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
@@ -117,7 +118,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                                     ),
                                   ],
                                 ),
-                                child: const Icon(Icons.favorite, size: 64, color: AppColors.primary),
+                                child: const Icon(Iconsax.heart5, size: 64, color: AppColors.primary),
                               ),
                             );
                           },
