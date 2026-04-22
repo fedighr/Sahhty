@@ -24,6 +24,7 @@ import 'package:sahhty/features/settings/screens/edit_menstrual_screen.dart';
 import 'package:sahhty/features/settings/screens/edit_pregnancy_screen.dart';
 import 'package:sahhty/features/settings/screens/change_password_screen.dart';
 import 'package:sahhty/features/smartwatch/screens/smartwatch_screen.dart';
+import 'package:sahhty/features/language/screens/language_selection_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -48,6 +49,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
+      GoRoute(
+        path: '/language',
+        builder: (context, state) => const LanguageSelectionScreen(),
+      ),
       GoRoute(
         path: '/splash',
         builder: (context, state) => const SplashScreen(),

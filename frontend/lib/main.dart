@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
 import 'core/routes/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/providers/locale_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,12 +56,13 @@ class SahhtyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
+    final locale = ref.watch(localeProvider);
     return MaterialApp.router(
       title: 'Sahhty',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routerConfig: router,
-      locale: const Locale('fr'),
+      locale: locale,
       supportedLocales: const [Locale('fr'), Locale('ar'), Locale('en')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -74,7 +76,12 @@ class SahhtyApp extends ConsumerWidget {
           data: MediaQuery.of(context).copyWith(
             textScaler: TextScaler.linear(scale),
           ),
-          child: child!,
+          child: Directionality(
+            textDirection: locale.languageCode == 'ar'
+                ? TextDirection.rtl
+                : TextDirection.ltr,
+            child: child!,
+          ),
         );
       },
     );

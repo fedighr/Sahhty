@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
+import 'package:sahhty/core/providers/locale_provider.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
@@ -223,6 +224,81 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
   }
 
+  // ── Language ─────────────────────────────────────────────────────
+  static const _languages = [
+    {'code': 'fr', 'flag': '🇫🇷', 'name': 'Français'},
+    {'code': 'ar', 'flag': '🇸🇦', 'name': 'العربية'},
+    {'code': 'en', 'flag': '🇬🇧', 'name': 'English'},
+  ];
+
+  String _currentLanguageName(String code) {
+    return _languages.firstWhere(
+      (l) => l['code'] == code,
+      orElse: () => {'name': 'Français'},
+    )['name']!;
+  }
+
+  void _showLanguageSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Consumer(
+          builder: (context, ref, _) {
+            final current = ref.watch(localeProvider).languageCode;
+            return Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40, height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withAlpha(80),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: const [
+                      Icon(Iconsax.global, color: AppColors.primary, size: 22),
+                      SizedBox(width: 10),
+                      Text('Choisir la langue', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  ..._languages.map((lang) {
+                    final isSelected = current == lang['code'];
+                    return ListTile(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      tileColor: isSelected ? AppColors.primary.withAlpha(15) : null,
+                      leading: Text(lang['flag']!, style: const TextStyle(fontSize: 28)),
+                      title: Text(lang['name']!, style: TextStyle(
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                      )),
+                      trailing: isSelected
+                          ? const Icon(Iconsax.tick_circle, color: AppColors.primary)
+                          : null,
+                      onTap: () async {
+                        await ref.read(localeProvider.notifier).setLocale(Locale(lang['code']!));
+                        if (ctx.mounted) Navigator.pop(ctx);
+                      },
+                    );
+                  }),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   void _showSnackBar(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -402,6 +478,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     isDanger: true,
                     onTap: _deleteAccount,
                   ).animate().fadeIn(delay: 800.ms).slideX(begin: 0.05),
+                  const SizedBox(height: 24),
+
+                  // ── Section: Langue ──
+                  _buildSectionTitle(Iconsax.global, 'Langue & Région')
+                      .animate().fadeIn(delay: 850.ms).slideX(begin: -0.05),
+                  const SizedBox(height: 12),
+                  Builder(builder: (context) {
+                    final currentCode = ref.watch(localeProvider).languageCode;
+                    return _SettingsTile(
+                      icon: Iconsax.global,
+                      iconColor: AppColors.info,
+                      title: 'Langue de l\'application',
+                      subtitle: _currentLanguageName(currentCode),
+                      onTap: _showLanguageSheet,
+                    ).animate().fadeIn(delay: 900.ms).slideX(begin: 0.05);
+                  }),
                   const SizedBox(height: 32),
 
                   // ── App info ──

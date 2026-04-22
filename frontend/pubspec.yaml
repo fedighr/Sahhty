@@ -41,6 +41,9 @@ dependencies:
   # Icons
   iconsax: ^0.0.8
 
+  # Shared preferences
+  shared_preferences: ^2.3.2
+
   # Health Connect (smartwatch)
   health: ^13.3.1
 
