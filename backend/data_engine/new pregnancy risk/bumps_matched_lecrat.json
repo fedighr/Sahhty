@@ -1,0 +1,42 @@
+[
+  {
+    "dci": "ACIDE FOLIQUE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/folic-acid/",
+    "status": "exact"
+  },
+  {
+    "dci": "ATROPINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/atropine/",
+    "status": "exact"
+  },
+  {
+    "dci": "FENTANYL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/fentanyl/",
+    "status": "exact"
+  },
+  {
+    "dci": "FLUCLOXACILLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/flucloxacillin/",
+    "status": "fuzzy 96.55172413793103%"
+  },
+  {
+    "dci": "MEBEVERINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/mebeverine/",
+    "status": "exact"
+  },
+  {
+    "dci": "TAMOXIFENE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tamoxifen/",
+    "status": "fuzzy 94.73684210526316%"
+  },
+  {
+    "dci": "TETRACYCLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tetracycline/",
+    "status": "exact"
+  },
+  {
+    "dci": "VITAMINE D",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/vitamin-d/",
+    "status": "exact"
+  }
+]

@@ -194,7 +194,9 @@ class MeasurementService:
 
 
     @staticmethod
-    def generate_risk_note(glucose, bp_sys, bp_dia, heart_rate, body_temp, risk_level, is_fasting=False):
+    def generate_risk_note(glucose, bp_sys, bp_dia, heart_rate, body_temp, risk_level):
+        print("generate_risk_note called with:",risk_level)
+        print(f"DEBUG generate_risk_note: glucose={glucose!r}, bp_sys={bp_sys!r}, bp_dia={bp_dia!r}, hr={heart_rate!r}, temp={body_temp!r}, risk={risk_level!r}")
         notes = []
         combinations = []
 
@@ -206,120 +208,126 @@ class MeasurementService:
                 combinations.append("Tachycardie et hypertension détectées simultanément")
 
         if body_temp is not None and heart_rate is not None:
-            if body_temp >= 37.5 and heart_rate > 100:
+            if body_temp >= 38.0 and heart_rate > 100:
                 combinations.append("Fièvre et tachycardie détectées simultanément")
 
         if glucose is not None and bp_sys is not None and bp_dia is not None:
-            if glucose > 126 and (bp_sys >= 140 or bp_dia >= 90):
+            if glucose > 1.40 and (bp_sys >= 140 or bp_dia >= 90):
                 combinations.append("Glycémie élevée et hypertension détectées simultanément")
 
         if glucose is not None and body_temp is not None:
-            if glucose > 126 and body_temp >= 37.5:
+            if glucose > 1.40 and body_temp >= 38.0:
                 combinations.append("Glycémie élevée et fièvre détectées simultanément")
 
         if risk_level == 'HIGH':
 
             if glucose is not None:
-                if glucose >= 200:
-                    add(f"Glycémie très élevée ({glucose} mg/dL)", 3)
-                elif glucose > 126:
-                    add(f"Glycémie élevée ({glucose} mg/dL)", 2)
-                elif glucose < 54:
-                    add(f"Glycémie très basse ({glucose} mg/dL)", 3)
-                elif glucose < 70:
-                    add(f"Glycémie basse ({glucose} mg/dL)", 2)
+                if glucose >= 3.42:
+                    add(f"Glycémie dangereusement élevée ({glucose} g/L)", 3)
+                elif glucose > 1.40:
+                    add(f"Glycémie très élevée ({glucose} g/L)", 2)
+                elif glucose < 0.59:
+                    add(f"Glycémie dangereusement basse ({glucose} g/L)", 3)
+                elif glucose < 0.70:
+                    add(f"Glycémie basse ({glucose} g/L)", 2)
 
             if bp_sys is not None and bp_dia is not None:
                 if bp_sys >= 160 or bp_dia >= 110:
-                    add(f"Tension artérielle très élevée ({bp_sys}/{bp_dia} mmHg)", 3)
+                    add(f"Tension artérielle dangereusement élevée ({bp_sys}/{bp_dia} mmHg)", 3)
                 elif bp_sys >= 140 or bp_dia >= 90:
-                    add(f"Tension artérielle élevée ({bp_sys}/{bp_dia} mmHg)", 2)
+                    add(f"Tension artérielle très élevée ({bp_sys}/{bp_dia} mmHg)", 2)
+                elif bp_sys < 70 or bp_dia < 49:
+                    add(f"Tension artérielle dangereusement basse ({bp_sys}/{bp_dia} mmHg)", 3)
                 elif bp_sys < 80 or bp_dia < 50:
-                    add(f"Tension artérielle très basse ({bp_sys}/{bp_dia} mmHg)", 3)
-                elif bp_sys < 90 or bp_dia < 60:
                     add(f"Tension artérielle basse ({bp_sys}/{bp_dia} mmHg)", 2)
 
             if heart_rate is not None:
-                if heart_rate > 130:
-                    add(f"Fréquence cardiaque très élevée ({heart_rate} bpm)", 3)
+                if heart_rate >= 120:
+                    add(f"Fréquence cardiaque dangereusement élevée ({heart_rate} bpm)", 3)
                 elif heart_rate > 100:
                     add(f"Fréquence cardiaque élevée ({heart_rate} bpm)", 2)
-                elif heart_rate < 50:
-                    add(f"Fréquence cardiaque très basse ({heart_rate} bpm)", 3)
+                elif heart_rate < 40:
+                    add(f"Fréquence cardiaque dangereusement basse ({heart_rate} bpm)", 3)
                 elif heart_rate < 60:
                     add(f"Fréquence cardiaque basse ({heart_rate} bpm)", 2)
 
             if body_temp is not None:
-                if body_temp >= 40:
-                    add(f"Température corporelle très élevée ({body_temp}°C)", 3)
-                elif body_temp >= 38:
+                if body_temp >= 40.0:
+                    add(f"Température corporelle dangereusement élevée ({body_temp}°C)", 3)
+                elif body_temp >= 38.0:
                     add(f"Température corporelle élevée ({body_temp}°C)", 2)
-                elif body_temp < 35:
-                    add(f"Température corporelle très basse ({body_temp}°C)", 3)
-                elif body_temp < 36:
+                elif body_temp < 36.0:
+                    add(f"Température corporelle dangereusement basse ({body_temp}°C)", 3)
+                elif body_temp < 36.5:
                     add(f"Température corporelle basse ({body_temp}°C)", 2)
 
         elif risk_level == 'MEDIUM':
 
             if glucose is not None:
-                if is_fasting:
-                    if 92 <= glucose <= 126:
-                        add(f"Glycémie à jeun légèrement élevée ({glucose} mg/dL)", 2)
-                    elif 70 <= glucose < 92:
-                        add(f"Glycémie à jeun dans la limite basse ({glucose} mg/dL)", 1)
-                else:
-                    if 120 <= glucose <= 199:
-                        add(f"Glycémie postprandiale élevée ({glucose} mg/dL)", 2)
+                if 0.92 <= glucose <= 1.40:
+                    add(f"Glycémie légèrement élevée ({glucose} g/L) — seuil diabète gestationnel", 2)
+                elif 0.59 <= glucose < 0.70:
+                    add(f"Glycémie légèrement basse ({glucose} g/L)", 1)
 
             if bp_sys is not None and bp_dia is not None:
-                if 130 <= bp_sys <= 139 or 80 <= bp_dia <= 89:
+                if bp_sys >= 140 or bp_dia >= 90:
+                    add(f"Tension artérielle élevée ({bp_sys}/{bp_dia} mmHg)", 2)
+                elif 130 <= bp_sys <= 139 or 80 <= bp_dia <= 89:
                     add(f"Tension artérielle légèrement élevée ({bp_sys}/{bp_dia} mmHg)", 2)
-                elif 120 <= bp_sys <= 129 and bp_dia < 80:
-                    add(f"Tension artérielle dans la limite haute ({bp_sys}/{bp_dia} mmHg)", 1)
+                elif bp_sys < 80 or bp_dia < 50:
+                    add(f"Tension artérielle légèrement basse ({bp_sys}/{bp_dia} mmHg)", 1)
 
             if heart_rate is not None:
-                if 101 <= heart_rate <= 130:
+                if 100 < heart_rate < 120:
                     add(f"Fréquence cardiaque légèrement élevée ({heart_rate} bpm)", 1)
-                elif 50 <= heart_rate < 60:
+                elif 40 <= heart_rate < 60:
                     add(f"Fréquence cardiaque légèrement basse ({heart_rate} bpm)", 1)
 
             if body_temp is not None:
-                if 37.5 <= body_temp < 38:
+                if 37.5 <= body_temp < 38.0:
                     add(f"Température corporelle légèrement élevée ({body_temp}°C)", 1)
-                elif 38 <= body_temp < 40:
+                elif 38.0 <= body_temp < 40.0:
                     add(f"Température corporelle élevée ({body_temp}°C)", 2)
-                elif 35 <= body_temp < 36:
+                elif 36.0 <= body_temp < 36.5:
                     add(f"Température corporelle légèrement basse ({body_temp}°C)", 1)
 
-        elif risk_level == 'INFO':
+        elif risk_level in ('LOW', 'INFO'):
 
             if glucose is not None:
-                if is_fasting and 70 <= glucose <= 92:
-                    add(f"Glycémie à jeun normale ({glucose} mg/dL)")
-                elif not is_fasting and 70 <= glucose < 120:
-                    add(f"Glycémie normale ({glucose} mg/dL)")
+                if glucose > 1.40:
+                    add(f"Glycémie légèrement élevée ({glucose} g/L)", 1)
+                elif glucose < 0.70:
+                    add(f"Glycémie légèrement basse ({glucose} g/L)", 1)
 
             if bp_sys is not None and bp_dia is not None:
-                if bp_sys < 120 and bp_dia < 80:
-                    add(f"Tension artérielle normale ({bp_sys}/{bp_dia} mmHg)")
-                elif 120 <= bp_sys <= 129 and bp_dia < 80:
-                    add(f"Tension artérielle dans la limite normale ({bp_sys}/{bp_dia} mmHg)")
+                if bp_sys < 90 or bp_dia < 60:
+                    add(f"Tension artérielle légèrement basse ({bp_sys}/{bp_dia} mmHg)", 1)
+                elif bp_sys >= 130 or bp_dia >= 80:
+                    add(f"Tension artérielle légèrement élevée ({bp_sys}/{bp_dia} mmHg)", 1)
 
             if heart_rate is not None:
-                if 60 <= heart_rate <= 100:
-                    add(f"Fréquence cardiaque normale ({heart_rate} bpm)")
+                if heart_rate > 100:
+                    add(f"Fréquence cardiaque légèrement élevée ({heart_rate} bpm)", 1)
+                elif heart_rate < 60:
+                    add(f"Fréquence cardiaque légèrement basse ({heart_rate} bpm)", 1)
 
             if body_temp is not None:
-                if 36 <= body_temp <= 37.5:
-                    add(f"Température corporelle normale ({body_temp}°C)")
+                if body_temp >= 37.5:
+                    add(f"Température corporelle légèrement élevée ({body_temp}°C)", 1)
+                elif body_temp < 36.5:
+                    add(f"Température corporelle légèrement basse ({body_temp}°C)", 1)
 
         notes.sort(key=lambda x: x[0], reverse=True)
         final_notes = [n for _, n in notes]
         all_notes = combinations + final_notes
 
         if not all_notes:
-            return "Aucun résultat significatif détecté"
+            if risk_level == 'HIGH':
+                return "Vos indicateurs de santé nécessitent une prise en charge médicale urgente"
+            elif risk_level == 'MEDIUM':
+                return "Certains indicateurs de santé nécessitent une surveillance. Consultez votre médecin prochainement"
+            else:
+                return "Tous vos indicateurs de santé sont dans les limites normales"
 
         return " | ".join(all_notes)
-
 

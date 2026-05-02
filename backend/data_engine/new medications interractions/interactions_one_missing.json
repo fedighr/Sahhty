@@ -1,0 +1,2193 @@
+[
+  {
+    "dci_a": "ABIRATERONE",
+    "dci_b": "METOPROLOL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Chez l'insuffisant cardiaque, risque d'augmentation des effets indésirables du métoprolol, par diminution de son métabolisme Surveillance clinique. Si besoin, adaptation de la posologie du hépatique par l'abiratérone. métoprolol pendant le traitement par l'abiratérone.",
+    "missing_dci": "METOPROLOL"
+  },
+  {
+    "dci_a": "ABIRATERONE",
+    "dci_b": "PROPAFENONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'augmentation des effets indésirables de la propafénone, par diminution de son métabolisme hépatique par l'abiratérone. Surveillance clinique. Si besoin, adaptation de la posologie de la propafénone pendant le traitement par l'abiratérone.",
+    "missing_dci": "PROPAFENONE"
+  },
+  {
+    "dci_a": "ABIRATERONE",
+    "dci_b": "RIFAMPICINE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution notable des concentrations plasmatiques de l’abiratérone, avec risque de moindre efficacité.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "ACIDE ACETYLSALICYLIQUE",
+    "dci_b": "DEFERASIROX",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Majoration du risque ulcérogène et hémorragique digestif. A prendre en compte : - Pour des doses anti-inflammatoires d'acide acétylsalicylique ( 1g par prise et/ou 3g par jour) - Pour des doses antalgiques ou antipyrétiques d'acide acétylsalicylique ( 500 mg par prise et/ou <3g par jour) et ( 500 mg par prise et/ou <3g par jour)",
+    "missing_dci": "ACIDE ACETYLSALICYLIQUE"
+  },
+  {
+    "dci_a": "ACIDE FOLINIQUE",
+    "dci_b": "FLUOROURACILE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Potentialisation des effets, à la fois cytostatiques et indésirables, du fluoro-uracile.",
+    "missing_dci": "ACIDE FOLINIQUE"
+  },
+  {
+    "dci_a": "ACIDE URSODESOXYCHOLIQUE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de variation des concentrations sanguines de ciclosporine.",
+    "missing_dci": "ACIDE URSODESOXYCHOLIQUE"
+  },
+  {
+    "dci_a": "ADRÉNALINE",
+    "dci_b": "ANESTHÉSIQUES VOLATILS HALOGÉNÉS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Troubles du rythme ventriculaire graves par augmentation de l'excitabilité cardiaque. Limiter l'apport, par exemple : moins de 0,1 mg d'adrénaline en 10 minutes ou 0,3 mg en 1 heure chez l'adulte.",
+    "missing_dci": "ANESTHÉSIQUES VOLATILS HALOGÉNÉS"
+  },
+  {
+    "dci_a": "ADRÉNALINE",
+    "dci_b": "IMAO IRRÉVERSIBLES",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Troubles du rythme ventriculaire graves par augmentation de l'excitabilité cardiaque. Limiter l'apport, par exemple : moins de 0,1 mg d'adrénaline en 10 minutes ou 0,3 mg en 1 heure chez l'adulte.",
+    "missing_dci": "IMAO IRRÉVERSIBLES"
+  },
+  {
+    "dci_a": "AFATINIB",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatique d’afatinib par augmentation de son absorption par la ciclosporine. Il est recommandé d’administrer la ciclosporine le plus à distance possible de l’afatinib, en respectant de préférence un intervalle de 6 heures ou de 12 heures par rapport à la prise d’afatinib.",
+    "missing_dci": "AFATINIB"
+  },
+  {
+    "dci_a": "ALFENTANIL",
+    "dci_b": "CIMETIDINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg/j : augmentation de l'effet dépresseur respiratoire de Adapter la posologie de l'alfentanil en cas de traitement par la l'analgésique opiacé par diminution de son métabolisme hépatique. cimétidine.",
+    "missing_dci": "CIMETIDINE"
+  },
+  {
+    "dci_a": "ALFENTANIL",
+    "dci_b": "DILTIAZEM",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de l'effet dépresseur respiratoire de l'analgésique opiacé par diminution de son métabolisme hépatique. Adapter la posologie de l'alfentanil en cas de traitement par le diltiazem.",
+    "missing_dci": "DILTIAZEM"
+  },
+  {
+    "dci_a": "ALFENTANIL",
+    "dci_b": "ERYTHROMYCINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de l'effet dépresseur respiratoire de l'analgésique opiacé par diminution de son métabolisme hépatique. Adapter la posologie de l'alfentanil en cas de traitement par l'érythromycine.",
+    "missing_dci": "ERYTHROMYCINE"
+  },
+  {
+    "dci_a": "ALFENTANIL",
+    "dci_b": "FLUCONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de l'effet dépresseur respiratoire de l'analgésique opiacé par diminution de son métabolisme hépatique. Adapter la posologie de l'alfentanil en cas de traitement par le fluconazole.",
+    "missing_dci": "FLUCONAZOLE"
+  },
+  {
+    "dci_a": "AMBRISENTAN",
+    "dci_b": "CICLOSPORINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Doublement des concentrations d’ambrisentan, avec majoration de l’effet vasodilatateur (céphalées).",
+    "missing_dci": "AMBRISENTAN"
+  },
+  {
+    "dci_a": "AMINOSIDES",
+    "dci_b": "CICLOSPORINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation de la créatininémie plus importante que sous ciclosporine seule, avec majoration du risque néphrotoxique.",
+    "missing_dci": "AMINOSIDES"
+  },
+  {
+    "dci_a": "AMINOSIDES",
+    "dci_b": "TACROLIMUS",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation de la créatininémie plus importante que sous tacrolimus seul (synergie des effets néphrotoxiques des deux substances).",
+    "missing_dci": "AMINOSIDES"
+  },
+  {
+    "dci_a": "AMIODARONE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation des concentrations sanguines de ciclosporine, par diminution de son métabolisme hépatique, avec risque d'effets Dosage des concentrations sanguines de ciclosporine, contrôle de la néphrotoxiques. fonction rénale et adaptation de la posologie de la ciclosporine pendant le traitement par l'amiodarone.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "AMIODARONE",
+    "dci_b": "DOCETAXEL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de majoration des effets indésirables du docétaxel par diminution de son métabolisme hépatique par l’amiodarone Surveillance clinique et adaptation éventuelle de la posologie du docétaxel.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "AMPHOTERICINE B",
+    "dci_b": "CICLOSPORINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Avec l'amphotéricine B administrée par voie IV : augmentation de la créatininémie plus importante que sous ciclosporine seule (synergie des effets néphrotoxiques des deux substances).",
+    "missing_dci": "AMPHOTERICINE B"
+  },
+  {
+    "dci_a": "AMPHOTERICINE B",
+    "dci_b": "TACROLIMUS",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Avec l'amphotéricine B administrée par voie IV : augmentation de la créatininémie plus importante que sous tacrolimus seul (synergie des effets néphrotoxiques des deux substances).",
+    "missing_dci": "AMPHOTERICINE B"
+  },
+  {
+    "dci_a": "AMPHOTERICINE B",
+    "dci_b": "ZIDOVUDINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec l'amphotéricine B administrée par voie IV : augmentation de la toxicité hématologique (addition d'effets de toxicité médullaire). Contrôle plus fréquent de l'hémogramme.",
+    "missing_dci": "AMPHOTERICINE B"
+  },
+  {
+    "dci_a": "ANAKINRA",
+    "dci_b": "ETANERCEPT",
+    "severity": "DECONSEILLEE",
+    "description": "Risque accru d'infections graves et de neutropénies.",
+    "missing_dci": "ANAKINRA"
+  },
+  {
+    "dci_a": "ANESTHÉSIQUES VOLATILS HALOGÉNÉS",
+    "dci_b": "ADRÉNALINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Troubles du rythme ventriculaire graves par augmentation de l'excitabilité cardiaque. Limiter l'apport, par exemple : moins de 0,1 mg d'adrénaline en 10 minutes ou 0,3 mg en 1 heure chez l'adulte.",
+    "missing_dci": "ANESTHÉSIQUES VOLATILS HALOGÉNÉS"
+  },
+  {
+    "dci_a": "ANTIAGRÉGANTS PLAQUETTAIRES",
+    "dci_b": "IBRUTINIB",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation du risque hémorragique. Surveillance clinique.",
+    "missing_dci": "ANTIAGRÉGANTS PLAQUETTAIRES"
+  },
+  {
+    "dci_a": "ANTICHOLINESTÉRASIQUES",
+    "dci_b": "SUXAMETHONIUM",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque d'allongement du bloc moteur, majoré en cas de déficit partiel en pseudocholinestérase.",
+    "missing_dci": "ANTICHOLINESTÉRASIQUES"
+  },
+  {
+    "dci_a": "ANTI-INFLAMMATOIRES NON STÉROÏDIENS",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’addition des effets néphrotoxiques, notamment chez le sujet âgé. Surveiller la fonction rénale en début de traitement par l’AINS.",
+    "missing_dci": "ANTI-INFLAMMATOIRES NON STÉROÏDIENS"
+  },
+  {
+    "dci_a": "ANTI-INFLAMMATOIRES NON STÉROÏDIENS",
+    "dci_b": "DEFERASIROX",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Majoration du risque ulcérogène et hémorragique digestif.",
+    "missing_dci": "ANTI-INFLAMMATOIRES NON STÉROÏDIENS"
+  },
+  {
+    "dci_a": "ANTIPURINES",
+    "dci_b": "RIBAVIRINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque majoré d'effets indésirables graves, par inhibition du métabolisme de l'immunomodulateur par la ribavirine.",
+    "missing_dci": "ANTIPURINES"
+  },
+  {
+    "dci_a": "ANTISEPTIQUES MERCURIELS",
+    "dci_b": "POVIDONE IODÉE",
+    "severity": "DECONSEILLEE",
+    "description": "Erythèmes, phlyctènes, voire nécrose cutanéo-muqueuse (formation d'un complexe caustique en cas d'utilisation concomitante d'antiseptiques iodés et mercuriels). L'interaction dépend de la stabilité de l'organo-mercuriel au niveau cutané et de la sensibilité individuelle.",
+    "missing_dci": "ANTISEPTIQUES MERCURIELS"
+  },
+  {
+    "dci_a": "APALUTAMIDE",
+    "dci_b": "DOCETAXEL",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution très importante des concentrations du docétaxel, et perte d‘efficacité, par augmentation de son métabolisme hépatique par l’apalutamide.",
+    "missing_dci": "APALUTAMIDE"
+  },
+  {
+    "dci_a": "APIXABAN",
+    "dci_b": "FLUCONAZOLE",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation des concentrations plasmatiques de l'apixaban par le fluconazole, avec majoration du risque de saignement.",
+    "missing_dci": "FLUCONAZOLE"
+  },
+  {
+    "dci_a": "APIXABAN",
+    "dci_b": "RIFAMPICINE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution des concentrations plasmatiques de l’apixaban par la rifampicine, avec risque de diminution de l’effet thérapeutique.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "APOMORPHINE",
+    "dci_b": "SÉTRONS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Des hypotensions sévères et des pertes de connaissance ont été rapportées lors de l’association d’un sétron avec l’apomorphine.",
+    "missing_dci": "SÉTRONS"
+  },
+  {
+    "dci_a": "APREPITANT",
+    "dci_b": "ANTIVITAMINES K",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de diminution de l’effet de l’antivitamine K par augmentation de son métabolisme hépatique par l’aprépitant.",
+    "missing_dci": "ANTIVITAMINES K"
+  },
+  {
+    "dci_a": "APREPITANT",
+    "dci_b": "CYPROTERONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de diminution des concentrations de la cyprotérone avec risque de moindre efficacité contraceptive. Dans son utilisation comme contraceptif hormonal : Utiliser une méthode de contraception fiable, additionnelle ou alternative, pendant la durée de l'association.",
+    "missing_dci": "CYPROTERONE"
+  },
+  {
+    "dci_a": "APREPITANT",
+    "dci_b": "ESTROPROGESTATIFS CONTRACEPTIFS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution de l’efficacité contraceptive par augmentation du métabolisme hépatique du contraceptif hormonal par l'aprépitant. Utiliser une méthode additionnelle de type mécanique (préservatif) pendant la durée de l’association, et un cycle suivant l’arrêt de l’aprépitant.",
+    "missing_dci": "ESTROPROGESTATIFS CONTRACEPTIFS"
+  },
+  {
+    "dci_a": "APREPITANT",
+    "dci_b": "PIMOZIDE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes.",
+    "missing_dci": "PIMOZIDE"
+  },
+  {
+    "dci_a": "APREPITANT",
+    "dci_b": "PROGESTATIFS CONTRACEPTIFS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "(Sauf stérilet), diminution des concentrations du progestatif, avec risque de moindre efficacité contraceptive. Utiliser de préférence une autre méthode contraceptive, en particulier de type mécanique, pendant la durée de l'association et un cycle suivant.",
+    "missing_dci": "PROGESTATIFS CONTRACEPTIFS"
+  },
+  {
+    "dci_a": "APREPITANT",
+    "dci_b": "RIFAMPICINE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution très importante des concentrations d'aprépitant.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "ATAZANAVIR",
+    "dci_b": "BUPRENORPHINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de majoration ou de diminution des effets de la buprénorphine, à la fois par inhibition et accélération de son métabolisme par l’inhibiteur de protéases.",
+    "missing_dci": "ATAZANAVIR"
+  },
+  {
+    "dci_a": "ATORVASTATINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse (diminution du métabolisme de Ne pas dépasser la posologie de 10mg/jour d'atorvastatine. Si l'objectif l'hypocholestérolémiant). thérapeutique n'est pas atteint à cette posologie, utiliser une autre statine non concernée par ce type d'interaction.",
+    "missing_dci": "ATORVASTATINE"
+  },
+  {
+    "dci_a": "ATORVASTATINE",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse (diminution du métabolisme hépatique de l'atorvastatine).",
+    "missing_dci": "ATORVASTATINE"
+  },
+  {
+    "dci_a": "AZITHROMYCINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'augmentation des concentrations sanguines de ciclosporine et de la créatininémie. Dosage des concentrations sanguines de la ciclosporine, contrôle de la fonction rénale et adaptation de la posologie pendant l'association et après l'arrêt du macrolide.",
+    "missing_dci": "AZITHROMYCINE"
+  },
+  {
+    "dci_a": "BENZODIAZÉPINES ET APPARENTÉS",
+    "dci_b": "BUPRENORPHINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Avec la buprénorphine utilisée en traitement de substitution : risque majoré de dépression respiratoire, pouvant être fatale. Evaluer attentivement le rapport bénéfice/risque de cette association. Informer le patient de la nécessité de respecter les doses prescrites.",
+    "missing_dci": "BENZODIAZÉPINES ET APPARENTÉS"
+  },
+  {
+    "dci_a": "BOSENTAN",
+    "dci_b": "CICLOSPORINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Diminution importante des concentrations sanguines de la ciclosporine et augmentation des concentrations plasmatiques de bosentan.",
+    "missing_dci": "BOSENTAN"
+  },
+  {
+    "dci_a": "BRADYCARDISANTS",
+    "dci_b": "FINGOLIMOD",
+    "severity": "DECONSEILLEE",
+    "description": "Potentialisation des effets bradycardisants pouvant avoir des conséquences fatales. Les bêta-bloquants sont d’autant plus à Surveillance clinique et ECG continu pendant les 6 heures suivant la risque qu’ils empêchent les mécanismes de compensation première dose voire 2 heures de plus, jusqu'au lendemain si nécessaire. adrénergique.",
+    "missing_dci": "BRADYCARDISANTS"
+  },
+  {
+    "dci_a": "BUPRENORPHINE",
+    "dci_b": "ATAZANAVIR",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de majoration ou de diminution des effets de la buprénorphine, à la fois par inhibition et accélération de son métabolisme par l’inhibiteur de protéases.",
+    "missing_dci": "ATAZANAVIR"
+  },
+  {
+    "dci_a": "BUPRENORPHINE",
+    "dci_b": "BENZODIAZÉPINES ET APPARENTÉS",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Avec la buprénorphine utilisée en traitement de substitution : risque majoré de dépression respiratoire, pouvant être fatale. Evaluer attentivement le rapport bénéfice/risque de cette association. Informer le patient de la nécessité de respecter les doses prescrites.",
+    "missing_dci": "BENZODIAZÉPINES ET APPARENTÉS"
+  },
+  {
+    "dci_a": "BUPRENORPHINE",
+    "dci_b": "KETOCONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations de buprénorphine par diminution de son métabolisme hépatique, avec risque de majoration de ses Surveillance clinique et adaptation de la posologie de la buprénorphine effets indésirables. pendant le traitement par l'inhibiteur et, le cas échéant, après son arrêt.",
+    "missing_dci": "KETOCONAZOLE"
+  },
+  {
+    "dci_a": "BUPROPION",
+    "dci_b": "VÉMURAFÉNIB",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de diminution des concentrations du bupropion, avec augmentation de son métabolite actif et toxicité majorée.",
+    "missing_dci": "BUPROPION"
+  },
+  {
+    "dci_a": "BUSULFAN",
+    "dci_b": "METRONIDAZOLE",
+    "severity": "DECONSEILLEE",
+    "description": "Avec le busulfan à fortes doses : doublement des concentrations de busulfan par le métronidazole.",
+    "missing_dci": "METRONIDAZOLE"
+  },
+  {
+    "dci_a": "CARMUSTINE",
+    "dci_b": "CIMETIDINE",
+    "severity": "DECONSEILLEE",
+    "description": "Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg/j : toxicité médullaire accrue (inhibition du métabolisme de la carmustine).",
+    "missing_dci": "CIMETIDINE"
+  },
+  {
+    "dci_a": "CEFTRIAXONE",
+    "dci_b": "ANTIVITAMINES K",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de l'effet de l'antivitamine K et du risque hémorragique. Contrôle plus fréquent de l'INR. Adaptation éventuelle de la posologie de l'antivitamine K pendant le traitement par la céphalosporine et après son arrêt.",
+    "missing_dci": "ANTIVITAMINES K"
+  },
+  {
+    "dci_a": "CHLOROQUINE",
+    "dci_b": "CIMETIDINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Ralentissement de l’élimination de la chloroquine et risque de surdosage.",
+    "missing_dci": "CIMETIDINE"
+  },
+  {
+    "dci_a": "CHLOROQUINE",
+    "dci_b": "HORMONES THYROÏDIENNES",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’hypothyroïdie clinique chez les patients substitués par hormones thyroïdiennes. Surveillance clinique et biologique. Adaptation, si besoin, de la posologie des hormones thyroïdiennes pendant le traitement par chloroquine et après son arrêt.",
+    "missing_dci": "HORMONES THYROÏDIENNES"
+  },
+  {
+    "dci_a": "CICLOSPORINE",
+    "dci_b": "ACIDE URSODESOXYCHOLIQUE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de variation des concentrations sanguines de ciclosporine.",
+    "missing_dci": "ACIDE URSODESOXYCHOLIQUE"
+  },
+  {
+    "dci_a": "CICLOSPORINE",
+    "dci_b": "AFATINIB",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatique d’afatinib par augmentation de son absorption par la ciclosporine. Il est recommandé d’administrer la ciclosporine le plus à distance possible de l’afatinib, en respectant de préférence un intervalle de 6 heures ou de 12 heures par rapport à la prise d’afatinib.",
+    "missing_dci": "AFATINIB"
+  },
+  {
+    "dci_a": "CICLOSPORINE",
+    "dci_b": "AMBRISENTAN",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Doublement des concentrations d’ambrisentan, avec majoration de l’effet vasodilatateur (céphalées).",
+    "missing_dci": "AMBRISENTAN"
+  },
+  {
+    "dci_a": "CIMETIDINE",
+    "dci_b": "ALFENTANIL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg/j : augmentation de l'effet dépresseur respiratoire de Adapter la posologie de l'alfentanil en cas de traitement par la l'analgésique opiacé par diminution de son métabolisme hépatique. cimétidine.",
+    "missing_dci": "CIMETIDINE"
+  },
+  {
+    "dci_a": "CIMETIDINE",
+    "dci_b": "CARMUSTINE",
+    "severity": "DECONSEILLEE",
+    "description": "Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg/j : toxicité médullaire accrue (inhibition du métabolisme de la carmustine).",
+    "missing_dci": "CIMETIDINE"
+  },
+  {
+    "dci_a": "CLINDAMYCINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution des concentrations sanguines de l'immunosuppresseur avec risque de perte de l'activité immunosuppressive. Contrôle renforcé des dosages sanguins de ciclosporine et augmentation éventuelle de sa posologie.",
+    "missing_dci": "CLINDAMYCINE"
+  },
+  {
+    "dci_a": "CLINDAMYCINE",
+    "dci_b": "TACROLIMUS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution des concentrations sanguines de l'immunosuppresseur, avec risque de perte de l'activité immunosuppressive. Contrôle renforcé des dosages sanguins de tacrolimus et augmentation éventuelle de sa posologie.",
+    "missing_dci": "CLINDAMYCINE"
+  },
+  {
+    "dci_a": "CLOPIDOGREL",
+    "dci_b": "PACLITAXEL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation des concentrations du paclitaxel par le clopidogrel, avec risque de majoration des effets indésirables.",
+    "missing_dci": "CLOPIDOGREL"
+  },
+  {
+    "dci_a": "CLOPIDOGREL",
+    "dci_b": "SELEXIPAG",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des effets indésirables du sélexipag par diminution de son métabolisme. Surveillance clinique étroite pendant l’association. Réduire de moitié la posologie (une seule prise par jour).",
+    "missing_dci": "CLOPIDOGREL"
+  },
+  {
+    "dci_a": "COLCHICINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’addition des effets indésirables neuromusculaires et augmentation de la toxicité de la colchicine avec risque de surdosage par inhibition de son élimination par la ciclosporine, notamment en cas d’insuffisance rénale préexistante.",
+    "missing_dci": "COLCHICINE"
+  },
+  {
+    "dci_a": "CORTICOÏDES",
+    "dci_b": "RITONAVIR",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Décrit chez des patients HIV. Risque d’insuffisance surrénale aiguë, même en cas d’injection Préférer un corticoïde non CYP3A4-dépendant (hydrocortisone) unique. L’articulation peut constituer un réservoir relarguant de façon continue le corticoïde CYP3A4-dépendant dans la circulation générale, avec augmentation possiblement très importante des concentrations du corticoïde à l’origine d’une freination de la réponse hypothalamo-hypophysaire.",
+    "missing_dci": "CORTICOÏDES"
+  },
+  {
+    "dci_a": "CYCLOPHOSPHAMIDE",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d’augmentation des concentrations plasmatiques du métabolite actif du cyclophosphamide par le millepertuis, et donc de sa toxicité.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "CYCLOPHOSPHAMIDE",
+    "dci_b": "PENTOSTATINE",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration du risque de toxicité pulmonaire pouvant être fatale.",
+    "missing_dci": "PENTOSTATINE"
+  },
+  {
+    "dci_a": "CYPROTERONE",
+    "dci_b": "APREPITANT",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de diminution des concentrations de la cyprotérone avec risque de moindre efficacité contraceptive. Dans son utilisation comme contraceptif hormonal : Utiliser une méthode de contraception fiable, additionnelle ou alternative, pendant la durée de l'association.",
+    "missing_dci": "CYPROTERONE"
+  },
+  {
+    "dci_a": "DABIGATRAN",
+    "dci_b": "CICLOSPORINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation de plus du double des concentrations plasmatiques de dabigatran, avec majoration du risque de saignement.",
+    "missing_dci": "DABIGATRAN"
+  },
+  {
+    "dci_a": "DABIGATRAN",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation de plus du double des concentrations plasmatiques de dabigatran, avec majoration du risque de saignement.",
+    "missing_dci": "DABIGATRAN"
+  },
+  {
+    "dci_a": "DACARBAZINE",
+    "dci_b": "FOTEMUSTINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec la dacarbazine à doses élevées : risque de toxicité pulmonaire (syndrome de détresse respiratoire aiguë de l'adulte). Ne pas utiliser simultanément mais respecter un délai d'une semaine entre la dernière administration de fotémustine et le premier jour de la cure de dacarbazine.",
+    "missing_dci": "FOTEMUSTINE"
+  },
+  {
+    "dci_a": "DANAZOL",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines de ciclosporine par inhibition de son métabolisme hépatique. Dosage des concentrations sanguines de ciclosporine, contrôle de la fonction rénale et adaptation de la posologie pendant l’association et après son arrêt.",
+    "missing_dci": "DANAZOL"
+  },
+  {
+    "dci_a": "DAPSONE",
+    "dci_b": "ZIDOVUDINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la toxicité hématologique (addition d'effets de toxicité médullaire). Contrôle plus fréquent de l'hémogramme.",
+    "missing_dci": "DAPSONE"
+  },
+  {
+    "dci_a": "DEFERASIROX",
+    "dci_b": "ACIDE ACETYLSALICYLIQUE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Majoration du risque ulcérogène et hémorragique digestif. A prendre en compte : - Pour des doses anti-inflammatoires d'acide acétylsalicylique ( 1g par prise et/ou 3g par jour) - Pour des doses antalgiques ou antipyrétiques d'acide acétylsalicylique ( 500 mg par prise et/ou <3g par jour) et ( 500 mg par prise et/ou <3g par jour)",
+    "missing_dci": "ACIDE ACETYLSALICYLIQUE"
+  },
+  {
+    "dci_a": "DEXTRAN",
+    "dci_b": "HÉPARINES",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation du risque hémorragique (inhibition de la fonction plaquettaire par le dextran 40).",
+    "missing_dci": "HÉPARINES"
+  },
+  {
+    "dci_a": "DEXTROMETHORPHANE",
+    "dci_b": "CINACALCET",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation très importante des concentrations plasmatiques de dextrométhorphane avec risque de surdosage, par diminution de son métabolisme hépatique par le cinacalcet.",
+    "missing_dci": "CINACALCET"
+  },
+  {
+    "dci_a": "DEXTROMETHORPHANE",
+    "dci_b": "IMAO IRRÉVERSIBLES",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d'apparition d'un syndrome sérotoninergique : diarrhée, tachycardie, sueurs, tremblements, confusion voire coma.",
+    "missing_dci": "IMAO IRRÉVERSIBLES"
+  },
+  {
+    "dci_a": "DEXTROMETHORPHANE",
+    "dci_b": "IMAO-A RÉVERSIBLES, Y COMPRIS OXAZOLIDINONES ET BLEU DE MÉTHYLÈNE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d'apparition d'un syndrome sérotoninergique : diarrhée, tachycardie, sueurs, tremblements, confusion voire coma.",
+    "missing_dci": "IMAO-A RÉVERSIBLES, Y COMPRIS OXAZOLIDINONES ET BLEU DE MÉTHYLÈNE"
+  },
+  {
+    "dci_a": "DILTIAZEM",
+    "dci_b": "ALFENTANIL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de l'effet dépresseur respiratoire de l'analgésique opiacé par diminution de son métabolisme hépatique. Adapter la posologie de l'alfentanil en cas de traitement par le diltiazem.",
+    "missing_dci": "DILTIAZEM"
+  },
+  {
+    "dci_a": "DISOPYRAMIDE",
+    "dci_b": "JOSAMYCINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de majoration des effets indésirables du disopyramide : hypoglycémies sévères, allongement de l’intervalle QT et troubles Surveillance clinique, biologique et électrocardiographique régulière. du rythme ventriculaire graves, notamment à type de torsades de pointes.",
+    "missing_dci": "DISOPYRAMIDE"
+  },
+  {
+    "dci_a": "DOCETAXEL",
+    "dci_b": "AMIODARONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de majoration des effets indésirables du docétaxel par diminution de son métabolisme hépatique par l’amiodarone Surveillance clinique et adaptation éventuelle de la posologie du docétaxel.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "DOCETAXEL",
+    "dci_b": "APALUTAMIDE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution très importante des concentrations du docétaxel, et perte d‘efficacité, par augmentation de son métabolisme hépatique par l’apalutamide.",
+    "missing_dci": "APALUTAMIDE"
+  },
+  {
+    "dci_a": "DOCETAXEL",
+    "dci_b": "DRONEDARONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de majoration de la toxicité du docétaxel par diminution de son métabolisme. Surveillance clinique et adaptation éventuelle de la posologie du docétaxel pendant le traitement par l’inhibiteur enzymatique.",
+    "missing_dci": "DRONEDARONE"
+  },
+  {
+    "dci_a": "DOCETAXEL",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque de moindre efficacité du taxane par augmentation de son métabolisme par le millepertuis.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "DOXORUBICINE",
+    "dci_b": "VERAPAMIL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de majoration de la toxicité de la doxorubicine par augmentation de ses concentrations plasmatiques.",
+    "missing_dci": "VERAPAMIL"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "CODEINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’inefficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur.",
+    "missing_dci": "CODEINE"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "ENOXACINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d’augmentation des effets indésirables de la duloxétine par diminution de son métabolisme hépatique par l'énoxacine.",
+    "missing_dci": "ENOXACINE"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "FLUVOXAMINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d’augmentation des effets indésirables de la duloxétine par diminution de son métabolisme hépatique par la fluvoxamine.",
+    "missing_dci": "FLUVOXAMINE"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "MEQUITAZINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de majoration des effets indésirables de la méquitazine, par inhibition de son métabolisme par l’inhibiteur enzymatique.",
+    "missing_dci": "MEQUITAZINE"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "METOPROLOL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de métoprolol avec risque de surdosage, par diminution de son métabolisme hépatique Surveillance clinique et réduction de la posologie du métoprolol pendant par la duloxétine. le traitement par la duloxétine et après son arrêt.",
+    "missing_dci": "METOPROLOL"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "PROPAFENONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de propafénone avec risque de surdosage, par diminution de son métabolisme Surveillance clinique et réduction de la posologie de la propafénone hépatique par la duloxétine. pendant le traitement par la duloxétine et après son arrêt.",
+    "missing_dci": "PROPAFENONE"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "TAMOXIFENE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de baisse de l'efficacité du tamoxifène, par inhibition de la formation de son métabolite actif par la duloxétine.",
+    "missing_dci": "TAMOXIFENE"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "TETRABENAZINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation possiblement très importante de l’exposition des métabolites actifs de la tétrabénazine.",
+    "missing_dci": "TETRABENAZINE"
+  },
+  {
+    "dci_a": "DULOXETINE",
+    "dci_b": "TRAMADOL",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’inefficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur.",
+    "missing_dci": "TRAMADOL"
+  },
+  {
+    "dci_a": "ÉDOXABAN",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de l’édoxaban, avec majoration du risque de saignement. Réduire la dose d’édoxaban de moitié.",
+    "missing_dci": "ÉDOXABAN"
+  },
+  {
+    "dci_a": "ELVITÉGRAVIR",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques d’elvitegravir par diminution de son métabolisme par l'itraconazole. Avec l’elvitegravir co-administré avec le cobicistat, surveillance clinique. Limiter la dose maximale d’itraconazole à 200 mg/j.",
+    "missing_dci": "ELVITÉGRAVIR"
+  },
+  {
+    "dci_a": "ENOXACINE",
+    "dci_b": "DULOXETINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d’augmentation des effets indésirables de la duloxétine par diminution de son métabolisme hépatique par l'énoxacine.",
+    "missing_dci": "ENOXACINE"
+  },
+  {
+    "dci_a": "ERYTHROMYCINE",
+    "dci_b": "ALFENTANIL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de l'effet dépresseur respiratoire de l'analgésique opiacé par diminution de son métabolisme hépatique. Adapter la posologie de l'alfentanil en cas de traitement par l'érythromycine.",
+    "missing_dci": "ERYTHROMYCINE"
+  },
+  {
+    "dci_a": "ERYTHROMYCINE",
+    "dci_b": "NINTÉDANIB",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques du nintédanib par augmentation de son absorption par l'érythromycine. Surveillance clinique pendant l’association.",
+    "missing_dci": "ERYTHROMYCINE"
+  },
+  {
+    "dci_a": "ESTROPROGESTATIFS CONTRACEPTIFS",
+    "dci_b": "APREPITANT",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution de l’efficacité contraceptive par augmentation du métabolisme hépatique du contraceptif hormonal par l'aprépitant. Utiliser une méthode additionnelle de type mécanique (préservatif) pendant la durée de l’association, et un cycle suivant l’arrêt de l’aprépitant.",
+    "missing_dci": "ESTROPROGESTATIFS CONTRACEPTIFS"
+  },
+  {
+    "dci_a": "ETANERCEPT",
+    "dci_b": "ANAKINRA",
+    "severity": "DECONSEILLEE",
+    "description": "Risque accru d'infections graves et de neutropénies.",
+    "missing_dci": "ANAKINRA"
+  },
+  {
+    "dci_a": "ETOPOSIDE",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque de diminution des concentrations plasmatiques d’étoposide par le millepertuis.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "EXEMESTANE",
+    "dci_b": "RIFAMPICINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de diminution de l'efficacité de l'exemestane par augmentation de son métabolisme hépatique par l'inducteur enzymatique.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "EZETIMIBE",
+    "dci_b": "FENOFIBRATE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de lithiase biliaire par augmentation de l’excrétion biliaire du cholestérol.",
+    "missing_dci": "FENOFIBRATE"
+  },
+  {
+    "dci_a": "FENOFIBRATE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'augmentation de la néphrotoxicité de la ciclosporine. Surveillance clinique et biologique de la fonction rénale, pendant et après l'association.",
+    "missing_dci": "FENOFIBRATE"
+  },
+  {
+    "dci_a": "FENOFIBRATE",
+    "dci_b": "EZETIMIBE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de lithiase biliaire par augmentation de l’excrétion biliaire du cholestérol.",
+    "missing_dci": "FENOFIBRATE"
+  },
+  {
+    "dci_a": "FIDAXOMICINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation des concentrations plasmatiques de la fidaxomicine.",
+    "missing_dci": "FIDAXOMICINE"
+  },
+  {
+    "dci_a": "FINGOLIMOD",
+    "dci_b": "BRADYCARDISANTS",
+    "severity": "DECONSEILLEE",
+    "description": "Potentialisation des effets bradycardisants pouvant avoir des conséquences fatales. Les bêta-bloquants sont d’autant plus à Surveillance clinique et ECG continu pendant les 6 heures suivant la risque qu’ils empêchent les mécanismes de compensation première dose voire 2 heures de plus, jusqu'au lendemain si nécessaire. adrénergique.",
+    "missing_dci": "BRADYCARDISANTS"
+  },
+  {
+    "dci_a": "FLUCLOXACILLINE",
+    "dci_b": "VORICONAZOLE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution des concentrations de voriconazole, avec risque d'inefficacité de l'antifongique azolé.",
+    "missing_dci": "FLUCLOXACILLINE"
+  },
+  {
+    "dci_a": "FLUCONAZOLE",
+    "dci_b": "ALFENTANIL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de l'effet dépresseur respiratoire de l'analgésique opiacé par diminution de son métabolisme hépatique. Adapter la posologie de l'alfentanil en cas de traitement par le fluconazole.",
+    "missing_dci": "FLUCONAZOLE"
+  },
+  {
+    "dci_a": "FLUDARABINE",
+    "dci_b": "PENTOSTATINE",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration du risque de toxicité pulmonaire pouvant être fatale.",
+    "missing_dci": "PENTOSTATINE"
+  },
+  {
+    "dci_a": "FLUOROQUINOLONES",
+    "dci_b": "MYCOPHENOLATE MOFETIL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Diminution des concentrations de l’acide mycophénolique d’environ un tiers, avec risque potentiel de baisse d’efficacité.",
+    "missing_dci": "FLUOROQUINOLONES"
+  },
+  {
+    "dci_a": "FLUOROURACILE",
+    "dci_b": "ACIDE FOLINIQUE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Potentialisation des effets, à la fois cytostatiques et indésirables, du fluoro-uracile.",
+    "missing_dci": "ACIDE FOLINIQUE"
+  },
+  {
+    "dci_a": "FLUOROURACILE",
+    "dci_b": "ANTIVITAMINES K",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation importante de l'effet de l'antivitamine K et du risque hémorragique. Si elle ne peut être évitée, contrôle plus fréquent de l'INR. Adaptation de la posologie de l'antivitamine K pendant le traitement par le cytotoxique et 8 jours après son arrêt.",
+    "missing_dci": "ANTIVITAMINES K"
+  },
+  {
+    "dci_a": "FLUOROURACILE",
+    "dci_b": "INTERFERON ALFA",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation de la toxicité gastro-intestinale du fluorouracile.",
+    "missing_dci": "INTERFERON ALFA"
+  },
+  {
+    "dci_a": "FLUVASTATINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation modérée des concentrations de fluvastatine, avec risque musculaire non exclu. Surveillance clinique et biologique pendant l’association.",
+    "missing_dci": "FLUVASTATINE"
+  },
+  {
+    "dci_a": "FLUVOXAMINE",
+    "dci_b": "DULOXETINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d’augmentation des effets indésirables de la duloxétine par diminution de son métabolisme hépatique par la fluvoxamine.",
+    "missing_dci": "FLUVOXAMINE"
+  },
+  {
+    "dci_a": "FOTEMUSTINE",
+    "dci_b": "DACARBAZINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec la dacarbazine à doses élevées : risque de toxicité pulmonaire (syndrome de détresse respiratoire aiguë de l'adulte). Ne pas utiliser simultanément mais respecter un délai d'une semaine entre la dernière administration de fotémustine et le premier jour de la cure de dacarbazine.",
+    "missing_dci": "FOTEMUSTINE"
+  },
+  {
+    "dci_a": "GANCICLOVIR",
+    "dci_b": "ZIDOVUDINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la toxicité hématologique (addition d'effets de toxicité médullaire). Arrêter de façon transitoire la zidovudine ; contrôler la NFS et réintroduire, si possible, la zidovudine à doses faibles.",
+    "missing_dci": "GANCICLOVIR"
+  },
+  {
+    "dci_a": "GEMFIBROZIL",
+    "dci_b": "PACLITAXEL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des concentrations plasmatiques du paclitaxel par inhibition de son métabolisme hépatique par le Surveillance clinique et biologique étroite et adaptation de la posologie gemfibrozil. du paclitaxel pendant l’association.",
+    "missing_dci": "GEMFIBROZIL"
+  },
+  {
+    "dci_a": "GLIPIZIDE",
+    "dci_b": "VORICONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des concentrations plasmatiques du glipizide à l’origine d’hypoglycémies potentiellement sévères. Prévenir le patient, renforcer l'autosurveillance glycémique et adapter éventuellement la posologie du sulfamide pendant et après le traitement par voriconazole.",
+    "missing_dci": "GLIPIZIDE"
+  },
+  {
+    "dci_a": "GLUCOCORTICOÏDES",
+    "dci_b": "RITONAVIR",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Décrit chez des patients HIV. Risque d’insuffisance surrénale aiguë, même en cas d’injection Préférer un corticoïde non CYP3A4-dépendant (hydrocortisone). unique. L’articulation peut constituer un réservoir relarguant de façon continue le corticoïde CYP3A4-dépendant dans la circulation générale, avec augmentation possiblement très importante des concentrations du corticoïde, à l’origine d’une freination de la réponse hypothalamo-hypophysaire.",
+    "missing_dci": "GLUCOCORTICOÏDES"
+  },
+  {
+    "dci_a": "GLUCOSAMINE",
+    "dci_b": "ANTIVITAMINES K",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation du risque hémorragique. Contrôle plus fréquent de l’INR. Adapation éventuelle de la posologie de l’antivitamine K.",
+    "missing_dci": "ANTIVITAMINES K"
+  },
+  {
+    "dci_a": "GLYCEROL",
+    "dci_b": "LITHIUM",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution de la lithémie avec risque de baisse de l’efficacité thérapeutique. Surveillance stricte de la lithémie et adaptation éventuelle de la posologie du lithium.",
+    "missing_dci": "LITHIUM"
+  },
+  {
+    "dci_a": "GRAZOPREVIR + ELBASVIR",
+    "dci_b": "CICLOSPORINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation des concentrations de grazoprévir et d’elbasvir.",
+    "missing_dci": "GRAZOPREVIR + ELBASVIR"
+  },
+  {
+    "dci_a": "HALOFANTRINE",
+    "dci_b": "JOSAMYCINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes. Si cela est possible, interrompre le macrolide. Si l’association ne peut être évitée, contrôle préalable du QT et surveillance ECG monitorée.",
+    "missing_dci": "HALOFANTRINE"
+  },
+  {
+    "dci_a": "HÉPARINES",
+    "dci_b": "DEXTRAN",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation du risque hémorragique (inhibition de la fonction plaquettaire par le dextran 40).",
+    "missing_dci": "HÉPARINES"
+  },
+  {
+    "dci_a": "HORMONES THYROÏDIENNES",
+    "dci_b": "CHLOROQUINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’hypothyroïdie clinique chez les patients substitués par hormones thyroïdiennes. Surveillance clinique et biologique. Adaptation, si besoin, de la posologie des hormones thyroïdiennes pendant le traitement par chloroquine et après son arrêt.",
+    "missing_dci": "HORMONES THYROÏDIENNES"
+  },
+  {
+    "dci_a": "HYDROQUINIDINE",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'acouphènes et/ou de diminution de l'acuité auditive : cinchonisme lié à une diminution du métabolisme hépatique de Surveillance des concentrations plasmatiques de l'antiarythmique et l'antiarythmique par l'itraconazole. diminution éventuelle de sa posologie si nécessaire.",
+    "missing_dci": "HYDROQUINIDINE"
+  },
+  {
+    "dci_a": "IBRUTINIB",
+    "dci_b": "AMIODARONE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d'augmentation des concentrations plasmatiques d’ibrutinib par diminution de son métabolisme hépatique par l’amiodarone. Si l’association ne peut être évitée, surveillance clinique étroite et réduction de la dose d’ibrutinib à 280 mg par jour pendant la durée de l’association.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "IBRUTINIB",
+    "dci_b": "ANTIAGRÉGANTS PLAQUETTAIRES",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation du risque hémorragique. Surveillance clinique.",
+    "missing_dci": "ANTIAGRÉGANTS PLAQUETTAIRES"
+  },
+  {
+    "dci_a": "IBRUTINIB",
+    "dci_b": "DILTIAZEM",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d'augmentation des concentrations plasmatiques d’ibrutinib par diminution de son métabolisme hépatique par le diltiazem. Si l’association ne peut être évitée, surveillance clinique étroite et réduction de la dose d’ibrutinib à 280 mg par jour pendant la durée de l’association.",
+    "missing_dci": "DILTIAZEM"
+  },
+  {
+    "dci_a": "IBRUTINIB",
+    "dci_b": "DRONEDARONE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques d’ibrutinib par diminution de son métabolisme hépatique par la dronédarone. Si l’association ne peut être évitée, surveillance clinique étroite et réduction de la dose d’ibrutinib à 280 mg par jour pendant la durée de l’association.",
+    "missing_dci": "DRONEDARONE"
+  },
+  {
+    "dci_a": "IBRUTINIB",
+    "dci_b": "FLUCONAZOLE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques d’ibrutinib par diminution de son métabolisme hépatique par le fluconazole. Si l’association ne peut être évitée, surveillance clinique étroite et réduction de la dose d’ibrutinib à 280 mg par jour pendant la durée de l’association.",
+    "missing_dci": "FLUCONAZOLE"
+  },
+  {
+    "dci_a": "IBRUTINIB",
+    "dci_b": "VERAPAMIL",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques d’ibrutinib par diminution de son métabolisme hépatique par le vérapamil. Si l’association ne peut être évitée, surveillance clinique étroite et réduction de la dose d’ibrutinib à 280 mg par jour pendant la durée de l’association.",
+    "missing_dci": "VERAPAMIL"
+  },
+  {
+    "dci_a": "IFOSFAMIDE",
+    "dci_b": "PHÉNOBARBITAL",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de majoration de la neurotoxicité de l'ifosfamide par augmentation de son métabolisme hépatique par le phénobarbital.",
+    "missing_dci": "PHÉNOBARBITAL"
+  },
+  {
+    "dci_a": "IMAO IRRÉVERSIBLES",
+    "dci_b": "ADRÉNALINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Troubles du rythme ventriculaire graves par augmentation de l'excitabilité cardiaque. Limiter l'apport, par exemple : moins de 0,1 mg d'adrénaline en 10 minutes ou 0,3 mg en 1 heure chez l'adulte.",
+    "missing_dci": "IMAO IRRÉVERSIBLES"
+  },
+  {
+    "dci_a": "IMAO IRRÉVERSIBLES",
+    "dci_b": "DEXTROMETHORPHANE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d'apparition d'un syndrome sérotoninergique : diarrhée, tachycardie, sueurs, tremblements, confusion voire coma.",
+    "missing_dci": "IMAO IRRÉVERSIBLES"
+  },
+  {
+    "dci_a": "IMAO-A RÉVERSIBLES, Y COMPRIS OXAZOLIDINONES ET BLEU DE MÉTHYLÈNE",
+    "dci_b": "DEXTROMETHORPHANE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d'apparition d'un syndrome sérotoninergique : diarrhée, tachycardie, sueurs, tremblements, confusion voire coma.",
+    "missing_dci": "IMAO-A RÉVERSIBLES, Y COMPRIS OXAZOLIDINONES ET BLEU DE MÉTHYLÈNE"
+  },
+  {
+    "dci_a": "IMATINIB",
+    "dci_b": "TÉDIZOLIDE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques de l'imatinib, par augmentation de son absorption avec le tédizolide administré par voie orale.",
+    "missing_dci": "TÉDIZOLIDE"
+  },
+  {
+    "dci_a": "INTERFERON ALFA",
+    "dci_b": "FLUOROURACILE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation de la toxicité gastro-intestinale du fluorouracile.",
+    "missing_dci": "INTERFERON ALFA"
+  },
+  {
+    "dci_a": "IRINOTECAN",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Diminution des concentrations plasmatiques du métabolite actif de l'irinotécan, avec risque d'échec du traitement cytotoxique.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "ISAVUCONAZOLE",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Diminution des concentrations plasmatiques d’isavuconazole par augmentation de son métabolisme hépatique par le millepertuis.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "ISONIAZIDE",
+    "dci_b": "PYRAZINAMIDE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Addition des effets hépatotoxiques. Surveillance clinique et biologique.",
+    "missing_dci": "ISONIAZIDE"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "AFATINIB",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatique d’afatinib par augmentation de son absorption par l'itraconazole. Il est recommandé d’administrer l'itraconazole le plus à distance possible de l’afatinib, en respectant de préférence un intervalle de 6 heures ou de 12 heures par rapport à la prise d’afatinib.",
+    "missing_dci": "AFATINIB"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "ANTISÉCRÉTOIRES ANTIHISTAMINIQUES H2",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Diminution de l'absorption de l'azolé antifongique, par augmentation du pH intragastrique par l'antisécrétoire.",
+    "missing_dci": "ANTISÉCRÉTOIRES ANTIHISTAMINIQUES H2"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "ATORVASTATINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse (diminution du métabolisme hépatique de l'atorvastatine).",
+    "missing_dci": "ATORVASTATINE"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "BUSPIRONE",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation des concentrations plasmatiques de la buspirone par diminution de son métabolisme hépatique, avec majoration importante de la sédation.",
+    "missing_dci": "BUSPIRONE"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "DABIGATRAN",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation de plus du double des concentrations plasmatiques de dabigatran, avec majoration du risque de saignement.",
+    "missing_dci": "DABIGATRAN"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "DIGOXINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la digoxinémie avec nausées, vomissements, troubles du rythme. Surveillance clinique et, s'il y a lieu, de l'ECG et de la digoxinémie avec adaptation de la posologie de la digoxine pendant le traitement par l'itraconazole et après son arrêt.",
+    "missing_dci": "DIGOXINE"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "ÉDOXABAN",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de l’édoxaban, avec majoration du risque de saignement. Réduire la dose d’édoxaban de moitié.",
+    "missing_dci": "ÉDOXABAN"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "ELVITÉGRAVIR",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques d’elvitegravir par diminution de son métabolisme par l'itraconazole. Avec l’elvitegravir co-administré avec le cobicistat, surveillance clinique. Limiter la dose maximale d’itraconazole à 200 mg/j.",
+    "missing_dci": "ELVITÉGRAVIR"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "HYDROQUINIDINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'acouphènes et/ou de diminution de l'acuité auditive : cinchonisme lié à une diminution du métabolisme hépatique de Surveillance des concentrations plasmatiques de l'antiarythmique et l'antiarythmique par l'itraconazole. diminution éventuelle de sa posologie si nécessaire.",
+    "missing_dci": "HYDROQUINIDINE"
+  },
+  {
+    "dci_a": "ITRACONAZOLE",
+    "dci_b": "IMMUNOSUPPRESSEURS",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation très importante des concentrations sanguines de l'immunosuppresseur par inhibition de son métabolisme hépatique. En cas d’association, contrôle strict de la fonction rénale, dosage des concentrations sanguines de l'immunosuppresseur et adaptation éventuelle de la posologie.",
+    "missing_dci": "IMMUNOSUPPRESSEURS"
+  },
+  {
+    "dci_a": "JOSAMYCINE",
+    "dci_b": "CARBAMAZEPINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage, par diminution de son métabolisme Surveillance clinique et, si besoin, dosage plasmatique et réduction hépatique. éventuelle de la posologie de la carbamazépine.",
+    "missing_dci": "CARBAMAZEPINE"
+  },
+  {
+    "dci_a": "JOSAMYCINE",
+    "dci_b": "DISOPYRAMIDE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de majoration des effets indésirables du disopyramide : hypoglycémies sévères, allongement de l’intervalle QT et troubles Surveillance clinique, biologique et électrocardiographique régulière. du rythme ventriculaire graves, notamment à type de torsades de pointes.",
+    "missing_dci": "DISOPYRAMIDE"
+  },
+  {
+    "dci_a": "JOSAMYCINE",
+    "dci_b": "HALOFANTRINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes. Si cela est possible, interrompre le macrolide. Si l’association ne peut être évitée, contrôle préalable du QT et surveillance ECG monitorée.",
+    "missing_dci": "HALOFANTRINE"
+  },
+  {
+    "dci_a": "KETOCONAZOLE",
+    "dci_b": "BUPRENORPHINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations de buprénorphine par diminution de son métabolisme hépatique, avec risque de majoration de ses Surveillance clinique et adaptation de la posologie de la buprénorphine effets indésirables. pendant le traitement par l'inhibiteur et, le cas échéant, après son arrêt.",
+    "missing_dci": "KETOCONAZOLE"
+  },
+  {
+    "dci_a": "LANSOPRAZOLE",
+    "dci_b": "TACROLIMUS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines du tacrolimus. Dosage des concentrations sanguines du tacrolimus, contrôle de la fonction rénale et adaptation de la posologie pendant l'association et après son arrêt.",
+    "missing_dci": "LANSOPRAZOLE"
+  },
+  {
+    "dci_a": "LÉDIPASVIR",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque de diminution importante des concentrations plasmatiques du lédipasvir par augmentation de son métabolisme hépatique par le millepertuis.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "LÉDIPASVIR",
+    "dci_b": "RIFABUTINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Diminution des concentrations plasmatiques de lédipasvir par la rifabutine, avec possible retentissement sur l’efficacité.",
+    "missing_dci": "RIFABUTINE"
+  },
+  {
+    "dci_a": "LERCANIDIPINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation modérée des concentrations sanguines de l'immunosuppresseur et augmentation plus notable des Décaler les prises des deux médicaments. Dosage des concentrations concentrations de lercanidipine. sanguines de l'immunosuppresseur, et adaptation si nécessaire de sa posologie pendant l'association et après son arrêt.",
+    "missing_dci": "LERCANIDIPINE"
+  },
+  {
+    "dci_a": "LITHIUM",
+    "dci_b": "GLYCEROL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution de la lithémie avec risque de baisse de l’efficacité thérapeutique. Surveillance stricte de la lithémie et adaptation éventuelle de la posologie du lithium.",
+    "missing_dci": "LITHIUM"
+  },
+  {
+    "dci_a": "MACITENTAN",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution des concentrations plasmatiques de macitentan par augmentation de son métabolisme par le millepertuis.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "MAGNÉSIUM",
+    "dci_b": "ROXADUSTAT",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "La prise de cation divalent peut diminuer l’absorption intestinale et, potentiellement, l’efficacité du roxadustat pris simultanément. Prendre le roxadustat à distance des sels de magnésium (plus de 1 heure, si possible).",
+    "missing_dci": "ROXADUSTAT"
+  },
+  {
+    "dci_a": "MEFLOQUINE",
+    "dci_b": "QUININE",
+    "severity": "DECONSEILLEE",
+    "description": "Pour la quinine administrée par voie IV : risque majoré de survenue de crises épileptiques par addition des effets proconvulsivants. Respecter un délai minimum de 12 heures entre la fin de l'administration IV de quinine et le début de l'administration de méfloquine.",
+    "missing_dci": "MEFLOQUINE"
+  },
+  {
+    "dci_a": "MEQUITAZINE",
+    "dci_b": "DULOXETINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de majoration des effets indésirables de la méquitazine, par inhibition de son métabolisme par l’inhibiteur enzymatique.",
+    "missing_dci": "MEQUITAZINE"
+  },
+  {
+    "dci_a": "METHYLPREDNISOLONE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Avec la méthylprednisolone administrée par voie IV : augmentation possible des concentrations sanguines de ciclosporine et de la créatininémie. Mécanisme invoqué : diminution de l'élimination hépatique de la ciclosporine.",
+    "missing_dci": "METHYLPREDNISOLONE"
+  },
+  {
+    "dci_a": "METOPROLOL",
+    "dci_b": "ABIRATERONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Chez l'insuffisant cardiaque, risque d'augmentation des effets indésirables du métoprolol, par diminution de son métabolisme Surveillance clinique. Si besoin, adaptation de la posologie du hépatique par l'abiratérone. métoprolol pendant le traitement par l'abiratérone.",
+    "missing_dci": "METOPROLOL"
+  },
+  {
+    "dci_a": "METOPROLOL",
+    "dci_b": "DULOXETINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de métoprolol avec risque de surdosage, par diminution de son métabolisme hépatique Surveillance clinique et réduction de la posologie du métoprolol pendant par la duloxétine. le traitement par la duloxétine et après son arrêt.",
+    "missing_dci": "METOPROLOL"
+  },
+  {
+    "dci_a": "METRONIDAZOLE",
+    "dci_b": "BUSULFAN",
+    "severity": "DECONSEILLEE",
+    "description": "Avec le busulfan à fortes doses : doublement des concentrations de busulfan par le métronidazole.",
+    "missing_dci": "METRONIDAZOLE"
+  },
+  {
+    "dci_a": "MIDAZOLAM",
+    "dci_b": "DILTIAZEM",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de midazolam par diminution de son métabolisme hépatique, avec majoration de la Surveillance clinique et réduction de la posologie pendant le traitement sédation. par le diltiazem.",
+    "missing_dci": "DILTIAZEM"
+  },
+  {
+    "dci_a": "MIDAZOLAM",
+    "dci_b": "FLUCONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de midazolam par diminution de son métabolisme hépatique, avec majoration de la Surveillance clinique et réduction de la posologie de midazolam en cas sédation. de traitement par le fluconazole.",
+    "missing_dci": "FLUCONAZOLE"
+  },
+  {
+    "dci_a": "MIDECAMYCINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'augmentation des concentrations sanguines de ciclosporine et de la créatininémie. Dosage des concentrations sanguines de la ciclosporine, contrôle de la fonction rénale et adaptation de la posologie pendant l'association et après l'arrêt du macrolide.",
+    "missing_dci": "MIDECAMYCINE"
+  },
+  {
+    "dci_a": "MILLEPERTUIS",
+    "dci_b": "CYCLOPHOSPHAMIDE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d’augmentation des concentrations plasmatiques du métabolite actif du cyclophosphamide par le millepertuis, et donc de sa toxicité.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "MODAFINIL",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution des concentrations sanguines et de l'efficacité de l'immunosuppresseur.",
+    "missing_dci": "MODAFINIL"
+  },
+  {
+    "dci_a": "MYCOPHENOLATE MOFETIL",
+    "dci_b": "FLUOROQUINOLONES",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Diminution des concentrations de l’acide mycophénolique d’environ un tiers, avec risque potentiel de baisse d’efficacité.",
+    "missing_dci": "FLUOROQUINOLONES"
+  },
+  {
+    "dci_a": "MYCOPHENOLATE MOFETIL",
+    "dci_b": "PÉNICILLINES A",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Diminution des concentrations de l’acide mycophénolique d’environ un tiers, avec risque potentiel de baisse d’efficacité.",
+    "missing_dci": "PÉNICILLINES A"
+  },
+  {
+    "dci_a": "NIFEDIPINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d'addition d'effets indésirables à type de gingivopathies. Utiliser une autre dihydropyridine.",
+    "missing_dci": "NIFEDIPINE"
+  },
+  {
+    "dci_a": "NINTÉDANIB",
+    "dci_b": "AMIODARONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques du nintédanib par augmentation de son absorption par l'amiodarone. Surveillance clinique pendant l’association.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "OMBITASVIR + PARITAPRÉVIR",
+    "dci_b": "EVEROLIMUS",
+    "severity": "DECONSEILLEE",
+    "description": "En association avec le ritonavir : augmentation significative des concentrations de l’immunosuppresseur avec risque de majoration Si l’association s’avère nécessaire, contrôle strict de la fonction rénale, de sa toxicité par la bithérapie. dosage des concentrations sanguines de l'immunosuppresseur et adaptation éventuelle de la posologie.",
+    "missing_dci": "OMBITASVIR + PARITAPRÉVIR"
+  },
+  {
+    "dci_a": "OMBITASVIR + PARITAPRÉVIR",
+    "dci_b": "MIDAZOLAM",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation des concentrations plasmatiques du midazolam par diminution de son métabolisme hépatique par la bithérapie.",
+    "missing_dci": "OMBITASVIR + PARITAPRÉVIR"
+  },
+  {
+    "dci_a": "OMEPRAZOLE",
+    "dci_b": "TACROLIMUS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines du tacrolimus. Dosage des concentrations sanguines du tacrolimus, contrôle de la fonction rénale et adaptation de la posologie pendant l'association et après son arrêt.",
+    "missing_dci": "OMEPRAZOLE"
+  },
+  {
+    "dci_a": "ORLISTAT",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution des concentrations sanguines de ciclosporine par diminution de son absorption intestinale, avec risque de perte de Prendre l'orlistat à distance de la ciclosporine (au moins 3 heures). l'activité immunosuppressive. Contrôle renforcé des dosages sanguins de ciclosporine, notamment en début d’association, et lors d’augmentation éventuelle de la posologie de l’orlistat.",
+    "missing_dci": "ORLISTAT"
+  },
+  {
+    "dci_a": "ORNIDAZOLE",
+    "dci_b": "FLUOROURACILE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation de la toxicité du fluoro-uracile par diminution de sa clairance.",
+    "missing_dci": "ORNIDAZOLE"
+  },
+  {
+    "dci_a": "OXCARBAZEPINE",
+    "dci_b": "VELPATASVIR",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution des concentrations de velpatasvir/sofosbuvir, avec possible retentissement sur l’efficacité.",
+    "missing_dci": "OXCARBAZEPINE"
+  },
+  {
+    "dci_a": "OZANIMOD",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des effets indésirables de l’ozanimod.",
+    "missing_dci": "OZANIMOD"
+  },
+  {
+    "dci_a": "PACLITAXEL",
+    "dci_b": "AMIODARONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de majoration des effets indésirables du paclitaxel par diminution de son métabolisme hépatique par l’amiodarone. Surveillance clinique et adaptation éventuelle de la posologie du paclitaxel.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "PACLITAXEL",
+    "dci_b": "CLOPIDOGREL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation des concentrations du paclitaxel par le clopidogrel, avec risque de majoration des effets indésirables.",
+    "missing_dci": "CLOPIDOGREL"
+  },
+  {
+    "dci_a": "PACLITAXEL",
+    "dci_b": "GEMFIBROZIL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des concentrations plasmatiques du paclitaxel par inhibition de son métabolisme hépatique par le Surveillance clinique et biologique étroite et adaptation de la posologie gemfibrozil. du paclitaxel pendant l’association.",
+    "missing_dci": "GEMFIBROZIL"
+  },
+  {
+    "dci_a": "PACLITAXEL",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque de moindre efficacité du taxane par augmentation de son métabolisme par le millepertuis.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "PEMETREXED",
+    "dci_b": "ACIDE ACETYLSALICYLIQUE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de majoration de la toxicité du pemetrexed (diminution de sa clairance rénale par l’acide acétylsalicylique à doses anti- Association déconseillée : inflammatoires). - en cas de fonction rénale faible à modérée . Précaution d'emploi : - en cas de fonction rénale normale. Surveillance biologique de la fonction rénale.",
+    "missing_dci": "ACIDE ACETYLSALICYLIQUE"
+  },
+  {
+    "dci_a": "PEMETREXED",
+    "dci_b": "ANTI-INFLAMMATOIRES NON STÉROÏDIENS",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de majoration de la toxicité du pemetrexed (diminution de sa clairance rénale par les AINS). Association déconseillée : - en cas de fonction rénale faible à modérée. Précaution d'emploi : - en cas de fonction rénale normale. Surveillance biologique de la fonction rénale.",
+    "missing_dci": "ANTI-INFLAMMATOIRES NON STÉROÏDIENS"
+  },
+  {
+    "dci_a": "PÉNICILLINES A",
+    "dci_b": "MYCOPHENOLATE MOFETIL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Diminution des concentrations de l’acide mycophénolique d’environ un tiers, avec risque potentiel de baisse d’efficacité.",
+    "missing_dci": "PÉNICILLINES A"
+  },
+  {
+    "dci_a": "PENTOSTATINE",
+    "dci_b": "CYCLOPHOSPHAMIDE",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration du risque de toxicité pulmonaire pouvant être fatale.",
+    "missing_dci": "PENTOSTATINE"
+  },
+  {
+    "dci_a": "PENTOSTATINE",
+    "dci_b": "FLUDARABINE",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration du risque de toxicité pulmonaire pouvant être fatale.",
+    "missing_dci": "PENTOSTATINE"
+  },
+  {
+    "dci_a": "PETHIDINE",
+    "dci_b": "IMAO IRRÉVERSIBLES",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d'apparition d'un syndrome sérotoninergique : diarrhée, tachycardie, sueurs, tremblements, confusion voire coma.",
+    "missing_dci": "IMAO IRRÉVERSIBLES"
+  },
+  {
+    "dci_a": "PETHIDINE",
+    "dci_b": "IMAO-A RÉVERSIBLES, Y COMPRIS OXAZOLIDINONES ET BLEU DE MÉTHYLÈNE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d'apparition d'un syndrome sérotoninergique : diarrhée, tachycardie, sueurs, tremblements, confusion voire coma.",
+    "missing_dci": "IMAO-A RÉVERSIBLES, Y COMPRIS OXAZOLIDINONES ET BLEU DE MÉTHYLÈNE"
+  },
+  {
+    "dci_a": "PETHIDINE",
+    "dci_b": "IMAO-B",
+    "severity": "CONTRE_INDICATION",
+    "description": "Manifestations d'excitation centrale évoquant un syndrome sérotoninergique : diarrhée, tachycardie, sueurs, tremblements, confusion voire coma.",
+    "missing_dci": "IMAO-B"
+  },
+  {
+    "dci_a": "PHÉNOBARBITAL",
+    "dci_b": "IFOSFAMIDE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de majoration de la neurotoxicité de l'ifosfamide par augmentation de son métabolisme hépatique par le phénobarbital.",
+    "missing_dci": "PHÉNOBARBITAL"
+  },
+  {
+    "dci_a": "PIMOZIDE",
+    "dci_b": "APREPITANT",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes.",
+    "missing_dci": "PIMOZIDE"
+  },
+  {
+    "dci_a": "PIMOZIDE",
+    "dci_b": "JOSAMYCINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes.",
+    "missing_dci": "PIMOZIDE"
+  },
+  {
+    "dci_a": "PIPÉRACILLINE/TAZOBACTAM",
+    "dci_b": "VANCOMYCINE",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration de la néphrotoxicité par comparaison à la vancomycine seule.",
+    "missing_dci": "PIPÉRACILLINE/TAZOBACTAM"
+  },
+  {
+    "dci_a": "PITAVASTATINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, ou de néphrotoxicité, par diminution du métabolisme de la pitavastatine.",
+    "missing_dci": "PITAVASTATINE"
+  },
+  {
+    "dci_a": "POLYSTYRÈNE SULFONATE DE CALCIUM",
+    "dci_b": "SORBITOL",
+    "severity": "CONTRE_INDICATION",
+    "description": "Par voie orale ou rectale du sorbitol ou de la résine, et pour une dose de sorbitol par prise >= 2,5 g chez l'enfant et 5 g chez l'adulte : Risque de nécrose colique, éventuellement fatale.",
+    "missing_dci": "POLYSTYRÈNE SULFONATE DE CALCIUM"
+  },
+  {
+    "dci_a": "POLYSTYRÈNE SULFONATE DE SODIUM",
+    "dci_b": "SORBITOL",
+    "severity": "CONTRE_INDICATION",
+    "description": "Par voie orale ou rectale du sorbitol ou de la résine, et pour une dose de sorbitol par prise >= 2,5 g chez l'enfant et 5 g chez l'adulte : Risque de nécrose colique, éventuellement fatale.",
+    "missing_dci": "POLYSTYRÈNE SULFONATE DE SODIUM"
+  },
+  {
+    "dci_a": "POVIDONE IODÉE",
+    "dci_b": "ANTISEPTIQUES MERCURIELS",
+    "severity": "DECONSEILLEE",
+    "description": "Erythèmes, phlyctènes, voire nécrose cutanéo-muqueuse (formation d'un complexe caustique en cas d'utilisation concomitante d'antiseptiques iodés et mercuriels). L'interaction dépend de la stabilité de l'organo-mercuriel au niveau cutané et de la sensibilité individuelle.",
+    "missing_dci": "ANTISEPTIQUES MERCURIELS"
+  },
+  {
+    "dci_a": "PRAVASTATINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations de pravastatine, avec risque musculaire non exclu. Surveillance clinique et biologique pendant l’association. Débuter le traitement à la dose minimale de pravastatine.",
+    "missing_dci": "PRAVASTATINE"
+  },
+  {
+    "dci_a": "PREDNISOLONE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation des effets de la prednisolone : aspect cushingoïde, réduction de la tolérance aux glucides (diminution de la clairance de la prednisolone).",
+    "missing_dci": "PREDNISOLONE"
+  },
+  {
+    "dci_a": "PROGESTATIFS CONTRACEPTIFS",
+    "dci_b": "APREPITANT",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "(Sauf stérilet), diminution des concentrations du progestatif, avec risque de moindre efficacité contraceptive. Utiliser de préférence une autre méthode contraceptive, en particulier de type mécanique, pendant la durée de l'association et un cycle suivant.",
+    "missing_dci": "PROGESTATIFS CONTRACEPTIFS"
+  },
+  {
+    "dci_a": "PROGESTATIFS CONTRACEPTIFS",
+    "dci_b": "ULIPRISTAL",
+    "severity": "DECONSEILLEE",
+    "description": "Dans l'indication contraception d'urgence : Antagonisme des effets de l’ulipristal en cas de reprise d’un - Dans l'indication contraception d'urgence: contraceptif hormonal moins de 5 jours après la prise de la Dans le cas où la (re)prise d’une contraception hormonale est contraception d’urgence. envisagée, utiliser une contraception additionnelle de type mécanique pendant les 12 jours qui suivent la (dernière) prise de l’ulipristal (au cas Dans l’indication fibrome : où il y en aurait eu plus d’une). Antagonisme réciproque des effets de l’ulipristal et du progestatif, avec risque d’inefficacité. - Dans l’indication fibrome : Dans le cas où la (re)prise d’une contraception hormonale est envisagée, utiliser une contraception de type mécanique pendant les 7 premiers jours de la contraception hormonale.",
+    "missing_dci": "PROGESTATIFS CONTRACEPTIFS"
+  },
+  {
+    "dci_a": "PROGESTATIFS NON CONTRACEPTIFS, ASSOCIÉS OU NON À UN ESTROGÈNE",
+    "dci_b": "ULIPRISTAL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Dans l’indication fibrome : Antagonisme réciproque des effets de l’ulipristal et du progestatif, avec risque d’inefficacité.",
+    "missing_dci": "PROGESTATIFS NON CONTRACEPTIFS, ASSOCIÉS OU NON À UN ESTROGÈNE"
+  },
+  {
+    "dci_a": "PROPAFENONE",
+    "dci_b": "ABIRATERONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'augmentation des effets indésirables de la propafénone, par diminution de son métabolisme hépatique par l'abiratérone. Surveillance clinique. Si besoin, adaptation de la posologie de la propafénone pendant le traitement par l'abiratérone.",
+    "missing_dci": "PROPAFENONE"
+  },
+  {
+    "dci_a": "PROPAFENONE",
+    "dci_b": "DULOXETINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de propafénone avec risque de surdosage, par diminution de son métabolisme Surveillance clinique et réduction de la posologie de la propafénone hépatique par la duloxétine. pendant le traitement par la duloxétine et après son arrêt.",
+    "missing_dci": "PROPAFENONE"
+  },
+  {
+    "dci_a": "PYRAZINAMIDE",
+    "dci_b": "ISONIAZIDE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Addition des effets hépatotoxiques. Surveillance clinique et biologique.",
+    "missing_dci": "ISONIAZIDE"
+  },
+  {
+    "dci_a": "PYRIMETHAMINE",
+    "dci_b": "TRIMETHOPRIME",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Anémie mégaloblastique, plus particulièrement à fortes doses des deux produits (déficit en acide folique par l'association de deux 2-4 Contrôle régulier de l'hémogramme et association d'un traitement par diaminopyrimidines). l'acide folique (injections IM régulières).",
+    "missing_dci": "PYRIMETHAMINE"
+  },
+  {
+    "dci_a": "QUINIDINE",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes, ainsi que d'acouphènes et/ou de diminution de Surveillance clinique. l'acuité auditive (cinchonisme), par diminution du métabolisme hépatique de la quinidine.",
+    "missing_dci": "QUINIDINE"
+  },
+  {
+    "dci_a": "QUININE",
+    "dci_b": "DIGOXINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation modérée de la digoxinémie. Surveillance clinique et ECG, si besoin, avec adaptation éventuelle des doses de digoxine.",
+    "missing_dci": "DIGOXINE"
+  },
+  {
+    "dci_a": "QUININE",
+    "dci_b": "MEFLOQUINE",
+    "severity": "DECONSEILLEE",
+    "description": "Pour la quinine administrée par voie IV : risque majoré de survenue de crises épileptiques par addition des effets proconvulsivants. Respecter un délai minimum de 12 heures entre la fin de l'administration IV de quinine et le début de l'administration de méfloquine.",
+    "missing_dci": "MEFLOQUINE"
+  },
+  {
+    "dci_a": "QUININE",
+    "dci_b": "RIFAMPICINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de perte de l’efficacité de la quinine par augmentation de son métabolisme hépatique par l’inducteur.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "RANOLAZINE",
+    "dci_b": "ATORVASTATINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse par inhibition du métabolisme de Utiliser des doses plus faibles d’hypocholestérolémiant ou une autre l'atorvastatine par la ranolazine. statine non concernée par ce type d’interaction.",
+    "missing_dci": "ATORVASTATINE"
+  },
+  {
+    "dci_a": "RANOLAZINE",
+    "dci_b": "DIGOXINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la digoxinémie. Surveillance clinique, biologique et éventuellement ECG. Adaptation de la posologie de la digoxine, si besoin.",
+    "missing_dci": "DIGOXINE"
+  },
+  {
+    "dci_a": "RANOLAZINE",
+    "dci_b": "IMMUNOSUPPRESSEURS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines de l'immunosuppresseur par inhibition de son métabolisme par la Surveillance clinique et biologique, et adaptation éventuelle de la ranolazine. posologie de l’immunosuppresseur.",
+    "missing_dci": "IMMUNOSUPPRESSEURS"
+  },
+  {
+    "dci_a": "RANOLAZINE",
+    "dci_b": "RIFAMPICINE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution très importante des concentrations de ranolazine.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "RANOLAZINE",
+    "dci_b": "SIMVASTATINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse par inhibition du métabolisme de la Ne pas dépasser la posologie de 20 mg/j de simvastatine ou utiliser une simvastatine par la ranolazine. autre statine non concernée par ce type d’interaction.",
+    "missing_dci": "SIMVASTATINE"
+  },
+  {
+    "dci_a": "REPAGLINIDE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation de plus du double des concentrations du répaglinide par augmentation de son absorption.",
+    "missing_dci": "REPAGLINIDE"
+  },
+  {
+    "dci_a": "REPAGLINIDE",
+    "dci_b": "DEFERASIROX",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatique de répaglinide, par inhibition de son métabolisme hépatique par le Si l’association ne peut être évitée, surveillance clinique et biologique deferasirox. étroite.",
+    "missing_dci": "REPAGLINIDE"
+  },
+  {
+    "dci_a": "REPAGLINIDE",
+    "dci_b": "TRIMETHOPRIME",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques de répaglinide par inhibition de son métabolisme hépatique par le Si l’association ne peut être évitée, surveillance clinique et biologique triméthoprime. étroite.",
+    "missing_dci": "REPAGLINIDE"
+  },
+  {
+    "dci_a": "RIBAVIRINE",
+    "dci_b": "ANTIPURINES",
+    "severity": "DECONSEILLEE",
+    "description": "Risque majoré d'effets indésirables graves, par inhibition du métabolisme de l'immunomodulateur par la ribavirine.",
+    "missing_dci": "ANTIPURINES"
+  },
+  {
+    "dci_a": "RIBAVIRINE",
+    "dci_b": "DIDANOSINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de majoration de la toxicité mitochondriale de la didanosine par augmentation de son métabolite actif.",
+    "missing_dci": "DIDANOSINE"
+  },
+  {
+    "dci_a": "RIBAVIRINE",
+    "dci_b": "STAVUDINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de diminution de l'efficacité de chaque antiviral, par antagonisme compétitif de la réaction de phosphorylation à l'origine Surveillance clinique et biologique régulière, notamment en début des métabolites actifs. d'association.",
+    "missing_dci": "STAVUDINE"
+  },
+  {
+    "dci_a": "RIFAMPICINE",
+    "dci_b": "ABIRATERONE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution notable des concentrations plasmatiques de l’abiratérone, avec risque de moindre efficacité.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "RITONAVIR",
+    "dci_b": "CORTICOÏDES",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Décrit chez des patients HIV. Risque d’insuffisance surrénale aiguë, même en cas d’injection Préférer un corticoïde non CYP3A4-dépendant (hydrocortisone) unique. L’articulation peut constituer un réservoir relarguant de façon continue le corticoïde CYP3A4-dépendant dans la circulation générale, avec augmentation possiblement très importante des concentrations du corticoïde à l’origine d’une freination de la réponse hypothalamo-hypophysaire.",
+    "missing_dci": "CORTICOÏDES"
+  },
+  {
+    "dci_a": "RITONAVIR",
+    "dci_b": "GLUCOCORTICOÏDES",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Décrit chez des patients HIV. Risque d’insuffisance surrénale aiguë, même en cas d’injection Préférer un corticoïde non CYP3A4-dépendant (hydrocortisone). unique. L’articulation peut constituer un réservoir relarguant de façon continue le corticoïde CYP3A4-dépendant dans la circulation générale, avec augmentation possiblement très importante des concentrations du corticoïde, à l’origine d’une freination de la réponse hypothalamo-hypophysaire.",
+    "missing_dci": "GLUCOCORTICOÏDES"
+  },
+  {
+    "dci_a": "RIVAROXABAN",
+    "dci_b": "FLUCONAZOLE",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation des concentrations plasmatiques du rivaroxaban par le fluconazole, avec majoration du risque de saignement.",
+    "missing_dci": "FLUCONAZOLE"
+  },
+  {
+    "dci_a": "RIVAROXABAN",
+    "dci_b": "RIFAMPICINE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution des concentrations plasmatiques de rivaroxaban, avec risque de diminution de l'effet thérapeutique.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "ROSUVASTATINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, ou de néphrotoxicité, par diminution du métabolisme de la rosuvastatine.",
+    "missing_dci": "ROSUVASTATINE"
+  },
+  {
+    "dci_a": "ROXADUSTAT",
+    "dci_b": "MAGNÉSIUM",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "La prise de cation divalent peut diminuer l’absorption intestinale et, potentiellement, l’efficacité du roxadustat pris simultanément. Prendre le roxadustat à distance des sels de magnésium (plus de 1 heure, si possible).",
+    "missing_dci": "ROXADUSTAT"
+  },
+  {
+    "dci_a": "ROXITHROMYCINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'augmentation des concentrations sanguines de ciclosporine et de la créatininémie. Dosage des concentrations sanguines de la ciclosporine, contrôle de la fonction rénale et adaptation de la posologie pendant l'association et après l'arrêt du macrolide.",
+    "missing_dci": "ROXITHROMYCINE"
+  },
+  {
+    "dci_a": "ROXITHROMYCINE",
+    "dci_b": "MIDAZOLAM",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Majoration légère de la sédation.",
+    "missing_dci": "ROXITHROMYCINE"
+  },
+  {
+    "dci_a": "SALMETEROL",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation importante des concentrations de salmétérol par diminution de son métabolisme hépatique par l'itraconazole.",
+    "missing_dci": "SALMETEROL"
+  },
+  {
+    "dci_a": "SELEXIPAG",
+    "dci_b": "CLOPIDOGREL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des effets indésirables du sélexipag par diminution de son métabolisme. Surveillance clinique étroite pendant l’association. Réduire de moitié la posologie (une seule prise par jour).",
+    "missing_dci": "CLOPIDOGREL"
+  },
+  {
+    "dci_a": "SÉTRONS",
+    "dci_b": "APOMORPHINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Des hypotensions sévères et des pertes de connaissance ont été rapportées lors de l’association d’un sétron avec l’apomorphine.",
+    "missing_dci": "SÉTRONS"
+  },
+  {
+    "dci_a": "SILDENAFIL",
+    "dci_b": "OMBITASVIR + PARITAPRÉVIR",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation des concentrations plasmatiques du sildénafil par diminution de son métabolisme hépatique par la bithérapie.",
+    "missing_dci": "OMBITASVIR + PARITAPRÉVIR"
+  },
+  {
+    "dci_a": "SIMVASTATINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse par diminution du métabolisme de la simvastatine.",
+    "missing_dci": "SIMVASTATINE"
+  },
+  {
+    "dci_a": "SIROLIMUS",
+    "dci_b": "OMBITASVIR + PARITAPRÉVIR",
+    "severity": "DECONSEILLEE",
+    "description": "En association avec le ritonavir : augmentation significative des concentrations de l’immunosuppresseur avec risque de majoration Si l’association s’avère nécessaire, contrôle strict de la fonction rénale, de sa toxicité par la bithérapie. dosage des concentrations sanguines de l'immunosuppresseur et adaptation éventuelle de la posologie.",
+    "missing_dci": "OMBITASVIR + PARITAPRÉVIR"
+  },
+  {
+    "dci_a": "SIROLIMUS",
+    "dci_b": "VERAPAMIL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines du sirolimus (diminution de son métabolisme hépatique par le vérapamil). Dosage des concentrations sanguines de l’immunosuppresseur, contrôle de la fonction rénale et adaptation de la posologie pendant l’association et après son arrêt.",
+    "missing_dci": "VERAPAMIL"
+  },
+  {
+    "dci_a": "SOFOSBUVIR",
+    "dci_b": "AMIODARONE",
+    "severity": "DECONSEILLEE",
+    "description": "Survenue de bradycardie éventuellement brutale, pouvant avoir des conséquences fatales. Si l'association ne peut être évitée, surveillance clinique et ECG étroite, en particulier pendant les premières semaines de traitement. Une surveillance continue en milieu hospitalier est requise pendant les 48 heures qui suivent la co-adminsitration. Prendre en compte la longue demi-vie de l'amiodarone chez les patients l'ayant arrêtée au cours des derniers mois et qui doivent débuter un traitement contenant du sofosbuvir.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "SOFOSBUVIR",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque de diminution des concentrations plasmatiques de sofosbuvir par diminution de son absorption intestinale par le millepertuis.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "SORBITOL",
+    "dci_b": "POLYSTYRÈNE SULFONATE DE CALCIUM",
+    "severity": "CONTRE_INDICATION",
+    "description": "Par voie orale ou rectale du sorbitol ou de la résine, et pour une dose de sorbitol par prise >= 2,5 g chez l'enfant et 5 g chez l'adulte : Risque de nécrose colique, éventuellement fatale.",
+    "missing_dci": "POLYSTYRÈNE SULFONATE DE CALCIUM"
+  },
+  {
+    "dci_a": "SORBITOL",
+    "dci_b": "POLYSTYRÈNE SULFONATE DE SODIUM",
+    "severity": "CONTRE_INDICATION",
+    "description": "Par voie orale ou rectale du sorbitol ou de la résine, et pour une dose de sorbitol par prise >= 2,5 g chez l'enfant et 5 g chez l'adulte : Risque de nécrose colique, éventuellement fatale.",
+    "missing_dci": "POLYSTYRÈNE SULFONATE DE SODIUM"
+  },
+  {
+    "dci_a": "STAVUDINE",
+    "dci_b": "RIBAVIRINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de diminution de l'efficacité de chaque antiviral, par antagonisme compétitif de la réaction de phosphorylation à l'origine Surveillance clinique et biologique régulière, notamment en début des métabolites actifs. d'association.",
+    "missing_dci": "STAVUDINE"
+  },
+  {
+    "dci_a": "STAVUDINE",
+    "dci_b": "ZIDOVUDINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution de l'efficacité de chaque antiviral par antagoniste compétitif de la réaction de phosphorylation à l'origine des métabolites actifs.",
+    "missing_dci": "STAVUDINE"
+  },
+  {
+    "dci_a": "SUBSTRATS À RISQUE DU CYP3A4",
+    "dci_b": "CRIZOTINIB",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de majoration de la toxicité de ces molécules par diminution de leur métabolisme et/ou augmentation de leur biodisponibilité par le crizotinib.",
+    "missing_dci": "SUBSTRATS À RISQUE DU CYP3A4"
+  },
+  {
+    "dci_a": "SULFAMETHOXAZOLE",
+    "dci_b": "ANTIVITAMINES K",
+    "severity": "DECONSEILLEE",
+    "description": "Augmentation importante de l’effet de l’antivitamine K et du risque hémorragique. Si l’association ne peut être évitée, contrôle plus fréquent de l’INR et adaptation de la posologie de l’antivitamine K pendant le traitement par cotrimoxazole et après son arrêt.",
+    "missing_dci": "ANTIVITAMINES K"
+  },
+  {
+    "dci_a": "SULFINPYRAZONE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution des concentrations sanguines de ciclosporine par augmentation de son métabolisme par la sulfinpyrazone. Contrôle des concentrations sanguines de ciclosporine et adaptation éventuelle de sa posologie pendant le traitement par sulfinpyrazone et après son arrêt.",
+    "missing_dci": "SULFINPYRAZONE"
+  },
+  {
+    "dci_a": "SUNITINIB",
+    "dci_b": "GRAZOPREVIR + ELBASVIR",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des effets indésirables du sunitinib par le grazoprévir/elbasvir. Si l’association ne peut être évitée, surveillance clinique étroite.",
+    "missing_dci": "GRAZOPREVIR + ELBASVIR"
+  },
+  {
+    "dci_a": "SUXAMETHONIUM",
+    "dci_b": "ANTICHOLINESTÉRASIQUES",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque d'allongement du bloc moteur, majoré en cas de déficit partiel en pseudocholinestérase.",
+    "missing_dci": "ANTICHOLINESTÉRASIQUES"
+  },
+  {
+    "dci_a": "TACROLIMUS",
+    "dci_b": "AMINOSIDES",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation de la créatininémie plus importante que sous tacrolimus seul (synergie des effets néphrotoxiques des deux substances).",
+    "missing_dci": "AMINOSIDES"
+  },
+  {
+    "dci_a": "TACROLIMUS",
+    "dci_b": "AMIODARONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines de tacrolimus par inhibition de son métabolisme par l’amiodarone. Dosage des concentrations sanguines de tacrolimus, contrôle de la fonction rénale et adaptation de la posologie de tacrolimus pendant l’association et à l’arrêt de l’amiodarone.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "TACROLIMUS",
+    "dci_b": "AMPHOTERICINE B",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Avec l'amphotéricine B administrée par voie IV : augmentation de la créatininémie plus importante que sous tacrolimus seul (synergie des effets néphrotoxiques des deux substances).",
+    "missing_dci": "AMPHOTERICINE B"
+  },
+  {
+    "dci_a": "TACROLIMUS",
+    "dci_b": "ANTI-INFLAMMATOIRES NON STÉROÏDIENS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’addition des effets néphrotoxiques, notamment chez le sujet âgé. Surveiller la fonction rénale en début de traitement par l’AINS.",
+    "missing_dci": "ANTI-INFLAMMATOIRES NON STÉROÏDIENS"
+  },
+  {
+    "dci_a": "TACROLIMUS",
+    "dci_b": "CLINDAMYCINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution des concentrations sanguines de l'immunosuppresseur, avec risque de perte de l'activité immunosuppressive. Contrôle renforcé des dosages sanguins de tacrolimus et augmentation éventuelle de sa posologie.",
+    "missing_dci": "CLINDAMYCINE"
+  },
+  {
+    "dci_a": "TACROLIMUS",
+    "dci_b": "DABIGATRAN",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d'augmentation des concentrations plasmatiques de dabigatran.",
+    "missing_dci": "DABIGATRAN"
+  },
+  {
+    "dci_a": "TACROLIMUS",
+    "dci_b": "DANAZOL",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines du tacrolimus par inhibition de son métabolisme hépatique. Dosage des concentrations sanguines du tacrolimus et adaptation de sa posologie pendant l'association et après son arrêt, avec contrôle de la fonction rénale.",
+    "missing_dci": "DANAZOL"
+  },
+  {
+    "dci_a": "TALAZOPARIB",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations de talazoparib avec risque de majoration de la toxicité. Réduire la dose de talazoparib.",
+    "missing_dci": "TALAZOPARIB"
+  },
+  {
+    "dci_a": "TAMOXIFENE",
+    "dci_b": "DULOXETINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de baisse de l'efficacité du tamoxifène, par inhibition de la formation de son métabolite actif par la duloxétine.",
+    "missing_dci": "TAMOXIFENE"
+  },
+  {
+    "dci_a": "TÉDIZOLIDE",
+    "dci_b": "IMATINIB",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques de l'imatinib, par augmentation de son absorption avec le tédizolide administré par voie orale.",
+    "missing_dci": "TÉDIZOLIDE"
+  },
+  {
+    "dci_a": "TÉNOFOVIR ALAFÉNAMIDE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques du ténofovir alafénamide par augmentation de son absorption. En cas de co-administration avec la ciclosporine, la dose de ténofovir alafénamide doit être limitée à 10 mg par jour.",
+    "missing_dci": "TÉNOFOVIR ALAFÉNAMIDE"
+  },
+  {
+    "dci_a": "TENOFOVIR DISOPROXIL",
+    "dci_b": "LÉDIPASVIR",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Lors de sa co-administration avec un inhibiteur de protéase, augmentation des concentrations plasmatiques du ténofovir par le Surveillance clinique et biologique, notamment de la fonction rénale. lédipasvir.",
+    "missing_dci": "TENOFOVIR DISOPROXIL"
+  },
+  {
+    "dci_a": "TERBINAFINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution des concentrations sanguines de ciclosporine. Contrôle des concentrations sanguines de ciclosporine et adaptation éventuelle de sa posologie pendant le traitement par terbinafine et après son arrêt.",
+    "missing_dci": "TERBINAFINE"
+  },
+  {
+    "dci_a": "TETRABENAZINE",
+    "dci_b": "DULOXETINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation possiblement très importante de l’exposition des métabolites actifs de la tétrabénazine.",
+    "missing_dci": "TETRABENAZINE"
+  },
+  {
+    "dci_a": "THEOPHYLLINE",
+    "dci_b": "VÉMURAFÉNIB",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation importante des concentrations de théophylline, avec risques de majoration de ses effets indésirables. Surveillance clinique et adaptation de la posologie de la théophylline pendant le traitement par vémurafénib et après son arrêt.",
+    "missing_dci": "THEOPHYLLINE"
+  },
+  {
+    "dci_a": "TICAGRELOR",
+    "dci_b": "ACIDE ACETYLSALICYLIQUE",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration du risque hémorragique par addition des activités antiagrégantes plaquettaires. Association déconseillée : - en dehors des indications validées pour cette association dans les syndromes coronariens aigus. Précaution d'emploi : - dans les indications validées pour cette association dans les syndromes coronariens aigus. Surveillance clinique.",
+    "missing_dci": "ACIDE ACETYLSALICYLIQUE"
+  },
+  {
+    "dci_a": "TICAGRELOR",
+    "dci_b": "DABIGATRAN",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation des concentrations plasmatiques de dabigatran, avec majoration du risque de saignement.",
+    "missing_dci": "DABIGATRAN"
+  },
+  {
+    "dci_a": "TICAGRELOR",
+    "dci_b": "DILTIAZEM",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque d’augmentation des concentrations plasmatiques de ticagrelor par diminution de son métabolisme hépatique.",
+    "missing_dci": "DILTIAZEM"
+  },
+  {
+    "dci_a": "TICAGRELOR",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque de diminution importante des concentrations plasmatiques de ticagrelor par augmentation de son métabolisme hépatique par le millepertuis, avec diminution de son effet thérapeutique.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "TICAGRELOR",
+    "dci_b": "OMBITASVIR + PARITAPRÉVIR",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation des concentrations plasmatiques du ticagrélor par diminution de son métabolisme hépatique par la bithérapie.",
+    "missing_dci": "OMBITASVIR + PARITAPRÉVIR"
+  },
+  {
+    "dci_a": "TICAGRELOR",
+    "dci_b": "PAMPLEMOUSSE",
+    "severity": "DECONSEILLEE",
+    "description": "Doublement des concentrations plasmatiques de l'antiagrégant, avec risque de majoration des effets indésirables, notamment hémorragiques.",
+    "missing_dci": "PAMPLEMOUSSE"
+  },
+  {
+    "dci_a": "TICAGRELOR",
+    "dci_b": "RIFAMPICINE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution importante des concentrations plasmatiques de ticagrelor par augmentation de son métabolisme hépatique par la rifampicine, avec risque de diminution de l’effet thérapeutique.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "TICAGRELOR",
+    "dci_b": "VERAPAMIL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque d’augmentation des concentrations plasmatiques de ticagrelor par diminution de son métabolisme hépatique.",
+    "missing_dci": "VERAPAMIL"
+  },
+  {
+    "dci_a": "TICLOPIDINE",
+    "dci_b": "ACIDE ACETYLSALICYLIQUE",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration du risque hémorragique par addition des activités antiagrégantes plaquettaires. Si l’association ne peut être évitée, surveillance clinique étroite.",
+    "missing_dci": "ACIDE ACETYLSALICYLIQUE"
+  },
+  {
+    "dci_a": "TRABECTÉDINE",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques de la trabectedine par l’itraconazole. Si l’association est nécessaire, surveillance clinique et adaptation éventuelle de la posologie de la trabectedine pendant la durée du traitement par l’itraconazole.",
+    "missing_dci": "TRABECTÉDINE"
+  },
+  {
+    "dci_a": "TRAMADOL",
+    "dci_b": "DULOXETINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’inefficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur.",
+    "missing_dci": "TRAMADOL"
+  },
+  {
+    "dci_a": "TRIMETHOPRIME",
+    "dci_b": "METHOTREXATE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Augmentation de la toxicité hématologique du méthotrexate (diminution de son excrétion rénale ainsi qu'inhibition de la Contre-indication dihydrofolate réductase). - avec le méthotrexate utilisé à doses > 20 mg/semaine Association déconseillée - Avec le méthotrexate utilisé à des doses =< 20 mg/semaine",
+    "missing_dci": "METHOTREXATE"
+  },
+  {
+    "dci_a": "TRIMETHOPRIME",
+    "dci_b": "PYRIMETHAMINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Anémie mégaloblastique, plus particulièrement à fortes doses des deux produits (déficit en acide folique par l'association de deux 2-4 Contrôle régulier de l'hémogramme et association d'un traitement par diaminopyrimidines). l'acide folique (injections IM régulières).",
+    "missing_dci": "PYRIMETHAMINE"
+  },
+  {
+    "dci_a": "TRIMETHOPRIME",
+    "dci_b": "REPAGLINIDE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques de répaglinide par inhibition de son métabolisme hépatique par le Si l’association ne peut être évitée, surveillance clinique et biologique triméthoprime. étroite.",
+    "missing_dci": "REPAGLINIDE"
+  },
+  {
+    "dci_a": "ULIPRISTAL",
+    "dci_b": "ANTISÉCRÉTOIRES ANTIHISTAMINIQUES H2",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de diminution de l’effet de l’ulipristal, par diminution de son absorption.",
+    "missing_dci": "ANTISÉCRÉTOIRES ANTIHISTAMINIQUES H2"
+  },
+  {
+    "dci_a": "ULIPRISTAL",
+    "dci_b": "CYPROTERONE",
+    "severity": "DECONSEILLEE",
+    "description": "Dans l'indication contraception d'urgence de l'ulipristal : Antagonisme des effets de l’ulipristal en cas de reprise d’un Association déconseillée contraceptif hormonal moins de 5 jours après la prise de la Dans l'utilisation à visée contraceptive de la cyprotérone contraception d’urgence. - Dans l'indication contraception d'urgence de l'ulipristal Dans l’indication fibrome de l'ulipristal : Dans le cas où la (re)prise d’une contraception hormonale est Antagonisme réciproque des effets de l’ulipristal et du progestatif, envisagée, utiliser une contraception additionnelle de type mécanique avec risque d’inefficacité. pendant les 12 jours qui suivent la (dernière) prise de l’ulipristal (au cas où il y en aurait eu plus d’une). - Dans l’indication fibrome de l'ulipristal : Dans le cas où la (re)prise d’une contraception hormonale est envisagée, utiliser une contraception de type mécanique pendant les 7 premiers jours de la contraception hormonale. Association à prendre en compte Lorsque la cyprotérone n'est pas à visée contraceptive.",
+    "missing_dci": "CYPROTERONE"
+  },
+  {
+    "dci_a": "ULIPRISTAL",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution de l’effet de l’ulipristal, par augmentation de son métabolisme hépatique par l’inducteur. Préférer une alternative thérapeutique peu ou pas métabolisée.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "VANCOMYCINE",
+    "dci_b": "PIPÉRACILLINE+TAZOBACTAM",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration de la néphrotoxicité par comparaison à la vancomycine seule.",
+    "missing_dci": "PIPÉRACILLINE+TAZOBACTAM"
+  },
+  {
+    "dci_a": "VELPATASVIR",
+    "dci_b": "EFAVIRENZ",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution des concentrations de velpatasvir/sofosbuvir, avec possible retentissement sur l’efficacité.",
+    "missing_dci": "EFAVIRENZ"
+  },
+  {
+    "dci_a": "VÉMURAFÉNIB",
+    "dci_b": "BUPROPION",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de diminution des concentrations du bupropion, avec augmentation de son métabolite actif et toxicité majorée.",
+    "missing_dci": "BUPROPION"
+  },
+  {
+    "dci_a": "VÉMURAFÉNIB",
+    "dci_b": "ESTROPROGESTATIFS CONTRACEPTIFS",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution des concentrations des estroprogestatifs, avec pour conséquence un risque d’inefficacité.",
+    "missing_dci": "ESTROPROGESTATIFS CONTRACEPTIFS"
+  },
+  {
+    "dci_a": "VÉMURAFÉNIB",
+    "dci_b": "IMMUNOSUPPRESSEURS",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution des concentrations des immunosuppresseurs, avec pour conséquence un risque d’inefficacité.",
+    "missing_dci": "IMMUNOSUPPRESSEURS"
+  },
+  {
+    "dci_a": "VÉMURAFÉNIB",
+    "dci_b": "THEOPHYLLINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation importante des concentrations de théophylline, avec risques de majoration de ses effets indésirables. Surveillance clinique et adaptation de la posologie de la théophylline pendant le traitement par vémurafénib et après son arrêt.",
+    "missing_dci": "THEOPHYLLINE"
+  },
+  {
+    "dci_a": "VÉNÉTOCLAX",
+    "dci_b": "AMIODARONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des effets indésirables du vénétoclax par diminution de son métabolisme hépatique. Surveillance clinique et biologique régulière, notamment hématologique, et adaptation de la posologie du vénétoclax.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "VÉNÉTOCLAX",
+    "dci_b": "DILTIAZEM",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des effets indésirables du vénétoclax par diminution de son métabolisme hépatique. Surveillance clinique et biologique régulière, notamment hématologique, et adaptation de la posologie du vénétoclax.",
+    "missing_dci": "DILTIAZEM"
+  },
+  {
+    "dci_a": "VENLAFAXINE",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation des concentrations de venlafaxine avec risque de surdosage.",
+    "missing_dci": "VENLAFAXINE"
+  },
+  {
+    "dci_a": "VENLAFAXINE",
+    "dci_b": "VORICONAZOLE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation des concentrations de venlafaxine avec risque de surdosage.",
+    "missing_dci": "VENLAFAXINE"
+  },
+  {
+    "dci_a": "VISMODÉGIB",
+    "dci_b": "MILLEPERTUIS",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque de diminution des concentrations plasmatiques de vismodégib.",
+    "missing_dci": "MILLEPERTUIS"
+  },
+  {
+    "dci_a": "VORICONAZOLE",
+    "dci_b": "AMIODARONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes, par possible diminution du métabolisme de Surveillance clinique et ECG, et adaptation éventuelle de la posologie l’amiodarone. de l’amiodarone.",
+    "missing_dci": "AMIODARONE"
+  },
+  {
+    "dci_a": "VORICONAZOLE",
+    "dci_b": "ANTIVITAMINES K",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de l'effet de l'antivitamine K et du risque hémorragique par diminution de son métabolisme hépatique. Contrôle plus fréquent de l'INR. Adaptation éventuelle de la posologie de l'antivitamine K pendant le traitement par voriconazole et 8 jours après son arrêt.",
+    "missing_dci": "ANTIVITAMINES K"
+  },
+  {
+    "dci_a": "VORICONAZOLE",
+    "dci_b": "EFAVIRENZ",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de baisse de l'efficacité du voriconazole par augmentation de son métabolisme hépatique par l'efavirenz. Si l'association ne peut être évitée, surveillance clinique étroite et adaptation de la posologie du voriconazole et de l'éfavirenz pendant l'association.",
+    "missing_dci": "EFAVIRENZ"
+  },
+  {
+    "dci_a": "ZIDOVUDINE",
+    "dci_b": "AMPHOTERICINE B",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec l'amphotéricine B administrée par voie IV : augmentation de la toxicité hématologique (addition d'effets de toxicité médullaire). Contrôle plus fréquent de l'hémogramme.",
+    "missing_dci": "AMPHOTERICINE B"
+  },
+  {
+    "dci_a": "ZIDOVUDINE",
+    "dci_b": "DAPSONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la toxicité hématologique (addition d'effets de toxicité médullaire). Contrôle plus fréquent de l'hémogramme.",
+    "missing_dci": "DAPSONE"
+  },
+  {
+    "dci_a": "ZIDOVUDINE",
+    "dci_b": "FLUCYTOSINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la toxicité hématologique (addition d'effets de toxicité médullaire). Contrôle plus fréquent de l'hémogramme.",
+    "missing_dci": "FLUCYTOSINE"
+  },
+  {
+    "dci_a": "ZIDOVUDINE",
+    "dci_b": "GANCICLOVIR",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la toxicité hématologique (addition d'effets de toxicité médullaire). Arrêter de façon transitoire la zidovudine ; contrôler la NFS et réintroduire, si possible, la zidovudine à doses faibles.",
+    "missing_dci": "GANCICLOVIR"
+  },
+  {
+    "dci_a": "ZIDOVUDINE",
+    "dci_b": "RIFAMPICINE",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution de moitié des concentrations de la zidovudine par augmentation de son métabolisme par la rifampicine. Si l'association s'avère nécessaire, surveillance clinique et biologique renforcée.",
+    "missing_dci": "RIFAMPICINE"
+  },
+  {
+    "dci_a": "ZIDOVUDINE",
+    "dci_b": "STAVUDINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution de l'efficacité de chaque antiviral par antagoniste compétitif de la réaction de phosphorylation à l'origine des métabolites actifs.",
+    "missing_dci": "STAVUDINE"
+  },
+  {
+    "dci_a": "ZIDOVUDINE",
+    "dci_b": "VALPROMIDE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des effets indésirables, notamment hématologiques, de la zidovudine par diminution de son Surveillance clinique et biologique régulière. Un hémogramme à la métabolisme par l’acide valproïque. recherche d’une anémie devrait être réalisé au cours des deux premiers mois de l’association.",
+    "missing_dci": "VALPROMIDE"
+  },
+  {
+    "dci_a": "ZOLPIDEM",
+    "dci_b": "RIFAMPICINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution des concentrations plasmatiques et de l'efficacité du zolpidem par augmentation de son métabolisme hépatique par la Surveillance clinique. Utiliser éventuellement un autre hypnotique. rifampicine.",
+    "missing_dci": "RIFAMPICINE"
+  }
+]

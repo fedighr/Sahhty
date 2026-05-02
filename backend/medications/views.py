@@ -5,7 +5,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action, permission_classes
 from django.shortcuts import get_object_or_404
 from django.http import Http404
-from django.db import IntegrityError, DatabaseError
+from django.db import IntegrityError, DatabaseError, transaction
 from .models import Medication, MedicationDci, Treatment, TreatmentSchedule
 from patients.models import Patient
 from .serializers import MedicationSerializer, TreatmentSerializer, TreatmentWithSchedulesSerializer
@@ -63,44 +63,48 @@ def extract_dci_names(raw_dci, special_dcis):
 
     return [raw_dci]
 
+def safe_get(row, key):
+    val = row.get(key, None)
+    return val if pd.notna(val) else None
+
 class MedicationView(ViewSet):
     @action(detail=False, methods=['post'], url_path="create_medications", permission_classes=[AllowAny])
     def create_medications(self, request):
         try:
             current_folder = os.path.dirname(os.path.abspath(__file__))
-            file_path = os.path.join(current_folder, '..', 'sources', 'MED_CNAM.csv')
+            file_path = os.path.join(current_folder, '..', 'sources', 'new_medications.csv')
             dataset = pd.read_csv(file_path)
-            for index, row in dataset.iterrows():
-                print(str(index) +"/"+ str(len(dataset)))
-                medication_data = {
-                    'code': row['CODE_PCT'],
-                    'name': row['NAME_MAIN'] if pd.notna(row['NAME_MAIN']) else None,
-                    'commercial_name': row['NOM_COMMERCIAL'] if pd.notna(row['NOM_COMMERCIAL']) else None,
-                    'form': row['FORM'] if pd.notna(row['FORM']) else None,
-                    'dosage': row['STRENGTH'] if pd.notna(row['STRENGTH']) else None,
-                    'package': row['PACKAGE'] if pd.notna(row['PACKAGE']) else None,
-                    'public_price': row['PRIX_PUBLIC'] if pd.notna(row['PRIX_PUBLIC']) else None,
-                    'tarif_reference': row['TARIF_REFERENCE'] if pd.notna(row['TARIF_REFERENCE']) else None,
-                    'category': row['CATEGORIE'] if pd.notna(row['CATEGORIE']) else None,
-                    'dci': row['DCI'] if pd.notna(row['DCI']) else None,
-                    'prior_approval': row['AP'] if pd.notna(row['AP']) else None,
-                    
+            with transaction.atomic():
+                for index, row in dataset.iterrows():
+                    print(str(index) +"/"+ str(len(dataset)))
+                    medication_data = {
+                        'code': safe_get(row, 'CODE_PCT'),
+                        'name': safe_get(row, 'NAME_MAIN'),
+                        'commercial_name': safe_get(row, 'NAME_MAIN'),
+                        'form': safe_get(row, 'FORM'),
+                        'dosage': safe_get(row, 'STRENGTH'),
+                        'package': safe_get(row, 'PACKAGE'),
+                        'public_price': safe_get(row, 'PRIX_PUBLIC'),
+                        'tarif_reference': safe_get(row, 'TARIF_REFERENCE'),
+                        'category': safe_get(row, 'CATEGORIE'),
+                        'dci': safe_get(row, 'DCI'),
+                        'prior_approval': safe_get(row, 'AP'),
                     }
-                serializer = MedicationSerializer(data=medication_data)
-                if serializer.is_valid():
-                    serializer.save()
-                else:
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    serializer = MedicationSerializer(data=medication_data)
+                    if serializer.is_valid():
+                        serializer.save()
+                    else:
+                        raise Exception(serializer.errors)
             return Response({"message": "Medications created successfully"}, status=status.HTTP_201_CREATED)
         
         except FileNotFoundError:
             return Response({"error": "CSV file not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except IntegrityError:
             return Response({"error": "Database integrity error"}, status=status.HTTP_400_BAD_REQUEST)
         except DatabaseError:
             return Response({"error": "Database error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['post'], url_path="create_medications_dci", permission_classes=[AllowAny])
     def create_medications_dci(self, request):

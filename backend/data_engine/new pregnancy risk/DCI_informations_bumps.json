@@ -1,0 +1,277 @@
+[
+  {
+    "dci": "ACIDE NALIDIXIQUE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/nalidixic-acid/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "It is important to correctly treat an infection. Quinolone antibiotics can be used in pregnancy if recommended by your doctor.",
+      "Benefits": "",
+      "What are the benefits of using a quinolone antibiotic in pregnancy?": "Quinolones can treat many types of infection and prevent serious complications to both you and your baby.",
+      "Risks": "",
+      "What are the risks of using a quinolone antibiotic in pregnancy?": "There is no good evidence that use of a quinolone antibiotic in pregnancy will harm your baby. Quinolone antibiotics can cause serious side effects such as damage to joints and muscles, as well as effects on the nerves and mood changes. For this reason, they are usually only prescribed if there is no alternative treatment for a serious infection.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken a quinolone antibiotic?": "There is no evidence that quinolone antibiotics used by the father can harm the baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "BECLOMETHASONE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/beclometasone/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Inhaled corticosteroids should be continued throughout pregnancy to ensure that breathing problems do not occur.",
+      "Benefits": "",
+      "What are the benefits of using an inhaled corticosteroid in pregnancy?": "Inhaled corticosteroids reduce inflammation in the lungs and prevent breathing problems. This is particularly important during pregnancy to keep both the woman and her baby safe.",
+      "Risks": "",
+      "What are the risks of using an inhaled corticosteroid in pregnancy?": "There is no evidence that use of inhaled corticosteroids in pregnancy harms the baby.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has used an inhaled corticosteroid?": "There is no evidence that inhaled corticosteroids used by the father can harm the baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "BIPENICILLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/penicillins/",
+    "status": "fuzzy 95.23809523809523%",
+    "bumps_data": {
+      "Quick read": "It is important to correctly treat an infection. Amoxicillin, co-amoxiclav, and penicillin V can be taken in pregnancy if recommended by a doctor.",
+      "Benefits": "",
+      "What are the benefits of using a penicillin antibiotic in pregnancy?": "Penicillins can treat many types of infection and prevent serious complications to both you and your baby.",
+      "Risks": "",
+      "What are the risks of using a penicillin antibiotic in pregnancy?": "There are no concerns that use of a penicillin antibiotic in pregnancy will harm your baby.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken a penicillin antibiotic?": "There is no evidence that penicillin antibiotics used by the father can harm your baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "CHLORPHENAMINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/chlorphenamine/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Chlorphenamine can be used during pregnancy if recommended by a doctor.",
+      "Benefits": "",
+      "What are the benefits of using chlorphenamine in pregnancy?": "Chlorphenamine can also help you feel better if you have unpleasant symptoms caused by allergy.",
+      "Risks": "",
+      "Are there any risks of using chlorphenamine during pregnancy?": "No. The available information does not suggest that chlorphenamine causes any harm to you or your baby during pregnancy.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "Most women will be offered a scan at around 20 weeks of pregnancy to look for birth defects as part of their routine antenatal care. Using chlorphenamine in pregnancy would not normally require extra monitoring of your baby.",
+      "Are there any risks to my baby if the father has taken chlorphenamine?": "We do not expect any increased risk to your baby if the father takes chlorphenamine."
+    }
+  },
+  {
+    "dci": "CHOLESTYRAMINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/colestyramine/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Colestyramine can be used during pregnancy if needed.",
+      "Benefits": "",
+      "What are the benefits of taking colestyramine in pregnancy?": "Colestyramine treatment can improve the health and wellbeing of women with certain medical conditions. This can also be important for the unborn baby’s health. Colestyramine can prevent another medicine called leflunomide, which might cause birth defects, from reaching a baby in the womb.",
+      "Risks": "",
+      "Are there any risks of taking colestyramine in pregnancy?": "Colestyramine stays in your digestive system before being passed out in poo, so would not be expected to have direct effects on your baby. Colestyramine can reduce the levels of vitamins A, D, E, and K. Lack of vitamin K can stop your blood from clotting normally. If you are taking colestyramine you might be offered tests to check how well your blood is clotting, as well as vitamin supplements.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken colestyramine?": "We would not expect any increased risk to your baby if the father took colestyramine before or around the time you became pregnant."
+    }
+  },
+  {
+    "dci": "EVEROLIMUS",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/everolimus/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Everolimus can be used in pregnancy if recommended by a specialist.",
+      "Benefits": "",
+      "What are the benefits of taking everolimus in pregnancy?": "Everolimus helps to stop your body rejecting a transplanted organ. It can also stop or slow down tumour growth in people with certain cancers and TSC.",
+      "Risks": "",
+      "Are there any risks of taking everolimus during pregnancy?": "Very few pregnant women taking everolimus have been studied, and while no obvious problems have been noted, more women need to be studied to rule out any ill-effects.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "All pregnant women in the UK should be offered a detailed anomaly scan as part of their routine antenatal care. This is normally carried out at around 20 weeks of pregnancy but may be offered slightly earlier in women taking everolimus.",
+      "Are there any risks to my baby if the father has taken everolimus?": "We do not expect any increased risk to your baby if the father takes everolimus."
+    }
+  },
+  {
+    "dci": "HB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-b-vaccine/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Hepatitis B vaccine can be used in pregnancy.",
+      "Benefits": "",
+      "What are the benefits of hepatitis B vaccination in pregnancy?": "Vaccination reduces your risk of catching hepatitis B and therefore avoids complications for you and your baby.",
+      "Risks": "",
+      "What are the risks of hepatitis B vaccination during pregnancy?": "There are no known risks of being vaccinated against hepatitis B during pregnancy. The Department of Health in the UK recommends that hepatitis B vaccine can be given to pregnant women if required.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "Women in the UK will be offered a detailed scan at around 20 weeks of pregnancy as part of routine antenatal care. Vaccination against hepatitis B in pregnancy is not expected to cause problems that would require any extra monitoring of your baby.",
+      "Are there any risks to my baby if the father has been vaccinated against hepatitis B?": "We would not expect any increased risk to your baby if the father received a hepatitis B vaccination around the time of conception."
+    }
+  },
+  {
+    "dci": "IMATINIB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/imatinib/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Imatinib used in early pregnancy might cause a baby to have birth defects but stopping imatinib could cause cancer to come back. A doctor will advise on the risks and benefits for each woman.",
+      "Benefits": "",
+      "What are the benefits of taking imatinib in pregnancy?": "Imatinib can be an effective treatment for leukaemia and other types of cancer. Continued imatinib treatment could help to prevent cancer from returning.",
+      "Risks": "",
+      "Are there any risks of taking imatinib in pregnancy?": "Possibly. Around 250 women taking imatinib in early pregnancy have been studied. While most of their babies were healthy, a small number had a similar pattern of birth defects. This suggests that in rare cases, imatinib might affect the unborn baby’s development.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has used imatinib?": "We do not expect any increased risk to the baby if the father took imatinib before or around the time you became pregnant."
+    }
+  },
+  {
+    "dci": "INTERFERON BETA-1A",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/interferon-beta/",
+    "status": "fuzzy 90.9090909090909%",
+    "bumps_data": {
+      "Quick read": "Interferon beta can be used during pregnancy if recommended by a specialist.",
+      "Benefits": "",
+      "What are the benefits of using interferon beta in pregnancy?": "Interferon beta reduces the symptoms of MS, allowing you to stay healthy and carry on your daily life during pregnancy and while looking after your baby. Interferon beta can also help slow down the nerve damage caused by MS.",
+      "Risks": "",
+      "What are the risks of using interferon beta in pregnancy?": "Interferon beta is used by many women during pregnancy and there are no concerns that it can harm your baby. Taking interferon beta in pregnancy has been linked to a higher chance of preterm delivery. This is not thought to be a direct effect of interferon beta and is because women with MS are more likely to opt for their baby to be delivered earlier.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "As part of routine antenatal care, most women will be offered a scan at around 20 weeks of pregnancy to check the baby’s wellbeing. Use of interferon beta is not expected to cause problems that would require specialist scans, although extra growth scans may be needed in women with MS.",
+      "Are there any risks to my baby if the father has used interferon beta?": "A small number of pregnancies in which the father used interferon beta around the time of conception have been studied. There is no evidence that interferon beta can harm the baby through effects on the sperm, and most experts agree that this is unlikely."
+    }
+  },
+  {
+    "dci": "LENALIDOMIDE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/lenalidomide/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Lenalidomide should never be used in pregnancy as it may cause serious birth defects in the baby.",
+      "Will my baby need extra monitoring during pregnancy?": "Most women will be offered a scan at around 20 weeks of pregnancy to look for birth defects as part of their routine antenatal care. Women who have taken lenalidomide in the month before pregnancy or during the first trimester and who decide to continue with their pregnancy will be offered more detailed anomaly scans and additional monitoring of the baby’s growth and wellbeing.",
+      "Are there any risks to my baby if the father has taken lenalidomide?": "When a man takes lenalidomide, small amounts enter his semen. Men taking lenalidomide are therefore advised to use condoms during sexual contact with a woman who is or could become pregnant because lenalidomide present in semen may pose a risk to a developing baby."
+    }
+  },
+  {
+    "dci": "MENTHOL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/menthol/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "The small amount of essential oil in shop-bought toiletries and some food items will not harm the unborn baby. Essential oils are commonly used in a diluted form in pregnancy massage with no problems, but a few types of oil should be avoided due to a hypothetical risk that they might affect the baby."
+    }
+  },
+  {
+    "dci": "ONDANSETRONE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ondansetron/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Ondansetron can be used to treat pregnancy sickness that is stopping you from living your normal life.",
+      "Benefits": "",
+      "What are the benefits of taking ondansetron in pregnancy?": "Ondansetron can work very well to treat nausea and vomiting and can help with severe pregnancy sickness (known as hyperemesis gravidarum). It often works when other medicines have not helped and might be used at the same time as other anti-sickness drugs. Good treatment for pregnancy sickness can help you to feel better and allow you to carry out your everyday activities. Treatment can prevent complications from nausea and vomiting, including dehydration (when you don’t have enough water in your body), because you can’t drink normally or if you are being sick a lot.",
+      "Risks": "",
+      "Are there any risks of taking ondansetron during pregnancy?": "Some studies have suggested that heart defects and cleft lip and palate may be slightly more common in babies exposed to ondansetron in early pregnancy. It is clear that these risks are very low, and most babies exposed in the womb to ondansetron do not have these birth defects. Ondansetron used from around week 11 of pregnancy would not be able to cause these problems as at this stage as the baby is fully developed. There are no concerns that ondansetron use in pregnancy affects the chance of miscarriage, stillbirth, preterm delivery or low infant birth weight.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "All pregnant women in the UK should be offered a very detailed anomaly scan at around 20 weeks of pregnancy as part of their routine antenatal care. No extra monitoring for major birth defects is required following ondansetron use in pregnancy."
+    }
+  },
+  {
+    "dci": "RIBAVIRINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ribavirin/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Ribavirin is occasionally prescribed during pregnancy if there is no better option to treat a severe viral infection.",
+      "Benefits": "",
+      "What are the benefits of taking ribavirin in pregnancy?": "Ribavirin can prevent life-threatening complications of a severe viral infection.",
+      "Risks": "",
+      "Are there any risks of taking ribavirin during pregnancy?": "Ribavirin use in pregnancy is not well-studied. While reports of a small number of human pregnancies do not suggest that ribavirin causes birth defects, much more research is required to confirm that it is safe. Use after the first trimester will not cause a birth defect as your baby is fully developed by this stage of pregnancy.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "All pregnant women in the UK are offered a very detailed anomaly scan at around 20 weeks of pregnancy as part of their routine antenatal care. If you have been given ribavirin in the first trimester, you might be offered your 20-week scan slightly earlier.",
+      "Are there any risks to my baby if the father has taken ribavirin?": "Ribavirin works by causing genetic mutations and so, in theory, it might affect sperm production. A small number of reports do not suggest that use in fathers around the time of conception harms the baby but much more research is required to confirm this. As a precaution, men using ribavirin are asked to wait at least seven months after finishing treatment before fathering a pregnancy. Men who take ribavirin and have a pregnant partner should use condoms to prevent their partner from being exposed to ribavirin through semen."
+    }
+  },
+  {
+    "dci": "SILDENAFIL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sildenafil/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Sildenafil is sometimes used in pregnancy to treat pulmonary arterial hypertension (PAH).",
+      "Benefits": "",
+      "What are the benefits of taking sildenafil in pregnancy?": "Women with PAH are usually recommended to avoid pregnancy due to a high risk of life-threatening complications. If a woman with pulmonary arterial hypertension becomes pregnant treatment with sildenafil can lower the risk of complications.",
+      "Risks": "",
+      "Are there any risks of taking sildenafil in pregnancy?": "There are no clear risks of taking sildenafil in pregnancy.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken sildenafil?": "We would not expect any increased risk to your baby if the father took sildenafil before or around the time your baby was conceived (note: sildenafil [e.g. Viagra® and Vizarsin] is also a treatment for erectile dysfunction in males)."
+    }
+  },
+  {
+    "dci": "SIROLIMUS",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sirolimus/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Sirolimus can be used in pregnancy if recommended by a specialist.",
+      "Benefits": "",
+      "What are the benefits of taking sirolimus in pregnancy?": "Sirolimus reduces the chance of organ rejection in people with a kidney transplant. It can also slow the progression of sporadic lymphangioleiomyomatosis. Both of these can be life-threatening and can lead to pregnancy complications.",
+      "Risks": "",
+      "Are there any risks of taking sirolimus during pregnancy?": "Very few pregnant women taking sirolimus have been studied, and while no obvious problems have been noted, more women need to be studied to rule out any ill-effects.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "All pregnant women in the UK should be offered a detailed anomaly scan as part of their routine antenatal care. This is normally carried out at around 20 weeks of pregnancy but may be offered slightly earlier in women taking sirolimus.",
+      "Are there any risks to my baby if the father has taken sirolimus?": "We do not expect any increased risk to your baby if the father takes sirolimus."
+    }
+  },
+  {
+    "dci": "TACILIZUMAB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tocilizumab/",
+    "status": "exact",
+    "bumps_data": {
+      "Benefits": "",
+      "What are the benefits of using tocilizumab in pregnancy?": "Tocilizumab reduces inflammation in rheumatoid arthritis by stopping your immune system from attacking your body’s tissues. This is important to reduce unpleasant symptoms and prevent long-term joint damage. Tocilizumab may also lower the chance of some pregnancy problems linked to uncontrolled inflammation, including miscarriage and lower infant birth weight. Tocilizumab can help people who are in hospital with severe COVID-19 to recover more quickly.",
+      "Risks": "",
+      "What are the risks of using tocilizumab in pregnancy?": "Tocilizumab does not cross the placenta in the first trimester so will not directly affect your baby’s development. Only around 50 women using tocilizumab in later pregnancy have been studied. No problems were identified but further research is ideally required. Tocilizumab used in later pregnancy can affect the baby’s immune system for several months after birth. Live vaccines should be avoided during this time. This means that the baby will not be offered vaccination against rotavirus (as this needs to be completed by four months of age) and is unlikely to be offered the BCG vaccine (if required) until they are at least six months old. A doctor will be able to advise about the best time for your baby to be given any live vaccinations.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has used tocilizumab?": "There is currently no evidence that tocilizumab used by the father can harm your baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "TIGECYCLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tigecycline/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "It is very important to correctly treat an infection. A tetracycline can be used in pregnancy if a doctor recommends it.",
+      "Benefits": "",
+      "What are the benefits of using a tetracycline in pregnancy?": "A tetracycline can treat many types of bacterial infection and prevent serious complications for both the woman and her baby. Doxycycline can prevent malaria. This is important as malaria infection can be life-threatening and has been linked to stillbirth, preterm delivery, low infant birth weight, and death of the baby after birth.",
+      "Risks": "",
+      "What are the risks of using a tetracycline in pregnancy?": "Tetracycline use in early pregnancy is not known to harm the baby. Tetracyclines tend to be avoided after about 13 weeks of pregnancy as they can affect the baby’s developing milk teeth, causing them to be discoloured when they come through. However, a tetracycline may occasionally be used after 13 weeks of pregnancy if it is the only suitable antibiotic to treat a serious infection.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken a tetracycline?": "There is no evidence that tetracycline used by the father can harm the baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "TRASTUZUMAB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/trastuzumab/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Trastuzumab is not usually recommended in pregnancy. When used in later pregnancy it can reduce the levels of amniotic fluid around your baby.",
+      "Benefits": "",
+      "What are the benefits of using trastuzumab in pregnancy?": "Trastuzumab can reduce the growth of some types of tumours. Trastuzumab is only used in pregnancy when the benefits to your health outweigh the possible risks to the baby.",
+      "Risks": "",
+      "What are the risks of using trastuzumab in pregnancy?": "Very few pregnant women taking trastuzumab have been studied. The available information does not link trastuzumab used in early pregnancy to miscarriage or birth defects, but more information is required to confirm these findings. Trastuzumab used in later pregnancy can reduce the amount of fluid around your unborn baby. This can cause problems with your baby’s lungs and kidneys. It also increases the chance of preterm birth, which can also cause complications for your baby.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has used trastuzumab?": "There is currently no evidence that trastuzumab used by the father can harm the baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "VACCIN CONTRE DE L'HEPATITE A",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-a-vaccine/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Hepatitis A vaccine can be given in pregnancy.",
+      "Benefits": "",
+      "What are the benefits of hepatitis A vaccination in pregnancy?": "Hepatitis A vaccines reduce the risk of catching hepatitis A and can therefore prevent complications from the virus for both you and your baby. Types of hepatitis A vaccine available in the UK include Avaxim®, Havrix®, and VAQTA®.",
+      "Risks": "",
+      "What are the risks of hepatitis A vaccination during pregnancy?": "There are no known risks of being vaccinated against hepatitis A during pregnancy. The Department of Health in the UK recommends that hepatitis A vaccine can be given to pregnant women if required.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "Women in the UK are offered a very detailed scan at around 20 weeks of pregnancy as part of routine antenatal care. Vaccination against hepatitis A in pregnancy is not expected to cause problems that would require any extra monitoring of your baby.",
+      "Are there any risks to my baby if the father has been vaccinated against hepatitis A?": "We do not expect any increased risk to your baby if the father received a hepatitis A vaccination around the time of conception."
+    }
+  },
+  {
+    "dci": "VITAMINE B12",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/vitamin-b12/",
+    "status": "exact",
+    "bumps_data": {
+      "Benefits": "",
+      "What are the benefits of using vitamin B12 in pregnancy?": "It is important to correct a diagnosed vitamin B12 deficiency for the health of both you and your baby. Taking vitamin B12 can help prevent and treat anaemia (where oxygen-carrying red blood cells do not function correctly) and symptoms including extreme tiredness, weakness, mouth ulcers, pins and needles, and eyesight, psychological, and memory problems. Without treatment, some of these problems can become permanent. Vitamin B12 treatment can help with the normal development of your baby in the womb. This is because a B12 deficiency in pregnancy can increase the chance of your baby having a neural tube defect such as spina bifida.",
+      "Risks": "",
+      "What are the risks of using vitamin B12 in pregnancy?": "There are no known risks.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has used vitamin B12?": "There is currently no evidence that vitamin B12 used by the father can harm the baby through effects on the sperm, and we would not expect any adverse effects."
+    }
+  }
+]

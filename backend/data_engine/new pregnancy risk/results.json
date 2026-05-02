@@ -1,0 +1,812 @@
+[
+  {
+    "dci": "ACETYLCYSTEINE",
+    "url": "https://www.lecrat.fr/4702/",
+    "status": "fuzzy(93%)",
+    "matched_name": "N-Acétylcystéine"
+  },
+  {
+    "dci": "ACETYLLEUCINE",
+    "url": "https://www.lecrat.fr/6769/",
+    "status": "exact"
+  },
+  {
+    "dci": "ACIDE AZELAIQUE",
+    "url": "https://www.lecrat.fr/6347/",
+    "status": "exact"
+  },
+  {
+    "dci": "ADALIMUMAB",
+    "url": "https://www.lecrat.fr/5103/",
+    "status": "exact"
+  },
+  {
+    "dci": "AMBROXOL",
+    "url": "https://www.lecrat.fr/4713/",
+    "status": "exact"
+  },
+  {
+    "dci": "AMIKACINE",
+    "url": "https://www.lecrat.fr/7705/",
+    "status": "exact"
+  },
+  {
+    "dci": "APIXABAN",
+    "url": "https://www.lecrat.fr/6187/",
+    "status": "exact"
+  },
+  {
+    "dci": "APREPITANT",
+    "url": "https://www.lecrat.fr/11638/",
+    "status": "exact"
+  },
+  {
+    "dci": "ARTICAINE",
+    "url": "https://www.lecrat.fr/8314/",
+    "status": "exact"
+  },
+  {
+    "dci": "BETAHISTINE",
+    "url": "https://www.lecrat.fr/6774/",
+    "status": "exact"
+  },
+  {
+    "dci": "BUPRENORPHINE",
+    "url": "https://www.lecrat.fr/12748/",
+    "status": "exact"
+  },
+  {
+    "dci": "C",
+    "url": "https://www.lecrat.fr/9427/",
+    "status": "vaccin-match",
+    "matched_name": "Vaccin contre la Covid 19"
+  },
+  {
+    "dci": "CARBOCISTEINE",
+    "url": "https://www.lecrat.fr/4720/",
+    "status": "exact"
+  },
+  {
+    "dci": "CARTEOL",
+    "url": "https://www.lecrat.fr/9916/",
+    "status": "fuzzy-groq-confirmed(88%)",
+    "matched_name": "Cartéolol"
+  },
+  {
+    "dci": "CASPOFUNGINE",
+    "url": "https://www.lecrat.fr/10232/",
+    "status": "exact"
+  },
+  {
+    "dci": "CEFALEXINE",
+    "url": "https://www.lecrat.fr/13208/",
+    "status": "exact"
+  },
+  {
+    "dci": "CEFTAZIDIME",
+    "url": "https://www.lecrat.fr/3626/",
+    "status": "exact"
+  },
+  {
+    "dci": "CEFTOLOZANE",
+    "url": "https://www.lecrat.fr/13380/",
+    "status": "exact"
+  },
+  {
+    "dci": "CEFTRIAXONE",
+    "url": "https://www.lecrat.fr/3635/",
+    "status": "exact"
+  },
+  {
+    "dci": "CERTOLIZUMAB",
+    "url": "https://www.lecrat.fr/3072/",
+    "status": "exact"
+  },
+  {
+    "dci": "CHLORHYDRATE D'AZELASTINE",
+    "url": "https://www.lecrat.fr/21030/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Dymista®"
+  },
+  {
+    "dci": "CHLORHYDRATE DE METFORMINE",
+    "url": "https://www.lecrat.fr/8992/",
+    "status": "exact"
+  },
+  {
+    "dci": "CHLOROQUINE",
+    "url": "https://www.lecrat.fr/6452/",
+    "status": "exact"
+  },
+  {
+    "dci": "CHLORPHENIRAMINE",
+    "url": "https://www.lecrat.fr/6800/",
+    "status": "fuzzy(91%)",
+    "matched_name": "Dexchlorphéniramine"
+  },
+  {
+    "dci": "CICLESONIDE",
+    "url": "https://www.lecrat.fr/8093/",
+    "status": "exact"
+  },
+  {
+    "dci": "CICLOSPORINE",
+    "url": "https://www.lecrat.fr/8945/",
+    "status": "exact"
+  },
+  {
+    "dci": "CLODRONATE",
+    "url": "https://www.lecrat.fr/7462/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Acide clodronique"
+  },
+  {
+    "dci": "CLOXACILLINE",
+    "url": "https://www.lecrat.fr/13319/",
+    "status": "exact"
+  },
+  {
+    "dci": "CYCLOPHOSPHAMIDE",
+    "url": "https://www.lecrat.fr/8912/",
+    "status": "exact"
+  },
+  {
+    "dci": "DEXTROMETHORPHANE",
+    "url": "https://www.lecrat.fr/4695/",
+    "status": "exact"
+  },
+  {
+    "dci": "DIENOGEST",
+    "url": "https://www.lecrat.fr/11443/",
+    "status": "exact"
+  },
+  {
+    "dci": "DIMETHYLE FUMARATE",
+    "url": "https://www.lecrat.fr/9199/",
+    "status": "fuzzy(97%)",
+    "matched_name": "Diméthyl fumarate"
+  },
+  {
+    "dci": "DOXYLAMINE",
+    "url": "https://www.lecrat.fr/3405/",
+    "status": "exact"
+  },
+  {
+    "dci": "DROSPIRENONE",
+    "url": "https://www.lecrat.fr/11401/",
+    "status": "exact"
+  },
+  {
+    "dci": "DULOXETINE",
+    "url": "https://www.lecrat.fr/4078/",
+    "status": "exact"
+  },
+  {
+    "dci": "ERTAPENEM",
+    "url": "https://www.lecrat.fr/13284/",
+    "status": "exact"
+  },
+  {
+    "dci": "ETANERCEPT",
+    "url": "https://www.lecrat.fr/5140/",
+    "status": "exact"
+  },
+  {
+    "dci": "ETIFOXINE",
+    "url": "https://www.lecrat.fr/7017/",
+    "status": "exact"
+  },
+  {
+    "dci": "FILGRASTIM",
+    "url": "https://www.lecrat.fr/20635/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "G-CSF"
+  },
+  {
+    "dci": "FINGOLIMOD",
+    "url": "https://www.lecrat.fr/9216/",
+    "status": "exact"
+  },
+  {
+    "dci": "FLUOCINOLONE",
+    "url": "https://www.lecrat.fr/5039/",
+    "status": "exact"
+  },
+  {
+    "dci": "FUROATE DE FLUTICASONE",
+    "url": "https://www.lecrat.fr/8107/",
+    "status": "exact"
+  },
+  {
+    "dci": "GESTODENE",
+    "url": "https://www.lecrat.fr/11372/",
+    "status": "exact"
+  },
+  {
+    "dci": "GLATIRAMERE",
+    "url": "https://www.lecrat.fr/9218/",
+    "status": "exact"
+  },
+  {
+    "dci": "GOLIMUMAB",
+    "url": "https://www.lecrat.fr/5129/",
+    "status": "exact"
+  },
+  {
+    "dci": "GOMME DE STERCULIA",
+    "url": "https://www.lecrat.fr/8720/",
+    "status": "exact"
+  },
+  {
+    "dci": "GRANISETRON",
+    "url": "https://www.lecrat.fr/11636/",
+    "status": "exact"
+  },
+  {
+    "dci": "HEPARINE SODIQUE",
+    "url": "https://www.lecrat.fr/6614/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Héparines (HBPM et HNF)"
+  },
+  {
+    "dci": "HOMEOPATHIE",
+    "url": "https://www.lecrat.fr/1048/",
+    "status": "exact"
+  },
+  {
+    "dci": "HUILE DE PARAFFINE",
+    "url": "https://www.lecrat.fr/8787/",
+    "status": "exact"
+  },
+  {
+    "dci": "HUILE ESSENTIEL",
+    "url": "https://www.lecrat.fr/12143/",
+    "status": "fuzzy-groq-confirmed(88%)",
+    "matched_name": "Huiles essentielles"
+  },
+  {
+    "dci": "HYDROXYCARBAMIDE",
+    "url": "https://www.lecrat.fr/11769/",
+    "status": "exact"
+  },
+  {
+    "dci": "IBUPROFENE",
+    "url": "https://www.lecrat.fr/15292/",
+    "status": "exact"
+  },
+  {
+    "dci": "IMIPENEM",
+    "url": "https://www.lecrat.fr/13283/",
+    "status": "exact"
+  },
+  {
+    "dci": "IMIQUIMOD",
+    "url": "https://www.lecrat.fr/10904/",
+    "status": "exact"
+  },
+  {
+    "dci": "INFLIXIMAB",
+    "url": "https://www.lecrat.fr/5115/",
+    "status": "exact"
+  },
+  {
+    "dci": "INTERFERON BETA 1 B",
+    "url": "https://www.lecrat.fr/9197/",
+    "status": "fuzzy-groq-confirmed(88%)",
+    "matched_name": "Interféron bêta"
+  },
+  {
+    "dci": "IODIXANOL",
+    "url": "https://www.lecrat.fr/9780/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Produits de contraste iodés hydrosolubles"
+  },
+  {
+    "dci": "IOHEXOL",
+    "url": "https://www.lecrat.fr/9780/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Produits de contraste iodés hydrosolubles"
+  },
+  {
+    "dci": "IOPROMIDE",
+    "url": "https://www.lecrat.fr/9780/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Produits de contraste iodés hydrosolubles"
+  },
+  {
+    "dci": "ISOFLURANE",
+    "url": "https://www.lecrat.fr/8381/",
+    "status": "exact"
+  },
+  {
+    "dci": "ISPAGHUL",
+    "url": "https://www.lecrat.fr/8734/",
+    "status": "exact"
+  },
+  {
+    "dci": "ITRACONAZOLE",
+    "url": "https://www.lecrat.fr/10228/",
+    "status": "exact"
+  },
+  {
+    "dci": "IVERMECTINE",
+    "url": "https://www.lecrat.fr/7600/",
+    "status": "exact"
+  },
+  {
+    "dci": "JOSAMYCINE",
+    "url": "https://www.lecrat.fr/13438/",
+    "status": "exact"
+  },
+  {
+    "dci": "LACTULOSE",
+    "url": "https://www.lecrat.fr/8775/",
+    "status": "exact"
+  },
+  {
+    "dci": "LENOGRASTIM",
+    "url": "https://www.lecrat.fr/20635/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "G-CSF"
+  },
+  {
+    "dci": "LYMECYCLINE",
+    "url": "https://www.lecrat.fr/6391/",
+    "status": "exact"
+  },
+  {
+    "dci": "MECLOZINE",
+    "url": "https://www.lecrat.fr/6733/",
+    "status": "exact"
+  },
+  {
+    "dci": "MEGESTROL",
+    "url": "https://www.lecrat.fr/11370/",
+    "status": "fuzzy(90%)",
+    "matched_name": "Nomégestrol"
+  },
+  {
+    "dci": "MEPIVACAINE",
+    "url": "https://www.lecrat.fr/8335/",
+    "status": "exact"
+  },
+  {
+    "dci": "MERCAPTOPURINE",
+    "url": "https://www.lecrat.fr/16668/",
+    "status": "exact"
+  },
+  {
+    "dci": "METHYLPHENIDATE",
+    "url": "https://www.lecrat.fr/9150/",
+    "status": "exact"
+  },
+  {
+    "dci": "MIFEPRISTONE",
+    "url": "https://www.lecrat.fr/3351/",
+    "status": "exact"
+  },
+  {
+    "dci": "MINOXIDIL",
+    "url": "https://www.lecrat.fr/9324/",
+    "status": "exact"
+  },
+  {
+    "dci": "MOXIFLOXACINE",
+    "url": "https://www.lecrat.fr/13192/",
+    "status": "exact"
+  },
+  {
+    "dci": "MUPIROCINE",
+    "url": "https://www.lecrat.fr/8864/",
+    "status": "exact"
+  },
+  {
+    "dci": "NALBUPHINE",
+    "url": "https://www.lecrat.fr/11746/",
+    "status": "exact"
+  },
+  {
+    "dci": "NATALIZUMAB",
+    "url": "https://www.lecrat.fr/9220/",
+    "status": "exact"
+  },
+  {
+    "dci": "NORAMIDOPYRINE",
+    "url": "https://www.lecrat.fr/11771/",
+    "status": "exact"
+  },
+  {
+    "dci": "O",
+    "url": "https://www.lecrat.fr/9579/",
+    "status": "vaccin-match",
+    "matched_name": "Vaccin oreillons"
+  },
+  {
+    "dci": "OCRELIZUMAB",
+    "url": "https://www.lecrat.fr/9201/",
+    "status": "exact"
+  },
+  {
+    "dci": "OMALIZUMAB",
+    "url": "https://www.lecrat.fr/4948/",
+    "status": "exact"
+  },
+  {
+    "dci": "OPIUM",
+    "url": "https://www.lecrat.fr/11750/",
+    "status": "exact"
+  },
+  {
+    "dci": "OSELTAMIVIR",
+    "url": "https://www.lecrat.fr/8566/",
+    "status": "exact"
+  },
+  {
+    "dci": "OXACILLINE",
+    "url": "https://www.lecrat.fr/13325/",
+    "status": "exact"
+  },
+  {
+    "dci": "OXELADINE",
+    "url": "https://www.lecrat.fr/11899/",
+    "status": "exact"
+  },
+  {
+    "dci": "OXOMEMAZINE",
+    "url": "https://www.lecrat.fr/11893/",
+    "status": "exact"
+  },
+  {
+    "dci": "OXYBUTYNINE",
+    "url": "https://www.lecrat.fr/11915/",
+    "status": "exact"
+  },
+  {
+    "dci": "P",
+    "url": "https://www.lecrat.fr/9581/",
+    "status": "vaccin-match",
+    "matched_name": "Vaccin pneumocoque"
+  },
+  {
+    "dci": "PAMIDRONATE",
+    "url": "https://www.lecrat.fr/7490/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Acide pamidronique"
+  },
+  {
+    "dci": "PEGFILGRASTIM",
+    "url": "https://www.lecrat.fr/20635/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "G-CSF"
+  },
+  {
+    "dci": "PICOSULFATE DE SODIUM",
+    "url": "https://www.lecrat.fr/8837/",
+    "status": "exact"
+  },
+  {
+    "dci": "PIPERACILLINE",
+    "url": "https://www.lecrat.fr/13267/",
+    "status": "exact"
+  },
+  {
+    "dci": "PRODUITS HOMEOPATHIQUES",
+    "url": "https://www.lecrat.fr/1048/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Homéopathie"
+  },
+  {
+    "dci": "PYRAZINAMIDE",
+    "url": "https://www.lecrat.fr/8432/",
+    "status": "exact"
+  },
+  {
+    "dci": "QUININE",
+    "url": "https://www.lecrat.fr/10590/",
+    "status": "exact"
+  },
+  {
+    "dci": "RITUXIMAB",
+    "url": "https://www.lecrat.fr/10810/",
+    "status": "exact"
+  },
+  {
+    "dci": "RIVAROXABAN",
+    "url": "https://www.lecrat.fr/6164/",
+    "status": "exact"
+  },
+  {
+    "dci": "RU",
+    "url": "https://www.lecrat.fr/9638/",
+    "status": "vaccin-match",
+    "matched_name": "Vaccin rubéole"
+  },
+  {
+    "dci": "SECUKINUMAB",
+    "url": "https://www.lecrat.fr/10837/",
+    "status": "exact"
+  },
+  {
+    "dci": "SELS MINERAUX",
+    "url": "https://www.lecrat.fr/6356/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Gluconate de zinc"
+  },
+  {
+    "dci": "SORBITOL",
+    "url": "https://www.lecrat.fr/8846/",
+    "status": "exact"
+  },
+  {
+    "dci": "SOUFRE",
+    "url": "https://www.lecrat.fr/9127/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Thiocolchicoside"
+  },
+  {
+    "dci": "T",
+    "url": "https://www.lecrat.fr/9640/",
+    "status": "vaccin-match",
+    "matched_name": "Vaccin tétanos"
+  },
+  {
+    "dci": "TACROLIMUS",
+    "url": "https://www.lecrat.fr/8924/",
+    "status": "exact"
+  },
+  {
+    "dci": "TARTRATE DE BRIMONIDINE",
+    "url": "https://www.lecrat.fr/9937/",
+    "status": "exact"
+  },
+  {
+    "dci": "TAZOBACTAM",
+    "url": "https://www.lecrat.fr/13264/",
+    "status": "exact"
+  },
+  {
+    "dci": "TEICOPLANINE",
+    "url": "https://www.lecrat.fr/13214/",
+    "status": "exact"
+  },
+  {
+    "dci": "TERIFLUNOMIDE",
+    "url": "https://www.lecrat.fr/10803/",
+    "status": "exact"
+  },
+  {
+    "dci": "TOCILIZUMAB",
+    "url": "https://www.lecrat.fr/10790/",
+    "status": "exact"
+  },
+  {
+    "dci": "TOXINE BOTULINIQUE",
+    "url": "https://www.lecrat.fr/20887/",
+    "status": "exact"
+  },
+  {
+    "dci": "TRIMETAZIDINE",
+    "url": "https://www.lecrat.fr/8669/",
+    "status": "exact"
+  },
+  {
+    "dci": "TRIMETHOPRIME",
+    "url": "https://www.lecrat.fr/6669/",
+    "status": "exact"
+  },
+  {
+    "dci": "TRIPTORELINE",
+    "url": "https://www.lecrat.fr/12728/",
+    "status": "exact"
+  },
+  {
+    "dci": "TUBERCULINE",
+    "url": "https://www.lecrat.fr/3737/",
+    "status": "exact"
+  },
+  {
+    "dci": "ULIPRISTAL",
+    "url": "https://www.lecrat.fr/6271/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Ulipristal acétate"
+  },
+  {
+    "dci": "USTEKINUMAB",
+    "url": "https://www.lecrat.fr/10847/",
+    "status": "exact"
+  },
+  {
+    "dci": "VACCIN BCG",
+    "url": "https://www.lecrat.fr/9505/",
+    "status": "exact"
+  },
+  {
+    "dci": "VACCIN CONTRE L'HEPATITE B",
+    "url": "https://www.lecrat.fr/9574/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Vaccin hépatite B"
+  },
+  {
+    "dci": "VACCIN D",
+    "url": "https://www.lecrat.fr/9526/",
+    "status": "vaccin-match",
+    "matched_name": "Vaccin diphtérie"
+  },
+  {
+    "dci": "VACCIN PNEUMOCOCCIQUE",
+    "url": "https://www.lecrat.fr/9581/",
+    "status": "single-result-groq-confirmed",
+    "matched_name": "Vaccin pneumocoque"
+  },
+  {
+    "dci": "VACCIN R",
+    "url": "https://www.lecrat.fr/9638/",
+    "status": "vaccin-match",
+    "matched_name": "Vaccin rubéole"
+  },
+  {
+    "dci": "VANCOMYCINE",
+    "url": "https://www.lecrat.fr/13364/",
+    "status": "exact"
+  },
+  {
+    "dci": "VASELINE",
+    "url": "https://www.lecrat.fr/8787/",
+    "status": "exact"
+  },
+  {
+    "dci": "VILANTEROL",
+    "url": "https://www.lecrat.fr/8014/",
+    "status": "exact"
+  },
+  {
+    "dci": "VORICONAZOLE",
+    "url": "https://www.lecrat.fr/10229/",
+    "status": "exact"
+  },
+  {
+    "dci": "ZOLPIDEM",
+    "url": "https://www.lecrat.fr/3536/",
+    "status": "exact"
+  },
+      {
+    "dci": "ACIDE NALIDIXIQUE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/nalidixic-acid/",
+    "status": "exact"
+  },
+  {
+    "dci": "BECLOMETHASONE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/beclometasone/",
+    "status": "exact"
+  },
+  {
+    "dci": "BIPENICILLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/penicillins/",
+    "status": "fuzzy 95.23809523809523%"
+  },
+  {
+    "dci": "CHLORPHENAMINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/chlorphenamine/",
+    "status": "exact"
+  },
+  {
+    "dci": "CHOLESTYRAMINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/colestyramine/",
+    "status": "exact"
+  },
+  {
+    "dci": "EVEROLIMUS",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/everolimus/",
+    "status": "exact"
+  },
+  {
+    "dci": "HB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-b-vaccine/",
+    "status": "exact"
+  },
+  {
+    "dci": "IMATINIB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/imatinib/",
+    "status": "exact"
+  },
+  {
+    "dci": "INTERFERON BETA-1A",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/interferon-beta/",
+    "status": "fuzzy 90.9090909090909%"
+  },
+  {
+    "dci": "LENALIDOMIDE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/lenalidomide/",
+    "status": "exact"
+  },
+  {
+    "dci": "MENTHOL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/menthol/",
+    "status": "exact"
+  },
+  {
+    "dci": "ONDANSETRONE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ondansetron/",
+    "status": "exact"
+  },
+  {
+    "dci": "RIBAVIRINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ribavirin/",
+    "status": "exact"
+  },
+  {
+    "dci": "SILDENAFIL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sildenafil/",
+    "status": "exact"
+  },
+  {
+    "dci": "SIROLIMUS",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sirolimus/",
+    "status": "exact"
+  },
+  {
+    "dci": "TACILIZUMAB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tocilizumab/",
+    "status": "exact"
+  },
+  {
+    "dci": "TIGECYCLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tigecycline/",
+    "status": "exact"
+  },
+  {
+    "dci": "TRASTUZUMAB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/trastuzumab/",
+    "status": "exact"
+  },
+  {
+    "dci": "VACCIN CONTRE DE L'HEPATITE A",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-a-vaccine/",
+    "status": "exact"
+  },
+  {
+    "dci": "VITAMINE B12",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/vitamin-b12/",
+    "status": "exact"
+  },
+    {
+    "dci": "ACIDE FOLIQUE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/folic-acid/",
+    "status": "exact"
+  },
+  {
+    "dci": "ATROPINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/atropine/",
+    "status": "exact"
+  },
+  {
+    "dci": "FENTANYL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/fentanyl/",
+    "status": "exact"
+  },
+  {
+    "dci": "FLUCLOXACILLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/flucloxacillin/",
+    "status": "fuzzy 96.55172413793103%"
+  },
+  {
+    "dci": "MEBEVERINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/mebeverine/",
+    "status": "exact"
+  },
+  {
+    "dci": "TAMOXIFENE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tamoxifen/",
+    "status": "fuzzy 94.73684210526316%"
+  },
+  {
+    "dci": "TETRACYCLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tetracycline/",
+    "status": "exact"
+  },
+  {
+    "dci": "VITAMINE D",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/vitamin-d/",
+    "status": "exact"
+  }
+]
