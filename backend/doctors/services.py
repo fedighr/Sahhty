@@ -1,8 +1,9 @@
-from .models import Doctor
-from .serializers import DoctorSerializer
+from .models import Doctor, DoctorSchedule
+from .serializers import DoctorSerializer, DoctorScheduleSerializer
 from users.serializers import UserSerializer
 from django.db import IntegrityError, DatabaseError
 from datetime import date
+from django.db import transaction
 
 class DoctorService:
     @staticmethod
@@ -26,6 +27,9 @@ class DoctorService:
             doctor = Doctor.objects.select_related('user', 'speciality').get(id=doctor_id)
         except Doctor.DoesNotExist:
             return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}    
+        
+        if(doctor.is_doctor_verified == False):
+            return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}
 
         try:
             today = date.today()
@@ -54,7 +58,6 @@ class DoctorService:
                 'is_available': doctor.is_available,
             }
             return {'data': {'success': True, 'doctor': data}, 'status': 200}
-        
         
         except DatabaseError:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
@@ -121,7 +124,6 @@ class DoctorService:
                     'experience': doctor.experience,
                     'consultation_price': doctor.consultation_price,
                     'bio': doctor.bio,
-                    'is_available': doctor.is_available,
                 })
             return {'data': {'success': True, 'doctors': data}, 'status': 200}
         
@@ -130,6 +132,53 @@ class DoctorService:
         
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def addDoctorSchedule(data):
+        try:   
+            with transaction.atomic():         
+                DoctorSchedule.objects.filter(doctor=data[0]['doctor']).delete()
+                schedules = [DoctorSchedule(**item) for item in data]
+                DoctorSchedule.objects.bulk_create(schedules)
+
+                return {'data': {'success': True, 'message': 'Doctor schedule added successfully'}, 'status': 201}
+
+        except IntegrityError as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def getDoctorSchedule(doctor_id):
+        try:
+            doctor = Doctor.objects.get(pk=doctor_id)
+        except Doctor.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}
+
+        try:
+            schedules = DoctorSchedule.objects.filter(doctor=doctor)
+            data = []
+            for schedule in schedules:
+                data.append({
+                    'id': schedule.id,
+                    'day_of_week': schedule.day_of_week,
+                    'start_time': schedule.start_time,
+                    'end_time': schedule.end_time,
+                    'pause_start_time': schedule.pause_start_time,
+                    'pause_end_time': schedule.pause_end_time,
+                    'is_available': schedule.is_available,
+                })
+            return {'data': {'success': True, 'schedules': data}, 'status': 200}
+        
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except IntegrityError as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+
 
 
         

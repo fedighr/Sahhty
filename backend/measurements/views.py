@@ -16,6 +16,9 @@ class MeasurementView(ViewSet):
     @extend_schema(request=MeasurementSerializer, responses=MeasurementSerializer)
     @action(detail=False, methods=['post'], url_path='create_measurement', permission_classes=[AllowAny])
     def create_measurement(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         serializer = MeasurementSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = MeasurementService.createMeasurement(serializer.validated_data)

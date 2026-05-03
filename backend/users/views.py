@@ -16,7 +16,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=UserSerializer, responses=UserSerializer)
     @action(detail=False, methods=['post'], url_path='signup', permission_classes=[AllowAny])
     def signup(self, request):
-        print(request.data)
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.register(serializer.validated_data)
@@ -26,6 +28,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=LoginSerializer, responses=LoginSerializer)
     @action(detail=False, methods=['post'], url_path='signin', permission_classes=[AllowAny])
     def signin(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.login(serializer.validated_data)
@@ -35,6 +40,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path="resend_code", permission_classes=[AllowAny])
     def resend_code(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.resendCode(serializer.validated_data.get('email'))
@@ -43,6 +51,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path='verify_reset_code', permission_classes=[AllowAny])
     def verify_reset_code(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)        
         result = AuthService.verifyResetCode(serializer.validated_data.get('email'), request.data.get('code'))    
@@ -51,6 +62,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path='verify_code', permission_classes=[AllowAny])
     def verify_code(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)        
         result = AuthService.verifyCode(serializer.validated_data.get('email'), request.data.get('code'))    
@@ -59,6 +73,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path="is_email_available", permission_classes=[AllowAny])
     def is_email_available(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.verifyEmailAvailable(serializer.validated_data.get('email'))
@@ -67,6 +84,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path="verify_reset_email", permission_classes=[AllowAny])
     def verify_reset_email(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.verifyResetEmail(serializer.validated_data.get('email'))
@@ -75,6 +95,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=PhoneSerializer, responses=PhoneSerializer)
     @action(detail=False, methods=['post'], url_path='verify_phone', permission_classes=[AllowAny])
     def verify_phone(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
         serializer = PhoneSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.verifyPhone(serializer.validated_data.get('phone'))
@@ -83,6 +106,9 @@ class UserAuth(ViewSet):
     @extend_schema(request=LoginSerializer, responses=LoginSerializer)
     @action(detail=False, methods=['post'], url_path='forget_password', permission_classes=[AllowAny])
     def forget_password(self,request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.forgetPassword(serializer.validated_data)

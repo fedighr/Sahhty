@@ -160,6 +160,9 @@ class MedicationView(ViewSet):
 
     @action(detail=False, methods=['post'], url_path='create_treatment_with_schedules', permission_classes=[AllowAny])
     def create_treatment_with_schedules(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         try:
             serializer = TreatmentWithSchedulesSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)

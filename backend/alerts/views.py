@@ -12,6 +12,9 @@ class AlertView(ViewSet):
     #automatic calls no need to call these endpoints manually, they are called by the services when needed
     @action(detail=False, methods=['post'], url_path='send_risk_alert', permission_classes=[AllowAny])
     def send_risk_alert(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         email = request.data.get('email')
         alert_message = request.data.get('alert_message')
         alert_level = request.data.get('alert_level')
