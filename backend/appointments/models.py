@@ -12,7 +12,7 @@ class Appointment(models.Model):
 
     appointment_date = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
-    reason = models.TextField()
+    reason = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_reminder_sent = models.BooleanField(default=False)

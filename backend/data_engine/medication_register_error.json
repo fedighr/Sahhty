@@ -1,0 +1,857 @@
+{
+    "message": "Completed with some unmatched DCIs",
+    "unmatched": [
+        {
+            "medication_id": 5071,
+            "dci_name": "BETA-ALANINE"
+        },
+        {
+            "medication_id": 5494,
+            "dci_name": "DUPLICATE: MUPIROCINE"
+        },
+        {
+            "medication_id": 5601,
+            "dci_name": "DUPLICATE: N-BUTYLHYOSCINE BROMURE"
+        },
+        {
+            "medication_id": 5602,
+            "dci_name": "DUPLICATE: N-BUTYLHYOSCINE BROMURE"
+        },
+        {
+            "medication_id": 5603,
+            "dci_name": "DUPLICATE: N-BUTYLHYOSCINE BROMURE"
+        },
+        {
+            "medication_id": 5963,
+            "dci_name": "DUPLICATE: PANCREATINE"
+        },
+        {
+            "medication_id": 5964,
+            "dci_name": "DUPLICATE: PANCREATINE"
+        },
+        {
+            "medication_id": 6803,
+            "dci_name": "DUPLICATE: OPIUM"
+        },
+        {
+            "medication_id": 7381,
+            "dci_name": "DUPLICATE: OXACILLINE"
+        },
+        {
+            "medication_id": 7382,
+            "dci_name": "DUPLICATE: OXACILLINE"
+        },
+        {
+            "medication_id": 7383,
+            "dci_name": "DUPLICATE: OXACILLINE"
+        },
+        {
+            "medication_id": 7388,
+            "dci_name": "DUPLICATE: OXYBUTYNINE"
+        },
+        {
+            "medication_id": 7883,
+            "dci_name": "POLLENS GRAMINEES -5 GRAMINEES"
+        },
+        {
+            "medication_id": 7891,
+            "dci_name": "POLLENS ARBRES ET ARBUSTES - OLIVIER"
+        },
+        {
+            "medication_id": 7892,
+            "dci_name": "POLLENS GRAMINEES -5 GRAMINEES"
+        },
+        {
+            "medication_id": 7893,
+            "dci_name": "POLLENS GRAMINEES -5 GRAMINEES"
+        },
+        {
+            "medication_id": 7894,
+            "dci_name": "POLLENS ARBRES ET ARBUSTES - OLIVIER"
+        },
+        {
+            "medication_id": 7895,
+            "dci_name": "POLLENS ARBRES ET ARBUSTES - OLIVIER"
+        },
+        {
+            "medication_id": 8415,
+            "dci_name": "ACIDE ZOLÉDRONIQUE"
+        },
+        {
+            "medication_id": 8416,
+            "dci_name": "ACIDE ZOLÉDRONIQUE"
+        },
+        {
+            "medication_id": 8426,
+            "dci_name": "DUPLICATE: TACILIZUMAB"
+        },
+        {
+            "medication_id": 8427,
+            "dci_name": "DUPLICATE: TACILIZUMAB"
+        },
+        {
+            "medication_id": 8428,
+            "dci_name": "DUPLICATE: TACILIZUMAB"
+        },
+        {
+            "medication_id": 8444,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 8445,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 8446,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 8470,
+            "dci_name": "DUPLICATE: EVEROLIMUS"
+        },
+        {
+            "medication_id": 8504,
+            "dci_name": "DUPLICATE: N-BUTYLHYOSCINE BROMURE"
+        },
+        {
+            "medication_id": 8640,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 8641,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 8642,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 8662,
+            "dci_name": "BROMURE D'IPRATROPIUM"
+        },
+        {
+            "medication_id": 8675,
+            "dci_name": "BROMURE D'IPRATROPIUM"
+        },
+        {
+            "medication_id": 8687,
+            "dci_name": "DUPLICATE: VACCIN CONTRE DE L'HEPATITE A"
+        },
+        {
+            "medication_id": 8694,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 8695,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 8767,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 8768,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 8913,
+            "dci_name": "DUPLICATE: IMATINIB"
+        },
+        {
+            "medication_id": 8914,
+            "dci_name": "DUPLICATE: IMATINIB"
+        },
+        {
+            "medication_id": 9036,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 9037,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 9053,
+            "dci_name": "CARBO VEGETABILIS"
+        },
+        {
+            "medication_id": 9053,
+            "dci_name": "COLOCYNTHIS"
+        },
+        {
+            "medication_id": 9053,
+            "dci_name": "CUPRUM METALLICUM"
+        },
+        {
+            "medication_id": 9060,
+            "dci_name": "DUPLICATE: BIPENICILLINE"
+        },
+        {
+            "medication_id": 9102,
+            "dci_name": "vaccin recombinant à base d'adénovirus anti-COVID-19"
+        },
+        {
+            "medication_id": 9103,
+            "dci_name": "ARNM CODANT LA PROTÉINE SPIKE (S) VIRALE DU SARS-COV-2"
+        },
+        {
+            "medication_id": 9104,
+            "dci_name": "ARNM CODANT LA PROTÉINE SPIKE (S) VIRALE DU SARS-COV-2"
+        },
+        {
+            "medication_id": 9109,
+            "dci_name": "DUPLICATE: PANCREATINE"
+        },
+        {
+            "medication_id": 9110,
+            "dci_name": "DUPLICATE: PANCREATINE"
+        },
+        {
+            "medication_id": 9361,
+            "dci_name": "DUPLICATE: CHLORPHENAMINE"
+        },
+        {
+            "medication_id": 9365,
+            "dci_name": "DUPLICATE: OXYBUTYNINE"
+        },
+        {
+            "medication_id": 9470,
+            "dci_name": "SPORES DE BACILLUS CLAUSII POLYANTIBIO-RÉSISTANT"
+        },
+        {
+            "medication_id": 9471,
+            "dci_name": "SPORES DE BACILLUS CLAUSII POLYANTIBIO-RÉSISTANT"
+        },
+        {
+            "medication_id": 9472,
+            "dci_name": "SPORES DE BACILLUS CLAUSII POLYANTIBIO-RÉSISTANT"
+        },
+        {
+            "medication_id": 9478,
+            "dci_name": "DUPLICATE: VACCIN CONTRE DE L'HEPATITE A"
+        },
+        {
+            "medication_id": 9504,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 9507,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 9508,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 9509,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 9510,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 9547,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 9548,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 9549,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 9571,
+            "dci_name": "FACTEUR DE COAGULATION COURT -CIRCUITANT L'ACTIVITÉ DU FACTE"
+        },
+        {
+            "medication_id": 9637,
+            "dci_name": "Dipropionate de bèclometasone"
+        },
+        {
+            "medication_id": 9637,
+            "dci_name": "Fumarate de formotèrol dihydr"
+        },
+        {
+            "medication_id": 9665,
+            "dci_name": "vaccin recombinant à base d'adénovirus anti-COVID-19"
+        },
+        {
+            "medication_id": 9666,
+            "dci_name": "vaccin recombinant à base d'adénovirus anti-COVID-19"
+        },
+        {
+            "medication_id": 9828,
+            "dci_name": "DUPLICATE: VACCIN CONTRE DE L'HEPATITE A"
+        },
+        {
+            "medication_id": 9829,
+            "dci_name": "DUPLICATE: VACCIN CONTRE DE L'HEPATITE A"
+        },
+        {
+            "medication_id": 9835,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 9836,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 9850,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 9853,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 9854,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 9855,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 9856,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 9861,
+            "dci_name": "DUPLICATE: HB"
+        },
+        {
+            "medication_id": 9862,
+            "dci_name": "DUPLICATE: HB"
+        },
+        {
+            "medication_id": 9917,
+            "dci_name": "DUPLICATE: IMATINIB"
+        },
+        {
+            "medication_id": 9918,
+            "dci_name": "DUPLICATE: IMATINIB"
+        },
+        {
+            "medication_id": 9919,
+            "dci_name": "DUPLICATE: IMATINIB"
+        },
+        {
+            "medication_id": 9920,
+            "dci_name": "DUPLICATE: IMATINIB"
+        },
+        {
+            "medication_id": 9921,
+            "dci_name": "DUPLICATE: IMATINIB"
+        },
+        {
+            "medication_id": 9933,
+            "dci_name": "VACCIN POLIOMYÉLITIQUE"
+        },
+        {
+            "medication_id": 9935,
+            "dci_name": "VACCIN POLIOMYÉLITIQUE"
+        },
+        {
+            "medication_id": 9943,
+            "dci_name": "DUPLICATE: HB"
+        },
+        {
+            "medication_id": 9986,
+            "dci_name": "BROMURE D'IPRATROPIUM"
+        },
+        {
+            "medication_id": 9987,
+            "dci_name": "BROMURE D'IPRATROPIUM"
+        },
+        {
+            "medication_id": 9988,
+            "dci_name": "BROMURE D'IPRATROPIUM"
+        },
+        {
+            "medication_id": 10035,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 10036,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 10064,
+            "dci_name": "QUININE-UREE"
+        },
+        {
+            "medication_id": 10084,
+            "dci_name": "DUPLICATE: OPIUM"
+        },
+        {
+            "medication_id": 10101,
+            "dci_name": "DUPLICATE: LENALIDOMIDE"
+        },
+        {
+            "medication_id": 10102,
+            "dci_name": "DUPLICATE: LENALIDOMIDE"
+        },
+        {
+            "medication_id": 10103,
+            "dci_name": "DUPLICATE: LENALIDOMIDE"
+        },
+        {
+            "medication_id": 10104,
+            "dci_name": "DUPLICATE: LENALIDOMIDE"
+        },
+        {
+            "medication_id": 10200,
+            "dci_name": "ACIDE ZOLÉDRONIQUE"
+        },
+        {
+            "medication_id": 10371,
+            "dci_name": "DUPLICATE: ACIDE NALIDIXIQUE"
+        },
+        {
+            "medication_id": 10380,
+            "dci_name": "DUPLICATE: RIBAVIRINE"
+        },
+        {
+            "medication_id": 10463,
+            "dci_name": "VACCIN POLIOMYÉLITIQUE"
+        },
+        {
+            "medication_id": 10499,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 10500,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 10534,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10535,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10536,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10537,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10538,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10539,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10540,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10541,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10542,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10543,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10544,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10545,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10546,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10557,
+            "dci_name": "VACCIN POLIOMYÉLITIQUE"
+        },
+        {
+            "medication_id": 10588,
+            "dci_name": "DUPLICATE: OXACILLINE"
+        },
+        {
+            "medication_id": 10589,
+            "dci_name": "DUPLICATE: OXACILLINE"
+        },
+        {
+            "medication_id": 10727,
+            "dci_name": "OXYDE DE MAGNÉSIUM LÉGER"
+        },
+        {
+            "medication_id": 10748,
+            "dci_name": "DUPLICATE: CHOLESTYRAMINE"
+        },
+        {
+            "medication_id": 10753,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 10842,
+            "dci_name": "DUPLICATE: SIROLIMUS"
+        },
+        {
+            "medication_id": 10849,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 10850,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 10851,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 10852,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 10853,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 10854,
+            "dci_name": "DUPLICATE: INTERFERON BETA-1A"
+        },
+        {
+            "medication_id": 10902,
+            "dci_name": "DUPLICATE: CHLORPHENAMINE"
+        },
+        {
+            "medication_id": 10907,
+            "dci_name": "DUPLICATE: RIBAVIRINE"
+        },
+        {
+            "medication_id": 10908,
+            "dci_name": "DUPLICATE: RIBAVIRINE"
+        },
+        {
+            "medication_id": 10909,
+            "dci_name": "DUPLICATE: RIBAVIRINE"
+        },
+        {
+            "medication_id": 10910,
+            "dci_name": "DUPLICATE: RIBAVIRINE"
+        },
+        {
+            "medication_id": 10992,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 10993,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 10994,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 10995,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 11021,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11022,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11023,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11024,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11025,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11008,
+            "dci_name": "DUPLICATE: CHELIDONIUM MAJUS"
+        },
+        {
+            "medication_id": 11090,
+            "dci_name": "DUPLICATE: LENALIDOMIDE"
+        },
+        {
+            "medication_id": 11091,
+            "dci_name": "DUPLICATE: LENALIDOMIDE"
+        },
+        {
+            "medication_id": 11092,
+            "dci_name": "DUPLICATE: LENALIDOMIDE"
+        },
+        {
+            "medication_id": 11093,
+            "dci_name": "DUPLICATE: LENALIDOMIDE"
+        },
+        {
+            "medication_id": 11098,
+            "dci_name": "DUPLICATE: N-BUTYLHYOSCINE BROMURE"
+        },
+        {
+            "medication_id": 11115,
+            "dci_name": "vaccin recombinant à base d'adénovirus anti-COVID-19"
+        },
+        {
+            "medication_id": 11116,
+            "dci_name": "vaccin recombinant à base d'adénovirus anti-COVID-19"
+        },
+        {
+            "medication_id": 11174,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 11175,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 11176,
+            "dci_name": "DUPLICATE: MENTHOL"
+        },
+        {
+            "medication_id": 11194,
+            "dci_name": "DUPLICATE: TIGECYCLINE"
+        },
+        {
+            "medication_id": 11223,
+            "dci_name": "DUPLICATE: TIGECYCLINE"
+        },
+        {
+            "medication_id": 11224,
+            "dci_name": "DUPLICATE: TIGECYCLINE"
+        },
+        {
+            "medication_id": 11225,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11226,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11227,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11228,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11239,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11240,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11241,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11242,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11243,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11244,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11245,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11246,
+            "dci_name": "TÉMOZOLOMIDE"
+        },
+        {
+            "medication_id": 11272,
+            "dci_name": "DUPLICATE: TIGECYCLINE"
+        },
+        {
+            "medication_id": 11290,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 11300,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 11301,
+            "dci_name": "DUPLICATE: TRASTUZUMAB"
+        },
+        {
+            "medication_id": 11308,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 11309,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 11321,
+            "dci_name": "DUPLICATE: BECLOMETHASONE"
+        },
+        {
+            "medication_id": 11338,
+            "dci_name": "DUPLICATE: TIGECYCLINE"
+        },
+        {
+            "medication_id": 11339,
+            "dci_name": "DUPLICATE: TIGECYCLINE"
+        },
+        {
+            "medication_id": 11346,
+            "dci_name": "MALÉATE D'INDACATÉROL"
+        },
+        {
+            "medication_id": 11473,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11474,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11475,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11476,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11477,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11478,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11481,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11482,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11483,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11484,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11485,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11486,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11487,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11488,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11489,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11490,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11491,
+            "dci_name": "DUPLICATE: SILDENAFIL"
+        },
+        {
+            "medication_id": 11508,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 11509,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 11512,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 11531,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 11532,
+            "dci_name": "DUPLICATE: VITAMINE B12"
+        },
+        {
+            "medication_id": 11604,
+            "dci_name": "LINÉZOLIDE"
+        },
+        {
+            "medication_id": 11616,
+            "dci_name": "DUPLICATE: ONDANSETRONE"
+        },
+        {
+            "medication_id": 11631,
+            "dci_name": "ACIDE ZOLÉDRONIQUE"
+        },
+        {
+            "medication_id": 11632,
+            "dci_name": "ACIDE ZOLÉDRONIQUE"
+        },
+        {
+            "medication_id": 11633,
+            "dci_name": "ACIDE ZOLÉDRONIQUE"
+        },
+        {
+            "medication_id": 11634,
+            "dci_name": "ACIDE ZOLÉDRONIQUE"
+        },
+        {
+            "medication_id": 11643,
+            "dci_name": "LINÉZOLIDE"
+        },
+        {
+            "medication_id": 11644,
+            "dci_name": "LINÉZOLIDE"
+        },
+        {
+            "medication_id": 11007,
+            "dci_name": "DUPLICATE: CHELIDONIUM MAJUS"
+        }
+    ]
+}

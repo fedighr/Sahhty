@@ -1,8 +1,11 @@
-from .models import Doctor
-from .serializers import DoctorSerializer
+from .models import Doctor, DoctorSchedule
+from appointments.models import Appointment
+from appointments.serializers import AppointmentSerializer
+from .serializers import DoctorSerializer, DoctorScheduleSerializer
 from users.serializers import UserSerializer
 from django.db import IntegrityError, DatabaseError
-from datetime import date
+from datetime import datetime, timedelta, date
+from django.db import transaction
 
 class DoctorService:
     @staticmethod
@@ -26,6 +29,9 @@ class DoctorService:
             doctor = Doctor.objects.select_related('user', 'speciality').get(id=doctor_id)
         except Doctor.DoesNotExist:
             return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}    
+        
+        if(doctor.is_doctor_verified == False):
+            return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}
 
         try:
             today = date.today()
@@ -54,7 +60,6 @@ class DoctorService:
                 'is_available': doctor.is_available,
             }
             return {'data': {'success': True, 'doctor': data}, 'status': 200}
-        
         
         except DatabaseError:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
@@ -121,7 +126,6 @@ class DoctorService:
                     'experience': doctor.experience,
                     'consultation_price': doctor.consultation_price,
                     'bio': doctor.bio,
-                    'is_available': doctor.is_available,
                 })
             return {'data': {'success': True, 'doctors': data}, 'status': 200}
         
@@ -130,6 +134,95 @@ class DoctorService:
         
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
-
-
         
+    @staticmethod
+    def addDoctorSchedule(data):
+        try:   
+            with transaction.atomic():         
+                DoctorSchedule.objects.filter(doctor=data[0]['doctor']).delete()
+                schedules = [DoctorSchedule(**item) for item in data]
+                DoctorSchedule.objects.bulk_create(schedules)
+
+                return {'data': {'success': True, 'message': 'Doctor schedule added successfully'}, 'status': 201}
+
+        except IntegrityError as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def getDoctorSchedule(doctor_id):
+        try:
+            doctor = Doctor.objects.get(pk=doctor_id)
+        except Doctor.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}
+
+        try:
+            schedules = DoctorSchedule.objects.filter(doctor=doctor)
+            data = []
+            for schedule in schedules:
+                data.append({
+                    'id': schedule.id,
+                    'day_of_week': schedule.day_of_week,
+                    'start_time': schedule.start_time,
+                    'end_time': schedule.end_time,
+                    'pause_start_time': schedule.pause_start_time,
+                    'pause_end_time': schedule.pause_end_time,
+                    'is_available': schedule.is_available,
+                })
+            return {'data': {'success': True, 'schedules': data}, 'status': 200}
+        
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except IntegrityError as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def getDoctorAvailableSlots(doctor_id, day, date):
+        try:
+            doctor = Doctor.objects.get(pk=doctor_id)
+        except Doctor.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}
+
+        try:
+            schedules = DoctorSchedule.objects.get(doctor=doctor, day_of_week=day.upper(), is_available=True)
+            print(schedules)
+            consultation_duration = doctor.consultation_duration
+            if not consultation_duration:
+                consultation_duration = 30
+
+            data = get_available_slots(schedules.start_time, schedules.end_time, schedules.pause_start_time, schedules.pause_end_time, consultation_duration, date, doctor_id)
+            return {'data': {'success': True, 'available_slots': data}, 'status': 200}
+        
+        except DoctorSchedule.DoesNotExist:
+            return {'data': {'success': False, 'message': 'No schedule found for the specified day'}, 'status': 404}
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except IntegrityError as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+
+def get_available_slots(start_time, end_time, pause_start_time, pause_end_time, consultation_duration, today_date, doctor_id):
+    slots = []
+    today = datetime.strptime(today_date, '%Y-%m-%d').date()
+    current_time = datetime.combine(date.today(), start_time)
+    end_time = datetime.combine(date.today(), end_time)
+    
+    while current_time + timedelta(minutes=consultation_duration) <= end_time:
+        if not (pause_start_time and pause_end_time and (pause_start_time <= current_time.time() < pause_end_time or pause_start_time < (current_time + timedelta(minutes=consultation_duration)).time() <= pause_end_time)):
+            slots.append(current_time.strftime('%H:%M'))
+        else:
+            current_time = datetime.combine(date.today(), pause_end_time)
+            continue
+        current_time += timedelta(minutes=consultation_duration)
+
+    doctor_today_appointments = Appointment.objects.filter(doctor_id=doctor_id, appointment_date__date=today, status__in=['PENDING', 'CONFIRMED'])
+    booked_slots = set(appointment.appointment_date.strftime('%H:%M') for appointment in doctor_today_appointments)
+    slots = [slot for slot in slots if slot not in booked_slots]
+
+    return slots

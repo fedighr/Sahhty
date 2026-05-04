@@ -24,6 +24,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
   Map<String, dynamic>? _latestData;
   Map<String, dynamic>? _pregnancyData;
   Map<String, dynamic>? _riskData;
+  List<dynamic> _todayAppointments = [];
   int? _weekFromBackend;
   bool _loading = true;
   String? _error;
@@ -166,6 +167,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
         ref.read(measurementServiceProvider).getLatestMeasurements(patientId),
         ref.read(pregnancyServiceProvider).getCurrentPregnancy(patientId),
         ref.read(measurementServiceProvider).getRiskAssessment(patientId),
+        ref.read(appointmentServiceProvider).getPatientTodayAppointments(patientId),
       ]);
       if (!mounted) return;
       setState(() {
@@ -176,6 +178,10 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
           _weekFromBackend = results[1]['week'] as int?;
         }
         if (results[2]['success'] == true) _riskData = results[2]['risk_assessment'];
+        if (results[3]['success'] == true) {
+          final appts = results[3]['appointments'];
+          _todayAppointments = appts is List ? appts : [];
+        }
       });
     } catch (e) {
       if (!mounted) return;
@@ -228,6 +234,10 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
                       const SizedBox(height: 24),
                       _buildMeasurementsSection(),
                       const SizedBox(height: 16),
+                      if (_todayAppointments.isNotEmpty) ...[
+                        _buildAppointmentsSection(),
+                        const SizedBox(height: 16),
+                      ],
                       _buildMotivationalCard(),
                     ],
                     const SizedBox(height: 24),
@@ -236,6 +246,86 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  // ── APPOINTMENTS SECTION ──────────────────────────────────────────
+  Widget _buildAppointmentsSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Iconsax.calendar, color: AppColors.primary, size: 20),
+              SizedBox(width: 6),
+              Text("Rendez-vous d'aujourd'hui", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            ],
+          ).animate().fadeIn(delay: 500.ms),
+          const SizedBox(height: 10),
+          ..._todayAppointments.asMap().entries.map((e) {
+            final appt = e.value as Map<String, dynamic>;
+            final doctor = appt['doctor'] as Map<String, dynamic>?;
+            final doctorName = doctor != null
+                ? '${doctor['user']?['first_name'] ?? ''} ${doctor['user']?['last_name'] ?? ''}'.trim()
+                : 'Médecin';
+            final dateStr = appt['appointment_date']?.toString() ?? '';
+            final date = DateTime.tryParse(dateStr);
+            final timeStr = date != null
+                ? '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}'
+                : '--:--';
+            final status = appt['status']?.toString() ?? 'PENDING';
+            final Color statusColor = status == 'CONFIRMED'
+                ? AppColors.success
+                : status == 'CANCELLED'
+                    ? AppColors.error
+                    : AppColors.warning;
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.primaryLight.withAlpha(100)),
+                boxShadow: [BoxShadow(color: AppColors.primary.withAlpha(20), blurRadius: 10, offset: const Offset(0, 4))],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(color: AppColors.primary.withAlpha(20), borderRadius: BorderRadius.circular(12)),
+                    child: const Icon(Iconsax.calendar_tick, color: AppColors.primary, size: 22),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Dr. $doctorName', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary)),
+                        if ((appt['reason']?.toString() ?? '').isNotEmpty)
+                          Text(appt['reason'].toString(), style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(timeStr, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppColors.primary)),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(color: statusColor.withAlpha(30), borderRadius: BorderRadius.circular(8)),
+                        child: Text(status, style: TextStyle(fontSize: 11, color: statusColor, fontWeight: FontWeight.w600)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ).animate().fadeIn(delay: (550 + e.key * 100).ms).slideY(begin: 0.1);
+          }),
         ],
       ),
     );

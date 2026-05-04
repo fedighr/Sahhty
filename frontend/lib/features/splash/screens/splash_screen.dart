@@ -7,6 +7,7 @@ import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
+import 'package:sahhty/core/providers/locale_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -45,6 +46,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _checkAuth() async {
     await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
+
+    // Check if language was selected before
+    final langSelected = await ref.read(localeProvider.notifier).isLanguageSelected();
+    if (!mounted) return;
+    if (!langSelected) {
+      context.go('/language');
+      return;
+    }
+
     try {
       await ref.read(authProvider.notifier).checkAuth().timeout(
             const Duration(seconds: 5),

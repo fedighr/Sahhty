@@ -1,0 +1,109 @@
+[
+  {
+    "dci": "ACIDE FOLIQUE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/folic-acid/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "You should take a folic acid supplement whilst trying to conceive and for the first 12 weeks of pregnancy to reduce the chance of certain birth defects in your baby.",
+      "Will my baby need extra monitoring if I haven’t taken folic acid?": "Most women will be offered a scan at around 20 weeks of pregnancy to look for birth defects as part of their routine antenatal care. Not taking folic acid during early pregnancy would not normally require extra monitoring of your baby. However, if you are thought to be at risk of folate deficiency or have a family history of spina bifida or related birth defects, your doctor may advise a more detailed ultrasound scan or further tests."
+    }
+  },
+  {
+    "dci": "ATROPINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/atropine/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Atropine use may occasionally be advised in pregnancy and is unlikely to harm the baby.",
+      "Benefits": "",
+      "What are the benefits of taking atropine in pregnancy?": "Atropine use may be advised for some potentially serious conditions, for example, if the heart is beating too slowly, or to reverse the effects of a poison. In these cases, the benefits to both woman and baby of ensuring the woman remains well are likely to outweigh any possible risks. An eye examination using atropine eye drops may be required to prevent complications that could damage the sight. When atropine is used in this way, only a tiny amount will reach the baby.",
+      "Risks": "",
+      "Are there any risks of taking atropine during pregnancy?": "There are no concerns that atropine causes birth defects in the baby. Other possible effects have not been well-studied.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father takes atropine?": "We would not expect any increased risk to the baby if the father took atropine around the time of conception."
+    }
+  },
+  {
+    "dci": "FENTANYL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/fentanyl/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Fentanyl might very occasionally be prescribed in pregnancy to treat severe pain if other drugs have not worked.",
+      "Benefits": "",
+      "What are the benefits of using fentanyl in pregnancy?": "Fentanyl is a very strong painkiller and might control severe pain where other painkillers have not.",
+      "Risks": "",
+      "What are the risks of using fentanyl in pregnancy?": "Very few pregnant women taking fentanyl have been studied. Although the available information does not suggest fentanyl affects the baby’s development, more research is required to rule out problems. Fentanyl used around the time of delivery can affect the baby after birth. The baby may be ‘jittery’, have feeding problems, and initially need some help with breathing. These problems usually settle within the first few days. Pregnant women who take fentanyl should contact their GP or pain specialist as soon as possible. Their doctor will review whether fentanyl is still needed and ensure that the dose is correct. Pregnant women should not stop taking fentanyl or change the dose without speaking to a health care professional.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken fentanyl?": "We would not expect any increased risk to your baby if the father takes fentanyl."
+    }
+  },
+  {
+    "dci": "FLUCLOXACILLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/flucloxacillin/",
+    "status": "fuzzy 96.55172413793103%",
+    "bumps_data": {
+      "Quick read": "It is very important to correctly treat an infection. Flucloxacillin can be used in pregnancy if a doctor recommends it.",
+      "Benefits": "",
+      "What are the benefits of using flucloxacillin in pregnancy?": "Flucloxacillin can treat many skin and chest infections and prevent serious complications to both the woman and her baby.",
+      "Risks": "",
+      "What are the risks of using flucloxacillin in pregnancy?": "Flucloxacillin use in pregnancy has not been well-studied but is from a group of related antibiotics that are not known to cause harm. When flucloxacillin is used in pregnancy the benefits of correctly treating an infection will outweigh the risks.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken flucloxacillin?": "There is no evidence that flucloxacillin used by the father can harm the baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "MEBEVERINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/mebeverine/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "Antispasmodics are occasionally used in pregnancy if they are needed to control diverticular disease or IBS.",
+      "Benefits": "",
+      "What are the benefits of using an antispasmodic in pregnancy?": "Antispasmodics can reduce the symptoms of IBS and diverticular disease, and therefore improve overall health and quality of life. It is important that long-term diarrhoea in pregnancy is well-managed as it can affect the level of some important vitamins and minerals.",
+      "Risks": "",
+      "What are the risks of using an antispasmodic in pregnancy?": "There is very little information on women taking antispasmodics in pregnancy so it unclear if they are safe for the baby.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken an antispasmodic ?": "There is no evidence that an antispasmodic used by the father can harm the baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "TAMOXIFENE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tamoxifen/",
+    "status": "fuzzy 94.73684210526316%",
+    "bumps_data": {
+      "Benefits": "",
+      "What are the benefits of using tamoxifen in pregnancy?": "Tamoxifen is an effective treatment for some types of breast cancer. It can also help to reduce the chance of developing breast cancer in women who are at high risk (such as those with a family history of breast cancer).",
+      "Risks": "",
+      "Are there any risks of using tamoxifen in pregnancy?": "Tamoxifen is generally not recommended during pregnancy or in women who are trying to conceive. There is not much information available about pregnant women who took tamoxifen so it is unclear how much of a risk it might pose to the baby. While there are case reports of babies being born with birth defects following tamoxifen exposure, there are also reports of babies being born without malformations. Because tamoxifen interferes with the hormone oestrogen, there are concerns that it may affect genital development in girls.",
+      "No treatment": "",
+      "Will my baby need extra monitoring?": "As part of routine antenatal care, most women will be offered a very detailed scan at around 20 weeks of pregnancy to check the baby’s development. Women who have taken tamoxifen in pregnancy may be offered some extra monitoring of the baby as a precaution."
+    }
+  },
+  {
+    "dci": "TETRACYCLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tetracycline/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "It is very important to correctly treat an infection. A tetracycline can be used in pregnancy if a doctor recommends it.",
+      "Benefits": "",
+      "What are the benefits of using a tetracycline in pregnancy?": "A tetracycline can treat many types of bacterial infection and prevent serious complications for both the woman and her baby. Doxycycline can prevent malaria. This is important as malaria infection can be life-threatening and has been linked to stillbirth, preterm delivery, low infant birth weight, and death of the baby after birth.",
+      "Risks": "",
+      "What are the risks of using a tetracycline in pregnancy?": "Tetracycline use in early pregnancy is not known to harm the baby. Tetracyclines tend to be avoided after about 13 weeks of pregnancy as they can affect the baby’s developing milk teeth, causing them to be discoloured when they come through. However, a tetracycline may occasionally be used after 13 weeks of pregnancy if it is the only suitable antibiotic to treat a serious infection.",
+      "No treatment": "",
+      "Are there any risks to my baby if the father has taken a tetracycline?": "There is no evidence that tetracycline used by the father can harm the baby through effects on the sperm."
+    }
+  },
+  {
+    "dci": "VITAMINE D",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/vitamin-d/",
+    "status": "exact",
+    "bumps_data": {
+      "Quick read": "NHS guidelines recommend that all pregnant women should take a daily vitamin D supplement between September and March.",
+      "Benefits": "",
+      "What are the benefits of taking vitamin D in pregnancy?": "Vitamin D is safe during pregnancy and is needed for your health and your baby’s development. NHS guidelines recommend that all pregnant women take a daily vitamin D supplement between September and March (when it is not possible to get enough vitamin D from the sun in the UK). If you are diagnosed with a vitamin D deficiency through a blood test, it is important to replace the vitamin D in your body. Your doctor might prescribe high strength vitamin D to make sure that your vitamin D levels get back to normal as quickly as possible.",
+      "Risks": "",
+      "Are there any risks of taking vitamin D in pregnancy?": "No. It is important that you have enough vitamin D in pregnancy to stay healthy and so that your baby develops normally.",
+      "No treatment": "",
+      "Will my baby need extra monitoring during pregnancy?": "As part of their routine antenatal care, most women will be offered a scan at around 20 weeks of pregnancy to look for birth defects and to check the baby’s growth. Taking vitamin D supplements in pregnancy at the recommended doses will not cause any problems that would require extra monitoring.",
+      "Are there any risks to my baby if the father has taken vitamin D?": "We do not expect any increased risk to your baby if the father took vitamin D before or around the time you became pregnant."
+    }
+  }
+]

@@ -17,6 +17,9 @@ class PatientView(ViewSet):
     @extend_schema(request=PatientSerializer, responses=PatientSerializer)
     @action(detail=False, methods=['post'], url_path='create_patient', permission_classes=[AllowAny])
     def create_patient(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         serializer = PatientSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = PatientService.createPatient(request.data)
@@ -31,6 +34,9 @@ class PatientView(ViewSet):
     @extend_schema(request=PatientSerializer, responses=PatientSerializer)
     @action(detail=True, methods=['patch'], permission_classes=[AllowAny])
     def update_patient(self, request, pk=None):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         result = PatientService.updatePatient(pk, request.data)
         return Response(result['data'], status=result['status'])    
     

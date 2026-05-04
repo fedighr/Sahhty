@@ -1,8 +1,10 @@
 /// All API endpoints matching the Django REST backend exactly.
 class ApiEndpoints {
   ApiEndpoints._();
-
   static const String baseUrl = 'http://10.0.2.2:8000';
+
+
+
 
   // ── Auth (ViewSet: users/auth/) ──────────────────────────────────────
   static const String signup            = '/users/auth/signup/';
@@ -79,6 +81,13 @@ class ApiEndpoints {
   // }
   static const String syncSmartwatch = '/measurements/MeasurementService/create_measurement/';
 
+
+  // ── Appointment (ViewSet: appointments/AppointmentService/) ──────────
+  static const String createAppointment          = '/appointments/AppointmentService/create_appointment/';
+  static String confirmAppointment(int pk)        => '/appointments/AppointmentService/$pk/confirm_appointment/';
+  static String cancelAppointment(int pk)         => '/appointments/AppointmentService/$pk/cancel_appointment/';
+  static String getPatientTodayAppointments(int pk) => '/appointments/AppointmentService/$pk/get_patient_today_appointments/';
+  static String getDoctorTodayAppointments(int pk)  => '/appointments/AppointmentService/$pk/get_doctor_today_appointments/';
 
   // ── Medications (ViewSet: medications/medicationsService/) ───────────
   static const String searchMedications             = '/medications/medicationsService/search/';

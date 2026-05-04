@@ -6,16 +6,23 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.db import IntegrityError, DatabaseError
 from .models import Doctor, Speciality
-from .serializers import DoctorSerializer, SpecialitySerializer
+from .serializers import DoctorSerializer, SpecialitySerializer, DoctorScheduleSerializer
 from users.serializers import EmailSerializer
 from .services import DoctorService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from drf_spectacular.utils import extend_schema
+from .search import DoctorSearch
+from rest_framework.pagination import PageNumberPagination
 
 class DoctorView(ViewSet):
+    pagination_class = PageNumberPagination
+    
     @extend_schema(request=DoctorSerializer, responses=DoctorSerializer)
     @action(detail=False, methods=['post'], url_path="create_doctor", permission_classes=[AllowAny])
     def create_doctor(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         serializer = DoctorSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = DoctorService.createDoctor(serializer.validated_data)
@@ -38,3 +45,60 @@ class DoctorView(ViewSet):
     def get_all_doctors(self, request):
         result = DoctorService.getAllDoctors()
         return Response(result['data'], status=result['status'])
+
+    @extend_schema(request=DoctorScheduleSerializer, responses=DoctorScheduleSerializer)
+    @action(detail=False, methods=['post'],url_path="add_doctor_schedule", permission_classes=[AllowAny])
+    def add_doctor_schedule(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No schedules provided'}, status=400)
+        
+        serializer = DoctorScheduleSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        result = DoctorService.addDoctorSchedule(serializer.validated_data)
+        return Response(result['data'], status=result['status'])
+    
+    @extend_schema(request=DoctorScheduleSerializer, responses=DoctorScheduleSerializer)
+    @action(detail=True, methods=['get'], url_path="get_doctor_schedule", permission_classes=[AllowAny])
+    def get_doctor_schedule(self, request, pk=None):
+        if not pk:
+            return Response({'success': False, 'message': 'Doctor ID is required'}, status=400)
+
+        result = DoctorService.getDoctorSchedule(pk)
+        return Response(result['data'], status=result['status'])
+
+    @extend_schema(request=DoctorScheduleSerializer, responses=DoctorScheduleSerializer)
+    @action(detail=True, methods=['get'], url_path="get_doctor_available_slots", permission_classes=[AllowAny])
+    def get_doctor_available_slots(self, request, pk=None):
+        if not pk:
+            return Response({'success': False, 'message': 'Doctor ID is required'}, status=400)
+
+        day = request.query_params.get('day')
+        date = request.query_params.get('date')
+        if not day or not date:
+            return Response({'success': False, 'message': 'Day and date parameters are required'}, status=400)
+        
+        result = DoctorService.getDoctorAvailableSlots(pk, day, date)
+        return Response(result['data'], status=result['status'])
+
+    @extend_schema(request=DoctorSerializer, responses=DoctorSerializer)
+    @action(detail=False, methods=['get'], url_path="search", permission_classes=[AllowAny])
+    def search(self, request):
+        query = request.query_params.get('q', '').strip()
+
+        if len(query) < 2:
+            return Response(
+                {'detail': 'Query must be at least 2 characters.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        doctors = list(DoctorSearch.search(query)[:20])
+        if not doctors:
+            return Response(
+                {'detail': 'No doctors found.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        paginator = self.pagination_class()
+        result = paginator.paginate_queryset(doctors, request)
+        serializer = DoctorSerializer(result, many=True)
+        return paginator.get_paginated_response(serializer.data)

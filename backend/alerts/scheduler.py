@@ -89,7 +89,7 @@ def start():
 
     scheduler.add_job(
         createMedicationReminder, #WORKING! but still some fixes needed to avoid duplicate reminders
-        trigger=CronTrigger(hour=11,minute=15),
+        trigger=CronTrigger(hour=14,minute=4),
         id="createMedicationReminder",
         name="Create Medication Reminders",
         jobstore="default",

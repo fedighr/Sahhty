@@ -7,11 +7,17 @@ from .models import Alert
 from .serializers import AlertSerializer
 from .services import AlertService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.pagination import PageNumberPagination
 
 class AlertView(ViewSet):
+    paginator_class = PageNumberPagination
+
     #automatic calls no need to call these endpoints manually, they are called by the services when needed
     @action(detail=False, methods=['post'], url_path='send_risk_alert', permission_classes=[AllowAny])
     def send_risk_alert(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         email = request.data.get('email')
         alert_message = request.data.get('alert_message')
         alert_level = request.data.get('alert_level')
@@ -48,7 +54,7 @@ class AlertView(ViewSet):
     # This endpoints made for frontend to get the alerts for a specific user and mark them as read when the user opens them, they are not called by the services
     @action(detail=True, methods=['get'], permission_classes=[AllowAny])
     def get_alerts_by_user(self, request, pk=None):
-        result = AlertService.getAlertsByUser(pk)
+        result = AlertService.getAlertsByUser(pk, request)
         return Response(result['data'], status=result['status'])
 
     @action(detail=True, methods=['patch'], url_path='mark_as_read', permission_classes=[AllowAny])

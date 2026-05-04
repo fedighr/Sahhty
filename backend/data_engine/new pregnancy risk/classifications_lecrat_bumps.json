@@ -1,0 +1,1778 @@
+[
+  {
+    "dci_name": "ACETYLCYSTEINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif ni fœtal/néonatal retenu. Utilisable quel que soit le terme de la grossesse (intoxication paracétamol ou fluidifiant bronchique si indispensable).",
+    "source_url": "https://www.lecrat.fr/4702/"
+  },
+  {
+    "dci_name": "ACETYLLEUCINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif rapporté mais données très limitées. On préférera la méclozine au T1 ; utilisation IV envisageable quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/6769/"
+  },
+  {
+    "dci_name": "ACIDE AZELAIQUE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Passage percutané négligeable, aucun effet malformatif/fœtal rapporté. Utilisation envisageable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/6347/"
+  },
+  {
+    "dci_name": "ADALIMUMAB",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes ; aucun effet malformatif ni néonatal retenu. Possible de poursuivre quel que soit le terme, avec adaptation posologique en fin de grossesse si possible.",
+    "source_url": "https://www.lecrat.fr/5103/"
+  },
+  {
+    "dci_name": "AMBROXOL",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Nombreuses données rassurantes tous trimestres. Utilisable quel que soit le terme si un fluidifiant bronchique est indispensable.",
+    "source_url": "https://www.lecrat.fr/4713/"
+  },
+  {
+    "dci_name": "AMIKACINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu ; voie injectable possible quel que soit le terme. En cas de traitement prolongé, surveiller la fonction auditive néonatale. La voie inhalée nécessite de contacter le CRAT.",
+    "source_url": "https://www.lecrat.fr/7705/"
+  },
+  {
+    "dci_name": "APIXABAN",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données insuffisantes ; la page renvoie à contacter le CRAT en cas d'exposition pendant la grossesse.",
+    "source_url": "https://www.lecrat.fr/6187/"
+  },
+  {
+    "dci_name": "APREPITANT",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal rapporté, non tératogène chez l'animal. Recours envisageable quel que soit le terme si les antiémétiques de première intention sont insuffisants.",
+    "source_url": "https://www.lecrat.fr/11638/"
+  },
+  {
+    "dci_name": "ARTICAINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif retenu. L'articaïne peut être utilisée quel que soit le terme, y compris en association avec l'adrénaline.",
+    "source_url": "https://www.lecrat.fr/8314/"
+  },
+  {
+    "dci_name": "BETAHISTINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal retenu. Pour la crise vertigineuse au T1, on préférera la méclozine ; en traitement de fond, la bétahistine est envisageable quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/6774/"
+  },
+  {
+    "dci_name": "BUPRENORPHINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Un syndrome de sevrage néonatal est probable en cas d'utilisation jusqu'à l'accouchement. Traitement de substitution à poursuivre sous surveillance.",
+    "source_url": "https://www.lecrat.fr/12748/"
+  },
+  {
+    "dci_name": "C",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vaccin COVID-19 ARNm : données très nombreuses rassurantes, aucun effet malformatif/fœtal retenu. Administration possible quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9427/"
+  },
+  {
+    "dci_name": "CARBOCISTEINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu au T1. Pour les T2/T3, les données sont insuffisantes et on préférera l'ambroxol ou l'acétylcystéine après le premier trimestre.",
+    "source_url": "https://www.lecrat.fr/4720/"
+  },
+  {
+    "dci_name": "CARTEOL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Bêtabloquant par voie ophtalmique ; aucun effet malformatif retenu. On préférera le timolol mieux connu ; si indispensable, envisageable avec surveillance néonatale.",
+    "source_url": "https://www.lecrat.fr/9916/"
+  },
+  {
+    "dci_name": "CASPOFUNGINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données très limitées ; la page renvoie à contacter le CRAT en cas d'exposition pendant la grossesse.",
+    "source_url": "https://www.lecrat.fr/10232/"
+  },
+  {
+    "dci_name": "CEFALEXINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données : aucun effet malformatif/fœtal/néonatal retenu. Utilisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/13208/"
+  },
+  {
+    "dci_name": "CEFTAZIDIME",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal/néonatal retenu. Utilisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/3626/"
+  },
+  {
+    "dci_name": "CEFTOLOZANE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucune donnée publiée chez la femme enceinte ; non tératogène chez l'animal. La page renvoie à la spécialité Zerbaxa® (ceftolozane + tazobactam).",
+    "source_url": "https://www.lecrat.fr/13380/"
+  },
+  {
+    "dci_name": "CEFTRIAXONE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal/néonatal retenu. Utilisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/3635/"
+  },
+  {
+    "dci_name": "CERTOLIZUMAB",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes ; passage placentaire quasi nul. Aucun effet malformatif/fœtal retenu. Peut être poursuivi quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/3072/"
+  },
+  {
+    "dci_name": "CHLORHYDRATE D'AZELASTINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "La page (Dymista®) renvoie aux données d'azélastine et de fluticasone séparément ; aucune classification directe disponible dans ce texte.",
+    "source_url": "https://www.lecrat.fr/21030/"
+  },
+  {
+    "dci_name": "CHLORHYDRATE DE METFORMINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes tous trimestres ; aucun effet malformatif/fœtal/néonatal retenu. Peut être poursuivi pendant la grossesse si efficace.",
+    "source_url": "https://www.lecrat.fr/8992/"
+  },
+  {
+    "dci_name": "CHLOROQUINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes ; aucun effet malformatif/fœtal/néonatal retenu. Utilisable quel que soit le terme en prophylaxie ou traitement du paludisme.",
+    "source_url": "https://www.lecrat.fr/6452/"
+  },
+  {
+    "dci_name": "CHLORPHENIRAMINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes au T1 ; aucun effet malformatif/fœtal/néonatal retenu. Utilisation ponctuelle possible quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/6800/"
+  },
+  {
+    "dci_name": "CICLESONIDE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Par analogie avec les autres corticoïdes inhalés (nombreuses données rassurantes), aucun effet retenu. L'asthme doit être traité efficacement tout au long de la grossesse.",
+    "source_url": "https://www.lecrat.fr/8093/"
+  },
+  {
+    "dci_name": "CICLOSPORINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu ; possible prématurité/RCIU (rôle de la pathologie). Surveillance des concentrations maternelles et risque infectieux maternofoetal. Utilisable si indiqué.",
+    "source_url": "https://www.lecrat.fr/8945/"
+  },
+  {
+    "dci_name": "CLODRONATE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données quasi inexistantes ; aucun effet malformatif retenu mais atteintes squelettiques fœtales possibles à fortes doses chez l'animal. À éviter si possible ; surveillance échographique squelettique si indispensable.",
+    "source_url": "https://www.lecrat.fr/7462/"
+  },
+  {
+    "dci_name": "CLOXACILLINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal/néonatal retenu. Utilisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/13319/"
+  },
+  {
+    "dci_name": "CYCLOPHOSPHAMIDE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "UNSAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Malformations documentées chez l'humain au T1 (membres, crâne, SNC). Ne doit pas être utilisé sauf indication maternelle incontournable, de préférence après le 1er trimestre. Surveillance hématologique néonatale requise.",
+    "source_url": "https://www.lecrat.fr/8912/"
+  },
+  {
+    "dci_name": "DEXTROMETHORPHANE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Nombreuses données rassurantes au T1 ; utilisable à posologie usuelle quel que soit le terme pour une durée limitée. Risque de syndrome de sevrage néonatal à doses suprathérapeutiques jusqu'à l'accouchement.",
+    "source_url": "https://www.lecrat.fr/4695/"
+  },
+  {
+    "dci_name": "DIENOGEST",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Aucun effet malformatif retenu ; arrêter le diénogest dès la découverte de la grossesse. Utilisé uniquement comme contraceptif/traitement de l'endométriose, donc non applicable au-delà du T1.",
+    "source_url": "https://www.lecrat.fr/11443/"
+  },
+  {
+    "dci_name": "DIMETHYLE FUMARATE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu au T1 ; données quasi inexistantes aux T2/T3. On préférera une alternative thérapeutique mieux connue ; contacter le CRAT si exposition.",
+    "source_url": "https://www.lecrat.fr/9199/"
+  },
+  {
+    "dci_name": "DOXYLAMINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu au T1. Données limitées pour T2/T3 avec un cas d'apnées néonatales sévères rapporté. À utiliser avec précaution sous supervision médicale.",
+    "source_url": "https://www.lecrat.fr/3405/"
+  },
+  {
+    "dci_name": "DROSPIRENONE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Aucun effet malformatif/fœtal retenu ; arrêter le contraceptif dès la découverte de la grossesse. Non applicable au-delà du T1 (contraceptif).",
+    "source_url": "https://www.lecrat.fr/11401/"
+  },
+  {
+    "dci_name": "DULOXETINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données T1 rassurantes ; symptômes néonataux transitoires (~30% des nouveau-nés) et possible risque de prématurité en fin de grossesse. À maintenir si bénéfice maternel justifié, avec surveillance néonatale.",
+    "source_url": "https://www.lecrat.fr/4078/"
+  },
+  {
+    "dci_name": "ERTAPENEM",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Données quasi inexistantes mais aucun effet retenu ; rassurer la patiente. Envisageable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/13284/"
+  },
+  {
+    "dci_name": "ETANERCEPT",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes au T1 ; passage placentaire faible. Aucun effet retenu. Peut être poursuivi quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/5140/"
+  },
+  {
+    "dci_name": "ETIFOXINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucune donnée clinique ; on préférera une benzodiazépine (oxazépam) ou l'hydroxyzine en cours de grossesse. L'étifoxine n'est pas recommandée pendant la grossesse.",
+    "source_url": "https://www.lecrat.fr/7017/"
+  },
+  {
+    "dci_name": "FILGRASTIM",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "G-CSF : données limitées mais aucun effet malformatif/fœtal retenu. Peut être utilisé si nécessaire quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/20635/"
+  },
+  {
+    "dci_name": "FINGOLIMOD",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu chez l'humain au T1 ; données quasi inexistantes aux T2/T3. Arrêter avant la grossesse si possible et contacter le CRAT si exposition.",
+    "source_url": "https://www.lecrat.fr/9216/"
+  },
+  {
+    "dci_name": "FLUOCINOLONE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal retenu ; par analogie avec les corticoïdes, données rassurantes. Utilisable quel que soit le terme et la voie d'administration.",
+    "source_url": "https://www.lecrat.fr/5039/"
+  },
+  {
+    "dci_name": "FUROATE DE FLUTICASONE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes, aucun effet retenu. Utilisable quel que soit le terme et la voie d'administration.",
+    "source_url": "https://www.lecrat.fr/8107/"
+  },
+  {
+    "dci_name": "GESTODENE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Aucun effet malformatif/fœtal retenu ; arrêter dès la découverte de la grossesse. Non applicable au-delà du T1 (contraceptif).",
+    "source_url": "https://www.lecrat.fr/11372/"
+  },
+  {
+    "dci_name": "GLATIRAMERE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes au T1, données positives aux T2/T3. Peut être poursuivi quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9218/"
+  },
+  {
+    "dci_name": "GOLIMUMAB",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Données limitées mais rassurantes au T1 ; par analogie avec infliximab/adalimumab, aucun effet retenu. Peut être poursuivi quel que soit le terme si indiqué.",
+    "source_url": "https://www.lecrat.fr/5129/"
+  },
+  {
+    "dci_name": "GOMME DE STERCULIA",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Non absorbé, aucun effet retenu. Utilisable quel que soit le terme si laxatif nécessaire.",
+    "source_url": "https://www.lecrat.fr/8720/"
+  },
+  {
+    "dci_name": "GRANISETRON",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal/néonatal retenu. Envisageable quel que soit le terme si les options de première intention (métoclopramide, ondansétron) ne conviennent pas.",
+    "source_url": "https://www.lecrat.fr/11636/"
+  },
+  {
+    "dci_name": "HEPARINE SODIQUE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Pas de passage placentaire ; aucun effet retenu. Utilisable en préventif et curatif quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/6614/"
+  },
+  {
+    "dci_name": "HOMEOPATHIE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal/néonatal rapporté. Attention au risque de perte de chance en cas de recours exclusif à l'homéopathie au détriment d'un traitement conventionnel.",
+    "source_url": "https://www.lecrat.fr/1048/"
+  },
+  {
+    "dci_name": "HUILE DE PARAFFINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet retenu mais utilisation prolongée déconseillée (risque de carence en vitamines liposolubles). On préférera un laxatif osmotique ou mucilage ; utilisation ponctuelle acceptable si nécessaire.",
+    "source_url": "https://www.lecrat.fr/8787/"
+  },
+  {
+    "dci_name": "HUILE ESSENTIEL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données quasi inexistantes ; rapport bénéfice/risque impossible à évaluer. En usage thérapeutique, mieux vaut s'abstenir en cours de grossesse.",
+    "source_url": "https://www.lecrat.fr/12143/"
+  },
+  {
+    "dci_name": "HYDROXYCARBAMIDE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données très limitées ; la page renvoie à contacter le CRAT en cas d'exposition avant la conception ou en cours de grossesse.",
+    "source_url": "https://www.lecrat.fr/11769/"
+  },
+  {
+    "dci_name": "IBUPROFENE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Formellement contre-indiqué à partir du 6e mois (24 SA) en raison de toxicité cardio-vasculaire/rénale fœtale potentiellement irréversible. Avant 24 SA, utilisation ponctuelle possible mais prudence requise.",
+    "source_url": "https://www.lecrat.fr/15292/"
+  },
+  {
+    "dci_name": "IMIPENEM",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/néonatal retenu. Envisageable quel que soit le terme en raison de l'intérêt thérapeutique.",
+    "source_url": "https://www.lecrat.fr/13283/"
+  },
+  {
+    "dci_name": "IMIQUIMOD",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet retenu ; passage systémique faible. Dans les condylomes, on préférera un traitement physique quel que soit le terme. Dans le carcinome basocellulaire, envisageable de préférence après 10 SA.",
+    "source_url": "https://www.lecrat.fr/10904/"
+  },
+  {
+    "dci_name": "INFLIXIMAB",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes ; aucun effet malformatif/néonatal retenu. Peut être poursuivi quel que soit le terme avec adaptation posologique en fin de grossesse si possible.",
+    "source_url": "https://www.lecrat.fr/5115/"
+  },
+  {
+    "dci_name": "INTERFERON BETA 1 B",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes au T1 ; passage placentaire peu probable. Utilisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9197/"
+  },
+  {
+    "dci_name": "IODIXANOL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Produit de contraste iodé hydrosoluble : aucun effet malformatif retenu. Après 10-12 SA, surveiller la thyroïde néonatale (captation de l'iode par la thyroïde fœtale).",
+    "source_url": "https://www.lecrat.fr/9780/"
+  },
+  {
+    "dci_name": "IOHEXOL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Produit de contraste iodé hydrosoluble : aucun effet malformatif retenu. Après 10-12 SA, surveiller la thyroïde néonatale.",
+    "source_url": "https://www.lecrat.fr/9780/"
+  },
+  {
+    "dci_name": "IOPROMIDE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Produit de contraste iodé hydrosoluble : aucun effet malformatif retenu. Après 10-12 SA, surveiller la thyroïde néonatale.",
+    "source_url": "https://www.lecrat.fr/9780/"
+  },
+  {
+    "dci_name": "ISOFLURANE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif retenu ; rassurer la patiente. En exposition professionnelle, réévaluer les conditions de travail.",
+    "source_url": "https://www.lecrat.fr/8381/"
+  },
+  {
+    "dci_name": "ISPAGHUL",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Non absorbé, aucun effet retenu. Utilisable quel que soit le terme si laxatif nécessaire.",
+    "source_url": "https://www.lecrat.fr/8734/"
+  },
+  {
+    "dci_name": "ITRACONAZOLE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "la page renvoie à contacter le CRAT en cas d'exposition pendant la grossesse.",
+    "source_url": "https://www.lecrat.fr/10228/"
+  },
+  {
+    "dci_name": "IVERMECTINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Nombreuses données rassurantes (voie orale, prise unique) ; aucun effet retenu. Utilisable quel que soit le terme en gale ou helminthiases si voie cutanée insuffisante.",
+    "source_url": "https://www.lecrat.fr/7600/"
+  },
+  {
+    "dci_name": "JOSAMYCINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal/néonatal retenu. Envisageable quel que soit le terme si la josamycine présente un avantage par rapport aux autres macrolides.",
+    "source_url": "https://www.lecrat.fr/13438/"
+  },
+  {
+    "dci_name": "LACTULOSE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Non absorbé, aucun effet retenu. Utilisable quel que soit le terme si laxatif nécessaire.",
+    "source_url": "https://www.lecrat.fr/8775/"
+  },
+  {
+    "dci_name": "LENOGRASTIM",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "G-CSF : aucun effet malformatif/fœtal retenu. Peut être utilisé si nécessaire quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/20635/"
+  },
+  {
+    "dci_name": "LYMECYCLINE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Aucun effet malformatif retenu. Éviter au T1 (traitement chronique). À partir de 28 SA, risque de coloration des dents de lait (au moins 15 jours de traitement). Contre-indiquée pour usage chronique au 3e trimestre.",
+    "source_url": "https://www.lecrat.fr/6391/"
+  },
+  {
+    "dci_name": "MECLOZINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes ; aucun effet retenu. Utilisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/6733/"
+  },
+  {
+    "dci_name": "MEGESTROL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Nomégestrol : aucun effet malformatif retenu ; arrêter dès la découverte de la grossesse. Non applicable au-delà du T1 (contraceptif).",
+    "source_url": "https://www.lecrat.fr/11370/"
+  },
+  {
+    "dci_name": "MEPIVACAINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif retenu ; utilisée en anesthésie obstétricale. Utilisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/8335/"
+  },
+  {
+    "dci_name": "MERCAPTOPURINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "La page renvoie aux données de l'azathioprine dont la mercaptopurine est un métabolite. Données à évaluer via la page azathioprine ; contacter le CRAT.",
+    "source_url": "https://www.lecrat.fr/16668/"
+  },
+  {
+    "dci_name": "METHYLPHENIDATE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu ; données T2/T3 limitées. Risque théorique d'hyperexcitabilité néonatale si pris jusqu'à l'accouchement. À réévaluer avec le prescripteur.",
+    "source_url": "https://www.lecrat.fr/9150/"
+  },
+  {
+    "dci_name": "MIFEPRISTONE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Cinq anomalies cérébelleuses rapportées après exposition au T1 ; lien causal non établi. Surveillance prénatale du cervelet fœtale souhaitable en cas d'exposition. Contacter le CRAT.",
+    "source_url": "https://www.lecrat.fr/3351/"
+  },
+  {
+    "dci_name": "MINOXIDIL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu ; 3 cas d'hypertrichose néonatale réversible rapportés. À éviter si possible ; si indispensable (HTA), utiliser à doses minimales.",
+    "source_url": "https://www.lecrat.fr/9324/"
+  },
+  {
+    "dci_name": "MOXIFLOXACINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Données T2/T3 quasi inexistantes ; on préférera la ciprofloxacine. Moxifloxacine envisageable si avantage réel.",
+    "source_url": "https://www.lecrat.fr/13192/"
+  },
+  {
+    "dci_name": "MUPIROCINE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "UNSAFE",
+      "T2": "UNSAFE",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Attention : la page correspond au mycophénolate (CELLCEPT/MYFORTIC), non à la mupirocine. Le mycophénolate est fortement tératogène (~25% de malformations au T1, ~50% de fausses couches) et contre-indiqué pendant la grossesse.",
+    "source_url": "https://www.lecrat.fr/8864/"
+  },
+  {
+    "dci_name": "NALBUPHINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu ; on préférera la morphine en cours de grossesse. À l'accouchement, possible dépression respiratoire/anomalies du rythme cardiaque fœtal ; surveillance néonatale nécessaire.",
+    "source_url": "https://www.lecrat.fr/11746/"
+  },
+  {
+    "dci_name": "NATALIZUMAB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Anémies/thrombopénies/leucocytoses réversibles rapportées chez environ 1/3 des nouveau-nés exposés après 30 SA. Surveillance hématologique néonatale requise.",
+    "source_url": "https://www.lecrat.fr/9220/"
+  },
+  {
+    "dci_name": "NORAMIDOPYRINE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Aucun effet malformatif retenu au T1. Toxicité rénale/cardiopulmonaire fœtale identique aux AINS au T2/T3. Formellement contre-indiqué au 3e trimestre (à proscrire).",
+    "source_url": "https://www.lecrat.fr/11771/"
+  },
+  {
+    "dci_name": "O",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Vaccin oreillons (virus vivants atténués) : aucun effet retenu si exposition accidentelle. Non recommandé de vacciner en cours de grossesse (virus vivants).",
+    "source_url": "https://www.lecrat.fr/9579/"
+  },
+  {
+    "dci_name": "OCRELIZUMAB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Données T2/T3 quasi inexistantes ; lymphopénie B néonatale réversible documentée. Arrêter avant la grossesse si possible et surveiller l'immunité néonatale.",
+    "source_url": "https://www.lecrat.fr/9201/"
+  },
+  {
+    "dci_name": "OMALIZUMAB",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Nombreuses données rassurantes au T1 ; aucun effet fœtal/néonatal retenu aux T2/T3. Peut être poursuivi si indiqué pour l'asthme sévère.",
+    "source_url": "https://www.lecrat.fr/4948/"
+  },
+  {
+    "dci_name": "OPIUM",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Risque de syndrome de sevrage néonatal à doses suprathérapeutiques jusqu'à l'accouchement. Automédication fortement déconseillée.",
+    "source_url": "https://www.lecrat.fr/11750/"
+  },
+  {
+    "dci_name": "OSELTAMIVIR",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes ; aucun effet retenu. Utilisable quel que soit le terme en traitement curatif ou préventif de la grippe.",
+    "source_url": "https://www.lecrat.fr/8566/"
+  },
+  {
+    "dci_name": "OXACILLINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal/néonatal retenu. Utilisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/13325/"
+  },
+  {
+    "dci_name": "OXELADINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucune donnée clinique disponible ; on préférera la codéine ou le dextrométhorphane mieux connus chez la femme enceinte.",
+    "source_url": "https://www.lecrat.fr/11899/"
+  },
+  {
+    "dci_name": "OXOMEMAZINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucune donnée publiée au T1 ; risque théorique d'effets extrapyramidaux/atropiniques chez le nouveau-né. On préférera la codéine ou le dextrométhorphane.",
+    "source_url": "https://www.lecrat.fr/11893/"
+  },
+  {
+    "dci_name": "OXYBUTYNINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif/fœtal retenu. En fin de grossesse, effets atropiniques néonataux théoriquement possibles. À réévaluer avec le prescripteur.",
+    "source_url": "https://www.lecrat.fr/11915/"
+  },
+  {
+    "dci_name": "P",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vaccin pneumococcique (inactivé) : aucun effet retenu. Possible de vacciner quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9581/"
+  },
+  {
+    "dci_name": "PAMIDRONATE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Bisphosphonate : atteintes squelettiques fœtales possibles à fortes doses répétées chez l'animal. À éviter si possible ; surveillance échographique squelettique si indispensable.",
+    "source_url": "https://www.lecrat.fr/7490/"
+  },
+  {
+    "dci_name": "PEGFILGRASTIM",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "G-CSF : aucun effet malformatif/fœtal retenu. Peut être utilisé si nécessaire quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/20635/"
+  },
+  {
+    "dci_name": "PICOSULFATE DE SODIUM",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet retenu mais données inexistantes. On préférera un laxatif osmotique ou mucilage ; si laxatif stimulant nécessaire, le séné peut être utilisé ponctuellement.",
+    "source_url": "https://www.lecrat.fr/8837/"
+  },
+  {
+    "dci_name": "PIPERACILLINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/néonatal retenu. Envisageable quel que soit le terme en raison de l'intérêt thérapeutique.",
+    "source_url": "https://www.lecrat.fr/13267/"
+  },
+  {
+    "dci_name": "PRODUITS HOMEOPATHIQUES",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal/néonatal rapporté. Attention au risque de perte de chance en cas de recours exclusif à l'homéopathie.",
+    "source_url": "https://www.lecrat.fr/1048/"
+  },
+  {
+    "dci_name": "PYRAZINAMIDE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet retenu ; recommandé par l'OMS dans le traitement de la tuberculose en cours de grossesse. Utilisable quel que soit le terme.",
+    "source_url": "https://www.lecrat.fr/8432/"
+  },
+  {
+    "dci_name": "QUININE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes en traitement du paludisme ; aucun effet retenu. Utilisable à doses thérapeutiques quel que soit le terme et la voie.",
+    "source_url": "https://www.lecrat.fr/10590/"
+  },
+  {
+    "dci_name": "RITUXIMAB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Lymphopénie B néonatale documentée après exposition au T2/T3. Surveillance de l'immunité néonatale et adaptation des vaccinations vivantes requises.",
+    "source_url": "https://www.lecrat.fr/10810/"
+  },
+  {
+    "dci_name": "RIVAROXABAN",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données insuffisantes ; la page renvoie à contacter le CRAT en cas d'exposition pendant la grossesse.",
+    "source_url": "https://www.lecrat.fr/6164/"
+  },
+  {
+    "dci_name": "RU",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Vaccin rubéole (virus vivants atténués) : non recommandé en cours de grossesse ; éviter une conception dans le mois suivant la vaccination. Un seul cas de rubéole congénitale documenté sur >6000 expositions.",
+    "source_url": "https://www.lecrat.fr/9638/"
+  },
+  {
+    "dci_name": "SECUKINUMAB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données limitées au T1 (aucun effet retenu) ; quasi inexistantes aux T2/T3. Risque infectieux théorique. Contacter le CRAT ; arrêter avant la conception si possible.",
+    "source_url": "https://www.lecrat.fr/10837/"
+  },
+  {
+    "dci_name": "SELS MINERAUX",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Gluconate de zinc : aucun effet malformatif retenu. Indispensable dans l'acrodermatite entéropathique ; dans l'acné, on préférera d'autres traitements après le T1.",
+    "source_url": "https://www.lecrat.fr/6356/"
+  },
+  {
+    "dci_name": "SORBITOL",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Non absorbé, aucun effet retenu. Utilisable quel que soit le terme si laxatif nécessaire.",
+    "source_url": "https://www.lecrat.fr/8846/"
+  },
+  {
+    "dci_name": "SOUFRE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Thiocolchicoside : aucun effet retenu chez l'humain mais préférable d'éviter en cours de grossesse. Arrêter le traitement dès la découverte de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9127/"
+  },
+  {
+    "dci_name": "T",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vaccin tétanos (inactivé) : très nombreuses données rassurantes. Possible de vacciner quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9640/"
+  },
+  {
+    "dci_name": "TACROLIMUS",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu au T1. Troubles rénaux/hyperkaliémie transitoires néonatals rapportés. Surveillance des concentrations maternelles et risque infectieux. Utilisable si indiqué.",
+    "source_url": "https://www.lecrat.fr/8924/"
+  },
+  {
+    "dci_name": "TARTRATE DE BRIMONIDINE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Aucun effet malformatif retenu. Contre-indiquée chez le nouveau-né (hypotension, bradycardie, apnée). En fin de grossesse, effets systémiques néonataux dangereux possibles ; à éviter au T3 et à l'accouchement.",
+    "source_url": "https://www.lecrat.fr/9937/"
+  },
+  {
+    "dci_name": "TAZOBACTAM",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet retenu. Renvoie aux spécialités Tazocilline® et Zerbaxa® (associations). Données limitées au T1 mais aucun effet retenu après.",
+    "source_url": "https://www.lecrat.fr/13264/"
+  },
+  {
+    "dci_name": "TEICOPLANINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucune donnée publiée chez la femme enceinte ; on préférera la vancomycine. Si indispensable, envisageable quel que soit le terme avec surveillance auditive néonatale.",
+    "source_url": "https://www.lecrat.fr/13214/"
+  },
+  {
+    "dci_name": "TERIFLUNOMIDE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu chez l'humain au T1 ; données quasi inexistantes aux T2/T3 ; tératogène chez l'animal. Arrêter avant la grossesse et effectuer un wash-out ; contacter le CRAT.",
+    "source_url": "https://www.lecrat.fr/10803/"
+  },
+  {
+    "dci_name": "TOCILIZUMAB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Données T2/T3 très limitées. Le passage placentaire peut affecter l'immunité néonatale ; différer les vaccins vivants chez le nouveau-né.",
+    "source_url": "https://www.lecrat.fr/10790/"
+  },
+  {
+    "dci_name": "TOXINE BOTULINIQUE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Aucun effet malformatif/fœtal retenu ; passage placentaire peu probable. Peut être poursuivie quel que soit le terme si indiquée.",
+    "source_url": "https://www.lecrat.fr/20887/"
+  },
+  {
+    "dci_name": "TRIMETAZIDINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucune donnée clinique ; aucun effet retenu. Réévaluer le bien-fondé de l'utilisation en cours de grossesse ; contacter le CRAT si exposition.",
+    "source_url": "https://www.lecrat.fr/8669/"
+  },
+  {
+    "dci_name": "TRIMETHOPRIME",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Doublement possible de la fréquence globale des malformations évoqué au T1 (données à confirmer) ; supplémentation en acide folique recommandée. Après 10 SA, rassurer la patiente.",
+    "source_url": "https://www.lecrat.fr/6669/"
+  },
+  {
+    "dci_name": "TRIPTORELINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Aucun effet malformatif retenu. Utilisée en AMP ou en traitement hormonal ; arrêter dès la découverte de la grossesse. Non applicable en dehors du T1.",
+    "source_url": "https://www.lecrat.fr/12728/"
+  },
+  {
+    "dci_name": "TUBERCULINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Très nombreuses données rassurantes ; aucun effet retenu. Test à la tuberculine réalisable quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/3737/"
+  },
+  {
+    "dci_name": "ULIPRISTAL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Aucun effet malformatif retenu chez l'humain. Effet abortif documenté chez l'animal. Contacter le CRAT en cas d'exposition en cours de grossesse.",
+    "source_url": "https://www.lecrat.fr/6271/"
+  },
+  {
+    "dci_name": "USTEKINUMAB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données nombreuses et rassurantes au T1 ; limitées aux T2/T3. Le passage placentaire peut affecter l'immunité néonatale. Surveillance et adaptation des vaccins vivants chez le nouveau-né.",
+    "source_url": "https://www.lecrat.fr/10847/"
+  },
+  {
+    "dci_name": "VACCIN BCG",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Vaccin BCG (bactéries vivantes atténuées) : aucun effet retenu si exposition accidentelle. Non recommandé de vacciner en cours de grossesse (bacilles vivants).",
+    "source_url": "https://www.lecrat.fr/9505/"
+  },
+  {
+    "dci_name": "VACCIN CONTRE L'HEPATITE B",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vaccin inactivé : très nombreuses données rassurantes ; aucun effet retenu. Possible de vacciner quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9574/"
+  },
+  {
+    "dci_name": "VACCIN D",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vaccin diphtérique (inactivé) : très nombreuses données rassurantes. Possible de vacciner quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9526/"
+  },
+  {
+    "dci_name": "VACCIN PNEUMOCOCCIQUE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vaccin inactivé : aucun effet retenu. Possible de vacciner quel que soit le terme de la grossesse.",
+    "source_url": "https://www.lecrat.fr/9581/"
+  },
+  {
+    "dci_name": "VACCIN R",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "NOT_APPLICABLE",
+      "T3": "NOT_APPLICABLE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Vaccin rubéole (virus vivants atténués) : non recommandé en cours de grossesse. Un seul cas de rubéole congénitale sur >6000 expositions accidentelles. Contacter un CPDPN si exposition au T1.",
+    "source_url": "https://www.lecrat.fr/9638/"
+  },
+  {
+    "dci_name": "VANCOMYCINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucune donnée au T1 ; aucun effet rénal/auditif néonatal retenu aux T2/T3. Préférer pour les glycopeptides ; en cas de traitement prolongé, surveiller l'audition néonatale.",
+    "source_url": "https://www.lecrat.fr/13364/"
+  },
+  {
+    "dci_name": "VASELINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Huile de paraffine (= vaseline) : aucun effet retenu mais utilisation prolongée déconseillée. On préférera un laxatif osmotique ou mucilage ; utilisation ponctuelle acceptable si nécessaire.",
+    "source_url": "https://www.lecrat.fr/8787/"
+  },
+  {
+    "dci_name": "VILANTEROL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucune donnée clinique disponible ; aucun effet retenu. Si possible, préférer une alternative mieux connue en cours de grossesse. Si indispensable, envisageable.",
+    "source_url": "https://www.lecrat.fr/8014/"
+  },
+  {
+    "dci_name": "VORICONAZOLE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Données insuffisantes ; la page renvoie à contacter le CRAT en cas d'exposition pendant la grossesse.",
+    "source_url": "https://www.lecrat.fr/10229/"
+  },
+  {
+    "dci_name": "ZOLPIDEM",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun effet malformatif retenu. Possibles effets sédatifs/hypotonie/syndrome de sevrage néonatal si utilisé jusqu'à l'accouchement. Durée la plus brève possible.",
+    "source_url": "https://www.lecrat.fr/3536/"
+  },
+  {
+    "dci_name": "ACIDE NALIDIXIQUE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Quinolone : aucune preuve de tératogénicité. Effets secondaires graves possibles (articulations, système nerveux) ; prescrit uniquement si pas d'alternative. Surveillance fœtale standard.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/nalidixic-acid/"
+  },
+  {
+    "dci_name": "BECLOMETHASONE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Corticoïde inhalé : aucune preuve de risque pour le bébé. Doit être poursuivi pendant la grossesse pour contrôler l'asthme.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/beclometasone/"
+  },
+  {
+    "dci_name": "BIPENICILLINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Pénicilline : aucun risque pour le bébé. Peut être utilisée quel que soit le terme si recommandée par le médecin.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/penicillins/"
+  },
+  {
+    "dci_name": "CHLORPHENAMINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Chlorphénamine : les données disponibles ne suggèrent pas de risque pour la mère ou le bébé en cours de grossesse.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/chlorphenamine/"
+  },
+  {
+    "dci_name": "CHOLESTYRAMINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Colestytramine : non absorbée par le tube digestif. Peut être utilisée en cours de grossesse ; surveiller les vitamines liposolubles et la coagulation.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/colestyramine/"
+  },
+  {
+    "dci_name": "EVEROLIMUS",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Très peu de données chez la femme enceinte ; aucun problème évident signalé mais données insuffisantes. Peut être utilisé si recommandé par un spécialiste ; surveillance renforcée.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/everolimus/"
+  },
+  {
+    "dci_name": "HB",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vaccin hépatite B (inactivé) : aucun risque connu. Recommandé chez la femme enceinte exposée. Peut être administré quel que soit le terme.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-b-vaccine/"
+  },
+  {
+    "dci_name": "IMATINIB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Possible tableau polymalformatif dans de rares cas au T1 ; arrêt/continuation à évaluer par le spécialiste. Surveillance morphologique renforcée recommandée.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/imatinib/"
+  },
+  {
+    "dci_name": "INTERFERON BETA-1A",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Interféron bêta : aucun risque pour le bébé, utilisé par de nombreuses femmes pendant la grossesse. Peut être poursuivi si recommandé par le spécialiste.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/interferon-beta/"
+  },
+  {
+    "dci_name": "LENALIDOMIDE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "UNSAFE",
+      "T2": "UNSAFE",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Formellement contre-indiqué pendant toute la grossesse (analogue de la thalidomide). Programme de prévention de la grossesse obligatoire. Risque présumé de malformations graves et de fausses couches.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/lenalidomide/"
+  },
+  {
+    "dci_name": "MENTHOL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Huile essentielle : quantités faibles dans les cosmétiques/aliments non préoccupantes. En usage thérapeutique ou massage aromathérapique, certaines huiles essentielles sont à éviter (risque de contractions utérines hypothétique).",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/menthol/"
+  },
+  {
+    "dci_name": "ONDANSETRONE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Légère augmentation possible de cardiopathies/fentes palatines rapportée au T1 (risques très faibles, données à confirmer). À partir de 11 SA, pas de préoccupation supplémentaire.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ondansetron/"
+  },
+  {
+    "dci_name": "RIBAVIRINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Données très limitées ; pas de malformations rapportées mais insuffisamment étudié. Utilisé uniquement si infection virale grave sans alternative. Après le 1er trimestre, pas d'effet malformatif possible.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ribavirin/"
+  },
+  {
+    "dci_name": "SILDENAFIL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Aucun risque clair identifié. Utilisé uniquement dans l'HTAP pulmonaire en cours de grossesse. Surveillance très rapprochée nécessaire car l'HTAP elle-même est à haut risque.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sildenafil/"
+  },
+  {
+    "dci_name": "SIROLIMUS",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "aucun problème évident signalé. Peut être nécessaire si transplantation rénale ou lymphangioleiomyomatose. Consultation spécialisée impérative.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sirolimus/"
+  },
+  {
+    "dci_name": "TACILIZUMAB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Tocilizumab : aucun effet malformatif retenu. Peut affecter l'immunité néonatale après le T1 (immunosuppression) ; vaccins vivants différés chez le nouveau-né.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tocilizumab/"
+  },
+  {
+    "dci_name": "TIGECYCLINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "CAUTION"
+    },
+    "summary": "Tétracycline : aucun effet malformatif au T1. Après 13 SA, risque de coloration des dents de lait ; à éviter sauf si seule option pour une infection grave.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tigecycline/"
+  },
+  {
+    "dci_name": "TRASTUZUMAB",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "UNSAFE",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Non recommandé en cours de grossesse. Utilisé en 2e partie de grossesse, réduit le liquide amniotique (oligohydramnios/anhydramnios) avec risques pulmonaires et rénaux fœtaux graves. Uniquement si bénéfice maternel vital.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/trastuzumab/"
+  },
+  {
+    "dci_name": "VACCIN CONTRE DE L'HEPATITE A",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vaccin hépatite A (inactivé) : aucun risque connu. Peut être administré en cours de grossesse si exposition au risque.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-a-vaccine/"
+  },
+  {
+    "dci_name": "VITAMINE B12",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "SAFE"
+    },
+    "summary": "Vitamine B12 : aucun risque connu. Indispensable en cas de carence pour la santé maternelle et le développement fœtal (prévention des anomalies du tube neural).",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/vitamin-b12/"
+  }
+]

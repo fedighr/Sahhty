@@ -16,6 +16,9 @@ class MeasurementView(ViewSet):
     @extend_schema(request=MeasurementSerializer, responses=MeasurementSerializer)
     @action(detail=False, methods=['post'], url_path='create_measurement', permission_classes=[AllowAny])
     def create_measurement(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         serializer = MeasurementSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = MeasurementService.createMeasurement(serializer.validated_data)
@@ -30,7 +33,7 @@ class MeasurementView(ViewSet):
     @extend_schema(request=MeasurementSerializer, responses=MeasurementSerializer)
     @action(detail=True, methods=['get'], url_path='get_patient_measurements', permission_classes=[AllowAny])
     def get_patient_measurements(self, request, pk=None):
-        result = MeasurementService.getPatientMeasurements(pk)
+        result = MeasurementService.getPatientMeasurements(pk, request)
         return Response(result['data'], status=result['status'])
 
     @extend_schema(request=RiskAssessmentSerializer, responses=RiskAssessmentSerializer)

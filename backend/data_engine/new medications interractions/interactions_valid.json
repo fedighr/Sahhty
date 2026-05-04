@@ -1,0 +1,332 @@
+[
+  {
+    "dci_a": "ACIDE ASCORBIQUE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de diminution des concentrations sanguines de la ciclosporine, notamment en cas d’association avec la vitamine E."
+  },
+  {
+    "dci_a": "ACIDE ASCORBIQUE",
+    "dci_b": "DEFERIPRONE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Par extrapolation à partir de l’interaction avec la déféroxamine : avec l’acide ascorbique à fortes doses et par voie IV, risque d’anomalies de la fonction cardiaque, voire insuffisance cardiaque aiguë (en général réversible à l’arrêt de la vitamine C)."
+  },
+  {
+    "dci_a": "ACIDE ASCORBIQUE",
+    "dci_b": "DEFEROXAMINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec l'acide ascorbique à fortes doses et par voie IV : anomalies de la fonction cardiaque, voire insuffisance cardiaque aiguë (en En cas d'hémochromatose, ne donner de la vitamine C qu'après avoir général réversible à l'arrêt de la vitamine C). commencé le traitement par la déféroxamine. Surveiller la fonction cardiaque en cas d'association."
+  },
+  {
+    "dci_a": "APREPITANT",
+    "dci_b": "IFOSFAMIDE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque d’augmentation de la neurotoxicité de l’ifosfamide."
+  },
+  {
+    "dci_a": "APREPITANT",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation des concentrations d’aprépitant par diminution de son métabolisme hépatique par l’itraconazole."
+  },
+  {
+    "dci_a": "BUPRENORPHINE",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations de buprénorphine par diminution de son métabolisme hépatique, avec risque de majoration de ses Surveillance clinique et adaptation de la posologie de la buprénorphine effets indésirables. pendant le traitement par l'inhibiteur et, le cas échéant, après son arrêt."
+  },
+  {
+    "dci_a": "BUSULFAN",
+    "dci_b": "DEFERASIROX",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque d’augmentation de la toxicité du busulfan par diminution de sa clairance par le déférasirox."
+  },
+  {
+    "dci_a": "BUSULFAN",
+    "dci_b": "ITRACONAZOLE",
+    "severity": "DECONSEILLEE",
+    "description": "Avec le busulfan à fortes doses : doublement des concentrations de busulfan par l’itraconazole."
+  },
+  {
+    "dci_a": "CHLOROQUINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'augmentation des concentrations sanguines de ciclosporine et de la créatininémie. Dosage des concentrations sanguines de ciclosporine, contrôle de la fonction rénale et adaptation de la posologie pendant l'association et après l'arrêt de la chloroquine."
+  },
+  {
+    "dci_a": "CLADRIBINE",
+    "dci_b": "LAMIVUDINE",
+    "severity": "DECONSEILLEE",
+    "description": "Risque de diminution de l’efficacité de la cladribine par la lamivudine."
+  },
+  {
+    "dci_a": "CRIZOTINIB",
+    "dci_b": "IBRUTINIB",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques d’ibrutinib par diminution de son métabolisme hépatique par le crizotinib. Si l’association ne peut être évitée, surveillance clinique étroite et réduction de la dose d’ibrutinib à 280 mg par jour pendant la durée de l’association."
+  },
+  {
+    "dci_a": "DEFERIPRONE",
+    "dci_b": "DEFERASIROX",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d'hyperchélation."
+  },
+  {
+    "dci_a": "DEFEROXAMINE",
+    "dci_b": "DEFERASIROX",
+    "severity": "CONTRE_INDICATION",
+    "description": "Risque d'hyperchélation."
+  },
+  {
+    "dci_a": "EVEROLIMUS",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines de l’évérolimus par la ciclosporine. La néphrotoxicité de la ciclosporine est également Dosage des concentrations sanguines d’évérolimus, éventuellement augmentée lors de l’association. adaptation de la posologie et contrôle de la fonction rénale, pendant l’association et après son arrêt."
+  },
+  {
+    "dci_a": "EZETIMIBE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "D’une part, risque majoré d'effets indésirables (concentration- dépendants) à type de rhabdomyolyse, par augmentation des concentrations d’ézétimibe ; d’autre part, possible augmentation des concentrations de ciclosporine."
+  },
+  {
+    "dci_a": "IBRUTINIB",
+    "dci_b": "IMATINIB",
+    "severity": "DECONSEILLEE",
+    "description": "Risque d’augmentation des concentrations plasmatiques d’ibrutinib par diminution de son métabolisme hépatique par l'imatinib. Si l’association ne peut être évitée, surveillance clinique étroite et réduction de la dose d’ibrutinib à 280 mg par jour pendant la durée de l’association."
+  },
+  {
+    "dci_a": "IFOSFAMIDE",
+    "dci_b": "VEMURAFENIB",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque de diminution des concentrations de l'ifosfamide, avec augmentation de son métabolite actif et toxicité majorée."
+  },
+  {
+    "dci_a": "JOSAMYCINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d'augmentation des concentrations sanguines de ciclosporine et de la créatininémie. Dosage des concentrations sanguines de la ciclosporine, contrôle de la fonction rénale et adaptation de la posologie pendant l'association et après l'arrêt du macrolide."
+  },
+  {
+    "dci_a": "KETAMINE",
+    "dci_b": "TICLOPIDINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Augmentation des concentrations plasmatiques de kétamine par diminution de son métabolisme par la ticlopidine."
+  },
+  {
+    "dci_a": "LAMIVUDINE",
+    "dci_b": "SORBITOL",
+    "severity": "DECONSEILLEE",
+    "description": "Diminution des concentrations plasmatiques de lamivudine par le sorbitol. Si l’association ne peut être évitée, surveillance plus fréquente de la charge virale."
+  },
+  {
+    "dci_a": "PACLITAXEL",
+    "dci_b": "DEFERASIROX",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des concentrations plasmatiques du paclitaxel par inhibition de son métabolisme hépatique par le Surveillance clinique et biologique étroite. deferasirox."
+  },
+  {
+    "dci_a": "PACLITAXEL",
+    "dci_b": "TRIMETHOPRIME",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des concentrations plasmatiques du paclitaxel par inhibition de son métabolisme hépatique par le Surveillance clinique et biologique étroite et adaptation de la posologie triméthoprime. du paclitaxel pendant l’association."
+  },
+  {
+    "dci_a": "POTASSIUM",
+    "dci_b": "CICLOSPORINE",
+    "severity": "DECONSEILLEE",
+    "description": "Pour une quantité de potassium > à 1 mmol/prise, hyperkaliémie potentiellement létale, notamment chez l'insuffisant rénale ( addition des effets hyperkaliémiants). Sauf en cas d'hypokaliémie."
+  },
+  {
+    "dci_a": "RIBAVIRINE",
+    "dci_b": "ZIDOVUDINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque de diminution de l'efficacité de chaque antiviral, par antagonisme compétitif de la réaction de phosphorylation à l'origine Surveillance clinique et biologique régulière, notamment en début des métabolites actifs. d'association."
+  },
+  {
+    "dci_a": "SELEXIPAG",
+    "dci_b": "DEFERASIROX",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des effets indésirables du sélexipag par diminution de son métabolisme. Surveillance clinique étroite pendant l’association. Réduire de moitié la posologie (une seule prise par jour)."
+  },
+  {
+    "dci_a": "SILDENAFIL",
+    "dci_b": "JOSAMYCINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de sildénafil, avec risque d'hypotension. Débuter le traitement par sildénafil à la dose minimale en cas d'association avec la josamycine."
+  },
+  {
+    "dci_a": "SIROLIMUS",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines de sirolimus par la ciclosporine. La néphrotoxicité de la ciclosporine est également Il est recommandé d’administrer le sirolimus 4 heures après la augmentée lors de l’association. ciclosporine. Contrôle de la fonction rénale, pendant l’association et après son arrêt."
+  },
+  {
+    "dci_a": "TERIFLUNOMIDE",
+    "dci_b": "SELEXIPAG",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des effets indésirables du sélexipag par diminution de son métabolisme. Surveillance clinique étroite pendant l’association. Réduire de moitié la posologie (une seule prise par jour)."
+  },
+  {
+    "dci_a": "TIGECYCLINE",
+    "dci_b": "CICLOSPORINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines de l’immunosuppresseur, avec risque d'effets néphrotoxiques. Dosage des concentrations sanguines de l’immunosuppresseur, contrôle de la fonction rénale et adaptation de la posologie pendant le traitement par la tigécycline."
+  },
+  {
+    "dci_a": "TIGECYCLINE",
+    "dci_b": "TACROLIMUS",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations sanguines de l’immunosuppresseur, avec risque d'effets néphrotoxiques. Dosage des concentrations sanguines de l’immunosuppresseur, contrôle de la fonction rénale et adaptation de la posologie pendant le traitement par la tigécycline."
+  },
+  {
+    "dci_a": "TRIMETHOPRIME",
+    "dci_b": "CICLOSPORINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Avec le triméthoprime (seul ou associé) par voie orale : augmentation de la créatininémie avec diminution possible des concentrations sanguines de ciclosporine. Avec le trimethoprime (seul ou associé) par voie IV : la diminution des concentrations sanguines de ciclosporine peut être très importante avec disparition possible du pouvoir immunosuppresseur."
+  },
+  {
+    "dci_a": "TRIMETHOPRIME",
+    "dci_b": "SELEXIPAG",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Risque d’augmentation des effets indésirables du sélexipag par diminution de son métabolisme. Surveillance clinique étroite pendant l’association. Réduire de moitié la posologie (une seule prise par jour)."
+  },
+  {
+    "dci_a": "CIPROFLOXACINE",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Variation, éventuellement importante, des concentrations de phénytoïne en cas de traitement par la ciprofloxacine. Surveillance clinique et contrôle des concentrations plasmatiques de l’anticonvulsivant pendant le traitement par ciprofloxacine et après son arrêt."
+  },
+  {
+    "dci_a": "CLOPIDOGREL",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de phénytoïne avec signes de surdosage (inhibition du métabolisme de la Surveillance clinique et contrôle des concentrations plasmatiques de phénytoïne."
+  },
+  {
+    "dci_a": "DIAZEPAM",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Variations imprévisibles : les concentrations plasmatiques de phénytoïne peuvent augmenter, avec signes de surdosage, mais Surveillance clinique et contrôle des concentrations plasmatiques de aussi diminuer ou rester stables. phénytoïne."
+  },
+  {
+    "dci_a": "DIPYRIDAMOLE",
+    "dci_b": "THEOPHYLLINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec le dipyridamole par voie injectable : réduction de l’effet vasodilatateur du dipyridamole par la théophylline. Interrompre un traitement par théophylline au moins 5 jours avant une imagerie myocardique avec le dipyridamole."
+  },
+  {
+    "dci_a": "FLUOXETINE",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de phénytoïne avec signes de surdosage, par inhibition du métabolisme de la Surveillance clinique et éventuellement contrôle des concentrations phénytoïne. plasmatiques de phénytoïne. Si besoin, adaptation posologique pendant le traitement par la fluoxétine et après son arrêt."
+  },
+  {
+    "dci_a": "FLUVOXAMINE",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de phénytoïne avec signes de surdosage, par inhibition du métabolisme hépatique Surveillance clinique et éventuellement contröle des concentrations de la phénytoïne. plamatiques de phénytoïne. Si besoin, adaptation posologique de la phénytoïne pendant le traitement par la fluvoxamine et après son arrët."
+  },
+  {
+    "dci_a": "FUROSEMIDE",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution de l'effet diurétique pouvant atteindre 50 %. Utiliser éventuellement des doses plus élevées de furosémide."
+  },
+  {
+    "dci_a": "ISONIAZIDE",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Surdosage en phénytoïne (diminution de son métabolisme). Surveillance clinique étroite, dosage des concentrations plasmatiques de phénytoïne et adaptation éventuelle de sa posologie pendant le traitement par l'isoniazide et après son arrêt."
+  },
+  {
+    "dci_a": "MICONAZOLE",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de phénytoïne pouvant atteindre des valeurs toxiques, par inhibition du Surveillance clinique étroite, dosage des concentrations plasmatiques métabolisme hépatique de la phénytoïne. de phénytoïne et adaptation éventuelle de sa posologie pendant le traitement par le miconazole et après son arrêt."
+  },
+  {
+    "dci_a": "NORFLOXACINE",
+    "dci_b": "THEOPHYLLINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la théophyllinémie avec risque de surdosage (diminution du métabolisme de la théophylline). Surveillance clinique et éventuellement de la théophyllinémie."
+  },
+  {
+    "dci_a": "PHENOBARBITAL",
+    "dci_b": "CARBAMAZEPINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Diminution progressive des concentrations plasmatiques de carbamazépine et de son métabolite actif sans modification Prudence quant à l'interprétation des concentrations plasmatiques. apparente de l'efficacité anticomitiale."
+  },
+  {
+    "dci_a": "PHENOBARBITAL",
+    "dci_b": "METOPROLOL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Diminution des concentrations plasmatiques du métoprolol avec réduction de ses effets cliniques (augmentation de son métabolisme hépatique)."
+  },
+  {
+    "dci_a": "PHENOBARBITAL",
+    "dci_b": "PHENYTOINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "En cas de traitement antérieur par le phénobarbital ou la primidone, et adjonction de phénytoïne, augmentation des concentrations plasmatiques de phénobarbital pouvant entraîner des signes toxiques (inhibition du métabolisme par compétition). En cas de traitement antérieur par la phénytoïne et adjonction de phénobarbital ou de primidone, variations imprévisibles : - les concentrations plasmatiques de phénytoïne sont le plus souvent diminuées (augmentation du métabolisme) sans que cette diminution affecte défavorablement l'activité anticonvulsivante. A l'arrêt du phénobarbital ou de la primidone, possibilité d'effets toxiques de la phénytoïne - il peut arriver que les concentrations de phénytoïne soient augmentées (inhibition du métabolisme par compétition)."
+  },
+  {
+    "dci_a": "PHENOBARBITAL",
+    "dci_b": "PROPRANOLOL",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Diminution des concentrations plasmatiques du propranolol avec réduction de ses effets cliniques (augmentation de son métabolisme hépatique)."
+  },
+  {
+    "dci_a": "PHENYTOINE",
+    "dci_b": "AMIODARONE",
+    "severity": "DECONSEILLEE",
+    "description": "Majoration du risque de troubles du rythme ventriculaire par potentialisation des effets antiarythmiques, ainsi que des effets indésirables neurologiques, par diminution du métabolisme hépatique de la phénytoïne par l’amiodarone."
+  },
+  {
+    "dci_a": "PHENYTOINE",
+    "dci_b": "CARBAMAZEPINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Réduction réciproque des concentrations plasmatiques (augmentation du métabolisme sans modification apparente de Prudence dans l'interprétation des concentrations plasmatiques. l'efficacité anticomitiale)."
+  },
+  {
+    "dci_a": "PHENYTOINE",
+    "dci_b": "CIMETIDINE",
+    "severity": "DECONSEILLEE",
+    "description": "Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg/j : augmentation des concentrations plasmatiques de Si l'association ne peut être évitée, surveillance clinique étroite, dosage phénytoïne avec possibilité d'apparition des signes habituels de des concentrations plasmatiques de phénytoïne et adaptation surdosage. éventuelle de sa posologie pendant le traitement par la cimétidine et après son arrêt."
+  },
+  {
+    "dci_a": "PHENYTOINE",
+    "dci_b": "FLUCONAZOLE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation des concentrations plasmatiques de phénytoïne pouvant atteindre des valeurs toxiques. Mécanisme invoqué : Surveillance clinique et biologique étroite. inhibition du métabolisme hépatique de la phénytoïne."
+  },
+  {
+    "dci_a": "SUCRALFATE",
+    "dci_b": "PHENYTOINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Diminution de l'absorption digestive de la phénytoïne. Prendre le sucralfate à distance de la phénytoïne (plus de 2 heures, si possible)."
+  },
+  {
+    "dci_a": "THEOPHYLLINE",
+    "dci_b": "CIMETIDINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg/j : augmentation de la théophyllinémie avec risque de Surveillance clinique et éventuellement de la théophyllinémie. S'il y a surdosage (diminution du métabolisme de la théophylline). lieu, adaptation de la théophylline pendant le traitement par la cimétidine et après son arrêt."
+  },
+  {
+    "dci_a": "THEOPHYLLINE",
+    "dci_b": "CIPROFLOXACINE",
+    "severity": "PRECAUTION_EMPLOI",
+    "description": "Augmentation de la théophyllinémie avec risque de surdosage, par diminution de son métabolisme hépatique par la ciprofloxacine. Surveillance clinique et éventuellement de la théophyllinémie."
+  },
+  {
+    "dci_a": "THEOPHYLLINE",
+    "dci_b": "CLARITHROMYCINE",
+    "severity": "A_PRENDRE_EN_COMPTE",
+    "description": "Risque d'augmentation de la théophyllinémie, particulièrement chez l'enfant."
+  },
+  {
+    "dci_a": "THEOPHYLLINE",
+    "dci_b": "ENOXACINE",
+    "severity": "CONTRE_INDICATION",
+    "description": "Surdosage en théophylline par diminution importante de son métabolisme."
+  }
+]

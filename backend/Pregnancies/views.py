@@ -17,6 +17,9 @@ class PregnancyView(ViewSet):
     @extend_schema(request=PregnancySerializer, responses=PregnancySerializer)
     @action(detail=False, methods=['post'], url_path='create_pregnancy', permission_classes=[AllowAny])
     def create_pregnancy(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         serializer = PregnancySerializer(data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         result = PregnancyService.CreatePregnancy(serializer.validated_data)
@@ -31,6 +34,9 @@ class PregnancyView(ViewSet):
     @extend_schema(request=PregnancySerializer, responses=PregnancySerializer)
     @action(detail=True, methods=['patch'], permission_classes=[AllowAny])
     def update_pregnancy(self, request, pk=None):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
         result = PregnancyService.updatePregnancy(pk, request.data)
         return Response(result['data'], status=result['status'])
 

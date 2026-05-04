@@ -1,0 +1,102 @@
+[
+    {
+    "dci": "ACIDE NALIDIXIQUE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/nalidixic-acid/",
+    "status": "exact"
+  },
+  {
+    "dci": "BECLOMETHASONE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/beclometasone/",
+    "status": "exact"
+  },
+  {
+    "dci": "BIPENICILLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/penicillins/",
+    "status": "fuzzy 95.23809523809523%"
+  },
+  {
+    "dci": "CHLORPHENAMINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/chlorphenamine/",
+    "status": "exact"
+  },
+  {
+    "dci": "CHOLESTYRAMINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/colestyramine/",
+    "status": "exact"
+  },
+  {
+    "dci": "EVEROLIMUS",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/everolimus/",
+    "status": "exact"
+  },
+  {
+    "dci": "HB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-b-vaccine/",
+    "status": "exact"
+  },
+  {
+    "dci": "IMATINIB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/imatinib/",
+    "status": "exact"
+  },
+  {
+    "dci": "INTERFERON BETA-1A",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/interferon-beta/",
+    "status": "fuzzy 90.9090909090909%"
+  },
+  {
+    "dci": "LENALIDOMIDE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/lenalidomide/",
+    "status": "exact"
+  },
+  {
+    "dci": "MENTHOL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/menthol/",
+    "status": "exact"
+  },
+  {
+    "dci": "ONDANSETRONE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ondansetron/",
+    "status": "exact"
+  },
+  {
+    "dci": "RIBAVIRINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ribavirin/",
+    "status": "exact"
+  },
+  {
+    "dci": "SILDENAFIL",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sildenafil/",
+    "status": "exact"
+  },
+  {
+    "dci": "SIROLIMUS",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sirolimus/",
+    "status": "exact"
+  },
+  {
+    "dci": "TACILIZUMAB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tocilizumab/",
+    "status": "exact"
+  },
+  {
+    "dci": "TIGECYCLINE",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tigecycline/",
+    "status": "exact"
+  },
+  {
+    "dci": "TRASTUZUMAB",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/trastuzumab/",
+    "status": "exact"
+  },
+  {
+    "dci": "VACCIN CONTRE DE L'HEPATITE A",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-a-vaccine/",
+    "status": "exact"
+  },
+  {
+    "dci": "VITAMINE B12",
+    "url": "https://www.medicinesinpregnancy.org/leaflets-a-z/vitamin-b12/",
+    "status": "exact"
+  }
+]

@@ -1,0 +1,1124 @@
+[
+  {
+    "dci_a":"ACETAZOLAMIDE",
+    "dci_b":"ACIDE ACETYLSALICYLIQUE",
+    "severity":"DECONSEILLEE",
+    "description":"Majoration des effets indésirables, et notamment de l'acidose métabolique, de l'acide acétylsalicylique à doses élevées et de l'acétazolamide, par diminution de l'élimination de l'acide acétylsalicylique par l'acétazolamide."
+  },
+  {
+    "dci_a":"ACETAZOLAMIDE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage. Surveillance clinique et, si besoin, contrôle des concentrations plasmatiques de carbamazépine et réduction éventuelle de sa posologie."
+  },
+  {
+    "dci_a":"ACETAZOLAMIDE",
+    "dci_b":"VALPROMIDE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation de l'hyperammoniémie, avec risque accru d'encéphalopathie. Surveillance clinique et biologique régulière."
+  },
+  {
+    "dci_a":"ACIDE ACETYLSALICYLIQUE",
+    "dci_b":"ACETAZOLAMIDE",
+    "severity":"DECONSEILLEE",
+    "description":"Majoration des effets indésirables, et notamment de l'acidose métabolique, de l'acide acétylsalicylique à doses élevées et de l'acétazolamide, par diminution de l'élimination de l'acide acétylsalicylique par l'acétazolamide."
+  },
+  {
+    "dci_a":"ACIDE ACETYLSALICYLIQUE",
+    "dci_b":"CLOPIDOGREL",
+    "severity":"DECONSEILLEE",
+    "description":"Majoration du risque hémorragique par addition des activités antiagrégantes plaquettaires. Association déconseillée : - en dehors des indications validées pour cette association dans les syndromes coronariens aigus. Précaution d'emploi : - dans les indications validées pour cette association dans les syndromes coronariens aigus. Surveillance clinique."
+  },
+  {
+    "dci_a":"ACITRETINE",
+    "dci_b":"METHOTREXATE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque de majoration de l'hépatotoxicité du méthotrexate."
+  },
+  {
+    "dci_a":"ALBENDAZOLE",
+    "dci_b":"RIFAMPICINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution importante des concentrations plasmatiques de l’albendazole et de son métabolite actif par l’inducteur, avec risque Surveillance clinique de la réponse thérapeutique et adaptation de baisse de son efficacité. éventuelle de la posologie de l’albendazole pendant le traitement avec l’inducteur enzymatique et après son arrêt."
+  },
+  {
+    "dci_a":"AMIODARONE",
+    "dci_b":"DIGOXINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Dépression de l'automatisme (bradycardie excessive) et troubles de la conduction auriculo-ventriculaire. De plus, augmentation de la Surveillance clinique, ECG et, s'il y a lieu, contrôle de la digoxinémie et digoxinémie par diminution de la clairance de la digoxine. adaptation de la posologie de la digoxine."
+  },
+  {
+    "dci_a":"AMIODARONE",
+    "dci_b":"DILTIAZEM",
+    "severity":"DECONSEILLEE",
+    "description":"Pour diltiazem voie injectable : risque de bradycardie et de bloc auriculo-ventriculaire Association déconseillée avec : - le diltiazem IV Pour diltiazem per os : risque de bradycardie ou de bloc auriculo- Si l'association ne peut être évitée, surveillance clinique et ECG continu. ventriculaire, notamment chez les personnes âgées. Précaution d'emploi avec : - le diltiazem per os Surveillance clinique et ECG."
+  },
+  {
+    "dci_a":"AMIODARONE",
+    "dci_b":"FLUCONAZOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d’allongement de l’intervalle QT. Surveillance clinique, particulièrement aux fortes doses de fluconazole (800 mg\/j)."
+  },
+  {
+    "dci_a":"AMLODIPINE",
+    "dci_b":"SIMVASTATINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d’effets indésirables (dose-dépendants) à type de rhabdomyolyse (diminution du métabolisme hépatique de Ne pas dépasser la posologie de 20 mg\/j de simvastatine ou utiliser une l’hypocholestérolémiant). autre statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"ATORVASTATINE",
+    "dci_b":"AZITHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d’hypocholestérolémiant ou une autre de l'hypocholestérolémiant. statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"ATORVASTATINE",
+    "dci_b":"CLARITHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d'hypocholestérolémiant. Si l'objectif de l'hypocholesterolémiant. thérapeutique n'est pas atteint, utiliser une autre statine non concernée par ce type d'interaction."
+  },
+  {
+    "dci_a":"ATORVASTATINE",
+    "dci_b":"DILTIAZEM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d’hypocholestérolémiant ou une autre de l'hypocholestérolémiant. statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"ATORVASTATINE",
+    "dci_b":"ERYTHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d'hypocholestérolémiant. Si l'objectif de l'hypocholesterolémiant. thérapeutique n'est pas atteint, utiliser une autre statine non concernée par ce type d'interaction."
+  },
+  {
+    "dci_a":"ATORVASTATINE",
+    "dci_b":"FLUCONAZOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables concentration-dépendants à type de rhabdomyolyse (diminution du métabolisme hépatique de la Utiliser des doses plus faibles de l'hypocholestérolémiant. Si l'objectif statine). thérapeutique n'est pas atteint, utiliser une autre statine non concernée par ce type d'interaction."
+  },
+  {
+    "dci_a":"ATORVASTATINE",
+    "dci_b":"KETOCONAZOLE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse (diminution du métabolisme hépatique de l'atorvastatine)."
+  },
+  {
+    "dci_a":"AZITHROMYCINE",
+    "dci_b":"ATORVASTATINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d’hypocholestérolémiant ou une autre de l'hypocholestérolémiant. statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"AZITHROMYCINE",
+    "dci_b":"IVABRADINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré de troubles du rythme ventriculaires, notamment de torsades de pointes. De plus, risque d'augmentation des Surveillance clinique et ECG pendant l’association. concentrations plasmatiques de l’ivabradine par augmentation de son absorption par l’azithromycine."
+  },
+  {
+    "dci_a":"AZITHROMYCINE",
+    "dci_b":"SIMVASTATINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d’hypocholestérolémiant ou une autre de l'hypocholestérolémiant. statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"BACLOFENE",
+    "dci_b":"LEVODOPA",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Risque d’aggravation du syndrome parkinsonien ou d’effets indésirables centraux (hallucinations visuelles, état confusionnel, céphalées)."
+  },
+  {
+    "dci_a":"CAFEINE",
+    "dci_b":"CIPROFLOXACINE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations plasmatiques de caféine, par diminution de son métabolisme hépatique."
+  },
+  {
+    "dci_a":"CAFEINE",
+    "dci_b":"DIPYRIDAMOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec le dipyridamole par voie injectable : réduction de l’effet vasodilatateur du dipyridamole par la caféine. Interrompre un traitement à base de caféine au moins 5 jours avant une imagerie myocardique avec le dipyridamole et éviter la consommation de café, thé, chocolat ou cola dans les 24 heures qui précèdent le test."
+  },
+  {
+    "dci_a":"CAFEINE",
+    "dci_b":"ENOXACINE",
+    "severity":"DECONSEILLEE",
+    "description":"Augmentation des concentrations plasmatiques de caféine, pouvant entraîner excitations et hallucinations, par diminution de son métabolisme hépatique."
+  },
+  {
+    "dci_a":"CAFEINE",
+    "dci_b":"NORFLOXACINE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations plasmatiques de caféine, par diminution du métabolisme hépatique de la caféine."
+  },
+  {
+    "dci_a":"CALCIUM",
+    "dci_b":"CIPROFLOXACINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive de la ciprofloxacine. Prendre les sels de calcium à distance de la ciprofloxacine (plus de 2 heures, si possible)."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"ACETAZOLAMIDE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage. Surveillance clinique et, si besoin, contrôle des concentrations plasmatiques de carbamazépine et réduction éventuelle de sa posologie."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"CIMETIDINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg\/j : en début de traitement, augmentation des concentrations Surveillance clinique et réduction éventuelle de la posologie de la plasmatiques de carbamazépine par inhibition de son métabolisme carbamazépine, spécialement pendant les premiers jours de traitement hépatique par la cimétidine. par la cimétidine."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"CLARITHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage, par inhibition de son métabolisme Surveillance clinique et réduction éventuelle de la posologie de la hépatique. carbamazépine."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"CLONAZEPAM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques du métabolite actif de la carbamazépine. De plus, diminution des concentrations Surveillance clinique, dosages plasmatiques et adaptation éventuelle plasmatiques du clonazépam par augmentation de son des posologies des deux anticonvulsivants. métabolisme hépatique par la carbamazépine."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"DANAZOL",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine, avec signes de surdosage. Surveillance clinique et réduction éventuelle de la posologie de la carbamazépine."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"DIGOXINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine et diminution de la digoxinémie. Prudence dans l'interprétation des concentrations plasmatiques."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"ERYTHROMYCINE",
+    "severity":"DECONSEILLEE",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine, avec signes de surdosage, par inhibition de son métabolisme hépatique."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"FLUCONAZOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Pour des doses de fluconazole >= 200 mg par jour : augmentation possible des effets indésirables de la carbamazépine. Adapter la posologie de carbamazépine, pendant et après l’arrêt du traitement antifongique."
+  },
+  {
+    "dci_a":"CARBAMAZEPINE",
+    "dci_b":"FLUOXETINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage. Surveillance clinique, contrôle des concentrations plasmatiques de carbamazépine et réduction éventuelle de la posologie de la carbamazépine pendant le traitement par l'antidépresseur sérotoninergique et après son arrêt."
+  },
+  {
+    "dci_a":"CARVEDILOL",
+    "dci_b":"CIMETIDINE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg\/j : augmentation des concentrations du carvédilol, pouvant Utiliser un autre antisécrétoire gastrique. être préjudiciables dans le cas du traitement de l'insuffisance cardiaque, par diminution de son métabolisme hépatique par la cimétidine."
+  },
+  {
+    "dci_a":"CARVEDILOL",
+    "dci_b":"RIFAMPICINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution importante des concentrations plasmatiques du carvédilol, par augmentation de son métabolisme hépatique par la Surveillance clinique régulière et adaptation de la posologie du rifampicine. carvédilol pendant le traitement par la rifampicine. A l'arrêt de la rifampicine, risque de remontée importante des concentrations plasmatiques de carvédilol imposant une réduction posologique et une surveillance clinique étroite."
+  },
+  {
+    "dci_a":"CHLORDIAZEPOXIDE",
+    "dci_b":"CIMETIDINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg\/j : risque accru de somnolence. Avertir les patients de l'augmentation du risque en cas de conduite automobile ou d'utilisation de machines."
+  },
+  {
+    "dci_a":"CIMETIDINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg\/j : en début de traitement, augmentation des concentrations Surveillance clinique et réduction éventuelle de la posologie de la plasmatiques de carbamazépine par inhibition de son métabolisme carbamazépine, spécialement pendant les premiers jours de traitement hépatique par la cimétidine. par la cimétidine."
+  },
+  {
+    "dci_a":"CIPROFLOXACINE",
+    "dci_b":"CAFEINE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations plasmatiques de caféine, par diminution de son métabolisme hépatique."
+  },
+  {
+    "dci_a":"CIPROFLOXACINE",
+    "dci_b":"CALCIUM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive de la ciprofloxacine. Prendre les sels de calcium à distance de la ciprofloxacine (plus de 2 heures, si possible)."
+  },
+  {
+    "dci_a":"CIPROFLOXACINE",
+    "dci_b":"CLOZAPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations de clozapine avec risque de surdosage, par diminution de son métabolisme hépatique par la Surveillance clinique et réduction éventuelle de la posologie de la ciprofloxacine. clozapine pendant le traitement par la ciprofloxacine et après son arrêt."
+  },
+  {
+    "dci_a":"CIPROFLOXACINE",
+    "dci_b":"METHOTREXATE",
+    "severity":"DECONSEILLEE",
+    "description":"Augmentation de la toxicité du méthotrexate par inhibition de sa sécrétion tubulaire rénale par la ciprofloxacine."
+  },
+  {
+    "dci_a":"CIPROFLOXACINE",
+    "dci_b":"ROPINIROLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations de ropinirole avec risque de surdosage, par diminution de son métabolisme hépatique par la Surveillance clinique et réduction éventuelle de la posologie du ciprofloxacine. ropinirole pendant le traitement par la ciprofloxacine et après son arrêt."
+  },
+  {
+    "dci_a":"CLARITHROMYCINE",
+    "dci_b":"ATORVASTATINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d'hypocholestérolémiant. Si l'objectif de l'hypocholesterolémiant. thérapeutique n'est pas atteint, utiliser une autre statine non concernée par ce type d'interaction."
+  },
+  {
+    "dci_a":"CLARITHROMYCINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage, par inhibition de son métabolisme Surveillance clinique et réduction éventuelle de la posologie de la hépatique. carbamazépine."
+  },
+  {
+    "dci_a":"CLARITHROMYCINE",
+    "dci_b":"PRAVASTATINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation de la concentration plasmatique de la pravastatine par la clarithromycine. Surveillance clinique et biologique pendant le traitement par l'antibiotique."
+  },
+  {
+    "dci_a":"CLONAZEPAM",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques du métabolite actif de la carbamazépine. De plus, diminution des concentrations Surveillance clinique, dosages plasmatiques et adaptation éventuelle plasmatiques du clonazépam par augmentation de son des posologies des deux anticonvulsivants. métabolisme hépatique par la carbamazépine."
+  },
+  {
+    "dci_a":"CLOPIDOGREL",
+    "dci_b":"ACIDE ACETYLSALICYLIQUE",
+    "severity":"DECONSEILLEE",
+    "description":"Majoration du risque hémorragique par addition des activités antiagrégantes plaquettaires. Association déconseillée : - en dehors des indications validées pour cette association dans les syndromes coronariens aigus. Précaution d'emploi : - dans les indications validées pour cette association dans les syndromes coronariens aigus. Surveillance clinique."
+  },
+  {
+    "dci_a":"CLOPIDOGREL",
+    "dci_b":"REPAGLINIDE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations du répaglinide par le clopidogrel, avec risque de majoration des effets indésirables."
+  },
+  {
+    "dci_a":"CLOZAPINE",
+    "dci_b":"CIPROFLOXACINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations de clozapine avec risque de surdosage, par diminution de son métabolisme hépatique par la Surveillance clinique et réduction éventuelle de la posologie de la ciprofloxacine. clozapine pendant le traitement par la ciprofloxacine et après son arrêt."
+  },
+  {
+    "dci_a":"CLOZAPINE",
+    "dci_b":"FLUVOXAMINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de clozapine avec signes de surdosage. Surveillance clinique accrue ; si besoin, adaptation de la posologie de la clozapine pendant le traitement par la fluvoxamine et après son arrêt."
+  },
+  {
+    "dci_a":"COLCHICINE",
+    "dci_b":"FLUCONAZOLE",
+    "severity":"DECONSEILLEE",
+    "description":"Augmentation des effets indésirables de la colchicine, aux conséquences potentiellement fatales."
+  },
+  {
+    "dci_a":"DANAZOL",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine, avec signes de surdosage. Surveillance clinique et réduction éventuelle de la posologie de la carbamazépine."
+  },
+  {
+    "dci_a":"DIAZEPAM",
+    "dci_b":"CIMETIDINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg\/j : risque accru de somnolence. Avertir les patients de l'augmentation du risque en cas de conduite automobile ou d'utilisation de machines."
+  },
+  {
+    "dci_a":"DIGOXINE",
+    "dci_b":"AMIODARONE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Dépression de l'automatisme (bradycardie excessive) et troubles de la conduction auriculo-ventriculaire. De plus, augmentation de la Surveillance clinique, ECG et, s'il y a lieu, contrôle de la digoxinémie et digoxinémie par diminution de la clairance de la digoxine. adaptation de la posologie de la digoxine."
+  },
+  {
+    "dci_a":"DIGOXINE",
+    "dci_b":"CALCIUM",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque de troubles du rythme graves, voire mortels avec les sels de calcium administrés par voie IV. Contre-indication : - avec les sels de calcium IV, hormis supplémentation parentérale. Précaution d'emploi : - avec les sels de calcium par voie orale. Surveillance clinique et, s'il y a lieu, contrôle de l'ECG et de la calcémie."
+  },
+  {
+    "dci_a":"DIGOXINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine et diminution de la digoxinémie. Prudence dans l'interprétation des concentrations plasmatiques."
+  },
+  {
+    "dci_a":"DILTIAZEM",
+    "dci_b":"AMIODARONE",
+    "severity":"DECONSEILLEE",
+    "description":"Pour diltiazem voie injectable : risque de bradycardie et de bloc auriculo-ventriculaire Association déconseillée avec : - le diltiazem IV Pour diltiazem per os : risque de bradycardie ou de bloc auriculo- Si l'association ne peut être évitée, surveillance clinique et ECG continu. ventriculaire, notamment chez les personnes âgées. Précaution d'emploi avec : - le diltiazem per os Surveillance clinique et ECG."
+  },
+  {
+    "dci_a":"DILTIAZEM",
+    "dci_b":"ATORVASTATINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d’hypocholestérolémiant ou une autre de l'hypocholestérolémiant. statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"DIPYRIDAMOLE",
+    "dci_b":"CAFEINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec le dipyridamole par voie injectable : réduction de l’effet vasodilatateur du dipyridamole par la caféine. Interrompre un traitement à base de caféine au moins 5 jours avant une imagerie myocardique avec le dipyridamole et éviter la consommation de café, thé, chocolat ou cola dans les 24 heures qui précèdent le test."
+  },
+  {
+    "dci_a":"DOMPERIDONE",
+    "dci_b":"FLUCONAZOLE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque de troubles du rythme ventriculaire, notamment de torsades de pointes."
+  },
+  {
+    "dci_a":"DOXYCYCLINE",
+    "dci_b":"RIFAMPICINE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Risque de diminution importante des concentrations de doxycycline."
+  },
+  {
+    "dci_a":"ENOXACINE",
+    "dci_b":"CAFEINE",
+    "severity":"DECONSEILLEE",
+    "description":"Augmentation des concentrations plasmatiques de caféine, pouvant entraîner excitations et hallucinations, par diminution de son métabolisme hépatique."
+  },
+  {
+    "dci_a":"ENOXACINE",
+    "dci_b":"ROPINIROLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de ropinirole avec signes de surdosage par diminution de son métabolisme hépatique. Surveillance clinique et réduction de la posologie du ropinirole pendant le traitement par l'énoxacine et après son arrêt."
+  },
+  {
+    "dci_a":"ERYTHROMYCINE",
+    "dci_b":"ATORVASTATINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d'hypocholestérolémiant. Si l'objectif de l'hypocholesterolémiant. thérapeutique n'est pas atteint, utiliser une autre statine non concernée par ce type d'interaction."
+  },
+  {
+    "dci_a":"ERYTHROMYCINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"DECONSEILLEE",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine, avec signes de surdosage, par inhibition de son métabolisme hépatique."
+  },
+  {
+    "dci_a":"ERYTHROMYCINE",
+    "dci_b":"GLIBENCLAMIDE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d'hypoglycémie par augmentation de l’absorption et des concentrations plasmatiques de l’antidiabétique. Prévenir le patient, renforcer l'autosurveillance glycémique et adapter éventuellement la posologie du sulfamide hypoglycémiant pendant le traitement par l’érythromycine."
+  },
+  {
+    "dci_a":"ERYTHROMYCINE",
+    "dci_b":"GLIMEPIRIDE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d'hypoglycémie par augmentation de l’absorption et des concentrations plasmatiques de l’antidiabétique. Prévenir le patient, renforcer l'autosurveillance glycémique et adapter éventuellement la posologie du sulfamide hypoglycémiant pendant le traitement par l’érythromycine."
+  },
+  {
+    "dci_a":"ESCITALOPRAM",
+    "dci_b":"ESOMEPRAZOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes. Surveillance clinique et électrocardiographique pendant l'association."
+  },
+  {
+    "dci_a":"ESCITALOPRAM",
+    "dci_b":"OMEPRAZOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes. Surveillance clinique et électrocardiographique pendant l'association."
+  },
+  {
+    "dci_a":"ESOMEPRAZOLE",
+    "dci_b":"ESCITALOPRAM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes. Surveillance clinique et électrocardiographique pendant l'association."
+  },
+  {
+    "dci_a":"FENTANYL",
+    "dci_b":"RIFAMPICINE",
+    "severity":"DECONSEILLEE",
+    "description":"Diminution des concentrations plasmatiques de fentanyl par augmentation de son métabolisme hépatique par la rifampicine. Préférer un autre morphinique."
+  },
+  {
+    "dci_a":"FER",
+    "dci_b":"CALCIUM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec les sels de fer par voie orale : diminution de l'absorption digestive des sels de fer. Prendre les sels de fer à distance des repas et en l'absence de calcium."
+  },
+  {
+    "dci_a":"FLUCLOXACILLINE",
+    "dci_b":"PARACETAMOL",
+    "severity":"DECONSEILLEE",
+    "description":"Risque accru d'acidose métabolique à trou anionique élevé, notamment en cas d'insuffisance rénale sévère, de sepsis, de Si l’association ne peut être évitée, surveillance étroite avec mesure de facteurs prédisposant à la déplétion en glutathion (malnutrition, la 5-oxoproline urinaire. alcoolisme chronique…), ainsi qu’en cas d’utilisation de paracétamol aux doses quotidiennes maximales."
+  },
+  {
+    "dci_a":"FLUCONAZOLE",
+    "dci_b":"AMIODARONE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d’allongement de l’intervalle QT. Surveillance clinique, particulièrement aux fortes doses de fluconazole (800 mg\/j)."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage. Surveillance clinique, contrôle des concentrations plasmatiques de carbamazépine et réduction éventuelle de la posologie de la carbamazépine pendant le traitement par l'antidépresseur sérotoninergique et après son arrêt."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"CODEINE",
+    "severity":"DECONSEILLEE",
+    "description":"Diminution de l’efficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"MEQUITAZINE",
+    "severity":"DECONSEILLEE",
+    "description":"Risque de majoration des effets indésirables de la méquitazine, par inhibition de son métabolisme par l’inhibiteur enzymatique."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"METOPROLOL",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables du métoprolol, avec notamment bradycardie excessive, par inhibition de son Surveillance clinique accrue ; si besoin, adaptation de la posologie du métabolisme par la fluoxétine. métoprolol pendant la durée du traitement par la fluoxétine et après son arrêt."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"NEBIVOLOL",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables du nébivolol avec notamment bradycardie excessive, par inhibition de son Surveillance clinique accrue ; si besoin, adaptation de la posologie du métabolisme par l’antidépresseur. nébivolol pendant la durée du traitement par l’antidépresseur et après son arrêt."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"PIMOZIDE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"RISPERIDONE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation de la fraction active de la rispéridone par diminution de son métabolisme hépatique par la fluoxétine, avec risque de Surveillance clinique et, si besoin, adaptation posologique de la majoration des effets indésirables. rispéridone."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"TAMOXIFENE",
+    "severity":"DECONSEILLEE",
+    "description":"Baisse de l’efficacité du tamoxifène, par inhibition de la formation de son métabolite actif par la fluoxétine."
+  },
+  {
+    "dci_a":"FLUOXETINE",
+    "dci_b":"TRAMADOL",
+    "severity":"DECONSEILLEE",
+    "description":"Diminution de l’efficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur."
+  },
+  {
+    "dci_a":"FLUVOXAMINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage. Surveillance clinique, contrôle des concentrations plasmatiques de carbamazépine et réduction éventuelle de la posologie de la carbamazépine pendant le traitement par l'antidépresseur sérotoninergique et après son arrêt."
+  },
+  {
+    "dci_a":"FLUVOXAMINE",
+    "dci_b":"CLOZAPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de clozapine avec signes de surdosage. Surveillance clinique accrue ; si besoin, adaptation de la posologie de la clozapine pendant le traitement par la fluvoxamine et après son arrêt."
+  },
+  {
+    "dci_a":"FLUVOXAMINE",
+    "dci_b":"LIDOCAINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de la lidocaïne avec possibilités d’effets indésirables neurologiques et cardiaques Surveillance clinique, ECG et éventuellement contrôle des (diminution de la clairance hépatique de la lidocaïne). concentrations plasmatiques de la lidocaïne pendant et après l’arrêt de l’association. Adaptation, si besoin, de la posologie de la lidocaïne."
+  },
+  {
+    "dci_a":"FLUVOXAMINE",
+    "dci_b":"OLANZAPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations de l’olanzapine, avec risque de majoration des effets indésirables, par diminution de son Surveillance clinique et réduction éventuelle de la posologie de métabolisme hépatique par la fluvoxamine. l’olanzapine pendant le traitement par fluvoxamine."
+  },
+  {
+    "dci_a":"FLUVOXAMINE",
+    "dci_b":"PROPRANOLOL",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de propranolol par inhibition de son métabolisme hépatique, avec majoration de Surveillance clinique accrue et, si besoin, adaptation de la posologie du l'activité et des effets indésirables, par exemple : bradycardie propranolol pendant le traitement par la fluvoxamine et après son arrêt. importante."
+  },
+  {
+    "dci_a":"GLIBENCLAMIDE",
+    "dci_b":"ERYTHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d'hypoglycémie par augmentation de l’absorption et des concentrations plasmatiques de l’antidiabétique. Prévenir le patient, renforcer l'autosurveillance glycémique et adapter éventuellement la posologie du sulfamide hypoglycémiant pendant le traitement par l’érythromycine."
+  },
+  {
+    "dci_a":"GLIMEPIRIDE",
+    "dci_b":"ERYTHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d'hypoglycémie par augmentation de l’absorption et des concentrations plasmatiques de l’antidiabétique. Prévenir le patient, renforcer l'autosurveillance glycémique et adapter éventuellement la posologie du sulfamide hypoglycémiant pendant le traitement par l’érythromycine."
+  },
+  {
+    "dci_a":"HALOPERIDOL",
+    "dci_b":"RIFAMPICINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de diminution des concentrations plasmatiques de l'halopéridol et de son efficacité thérapeutique, par augmentation Surveillance clinique et, si besoin, adaptation posologique pendant le de son métabolisme hépatique par la rifampicine. traitement par la rifampicine et après son arrêt."
+  },
+  {
+    "dci_a":"ISONIAZIDE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"DECONSEILLEE",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage par inhibition de son métabolisme hépatique."
+  },
+  {
+    "dci_a":"ISONIAZIDE",
+    "dci_b":"KETOCONAZOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution des concentrations plasmatiques de kétoconazole. Espacer les prises des deux anti-infectieux d'au moins 12 heures. Surveiller les concentrations plasmatiques du kétoconazole et adapter éventuellement sa posologie."
+  },
+  {
+    "dci_a":"ISONIAZIDE",
+    "dci_b":"RIFAMPICINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation de l'hépatotoxicité de l'isoniazide (augmentation de la formation de métabolites toxiques de l'isoniazide). Surveillance clinique et biologique de cette association classique. En cas d'hépatite, arrêter l'isoniazide."
+  },
+  {
+    "dci_a":"IVABRADINE",
+    "dci_b":"AZITHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré de troubles du rythme ventriculaires, notamment de torsades de pointes. De plus, risque d'augmentation des Surveillance clinique et ECG pendant l’association. concentrations plasmatiques de l’ivabradine par augmentation de son absorption par l’azithromycine."
+  },
+  {
+    "dci_a":"IVABRADINE",
+    "dci_b":"DILTIAZEM",
+    "severity":"CONTRE_INDICATION",
+    "description":"Augmentation des concentrations plasmatiques de l’ivabradine et de ses effets indésirables, notamment cardiaques (inhibition de son métabolisme hépatique par le diltiazem), qui s’ajoutent aux effets bradycardisants de ces substances."
+  },
+  {
+    "dci_a":"KETOCONAZOLE",
+    "dci_b":"ATORVASTATINE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse (diminution du métabolisme hépatique de l'atorvastatine)."
+  },
+  {
+    "dci_a":"LAMOTRIGINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d'augmentation des effets neurologiques (vertiges, ataxie, diplopie) de la carbamazépine lors de l'introduction de la Surveillance clinique et réduction éventuelle de la posologie de la lamotrigine. carbamazépine."
+  },
+  {
+    "dci_a":"LERCANIDIPINE",
+    "dci_b":"KETOCONAZOLE",
+    "severity":"DECONSEILLEE",
+    "description":"Risque majoré d'effets indesirables, notamment d'oedèmes, par diminution du métabolisme hépatique de la dihydropyridine."
+  },
+  {
+    "dci_a":"LEVODOPA",
+    "dci_b":"BACLOFENE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Risque d’aggravation du syndrome parkinsonien ou d’effets indésirables centraux (hallucinations visuelles, état confusionnel, céphalées)."
+  },
+  {
+    "dci_a":"LEVODOPA",
+    "dci_b":"FER",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive de la lévodopa. Prendre les sels de fer à distance de la lévodopa (plus de 2 heures si possible)."
+  },
+  {
+    "dci_a":"LEVODOPA",
+    "dci_b":"METHYLDOPA",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des effets de la lévodopa mais également de ses effets indésirables. Majoration de l'effet antihypertenseur de la Surveillance clinique et éventuellement diminution des doses de méthyldopa. lévodopa."
+  },
+  {
+    "dci_a":"LEVODOPA",
+    "dci_b":"SPIRAMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"En cas d'association avec la carbidopa : inhibition de l'absorption de la carbidopa avec diminution des concentrations plasmatiques Surveillance clinique et adaptation éventuelle de la posologie de la de la lévodopa. lévodopa."
+  },
+  {
+    "dci_a":"LIDOCAINE",
+    "dci_b":"AMIODARONE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d’augmentation des concentrations plasmatiques de lidocaïne, avec possibilité d’effets indésirables neurologiques et Surveillance clinique, ECG et éventuellement contrôle des cardiaques, par diminution de son métabolisme hépatique par concentrations plasmatiques de lidocaïne. Si besoin, adaptation de la l’amiodarone. posologie de la lidocaïne pendant le traitement par amiodarone et après son arrêt."
+  },
+  {
+    "dci_a":"LIDOCAINE",
+    "dci_b":"CIMETIDINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg\/j : augmentation des concentrations plasmatiques de Surveillance clinique, ECG et éventuellement des concentrations lidocaïne avec risque d'effets indésirables neurologiques et plasmatiques de la lidocaïne ; s'il y a lieu, adaptation de la posologie de cardiaques (inhibition du métabolisme hépatique de la lidocaïne). la lidocaïne pendant le traitement par la cimétidine et après son arrêt."
+  },
+  {
+    "dci_a":"LIDOCAINE",
+    "dci_b":"FLUVOXAMINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de la lidocaïne avec possibilités d’effets indésirables neurologiques et cardiaques Surveillance clinique, ECG et éventuellement contrôle des (diminution de la clairance hépatique de la lidocaïne). concentrations plasmatiques de la lidocaïne pendant et après l’arrêt de l’association. Adaptation, si besoin, de la posologie de la lidocaïne."
+  },
+  {
+    "dci_a":"LOSARTAN",
+    "dci_b":"FLUCONAZOLE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Risque de diminution de l’efficacité du losartan, par inhibition de la formation de son métabolite actif par le fluconazole."
+  },
+  {
+    "dci_a":"METHOTREXATE",
+    "dci_b":"ACIDE ACETYLSALICYLIQUE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Majoration de la toxicité, notamment hématologique, du méthotrexate (diminution de sa clairance rénale par l'acide Avec le méthotrexate utilisé à des doses > 20 mg\/semaine : acétylsalicylique). - contre-indication avec l'acide acétylsalicylique utilisé à doses antalgiques, antipyrétiques ou anti-inflammatoires - précaution d'emploi avec des doses antiagrégantes plaquettaires d'acide acétylsalicylique. Contrôle hebdomadaire de l’hémogramme durant les premières semaines de l’association. Surveillance accrue en cas d’altération (même légère) de la fonction rénale, ainsi que chez le sujet âgé. Avec le méthotrexate utilisé à des doses =< 20 mg\/semaine : - précaution d'emploi avec l'acide acétylsalicylique utilisé à doses antalgiques, antipyrétiques ou anti-inflammatoires. Contrôle hebdomadaire de l’hémogramme durant les premières semaines de l’association. Surveillance accrue en cas d’altération (même légère) de la fonction rénale, ainsi que chez le sujet âgé."
+  },
+  {
+    "dci_a":"METHOTREXATE",
+    "dci_b":"ACITRETINE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque de majoration de l'hépatotoxicité du méthotrexate."
+  },
+  {
+    "dci_a":"METHYLDOPA",
+    "dci_b":"FER",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive de la méthyldopa (formation de complexes). Prendre les sels de fer à distance de la méthyldopa (plus de deux heures, si possible)."
+  },
+  {
+    "dci_a":"METHYLDOPA",
+    "dci_b":"LEVODOPA",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des effets de la lévodopa mais également de ses effets indésirables. Majoration de l'effet antihypertenseur de la Surveillance clinique et éventuellement diminution des doses de méthyldopa. lévodopa."
+  },
+  {
+    "dci_a":"METOPROLOL",
+    "dci_b":"CIMETIDINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec le métoprolol utilisé dans l'insuffisance cardiaque, et la cimétidine utilisée à des doses supérieures ou égales à 800 mg\/j : Surveillance clinique. Si besoin, adaptation de la posologie du augmentation des concentrations du métoprolol, pouvant être métoprolol pendant le traitement par la cimétidine. préjudiciables dans le cas du traitement de l'insuffisance cardiaque, par diminution de son métabolisme hépatique par la cimétidine."
+  },
+  {
+    "dci_a":"METOPROLOL",
+    "dci_b":"FLUOXETINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables du métoprolol, avec notamment bradycardie excessive, par inhibition de son Surveillance clinique accrue ; si besoin, adaptation de la posologie du métabolisme par la fluoxétine. métoprolol pendant la durée du traitement par la fluoxétine et après son arrêt."
+  },
+  {
+    "dci_a":"METRONIDAZOLE",
+    "dci_b":"RIFAMPICINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution des concentrations plasmatiques du métronidazole par augmentation de son métabolisme hépatique par la rifampicine. Surveillance clinique et adaptation éventuelle de la posologie de métronidazole pendant le traitement par la rifampicine et après son arrêt."
+  },
+  {
+    "dci_a":"MONTELUKAST",
+    "dci_b":"RIFAMPICINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de baisse de l'efficacité du montélukast par augmentation de son métabolisme hépatique par la rifampicine. Surveillance clinique et adaptation éventuelle de la posologie de l'antiasthmatique pendant le traitement par la rifampicine et après son arrêt."
+  },
+  {
+    "dci_a":"MORPHINE",
+    "dci_b":"RIFAMPICINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution des concentrations plasmatiques et de l'efficacité de la morphine et de son métabolite actif. Surveillance clinique et adaptation éventuelle de la posologie de la morphine pendant le traitement par la rifampicine et après son arrêt."
+  },
+  {
+    "dci_a":"NEBIVOLOL",
+    "dci_b":"FLUOXETINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables du nébivolol avec notamment bradycardie excessive, par inhibition de son Surveillance clinique accrue ; si besoin, adaptation de la posologie du métabolisme par l’antidépresseur. nébivolol pendant la durée du traitement par l’antidépresseur et après son arrêt."
+  },
+  {
+    "dci_a":"NEBIVOLOL",
+    "dci_b":"PAROXETINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables du nébivolol avec notamment bradycardie excessive, par inhibition de son Surveillance clinique accrue ; si besoin, adaptation de la posologie du métabolisme par l’antidépresseur. nébivolol pendant la durée du traitement par l’antidépresseur et après son arrêt."
+  },
+  {
+    "dci_a":"NIFEDIPINE",
+    "dci_b":"CIMETIDINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec la cimétidine utilisée à des doses supérieures ou égales à 800 mg\/j : augmentation de l'effet hypotenseur de la nifédipine par Surveillance clinique accrue : adapter la posologie de la nifédipine inhibition de son métabolisme hépatique par la cimétidine. pendant le tratiement par la cimétidine et après son arrêt."
+  },
+  {
+    "dci_a":"NIFEDIPINE",
+    "dci_b":"DILTIAZEM",
+    "severity":"CONTRE_INDICATION",
+    "description":"Augmentation importantes des concentrations de nifédipine par diminution de son métabolisme hépatique par le diltiazem, avec risque d'hypotension sévère."
+  },
+  {
+    "dci_a":"NORFLOXACINE",
+    "dci_b":"CAFEINE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations plasmatiques de caféine, par diminution du métabolisme hépatique de la caféine."
+  },
+  {
+    "dci_a":"NORFLOXACINE",
+    "dci_b":"CALCIUM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive de la norflloxacine. Prendre les sels de calcium à distance de la norfloxacine (plus de 2 heures, si possible)."
+  },
+  {
+    "dci_a":"OLANZAPINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de diminution des concentrations plasmatiques de l'olanzapine et de son efficacité thérapeutique, par augmentation de Surveillance clinique, et si besoin, adaptation posologique de son métabolisme hépatique par la carbamazépine. l'olanzapine."
+  },
+  {
+    "dci_a":"OLANZAPINE",
+    "dci_b":"FLUVOXAMINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations de l’olanzapine, avec risque de majoration des effets indésirables, par diminution de son Surveillance clinique et réduction éventuelle de la posologie de métabolisme hépatique par la fluvoxamine. l’olanzapine pendant le traitement par fluvoxamine."
+  },
+  {
+    "dci_a":"OMEPRAZOLE",
+    "dci_b":"DIGOXINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation modérée de la digoxinémie par majoration de son absorption par l'oméprazole. Surveillance clinique, ECG et de la digoxinémie, particulièrement chez le sujet âgé."
+  },
+  {
+    "dci_a":"OMEPRAZOLE",
+    "dci_b":"ESCITALOPRAM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes. Surveillance clinique et électrocardiographique pendant l'association."
+  },
+  {
+    "dci_a":"PARACETAMOL",
+    "dci_b":"FLUCLOXACILLINE",
+    "severity":"DECONSEILLEE",
+    "description":"Risque accru d'acidose métabolique à trou anionique élevé, notamment en cas d'insuffisance rénale sévère, de sepsis, de Si l’association ne peut être évitée, surveillance étroite avec mesure de facteurs prédisposant à la déplétion en glutathion (malnutrition, la 5-oxoproline urinaire. alcoolisme chronique…), ainsi qu’en cas d’utilisation de paracétamol aux doses quotidiennes maximales."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de carbamazépine avec signes de surdosage. Surveillance clinique, contrôle des concentrations plasmatiques de carbamazépine et réduction éventuelle de la posologie de la carbamazépine pendant le traitement par l'antidépresseur sérotoninergique et après son arrêt."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"CODEINE",
+    "severity":"DECONSEILLEE",
+    "description":"Diminution de l’efficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"MEQUITAZINE",
+    "severity":"DECONSEILLEE",
+    "description":"Risque de majoration des effets indésirables de la méquitazine, par inhibition de son métabolisme par l’inhibiteur enzymatique."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"METOPROLOL",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables du métoprolol, avec notamment bradycardie excessive, par inhibition de son Surveillance clinique accrue ; si besoin, adaptation de la posologie du métabolisme par la paroxétine. métoprolol pendant la durée du traitement par la paroxétine et après son arrêt."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"NEBIVOLOL",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables du nébivolol avec notamment bradycardie excessive, par inhibition de son Surveillance clinique accrue ; si besoin, adaptation de la posologie du métabolisme par l’antidépresseur. nébivolol pendant la durée du traitement par l’antidépresseur et après son arrêt."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"PIMOZIDE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"RISPERIDONE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation de la fraction active de la rispéridone par diminution de son métabolisme hépatique par la paroxétine, avec risque de Surveillance clinique et, si besoin, adaptation posologique de la majoration des effets indésirables. rispéridone."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"TAMOXIFENE",
+    "severity":"DECONSEILLEE",
+    "description":"Baisse de l’efficacité du tamoxifène, par inhibition de la formation de son métabolite actif par la paroxétine."
+  },
+  {
+    "dci_a":"PAROXETINE",
+    "dci_b":"TRAMADOL",
+    "severity":"DECONSEILLEE",
+    "description":"Diminution de l’efficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur."
+  },
+  {
+    "dci_a":"PENICILLAMINE",
+    "dci_b":"FER",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive de la pénicillamine. Prendre les sels de fer à distance de la pénicillamine (plus de 2 heures, si possible)."
+  },
+  {
+    "dci_a":"PIMOZIDE",
+    "dci_b":"DILTIAZEM",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes."
+  },
+  {
+    "dci_a":"PIMOZIDE",
+    "dci_b":"FLUCONAZOLE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes."
+  },
+  {
+    "dci_a":"PIMOZIDE",
+    "dci_b":"FLUOXETINE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes."
+  },
+  {
+    "dci_a":"PRAVASTATINE",
+    "dci_b":"CLARITHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation de la concentration plasmatique de la pravastatine par la clarithromycine. Surveillance clinique et biologique pendant le traitement par l'antibiotique."
+  },
+  {
+    "dci_a":"PRAVASTATINE",
+    "dci_b":"ERYTHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Avec l'érythromycine utilisée par voie orale : augmentation de la concentration plasmatique de la pravastatine par l' érythromycine. Surveillance clinique et biologique pendant le traitement par l'antibiotique."
+  },
+  {
+    "dci_a":"PRISTINAMYCINE",
+    "dci_b":"COLCHICINE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Augmentation des effets indésirables de la colchicine aux conséquences potentiellement fatales."
+  },
+  {
+    "dci_a":"PROPRANOLOL",
+    "dci_b":"FLUVOXAMINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de propranolol par inhibition de son métabolisme hépatique, avec majoration de Surveillance clinique accrue et, si besoin, adaptation de la posologie du l'activité et des effets indésirables, par exemple : bradycardie propranolol pendant le traitement par la fluvoxamine et après son arrêt. importante."
+  },
+  {
+    "dci_a":"PROPRANOLOL",
+    "dci_b":"RIFAMPICINE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Diminution des concentrations plasmatiques et de l'efficacité du bêta-bloquant (augmentation de son métabolisme hépatique)."
+  },
+  {
+    "dci_a":"REPAGLINIDE",
+    "dci_b":"CLARITHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque d'hypoglycémie par augmentation des concentrations plasmatiques du répaglinide. Prévenir le patient, renforcer l'autosurveillance glycémique et adapter éventuellement la posologie de l'hypoglycémiant pendant le traitement par la clarithromycine."
+  },
+  {
+    "dci_a":"REPAGLINIDE",
+    "dci_b":"CLOPIDOGREL",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations du répaglinide par le clopidogrel, avec risque de majoration des effets indésirables."
+  },
+  {
+    "dci_a":"RIFAMPICINE",
+    "dci_b":"ALBENDAZOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution importante des concentrations plasmatiques de l’albendazole et de son métabolite actif par l’inducteur, avec risque Surveillance clinique de la réponse thérapeutique et adaptation de baisse de son efficacité. éventuelle de la posologie de l’albendazole pendant le traitement avec l’inducteur enzymatique et après son arrêt."
+  },
+  {
+    "dci_a":"RISPERIDONE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de diminution de la fraction active de la rispéridone et de son efficacité thérapeutique par augmentation de son métabolisme Surveillance clinique, et si besoin, adaptation posologique de la hépatique par la carbamazépine. rispéridone."
+  },
+  {
+    "dci_a":"RISPERIDONE",
+    "dci_b":"FLUOXETINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation de la fraction active de la rispéridone par diminution de son métabolisme hépatique par la fluoxétine, avec risque de Surveillance clinique et, si besoin, adaptation posologique de la majoration des effets indésirables. rispéridone."
+  },
+  {
+    "dci_a":"ROPINIROLE",
+    "dci_b":"CIPROFLOXACINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations de ropinirole avec risque de surdosage, par diminution de son métabolisme hépatique par la Surveillance clinique et réduction éventuelle de la posologie du ciprofloxacine. ropinirole pendant le traitement par la ciprofloxacine et après son arrêt."
+  },
+  {
+    "dci_a":"ROPINIROLE",
+    "dci_b":"ENOXACINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques de ropinirole avec signes de surdosage par diminution de son métabolisme hépatique. Surveillance clinique et réduction de la posologie du ropinirole pendant le traitement par l'énoxacine et après son arrêt."
+  },
+  {
+    "dci_a":"ROPINIROLE",
+    "dci_b":"FLUVOXAMINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations de ropinirole, avec risque de surdosage, par diminution de son métabolisme hépatique par la Surveillance clinique et réduction de la posologie du ropinirole pendant fluvoxamine. le traitement par fluvoxamine et après son arrêt."
+  },
+  {
+    "dci_a":"ROXITHROMYCINE",
+    "dci_b":"ATORVASTATINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse. Utiliser des doses plus faibles d’hypocholestérolémiant."
+  },
+  {
+    "dci_a":"SALMETEROL",
+    "dci_b":"KETOCONAZOLE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation importante des concentrations de salmétérol par diminution de son métabolisme hépatique par le kétoconazole."
+  },
+  {
+    "dci_a":"SERTRALINE",
+    "dci_b":"PIMOZIDE",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré de troubles du rythme ventriculaire, notamment de torsades de pointes."
+  },
+  {
+    "dci_a":"SIMVASTATINE",
+    "dci_b":"AMIODARONE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse (diminution du métabolisme hépatique de la Ne pas dépasser la posologie de 20 mg\/j de simvastatine ou utiliser une simvastatine). autre statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"SIMVASTATINE",
+    "dci_b":"AMLODIPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d’effets indésirables (dose-dépendants) à type de rhabdomyolyse (diminution du métabolisme hépatique de Ne pas dépasser la posologie de 20 mg\/j de simvastatine ou utiliser une l’hypocholestérolémiant). autre statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"SIMVASTATINE",
+    "dci_b":"AZITHROMYCINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Utiliser des doses plus faibles d’hypocholestérolémiant ou une autre de l'hypocholestérolémiant. statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"SIMVASTATINE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"DECONSEILLEE",
+    "description":"Diminution importante des concentrations plasmatiques de simvastatine, par augmentation de son métabolisme hépatique."
+  },
+  {
+    "dci_a":"SIMVASTATINE",
+    "dci_b":"DANAZOL",
+    "severity":"CONTRE_INDICATION",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse par diminution du métabolisme de la simvastatine."
+  },
+  {
+    "dci_a":"SIMVASTATINE",
+    "dci_b":"DILTIAZEM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables (concentration-dépendants) à type de rhabdomyolyse, par diminution du métabolisme hépatique Ne pas dépasser la posologie de 20 mg\/jour de simvastatine. Si de l'hypocholestérolémiant. l'objectif thérapeutique n'est pas atteint à cette posologie, utiliser une autre statine non concernée par ce type d'interaction."
+  },
+  {
+    "dci_a":"SIMVASTATINE",
+    "dci_b":"FLUCONAZOLE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque majoré d'effets indésirables concentration-dépendants à type de rhabdomyolyse (diminution du métabolisme hépatique de la Ne pas dépasser la posologie de 20 mg\/j de simvastatine. Si l'objectif simvastatine). thérapeutique n'est pas atteint, utiliser une autre statine non concernée par ce type d’interaction."
+  },
+  {
+    "dci_a":"SPIRAMYCINE",
+    "dci_b":"LEVODOPA",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"En cas d'association avec la carbidopa : inhibition de l'absorption de la carbidopa avec diminution des concentrations plasmatiques Surveillance clinique et adaptation éventuelle de la posologie de la de la lévodopa. lévodopa."
+  },
+  {
+    "dci_a":"SUCRALFATE",
+    "dci_b":"DIGOXINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive de la digoxine. Prendre le sucralfate à distance de la digoxine (plus de 2 heures, si possible)."
+  },
+  {
+    "dci_a":"SUCRALFATE",
+    "dci_b":"SULPIRIDE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive du sulpiride. Prendre le sucralfate à distance du sulpiride (plus de 2 heures, si possible)."
+  },
+  {
+    "dci_a":"SULFASALAZINE",
+    "dci_b":"DIGOXINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de la digoxinémie pouvant atteindre 50 %. Surveillance clinique, ECG et, éventuellement, de la digoxinémie. S'il y a lieu, adaptation de la posologie de la digoxine pendant le traitement par la sulfasalazine et après son arrêt."
+  },
+  {
+    "dci_a":"SULPIRIDE",
+    "dci_b":"SUCRALFATE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution de l'absorption digestive du sulpiride. Prendre le sucralfate à distance du sulpiride (plus de 2 heures, si possible)."
+  },
+  {
+    "dci_a":"TAMOXIFENE",
+    "dci_b":"FLUOXETINE",
+    "severity":"DECONSEILLEE",
+    "description":"Baisse de l’efficacité du tamoxifène, par inhibition de la formation de son métabolite actif par la fluoxétine."
+  },
+  {
+    "dci_a":"TAMOXIFENE",
+    "dci_b":"PAROXETINE",
+    "severity":"DECONSEILLEE",
+    "description":"Baisse de l’efficacité du tamoxifène, par inhibition de la formation de son métabolite actif par la paroxétine."
+  },
+  {
+    "dci_a":"TAMOXIFENE",
+    "dci_b":"TERBINAFINE",
+    "severity":"DECONSEILLEE",
+    "description":"Risque de baisse de l'efficacité du tamoxifène, par inhibition de la formation de son métabolite actif par la terbinafine."
+  },
+  {
+    "dci_a":"TAMSULOSINE",
+    "dci_b":"AMIODARONE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables de la tamsulosine, par inhibition de son métabolisme hépatique. Surveillance clinique et adaptation de la posologie de la tamsulosine pendant le traitement par l’inhibiteur enzymatique et après son arrêt, le cas échéant."
+  },
+  {
+    "dci_a":"TAMSULOSINE",
+    "dci_b":"DILTIAZEM",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Risque de majoration des effets indésirables de la tamsulosine, par inhibition de son métabolisme hépatique. Surveillance clinique et adaptation de la posologie de la tamsulosine pensant le traitement par l’inhibiteur enzymatique et après son arrêt, le cas échéant."
+  },
+  {
+    "dci_a":"TERBINAFINE",
+    "dci_b":"CODEINE",
+    "severity":"DECONSEILLEE",
+    "description":"Risque d’inefficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur."
+  },
+  {
+    "dci_a":"TERBINAFINE",
+    "dci_b":"MEQUITAZINE",
+    "severity":"DECONSEILLEE",
+    "description":"Risque de majoration des effets indésirables de la méquitazine, par inhibition de son métabolisme par l’inhibiteur enzymatique."
+  },
+  {
+    "dci_a":"TERBINAFINE",
+    "dci_b":"METOPROLOL",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Chez l'insuffisant cardiaque, risque d'augmentation des effets indésirables du métoprolol, par diminution de son métabolisme Surveillance clinique. Si besoin, adaptation de la posologie du hépatique par la terbinafine. métoprolol pendant le traitement par la terbinafine."
+  },
+  {
+    "dci_a":"TRAMADOL",
+    "dci_b":"FLUOXETINE",
+    "severity":"DECONSEILLEE",
+    "description":"Diminution de l’efficacité de l’opiacé par inhibition de son métabolisme par l’inhibiteur."
+  },
+  {
+    "dci_a":"VALPROMIDE",
+    "dci_b":"ACETAZOLAMIDE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation de l'hyperammoniémie, avec risque accru d'encéphalopathie. Surveillance clinique et biologique régulière."
+  },
+  {
+    "dci_a":"VALPROMIDE",
+    "dci_b":"CARBAMAZEPINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Augmentation des concentrations plasmatiques du métabolite actif de la carbamazépine avec signes de surdosage. De plus, Surveillance clinique, dosages plasmatiques et adaptation de la diminution des concentrations plasmatiques d'acide valproïque par posologie des deux anticonvulsivants. augmentation de son métabolisme hépatique par la carbamazépine."
+  },
+  {
+    "dci_a":"VALPROMIDE",
+    "dci_b":"LAMOTRIGINE",
+    "severity":"DECONSEILLEE",
+    "description":"Risque majoré de réactions cutanées graves (syndrome de Lyell). Par ailleurs, augmentation des concentrations plasmatiques de Si l'association s'avère nécessaire, surveillance clinique étroite. lamotrigine (diminution de son métabolisme hépatique par le valproate de sodium)."
+  },
+  {
+    "dci_a":"VENLAFAXINE",
+    "dci_b":"CLARITHROMYCINE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations de venlafaxine avec risque de surdosage."
+  },
+  {
+    "dci_a":"VENLAFAXINE",
+    "dci_b":"ERYTHROMYCINE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations de venlafaxine avec risque de surdosage."
+  },
+  {
+    "dci_a":"VENLAFAXINE",
+    "dci_b":"KETOCONAZOLE",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Augmentation des concentrations de venlafaxine avec risque de surdosage."
+  },
+  {
+    "dci_a":"VENLAFAXINE",
+    "dci_b":"TRAMADOL",
+    "severity":"A_PRENDRE_EN_COMPTE",
+    "description":"Risque d'apparition de convulsions et\/ou d'un syndrome sérotoninergique."
+  },
+  {
+    "dci_a":"VITAMINE D",
+    "dci_b":"RIFAMPICINE",
+    "severity":"PRECAUTION_EMPLOI",
+    "description":"Diminution des concentrations de vitamine D plus marquée qu’en l’absence de traitement par la rifampicine Dosage des concentrations de vitamine D et supplémentation si nécessaire."
+  }
+]

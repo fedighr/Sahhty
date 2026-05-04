@@ -14,17 +14,17 @@ class Medication(models.Model):
         ('N', 'no doctor approval needed'),
     ]
 
-    code = models.CharField(max_length = 20, unique=True)
+    code = models.CharField(max_length = 20, unique=True, null=True, blank=True)
     name = models.CharField(max_length = 100)
     commercial_name = models.CharField(max_length = 100, null = True, blank = True)
-    form = models.CharField(max_length = 50, null = True, blank = True)
-    dosage = models.CharField(max_length = 50, null = True, blank = True)
-    package = models.CharField(max_length = 50, null = True, blank = True)
+    form = models.CharField(max_length = 100, null = True, blank = True)
+    dosage = models.CharField(max_length = 100, null = True, blank = True)
+    package = models.CharField(max_length = 100, null = True, blank = True)
     public_price = models.DecimalField(max_digits=10, decimal_places=3, null = True, blank = True)
     tarif_reference = models.DecimalField(max_digits=10, decimal_places=3, null = True, blank = True)
-    category = models.CharField(max_length = 1, choices=category)
+    category = models.CharField(max_length = 1, choices=category, null=True, blank=True)
     dci = models.TextField()
-    prior_approval = models.CharField(max_length = 1, choices=prior_approval_Category)
+    prior_approval = models.CharField(max_length = 1, choices=prior_approval_Category, null=True, blank=True)
     
 class MedicationDci(models.Model):
     medication = models.ForeignKey(Medication, on_delete=models.CASCADE, related_name='medication_dcis')

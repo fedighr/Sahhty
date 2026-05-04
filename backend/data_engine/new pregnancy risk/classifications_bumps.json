@@ -1,0 +1,242 @@
+[
+  {
+    "dci_name": "ACIDE NALIDIXIQUE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Les antibiotiques quinolones peuvent être utilisés pendant la grossesse sur recommandation médicale, sans preuve solide de nocivité pour le bébé, mais ils sont généralement réservés aux situations où aucun autre traitement n'est disponible en raison de leurs effets indésirables graves.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/nalidixic-acid/"
+  },
+  {
+    "dci_name": "BECLOMETHASONE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "La béclométhasone inhalée doit être poursuivie tout au long de la grossesse pour prévenir les troubles respiratoires ; aucune donnée ne suggère qu'elle est nocive pour le bébé.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/beclometasone/"
+  },
+  {
+    "dci_name": "BIPENICILLINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Les antibiotiques de la famille des pénicillines (dont l'amoxicilline, l'amoxicilline-acide clavulanique et la phénoxyméthylpénicilline) peuvent être utilisés sans risque pendant la grossesse, sans préoccupation de nocivité pour le bébé.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/penicillins/"
+  },
+  {
+    "dci_name": "CHLORPHENAMINE",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "La chlorphénamine peut être utilisée pendant la grossesse sur recommandation médicale ; les données disponibles ne suggèrent aucun risque pour la mère ou le bébé.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/chlorphenamine/"
+  },
+  {
+    "dci_name": "CHOLESTYRAMINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "La colestyramine peut être utilisée pendant la grossesse si nécessaire et n'affecte pas directement le bébé, mais elle peut réduire les taux de vitamines A, D, E et K, nécessitant une surveillance de la coagulation et une éventuelle supplémentation vitaminique.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/colestyramine/"
+  },
+  {
+    "dci_name": "EVEROLIMUS",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "L'évérolimus peut être utilisé pendant la grossesse sur recommandation d'un spécialiste ; aucun problème évident n'a été signalé, mais le nombre de grossesses étudiées est très limité et des recherches supplémentaires sont nécessaires.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/everolimus/"
+  },
+  {
+    "dci_name": "HB",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Le vaccin contre l'hépatite B peut être administré en toute sécurité à tout moment de la grossesse ; aucun risque connu n'a été identifié et le Département de la Santé du Royaume-Uni le recommande lorsque cela est nécessaire.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-b-vaccine/"
+  },
+  {
+    "dci_name": "IMATINIB",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "UNSAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "L'utilisation de l'imatinib en début de grossesse pourrait provoquer des malformations congénitales dans un petit nombre de cas ; la décision de poursuivre ou d'arrêter le traitement doit être individualisée par un spécialiste en pesant le risque de récidive du cancer face au risque fœtal.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/imatinib/"
+  },
+  {
+    "dci_name": "INTERFERON BETA-1A",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "L'interféron bêta peut être utilisé pendant la grossesse sur avis d'un spécialiste ; aucun effet nocif direct sur le bébé n'a été identifié, mais il a été associé à un risque accru d'accouchement prématuré, probablement lié à la SEP sous-jacente plutôt qu'au médicament lui-même, nécessitant une surveillance.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/interferon-beta/"
+  },
+  {
+    "dci_name": "LENALIDOMIDE",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "UNSAFE",
+      "T2": "UNSAFE",
+      "T3": "UNSAFE",
+      "DELIVERY": "UNSAFE"
+    },
+    "summary": "Le lénalidomide ne doit jamais être utilisé pendant la grossesse car il peut provoquer de graves malformations congénitales ; une surveillance fœtale renforcée est requise en cas d'exposition, et les patients masculins doivent utiliser des préservatifs car le lénalidomide présent dans le sperme peut également représenter un risque.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/lenalidomide/"
+  },
+  {
+    "dci_name": "MENTHOL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Les faibles quantités de menthol présentes dans les produits courants et les aliments ne sont pas censées nuire au bébé, mais certaines huiles essentielles doivent être évitées pendant la grossesse en raison d'un risque hypothétique d'effet sur le fœtus.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/menthol/"
+  },
+  {
+    "dci_name": "ONDANSETRONE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "L'ondansétron peut être utilisé pour traiter les nausées et vomissements sévères de la grossesse ; certaines études suggèrent un très faible risque de malformations cardiaques et de fente palatine lors d'une exposition au premier trimestre, mais à partir d'environ la 11e semaine le bébé est entièrement formé et ces risques ne s'appliquent plus.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ondansetron/"
+  },
+  {
+    "dci_name": "RIBAVIRINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "La ribavirine n'est utilisée pendant la grossesse qu'en dernier recours pour traiter une infection virale grave ; les données de sécurité chez l'humain sont très limitées et, bien que son utilisation après le premier trimestre ne puisse pas causer de malformations, l'innocuité globale n'est pas confirmée.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/ribavirin/"
+  },
+  {
+    "dci_name": "SILDENAFIL",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Le sildénafil est parfois utilisé pendant la grossesse pour traiter l'hypertension artérielle pulmonaire (une pathologie à haut risque) sans risque clairement identifié, mais son utilisation reste réservée à une prise en charge spécialisée compte tenu de la gravité de la pathologie maternelle sous-jacente.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sildenafil/"
+  },
+  {
+    "dci_name": "SIROLIMUS",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Le sirolimus peut être utilisé pendant la grossesse sur recommandation d'un spécialiste ; aucun problème évident n'a été signalé, mais le nombre de grossesses étudiées est très faible, nécessitant un suivi spécialisé et une surveillance fœtale renforcée.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/sirolimus/"
+  },
+  {
+    "dci_name": "TACILIZUMAB",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Le tocilizumab ne franchit pas le placenta au premier trimestre, mais son utilisation en fin de grossesse peut supprimer le système immunitaire du bébé pendant plusieurs mois après la naissance, affectant le calendrier vaccinal ; les données humaines limitées rendent un suivi spécialisé indispensable tout au long de la grossesse.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tocilizumab/"
+  },
+  {
+    "dci_name": "TIGECYCLINE",
+    "overall_status": "CAUTION",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "CAUTION",
+      "T3": "CAUTION",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Les tétracyclines (dont la tigécycline) ne sont pas connues pour nuire au bébé en début de grossesse, mais sont généralement évitées après la 13e semaine car elles peuvent décolorer les dents de lait en cours de développement ; elles peuvent toutefois être utilisées après 13 semaines en l'absence d'alternative pour traiter une infection grave.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/tigecycline/"
+  },
+  {
+    "dci_name": "TRASTUZUMAB",
+    "overall_status": "UNSAFE",
+    "trimester_details": {
+      "T1": "CAUTION",
+      "T2": "UNSAFE",
+      "T3": "UNSAFE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Le trastuzumab n'est généralement pas recommandé pendant la grossesse ; bien qu'une exposition en début de grossesse n'ait pas été clairement associée à des malformations, son utilisation en fin de grossesse peut réduire sévèrement le liquide amniotique, entraînant des complications pulmonaires et rénales chez le bébé ainsi qu'un risque accru d'accouchement prématuré.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/trastuzumab/"
+  },
+  {
+    "dci_name": "VACCIN CONTRE DE L'HEPATITE A",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "Le vaccin contre l'hépatite A peut être administré en toute sécurité tout au long de la grossesse sans risque connu ; le Département de la Santé du Royaume-Uni le recommande pour les femmes enceintes lorsque cela est nécessaire.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/hepatitis-a-vaccine/"
+  },
+  {
+    "dci_name": "VITAMINE B12",
+    "overall_status": "SAFE",
+    "trimester_details": {
+      "T1": "SAFE",
+      "T2": "SAFE",
+      "T3": "SAFE",
+      "DELIVERY": "NOT_APPLICABLE"
+    },
+    "summary": "La vitamine B12 ne présente aucun risque connu pendant la grossesse et est bénéfique pour la mère et le bébé, notamment pour prévenir l'anémie et les anomalies du tube neural telles que le spina bifida en cas de carence.",
+    "source_url": "https://www.medicinesinpregnancy.org/leaflets-a-z/vitamin-b12/"
+  }
+]
