@@ -24,6 +24,6 @@ class Alert(models.Model):
     type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     message = models.TextField()
     level = models.CharField(max_length=30, choices=LEVEL_CHOICES, default='INFO')
-    status = models.CharField(max_length=30, choices=STATE_CHOICES)
+    status = models.CharField(max_length=30, choices=STATE_CHOICES, default='NEW')
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='alerts')

@@ -32,6 +32,8 @@ class DoctorScheduleSerializer(serializers.ModelSerializer):
         end_time = data.get('end_time')
         pause_start_time = data.get('pause_start_time')
         pause_end_time = data.get('pause_end_time')
+        if(pause_start_time and not pause_end_time) or (pause_end_time and not pause_start_time):
+            raise serializers.ValidationError("Both pause start time and pause end time must be provided together.")
 
         if start_time and end_time and start_time >= end_time:
             raise serializers.ValidationError("Start time must be before end time.")

@@ -63,6 +63,21 @@ class DoctorView(ViewSet):
         result = DoctorService.getDoctorSchedule(pk)
         return Response(result['data'], status=result['status'])
 
+    @extend_schema(request=DoctorScheduleSerializer, responses=DoctorScheduleSerializer)
+    @action(detail=True, methods=['get'], url_path="get_doctor_available_slots", permission_classes=[AllowAny])
+    def get_doctor_available_slots(self, request, pk=None):
+        if not pk:
+            return Response({'success': False, 'message': 'Doctor ID is required'}, status=400)
+
+        day = request.query_params.get('day')
+        date = request.query_params.get('date')
+        if not day or not date:
+            return Response({'success': False, 'message': 'Day and date parameters are required'}, status=400)
+        
+        result = DoctorService.getDoctorAvailableSlots(pk, day, date)
+        return Response(result['data'], status=result['status'])
+
+    @extend_schema(request=DoctorSerializer, responses=DoctorSerializer)
     @action(detail=False, methods=['get'], url_path="search", permission_classes=[AllowAny])
     def search(self, request):
         query = request.query_params.get('q', '').strip()
