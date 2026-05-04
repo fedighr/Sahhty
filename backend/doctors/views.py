@@ -12,8 +12,11 @@ from .services import DoctorService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from drf_spectacular.utils import extend_schema
 from .search import DoctorSearch
+from rest_framework.pagination import PageNumberPagination
 
 class DoctorView(ViewSet):
+    pagination_class = PageNumberPagination
+    
     @extend_schema(request=DoctorSerializer, responses=DoctorSerializer)
     @action(detail=False, methods=['post'], url_path="create_doctor", permission_classes=[AllowAny])
     def create_doctor(self, request):
@@ -95,9 +98,7 @@ class DoctorView(ViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
         
-        serializer = DoctorSerializer(doctors, many=True)
-
-        return Response({
-            'count': len(doctors),
-            'results': serializer.data
-        })
+        paginator = self.pagination_class()
+        result = paginator.paginate_queryset(doctors, request)
+        serializer = DoctorSerializer(result, many=True)
+        return paginator.get_paginated_response(serializer.data)

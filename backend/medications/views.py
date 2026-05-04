@@ -19,6 +19,7 @@ from drf_spectacular.utils import extend_schema
 import pandas as pd
 from dci.models import DCI
 from dci.serializers import DCISerializer
+from rest_framework.pagination import PageNumberPagination
 
 
 def extract_dci_names(raw_dci, special_dcis):
@@ -68,6 +69,8 @@ def safe_get(row, key):
     return val if pd.notna(val) else None
 
 class MedicationView(ViewSet):
+    pagination_class = PageNumberPagination
+    
     @action(detail=False, methods=['post'], url_path="create_medications", permission_classes=[AllowAny])
     def create_medications(self, request):
         try:
@@ -243,12 +246,10 @@ class MedicationView(ViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
         
-        serializer = MedicationSerializer(medications, many=True)
-
-        return Response({
-            'count': len(medications),
-            'results': serializer.data
-        })
+        paginator = self.pagination_class()
+        result = paginator.paginate_queryset(medications, request)
+        serializer = MedicationSerializer(result, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
     

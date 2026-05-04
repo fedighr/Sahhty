@@ -33,7 +33,7 @@ class MeasurementView(ViewSet):
     @extend_schema(request=MeasurementSerializer, responses=MeasurementSerializer)
     @action(detail=True, methods=['get'], url_path='get_patient_measurements', permission_classes=[AllowAny])
     def get_patient_measurements(self, request, pk=None):
-        result = MeasurementService.getPatientMeasurements(pk)
+        result = MeasurementService.getPatientMeasurements(pk, request)
         return Response(result['data'], status=result['status'])
 
     @extend_schema(request=RiskAssessmentSerializer, responses=RiskAssessmentSerializer)

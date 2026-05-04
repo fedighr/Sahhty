@@ -11,6 +11,7 @@ from Pregnancies.models import Pregnancy
 from medications.models import Treatment, TreatmentSchedule, Medication
 from utils.email_service import send_alert_email, send_medication_reminder_email, send_appointment_reminder_email, send_missing_measurement_email, send_unconfirmed_appointment_email, send_pregnancy_no_appointment_email
 from utils.firebase import send_push_notification_to_user
+from rest_framework.pagination import PageNumberPagination
 
 
 """add this to every service after abdelhedi complete frontend alerts
@@ -201,7 +202,7 @@ class AlertService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
     @staticmethod
-    def getAlertsByUser(user_id):
+    def getAlertsByUser(user_id, request):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
@@ -209,8 +210,10 @@ class AlertService:
         
         try:
             alerts = Alert.objects.filter(user=user).order_by('-created_at')
-            serializer = AlertSerializer(alerts, many=True)
-            return {'data': {'success': True, 'alerts': serializer.data}, 'status': 200}
+            paginator = PageNumberPagination()
+            result = paginator.paginate_queryset(alerts, request)
+            serializer = AlertSerializer(result, many=True)
+            return {'data': paginator.get_paginated_response(serializer.data).data, 'status': 200}
         except DatabaseError:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
         except Exception as e:

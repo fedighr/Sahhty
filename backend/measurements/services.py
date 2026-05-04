@@ -7,6 +7,8 @@ from Pregnancies.models import Pregnancy
 from django.db import IntegrityError, DatabaseError, transaction
 from datetime import date
 from alerts.services import AlertService
+from rest_framework.pagination import PageNumberPagination
+
 
 class MeasurementService:
     @staticmethod
@@ -155,7 +157,7 @@ class MeasurementService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
     @staticmethod
-    def getPatientMeasurements(pk):
+    def getPatientMeasurements(pk, request):
         try:
             patient = Patient.objects.select_related('user').get(pk=pk)
         except Patient.DoesNotExist:
@@ -163,8 +165,10 @@ class MeasurementService:
 
         try:
             measurements = Measurement.objects.filter(patient=patient).order_by('-measurement_date')
-            serializer = MeasurementSerializer(measurements, many=True)
-            return {'data': {'success': True, 'measurements': serializer.data}, 'status': 200}
+            paginator = PageNumberPagination()
+            result = paginator.paginate_queryset(measurements, request)
+            serializer = MeasurementSerializer(result, many=True)
+            return {'data': paginator.get_paginated_response(serializer.data).data, 'status': 200}
 
         except DatabaseError:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}

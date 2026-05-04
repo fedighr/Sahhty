@@ -33,7 +33,6 @@ def get_variations(dci):
             variations.append(before_de)
             variations.append(after_de)
 
-    # Add VACCIN prefix variation
     variations.append(f"VACCIN {dci}")
 
     seen = set()
