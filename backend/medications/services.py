@@ -234,6 +234,7 @@ class MedicationService:
     def getMedicationById(medication_id, user_id):
         pregnancy_data = None
         trimester_risk = None
+        patient_allergy = Patient.objects.get(user=user_id).allergies if Patient.objects.filter(user_id=user_id).exists() else None
 
         try:
             medication = Medication.objects.get(id=medication_id)
@@ -253,6 +254,7 @@ class MedicationService:
 
         interaction_result = MedicationService.get_medication_interactions(medication.name, medication.dci, user_id)
         medication_interactions = interaction_result.get('interactions', []) if interaction_result.get('success') else []
+        allergy_interactions = MedicationService.get_allergy_interactions(medication, patient_allergy) if patient_allergy else []
 
         if user.gender == 'F':
             result = MedicationService._get_pregnancy_risk(medication_id, user_id)
@@ -260,13 +262,15 @@ class MedicationService:
                 return result['error']
             pregnancy_data = result.get('pregnancy_data')
             trimester_risk = result.get('trimester_risk')
+            
 
         return {
             'data': {
                 'success': True,
                 'medication': MedicationSerializer(medication).data,
                 'pregnancy_data': pregnancy_data,
-                'medication_interactions': medication_interactions
+                'medication_interactions': medication_interactions,
+                'allergy_interactions': allergy_interactions
             },
             'status': 200
         }
@@ -427,3 +431,16 @@ class MedicationService:
             return {'success': True, 'interactions': [], 'message': 'No interactions found with current medications.'}
 
         return {'success': True, 'interactions': risk_med}
+
+    def get_allergy_interactions(medication, allergy):
+        current_folder = os.path.dirname(os.path.abspath(__file__))
+        special_dci_path = os.path.join(current_folder, '..', 'sources', 'special_DCI.txt')
+        with open(special_dci_path, 'r', encoding='utf-8') as f:
+            special_dcis = set(line.strip().upper() for line in f if line.strip())
+        raw_medication_dcis = extract_dci_names(medication.dci, special_dcis)
+        if not raw_medication_dcis:
+            return []
+        if(allergy.upper() in raw_medication_dcis):
+                return [{'medication': medication.name, 'allergy': allergy, 'message': 'This medication contains a substance you are allergic to.'}]
+        
+        return []

@@ -16,7 +16,7 @@ from rest_framework.pagination import PageNumberPagination
 
 class DoctorView(ViewSet):
     pagination_class = PageNumberPagination
-    
+
     @extend_schema(request=DoctorSerializer, responses=DoctorSerializer)
     @action(detail=False, methods=['post'], url_path="create_doctor", permission_classes=[AllowAny])
     def create_doctor(self, request):
@@ -91,13 +91,13 @@ class DoctorView(ViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        doctors = list(DoctorSearch.search(query)[:20])
-        if not doctors:
+        doctors = DoctorSearch.search(query)
+        if not doctors.exists():
             return Response(
                 {'detail': 'No doctors found.'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         paginator = self.pagination_class()
         result = paginator.paginate_queryset(doctors, request)
         serializer = DoctorSerializer(result, many=True)

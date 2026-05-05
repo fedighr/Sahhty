@@ -18,7 +18,7 @@ class UserAuth(ViewSet):
     def signup(self, request):
         if not request.data:
             return Response({'success': False, 'message': 'No data provided'}, status=400)
-        
+        print(request.data)
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.register(serializer.validated_data)

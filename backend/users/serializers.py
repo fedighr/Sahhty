@@ -5,7 +5,10 @@ import re
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name', 'phone', 'gender', 'birth_date', 'role']
+        fields = ['id', 'email', 'first_name', 'last_name', 'password', 'phone', 'gender', 'birth_date', 'role']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

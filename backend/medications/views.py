@@ -70,7 +70,7 @@ def safe_get(row, key):
 
 class MedicationView(ViewSet):
     pagination_class = PageNumberPagination
-    
+
     @action(detail=False, methods=['post'], url_path="create_medications", permission_classes=[AllowAny])
     def create_medications(self, request):
         try:
@@ -239,7 +239,7 @@ class MedicationView(ViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        medications = list(MedicationSearch.search(query)[:20])
+        medications = MedicationSearch.search(query)
         if not medications:
             return Response(
                 {'detail': 'No medications found.'},
