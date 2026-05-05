@@ -80,6 +80,12 @@ class DoctorView(ViewSet):
         result = DoctorService.getDoctorAvailableSlots(pk, day, date)
         return Response(result['data'], status=result['status'])
 
+    @extend_schema(request=SpecialitySerializer, responses=SpecialitySerializer)
+    @action(detail=False, methods=['get'], url_path="get_all_specialities", permission_classes=[AllowAny])
+    def get_all_specialities(self, request):
+        result = DoctorService.getAllSpecialities()
+        return Response(result['data'], status=result['status'])
+
     @extend_schema(request=DoctorSerializer, responses=DoctorSerializer)
     @action(detail=False, methods=['get'], url_path="search", permission_classes=[AllowAny])
     def search(self, request):
