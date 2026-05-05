@@ -130,8 +130,8 @@ class MedicationDetailSheet extends StatelessWidget {
                       if (dosage.isNotEmpty) _infoChip(Iconsax.ruler, dosage),
                       if (pkg.isNotEmpty) _infoChip(Iconsax.note, pkg),
                       if (category.isNotEmpty) _infoChip(Iconsax.category, _categoryLabel(category)),
-                      if (price > 0)
-                        _infoChip(Iconsax.tag, '$price DT', color: AppColors.success),
+                      if (price != null && (double.tryParse(price.toString()) ?? 0) > 0)
+                        _infoChip(Iconsax.tag, '${price} DT', color: AppColors.success),
                     ],
                   ).animate().fadeIn(delay: 100.ms),
 

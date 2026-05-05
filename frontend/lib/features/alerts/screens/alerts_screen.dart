@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
+import 'package:sahhty/core/widgets/pagination_bar.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
@@ -19,6 +20,11 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
   List<dynamic> _alerts = [];
   bool _loading = true;
   String? _error;
+  int _currentPage = 1;
+  int _totalCount = 0;
+  bool _hasNext = false;
+  bool _hasPrev = false;
+  static const int _pageSize = 10;
 
   @override
   void initState() {
@@ -26,7 +32,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     _loadAlerts();
   }
 
-  Future<void> _loadAlerts() async {
+  Future<void> _loadAlerts({int page = 1}) async {
     setState(() { _loading = true; _error = null; });
     final userId = ref.read(authProvider).userId;
     if (userId == null || userId.isEmpty) {
@@ -39,12 +45,16 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
       return;
     }
 
-    final result = await ref.read(alertServiceProvider).getAlertsByUser(uid);
+    final result = await ref.read(alertServiceProvider).getAlertsByUser(uid, page: page);
     if (!mounted) return;
     setState(() {
       _loading = false;
       if (result['success'] == true) {
         _alerts = result['alerts'] ?? [];
+        _totalCount = result['count'] ?? 0;
+        _hasNext = result['next'] != null;
+        _hasPrev = result['previous'] != null;
+        _currentPage = page;
       } else {
         _error = result['message'] ?? 'Erreur';
       }
@@ -53,7 +63,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
 
   Future<void> _markAsRead(int alertId) async {
     await ref.read(alertServiceProvider).markAsRead(alertId);
-    _loadAlerts();
+    _loadAlerts(page: _currentPage);
   }
 
   IconData _iconForLevel(String level) {
@@ -110,14 +120,30 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                           ]).animate().fadeIn(),
                         )
                       : RefreshIndicator(
-                          onRefresh: _loadAlerts,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.all(16),
-                            itemCount: _alerts.length,
-                            itemBuilder: (context, i) {
-                              final alert = _alerts[i];
-                              return _buildAlertCard(alert).animate().fadeIn(delay: (60 * i).ms).slideX(begin: 0.08);
-                            },
+                          onRefresh: () async { _loadAlerts(page: 1); },
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                  padding: const EdgeInsets.all(16),
+                                  itemCount: _alerts.length,
+                                  itemBuilder: (context, i) {
+                                    final alert = _alerts[i];
+                                    return _buildAlertCard(alert).animate().fadeIn(delay: (60 * i).ms).slideX(begin: 0.08);
+                                  },
+                                ),
+                              ),
+                              if (_hasNext || _hasPrev)
+                                PaginationBar(
+                                  currentPage: _currentPage,
+                                  totalCount: _totalCount,
+                                  pageSize: _pageSize,
+                                  hasNext: _hasNext,
+                                  hasPrev: _hasPrev,
+                                  onPrev: () => _loadAlerts(page: _currentPage - 1),
+                                  onNext: () => _loadAlerts(page: _currentPage + 1),
+                                ),
+                            ],
                           ),
                         ),
         ],

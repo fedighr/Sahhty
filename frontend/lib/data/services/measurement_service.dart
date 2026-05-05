@@ -29,12 +29,25 @@ class MeasurementService {
     }
   }
 
-  /// GET all measurements for a patient
-  /// Returns: {success, measurements: [{id, type, measurement_date, value1, value2, unit, context, patient_id}]}
-  Future<Map<String, dynamic>> getPatientMeasurements(int patientId) async {
+  /// GET all measurements for a patient with pagination
+  /// Backend returns DRF paginated: {count, next, previous, results: [...]}
+  Future<Map<String, dynamic>> getPatientMeasurements(int patientId, {int page = 1}) async {
     try {
-      final response = await _dio.get(ApiEndpoints.getPatientMeasurements(patientId));
-      return response.data;
+      final response = await _dio.get(
+        ApiEndpoints.getPatientMeasurements(patientId),
+        queryParameters: {'page': page},
+      );
+      final data = response.data;
+      if (data is Map && data.containsKey('results')) {
+        return {
+          'success': true,
+          'measurements': data['results'],
+          'count': data['count'] ?? 0,
+          'next': data['next'],
+          'previous': data['previous'],
+        };
+      }
+      return data;
     } on DioException catch (e) {
       return _err(e);
     }

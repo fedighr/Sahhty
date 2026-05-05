@@ -16,6 +16,8 @@ import 'package:sahhty/features/pregnancy/screens/pregnancy_screen.dart';
 import 'package:sahhty/features/alerts/screens/alerts_screen.dart';
 import 'package:sahhty/features/profile/screens/profile_screen.dart';
 import 'package:sahhty/features/doctors/screens/doctors_list_screen.dart';
+import 'package:sahhty/features/doctors/screens/doctor_detail_screen.dart';
+import 'package:sahhty/features/appointments/screens/appointments_screen.dart';
 import 'package:sahhty/features/medications/screens/medications_screen.dart';
 import 'package:sahhty/features/settings/screens/settings_screen.dart';
 import 'package:sahhty/features/settings/screens/edit_profile_screen.dart';
@@ -122,6 +124,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/doctors',
         builder: (context, state) => const DoctorsListScreen(),
+      ),
+      GoRoute(
+        path: '/doctors/:id',
+        builder: (context, state) {
+          final id = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+          final extra = state.extra as Map<String, dynamic>?;
+          return DoctorDetailScreen(doctorId: id, initialData: extra);
+        },
+      ),
+      GoRoute(
+        path: '/appointments',
+        builder: (context, state) => const AppointmentsScreen(),
       ),
       GoRoute(
         path: '/medications',

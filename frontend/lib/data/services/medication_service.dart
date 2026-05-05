@@ -18,15 +18,24 @@ class MedicationService {
     }
   }
 
-  /// GET /medications/medicationsService/search/?q=query
-  /// Returns: {count, results: [{id, name, commercial_name, form, dosage, ...}]}
-  Future<Map<String, dynamic>> searchMedications(String query) async {
+  /// GET /medications/medicationsService/search/?q=query&page=N
+  /// Returns: {count, next, previous, results: [{id, name, commercial_name, form, dosage, ...}]}
+  Future<Map<String, dynamic>> searchMedications(String query, {int page = 1}) async {
     try {
       final response = await _dio.get(
         ApiEndpoints.searchMedications,
-        queryParameters: {'q': query},
+        queryParameters: {'q': query, 'page': page},
       );
-      return response.data;
+      final data = response.data;
+      if (data is Map && data.containsKey('results')) {
+        return {
+          'results': data['results'],
+          'count': data['count'] ?? 0,
+          'next': data['next'],
+          'previous': data['previous'],
+        };
+      }
+      return data;
     } on DioException catch (e) {
       return _err(e);
     }

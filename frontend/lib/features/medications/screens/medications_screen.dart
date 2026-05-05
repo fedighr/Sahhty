@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
+import 'package:sahhty/core/widgets/pagination_bar.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/features/medications/widgets/interaction_helpers.dart';
@@ -33,6 +34,12 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
   bool _searching = false;
   String? _searchError;
   Timer? _debounce;
+  String _lastQuery = '';
+  int _searchPage = 1;
+  int _searchTotal = 0;
+  bool _searchHasNext = false;
+  bool _searchHasPrev = false;
+  static const int _searchPageSize = 10;
 
   @override
   void initState() {
@@ -86,25 +93,34 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
   void _onSearchChanged(String query) {
     _debounce?.cancel();
     if (query.trim().length < 2) {
-      setState(() { _searchResults = []; _searchError = null; _searching = false; });
+      setState(() { _searchResults = []; _searchError = null; _searching = false; _searchTotal = 0; _searchHasNext = false; _searchHasPrev = false; });
       return;
     }
     setState(() => _searching = true);
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      _performSearch(query.trim());
+      _lastQuery = query.trim();
+      _performSearch(query.trim(), page: 1);
     });
   }
 
-  Future<void> _performSearch(String query) async {
-    final result = await ref.read(medicationServiceProvider).searchMedications(query);
+  Future<void> _performSearch(String query, {int page = 1}) async {
+    setState(() => _searching = true);
+    final result = await ref.read(medicationServiceProvider).searchMedications(query, page: page);
     if (!mounted) return;
     setState(() {
       _searching = false;
+      _searchPage = page;
       if (result['results'] != null) {
         _searchResults = result['results'] as List<dynamic>;
+        _searchTotal = result['count'] ?? 0;
+        _searchHasNext = result['next'] != null;
+        _searchHasPrev = result['previous'] != null;
         _searchError = null;
       } else if (result['detail'] != null) {
         _searchResults = [];
+        _searchTotal = 0;
+        _searchHasNext = false;
+        _searchHasPrev = false;
         final detail = result['detail'].toString();
         if (detail.toLowerCase().contains('no medications')) {
           _searchError = null;
@@ -113,6 +129,9 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
         }
       } else {
         _searchResults = [];
+        _searchTotal = 0;
+        _searchHasNext = false;
+        _searchHasPrev = false;
         _searchError = null;
       }
     });
@@ -142,7 +161,9 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
 
   // ── Show medication detail (with interactions) before add ──────────
   void _onSearchResultTapped(Map<String, dynamic> medication) async {
-    final medId = medication['id'] as int?;
+    // Ensure id is int (JSON may parse as int or num)
+    final rawId = medication['id'];
+    final medId = rawId is int ? rawId : (rawId is num ? rawId.toInt() : null);
     if (medId == null) return;
 
     // Show loading dialog
@@ -152,26 +173,33 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
       builder: (_) => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
     );
 
-    final detail = await ref.read(medicationServiceProvider).getMedicationById(medId);
-    if (!mounted) return;
-    Navigator.pop(context); // Dismiss loading
+    Map<String, dynamic> detail = {};
+    try {
+      detail = await ref.read(medicationServiceProvider).getMedicationById(medId);
+    } catch (_) {
+      detail = {};
+    }
 
-    final detailMed = detail['medication'] as Map<String, dynamic>? ?? medication;
+    if (!mounted) return;
+    // Always dismiss loading dialog
+    Navigator.of(context, rootNavigator: true).pop();
+    if (!mounted) return;
+
+    final detailMed = (detail['medication'] as Map<String, dynamic>?) ?? medication;
     final pregnancyData = detail['pregnancy_data'] as Map<String, dynamic>?;
-    final interactions = detail['medication_interactions'] as List<dynamic>? ?? [];
+    final interactions = (detail['medication_interactions'] as List<dynamic>?) ?? [];
 
-    if (!mounted) return;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => MedicationDetailSheet(
+      builder: (sheetCtx) => MedicationDetailSheet(
         medication: detailMed,
         pregnancyData: pregnancyData,
         interactions: interactions,
         onAddTreatment: () {
-          Navigator.pop(context); // Close detail sheet
-          _showAddTreatmentSheet(medication);
+          Navigator.of(sheetCtx).pop(); // Close detail sheet using sheet's own context
+          if (mounted) _showAddTreatmentSheet(medication);
         },
       ),
     );
@@ -582,13 +610,23 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
         else
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               itemCount: _searchResults.length,
               itemBuilder: (context, i) {
                 final med = _searchResults[i] as Map<String, dynamic>;
                 return _buildSearchResultCard(med, i);
               },
             ),
+          ),
+        if ((_searchHasNext || _searchHasPrev) && !_searching)
+          PaginationBar(
+            currentPage: _searchPage,
+            totalCount: _searchTotal,
+            pageSize: _searchPageSize,
+            hasNext: _searchHasNext,
+            hasPrev: _searchHasPrev,
+            onPrev: () => _performSearch(_lastQuery, page: _searchPage - 1),
+            onNext: () => _performSearch(_lastQuery, page: _searchPage + 1),
           ),
       ],
     );

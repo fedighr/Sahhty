@@ -28,10 +28,13 @@ class ApiEndpoints {
   static String updatePatient(int pk)   => '/patients/PatientService/$pk/update_patient/';
 
   // ── Doctor (ViewSet: doctors/DoctorService/) ─────────────────────────
-  static const String createDoctor      = '/doctors/DoctorService/create_doctor/';
-  static String getDoctorById(int pk)   => '/doctors/DoctorService/$pk/get_doctor_by_id/';
-  static String updateDoctor(int pk)    => '/doctors/DoctorService/$pk/update_doctor/';
-  static const String getAllDoctors     = '/doctors/DoctorService/get_all_doctors/';
+  static const String createDoctor              = '/doctors/DoctorService/create_doctor/';
+  static String getDoctorById(int pk)           => '/doctors/DoctorService/$pk/get_doctor_by_id/';
+  static String updateDoctor(int pk)            => '/doctors/DoctorService/$pk/update_doctor/';
+  static const String getAllDoctors             = '/doctors/DoctorService/get_all_doctors/';
+  static const String searchDoctors            = '/doctors/DoctorService/search/';
+  static String getDoctorSchedule(int pk)      => '/doctors/DoctorService/$pk/get_doctor_schedule/';
+  static String getDoctorAvailableSlots(int pk) => '/doctors/DoctorService/$pk/get_doctor_available_slots/';
 
   // ── Pregnancy (ViewSet: pregnancies/PregnancyService/) ───────────────
   static const String createPregnancy           = '/pregnancies/PregnancyService/create_pregnancy/';

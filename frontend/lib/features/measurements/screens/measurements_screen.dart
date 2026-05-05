@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
+import 'package:sahhty/core/widgets/pagination_bar.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 
@@ -21,6 +22,11 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
   List<dynamic> _measurements = [];
   bool _loading = true;
   String? _error;
+  int _currentPage = 1;
+  int _totalCount = 0;
+  bool _hasNext = false;
+  bool _hasPrev = false;
+  static const int _pageSize = 10;
 
   @override
   void initState() {
@@ -28,7 +34,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
     _loadMeasurements();
   }
 
-  Future<void> _loadMeasurements() async {
+  Future<void> _loadMeasurements({int page = 1}) async {
     setState(() { _loading = true; _error = null; });
     final patientId = _getPatientId();
     if (patientId == null) {
@@ -36,12 +42,16 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
       return;
     }
 
-    final result = await ref.read(measurementServiceProvider).getPatientMeasurements(patientId);
+    final result = await ref.read(measurementServiceProvider).getPatientMeasurements(patientId, page: page);
     if (!mounted) return;
     setState(() {
       _loading = false;
       if (result['success'] == true) {
         _measurements = result['measurements'] ?? [];
+        _totalCount = result['count'] ?? 0;
+        _hasNext = result['next'] != null;
+        _hasPrev = result['previous'] != null;
+        _currentPage = page;
       } else {
         _error = result['message'] ?? 'Erreur';
       }
@@ -89,18 +99,19 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mes mesures')),
+      appBar: AppBar(
+        title: const Text('Mes mesures'),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           await context.push('/add-measurement');
           _loadMeasurements();
         },
+        icon: const Icon(Iconsax.add_circle, size: 20),
+        label: const Text('Ajouter'),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
-        icon: const Icon(Iconsax.add_circle),
-        label: const Text('Ajouter'),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 4,
       ),
       body: Stack(
         children: [
@@ -124,14 +135,33 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
                           const Text('Ajoutez votre première mesure', style: TextStyle(color: AppColors.textSecondary)),
                         ]).animate().fadeIn())
                       : RefreshIndicator(
-                          onRefresh: _loadMeasurements,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
-                            itemCount: _measurements.length,
-                            itemBuilder: (context, i) {
-                              final m = _measurements[i];
-                              return _buildMeasurementCard(m, i);
-                            },
+                          onRefresh: () async {
+                            _loadMeasurements(page: 1);
+                          },
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                                  itemCount: _measurements.length,
+                                  itemBuilder: (context, i) {
+                                    final m = _measurements[i];
+                                    return _buildMeasurementCard(m, i);
+                                  },
+                                ),
+                              ),
+                              if (_hasNext || _hasPrev) ...[
+                                PaginationBar(
+                                  currentPage: _currentPage,
+                                  totalCount: _totalCount,
+                                  pageSize: _pageSize,
+                                  hasNext: _hasNext,
+                                  hasPrev: _hasPrev,
+                                  onPrev: () => _loadMeasurements(page: _currentPage - 1),
+                                  onNext: () => _loadMeasurements(page: _currentPage + 1),
+                                ),
+                              ],
+                            ],
                           ),
                         ),
         ],

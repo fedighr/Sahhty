@@ -5,12 +5,25 @@ import 'package:sahhty/data/services/dio_client.dart';
 class AlertService {
   final Dio _dio = DioClient().dio;
 
-  /// GET /alerts/AlertService/{userId}/get_alerts_by_user/
-  /// Returns: {success, alerts: [{id, type, message, level, status, created_at, user: {...}}]}
-  Future<Map<String, dynamic>> getAlertsByUser(int userId) async {
+  /// GET /alerts/AlertService/{userId}/get_alerts_by_user/?page=N
+  /// Backend returns DRF paginated: {count, next, previous, results: [...]}
+  Future<Map<String, dynamic>> getAlertsByUser(int userId, {int page = 1}) async {
     try {
-      final response = await _dio.get(ApiEndpoints.getAlertsByUser(userId));
-      return response.data;
+      final response = await _dio.get(
+        ApiEndpoints.getAlertsByUser(userId),
+        queryParameters: {'page': page},
+      );
+      final data = response.data;
+      if (data is Map && data.containsKey('results')) {
+        return {
+          'success': true,
+          'alerts': data['results'],
+          'count': data['count'] ?? 0,
+          'next': data['next'],
+          'previous': data['previous'],
+        };
+      }
+      return data;
     } on DioException catch (e) {
       return _err(e);
     }

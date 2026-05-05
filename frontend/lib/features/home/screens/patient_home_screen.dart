@@ -723,11 +723,11 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
             children: [
               Expanded(child: _QuickActionCard(icon: Iconsax.ruler, label: 'Nouvelle\nmesure', color: AppColors.primary, onTap: () => context.push('/add-measurement')).animate().fadeIn(delay: 100.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
-              Expanded(child: _QuickActionCard(icon: Iconsax.watch, label: 'Montre\nconnectée', color: AppColors.accentDark, onTap: () => context.push('/smartwatch')).animate().fadeIn(delay: 150.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
+              Expanded(child: _QuickActionCard(icon: Iconsax.calendar, label: 'Rendez-\nvous', color: AppColors.accentDark, onTap: () => context.push('/appointments')).animate().fadeIn(delay: 150.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
               Expanded(child: _QuickActionCard(icon: Iconsax.health, label: 'Mes\nmédicaments', color: AppColors.accent, onTap: () => context.push('/medications')).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
-              Expanded(child: _QuickActionCard(icon: Iconsax.notification, label: 'Mes\nalertes', color: AppColors.warning, onTap: () => context.go('/alerts')).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
+              Expanded(child: _QuickActionCard(icon: Iconsax.watch, label: 'Montre\nconnectée', color: AppColors.warning, onTap: () => context.push('/smartwatch')).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
             ],
           ),
         ],
