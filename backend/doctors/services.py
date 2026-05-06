@@ -1,4 +1,4 @@
-from .models import Doctor, DoctorSchedule
+from .models import Doctor, DoctorSchedule, Speciality
 from appointments.models import Appointment
 from appointments.serializers import AppointmentSerializer
 from .serializers import DoctorSerializer, DoctorScheduleSerializer
@@ -204,6 +204,18 @@ class DoctorService:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
         except IntegrityError as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def getAllSpecialities():
+        try:
+            specialities = Speciality.objects.all()
+            data = [{'id': speciality.id, 'name': speciality.name} for speciality in specialities]
+            return {'data': {'success': True, 'specialities': data}, 'status': 200}
+        
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
