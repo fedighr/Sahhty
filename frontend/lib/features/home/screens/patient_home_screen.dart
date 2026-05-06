@@ -145,6 +145,13 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
       _error = null;
     });
     final auth = ref.read(authProvider);
+
+    // Doctors don't have a patientId — show doctor home
+    if (auth.role == 'D') {
+      setState(() => _loading = false);
+      return;
+    }
+
     final patientIdStr = auth.patientId;
     if (patientIdStr == null || patientIdStr.isEmpty) {
       setState(() {
@@ -203,6 +210,12 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
+
+    // Doctor home screen
+    if (auth.role == 'D') {
+      return _buildDoctorHome(auth);
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -862,6 +875,106 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
         ),
       ),
     ).animate().fadeIn().shake(delay: 300.ms, hz: 2, offset: const Offset(4, 0));
+  }
+
+  // ── DOCTOR HOME ───────────────────────────────────────────────────
+  Widget _buildDoctorHome(AuthState auth) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          const AnimatedBackground(showImage: true, imageOpacity: 0.10),
+          const FloatingParticles(particleCount: 12, maxOpacity: 0.15),
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [AppColors.primary, AppColors.primaryDark],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          backgroundColor: Colors.white24,
+                          radius: 30,
+                          child: Icon(Iconsax.user, color: Colors.white, size: 32),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Dr. ${auth.name ?? ''}',
+                                  style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 4),
+                              const Text('Tableau de bord médecin',
+                                  style: TextStyle(color: Colors.white70, fontSize: 14)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ).animate().fadeIn().slideY(begin: -0.1),
+                  const SizedBox(height: 24),
+                  Text('Actions rapides',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.3,
+                    children: [
+                      _doctorActionCard('Rendez-vous', Iconsax.calendar, AppColors.primary,
+                          () => context.go('/appointments')),
+                      _doctorActionCard('Médecins', Iconsax.people, AppColors.secondary,
+                          () => context.push('/doctors')),
+                      _doctorActionCard('Profil', Iconsax.user, AppColors.success,
+                          () => context.go('/profile')),
+                      _doctorActionCard('Paramètres', Iconsax.setting_2, AppColors.warning,
+                          () => context.push('/settings')),
+                    ],
+                  ).animate().fadeIn(delay: 200.ms),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _doctorActionCard(String label, IconData icon, Color color, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [BoxShadow(color: color.withAlpha(40), blurRadius: 12, offset: const Offset(0, 4))],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 32),
+            const SizedBox(height: 8),
+            Text(label, style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+          ],
+        ),
+      ),
+    );
   }
 }
 

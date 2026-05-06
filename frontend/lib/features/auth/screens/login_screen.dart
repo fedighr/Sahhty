@@ -46,19 +46,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (auth.status == AuthStatus.authenticated) {
       // Register FCM device after successful login
       _registerFcmDevice();
-      context.go('/home');
+      // Redirect based on role
+      context.go(auth.role == 'D' ? '/doctor-home' : '/home');
     } else if (auth.status == AuthStatus.needsVerification) {
       context.push('/verify', extra: _emailController.text.trim());
     } else if (auth.status == AuthStatus.needsProfileSetup) {
-      // User needs to complete profile - but they have no tokens yet
-      // They need to go through setup
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Veuillez compléter votre profil'),
-          backgroundColor: AppColors.warning,
-        ),
-      );
-      context.push('/patient-setup', extra: {'email': _emailController.text.trim(), 'gender': 'F'});
+      // Read pending info to know if this is a doctor or patient setup
+      final pendingInfo = await ref.read(authServiceProvider).getPendingSetupInfo();
+      if (!mounted) return;
+      final role = pendingInfo['role'] ?? 'P';
+      final gender = pendingInfo['gender'] ?? 'F';
+      if (role == 'D') {
+        context.push('/doctor-setup', extra: {
+          'email': _emailController.text.trim(),
+          'userId': pendingInfo['userId'] ?? '',
+        });
+      } else {
+        context.push('/patient-setup', extra: {
+          'email': _emailController.text.trim(),
+          'gender': gender,
+        });
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

@@ -66,10 +66,24 @@ class _VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
     setState(() => _isLoading = false);
 
     if (result['success'] == true) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email vérifié ! Connectez-vous.'), backgroundColor: AppColors.success),
-      );
-      context.go('/login');
+      // Read pending role/userId to decide where to navigate
+      final pendingInfo = await ref.read(authServiceProvider).getPendingSetupInfo();
+      if (!mounted) return;
+
+      final role = pendingInfo['role'] ?? 'P';
+      final email = pendingInfo['email'] ?? widget.email;
+      final userId = int.tryParse(pendingInfo['userId'] ?? '0') ?? 0;
+
+      if (role == 'D') {
+        // Doctor: go to doctor setup screen
+        context.go('/doctor-setup', extra: {'email': email, 'userId': userId.toString()});
+      } else {
+        // Patient: go to login
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Email vérifié ! Connectez-vous.'), backgroundColor: AppColors.success),
+        );
+        context.go('/login');
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(result['message'] ?? 'Code incorrect'), backgroundColor: AppColors.error),

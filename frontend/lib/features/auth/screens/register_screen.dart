@@ -61,9 +61,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Future<void> _handleRegister() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_birthDate == null) {
+    if (_passwordCtrl.text != _confirmPasswordCtrl.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Veuillez sélectionner votre date de naissance'), backgroundColor: AppColors.error),
+        const SnackBar(content: Text('Les mots de passe ne correspondent pas'), backgroundColor: AppColors.error),
       );
       return;
     }
@@ -141,7 +141,37 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         onPressed: _isLoading
                             ? null
                             : () {
-                                if (_currentStep < 2) {
+                                if (_currentStep == 0) {
+                                  // Validate step 1: names + birth date
+                                  if (_firstNameCtrl.text.trim().isEmpty || _lastNameCtrl.text.trim().isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Veuillez remplir prénom et nom'), backgroundColor: AppColors.error),
+                                    );
+                                    return;
+                                  }
+                                  if (_birthDate == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Veuillez sélectionner votre date de naissance'), backgroundColor: AppColors.error),
+                                    );
+                                    return;
+                                  }
+                                  setState(() => _currentStep++);
+                                } else if (_currentStep == 1) {
+                                  // Validate step 2: email + phone
+                                  if (_emailCtrl.text.trim().isEmpty || !_emailCtrl.text.contains('@')) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Email invalide'), backgroundColor: AppColors.error),
+                                    );
+                                    return;
+                                  }
+                                  final phone = _phoneCtrl.text.trim();
+                                  final phoneRegex = RegExp(r'^\+?\d{8,15}$');
+                                  if (phone.isEmpty || !phoneRegex.hasMatch(phone)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Numéro de téléphone invalide (ex: +21620123456 ou 20123456)'), backgroundColor: AppColors.error),
+                                    );
+                                    return;
+                                  }
                                   setState(() => _currentStep++);
                                 } else {
                                   _handleRegister();
@@ -188,14 +218,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         controller: _firstNameCtrl,
         textCapitalization: TextCapitalization.words,
         decoration: const InputDecoration(labelText: 'Prénom', prefixIcon: Icon(Iconsax.user, color: AppColors.primary, size: 20)),
-        validator: (v) => v == null || v.isEmpty ? 'Prénom requis' : null,
+        validator: (v) {
+          if (v == null || v.isEmpty) return 'Prénom requis';
+          if (!RegExp(r'^[a-zA-Z]+$').hasMatch(v.trim())) return 'Lettres uniquement (sans espaces ni accents)';
+          return null;
+        },
       ),
       const SizedBox(height: 16),
       TextFormField(
         controller: _lastNameCtrl,
         textCapitalization: TextCapitalization.words,
         decoration: const InputDecoration(labelText: 'Nom', prefixIcon: Icon(Iconsax.user, color: AppColors.primary, size: 20)),
-        validator: (v) => v == null || v.isEmpty ? 'Nom requis' : null,
+        validator: (v) {
+          if (v == null || v.isEmpty) return 'Nom requis';
+          if (!RegExp(r'^[a-zA-Z]+$').hasMatch(v.trim())) return 'Lettres uniquement (sans espaces ni accents)';
+          return null;
+        },
       ),
       const SizedBox(height: 16),
       GestureDetector(

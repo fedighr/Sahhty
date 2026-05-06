@@ -18,10 +18,30 @@ class AuthService {
   Future<Map<String, dynamic>> signup(Map<String, dynamic> data) async {
     try {
       final response = await _dio.post(ApiEndpoints.signup, data: data);
+      // Save pending role/gender so the setup redirect knows which screen to show
+      if (response.data['success'] == true) {
+        await _storage.write(key: 'pending_role', value: data['role']?.toString() ?? 'P');
+        await _storage.write(key: 'pending_gender', value: data['gender']?.toString() ?? 'F');
+        await _storage.write(key: 'pending_email', value: data['email']?.toString() ?? '');
+        // Save user_id in a dedicated key so it is never overwritten by subsequent logins
+        if (response.data['user_id'] != null) {
+          await _storage.write(key: 'pending_user_id', value: '${response.data['user_id']}');
+        }
+      }
       return response.data;
     } on DioException catch (e) {
       return _handleError(e);
     }
+  }
+
+  /// Returns pending signup info (role, gender, email) stored during signup
+  Future<Map<String, String?>> getPendingSetupInfo() async {
+    return {
+      'role': await _storage.read(key: 'pending_role'),
+      'gender': await _storage.read(key: 'pending_gender'),
+      'email': await _storage.read(key: 'pending_email'),
+      'userId': await _storage.read(key: 'pending_user_id'),
+    };
   }
 
   // ── Sign In ──────────────────────────────────────────────────────────
@@ -192,7 +212,26 @@ class AuthService {
   // ── Error handler ───────────────────────────────────────────────────
   Map<String, dynamic> _handleError(DioException e) {
     if (e.response?.data is Map<String, dynamic>) {
-      return e.response!.data as Map<String, dynamic>;
+      final data = e.response!.data as Map<String, dynamic>;
+      // If already has success/message keys, return as-is
+      if (data.containsKey('success') || data.containsKey('message')) {
+        return data;
+      }
+      // DRF validation errors: {'field': ['error msg'], ...}
+      final messages = <String>[];
+      data.forEach((key, value) {
+        if (value is List) {
+          for (final v in value) {
+            messages.add('$key: $v');
+          }
+        } else {
+          messages.add('$key: $value');
+        }
+      });
+      return {
+        'success': false,
+        'message': messages.isNotEmpty ? messages.join('\n') : 'Erreur de validation',
+      };
     }
     return {
       'success': false,

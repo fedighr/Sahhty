@@ -27,6 +27,12 @@ import 'package:sahhty/features/settings/screens/edit_pregnancy_screen.dart';
 import 'package:sahhty/features/settings/screens/change_password_screen.dart';
 import 'package:sahhty/features/smartwatch/screens/smartwatch_screen.dart';
 import 'package:sahhty/features/language/screens/language_selection_screen.dart';
+import 'package:sahhty/features/auth/screens/doctor_setup_screen.dart';
+import 'package:sahhty/features/home/screens/doctor_home_screen.dart';
+import 'package:sahhty/features/home/screens/doctor_shell.dart';
+import 'package:sahhty/features/settings/screens/doctor_settings_screen.dart';
+
+import '../../features/settings/screens/doctor_edit_profile_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -43,10 +49,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           location == '/verify' ||
           location == '/forgot-password' ||
           location == '/patient-setup' ||
+          location == '/doctor-setup' ||
           location == '/splash';
 
       if (authState.status == AuthStatus.authenticated && isAuthRoute && location != '/splash') {
-        return '/home';
+        // Redirect to role-specific home
+        return authState.role == 'D' ? '/doctor-home' : '/home';
       }
       return null;
     },
@@ -88,6 +96,35 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           );
         },
       ),
+      GoRoute(
+        path: '/doctor-setup',
+        builder: (context, state) {
+          final extras = state.extra as Map<String, String>? ?? {};
+          return DoctorSetupScreen(
+            email: extras['email'] ?? '',
+            userId: int.tryParse(extras['userId'] ?? '') ?? 0,
+          );
+        },
+      ),
+
+      // ── Doctor app (bottom nav shell) ────────────────────────────────
+      ShellRoute(
+        builder: (context, state, child) => DoctorShell(child: child),
+        routes: [
+          GoRoute(
+            path: '/doctor-home',
+            pageBuilder: (context, state) => const NoTransitionPage(child: DoctorHomeScreen()),
+          ),
+          GoRoute(
+            path: '/doctor-appointments',
+            pageBuilder: (context, state) => const NoTransitionPage(child: AppointmentsScreen()),
+          ),
+          GoRoute(
+            path: '/doctor-settings',
+            pageBuilder: (context, state) => const NoTransitionPage(child: DoctorSettingsScreen()),
+          ),
+        ],
+      ),
 
       // ── Main app (bottom nav shell) ─────────────────────────────────
       ShellRoute(
@@ -114,6 +151,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: '/profile',
             pageBuilder: (context, state) => const NoTransitionPage(child: ProfileScreen()),
           ),
+          GoRoute(
+            path: '/appointments',
+            pageBuilder: (context, state) => const NoTransitionPage(child: AppointmentsScreen()),
+          ),
         ],
       ),
 
@@ -132,10 +173,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           final extra = state.extra as Map<String, dynamic>?;
           return DoctorDetailScreen(doctorId: id, initialData: extra);
         },
-      ),
-      GoRoute(
-        path: '/appointments',
-        builder: (context, state) => const AppointmentsScreen(),
       ),
       GoRoute(
         path: '/medications',
@@ -164,6 +201,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/settings/change-password',
         builder: (context, state) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
+        path: '/doctor/edit-profile',
+        builder: (context, state) => const DoctorEditProfileScreen(),
       ),
       GoRoute(
         path: '/smartwatch',

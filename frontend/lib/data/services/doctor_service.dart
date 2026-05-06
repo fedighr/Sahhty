@@ -5,6 +5,16 @@ import 'package:sahhty/data/services/dio_client.dart';
 class DoctorService {
   final Dio _dio = DioClient().dio;
 
+  /// POST /doctors/DoctorService/create_doctor/
+  Future<Map<String, dynamic>> createDoctor(Map<String, dynamic> data) async {
+    try {
+      final response = await _dio.post(ApiEndpoints.createDoctor, data: data);
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   /// GET /doctors/DoctorService/get_all_doctors/
   Future<Map<String, dynamic>> getAllDoctors() async {
     try {
@@ -50,6 +60,16 @@ class DoctorService {
         };
       }
       return {'success': false, 'message': 'Format de réponse inattendu'};
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
+  /// PATCH /doctors/DoctorService/{pk}/update_doctor/
+  Future<Map<String, dynamic>> updateDoctor(int doctorId, Map<String, dynamic> data) async {
+    try {
+      final response = await _dio.patch(ApiEndpoints.updateDoctor(doctorId), data: data);
+      return response.data;
     } on DioException catch (e) {
       return _err(e);
     }
