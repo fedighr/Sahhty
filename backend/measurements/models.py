@@ -44,4 +44,5 @@ class RiskAssessment(models.Model):
     heart_rate_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     weight_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     body_temp_used = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    final_risk_level = models.CharField(max_length=10, choices=RISK_CHOICES, null=True, blank=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="risk_assessments")

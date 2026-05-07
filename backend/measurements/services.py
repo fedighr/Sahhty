@@ -8,7 +8,8 @@ from django.db import IntegrityError, DatabaseError, transaction
 from datetime import date
 from alerts.services import AlertService
 from rest_framework.pagination import PageNumberPagination
-
+from ml_engine.isolation_forest import predict_personal_risk, get_final_risk
+from datetime import datetime, timezone
 
 class MeasurementService:
     @staticmethod
@@ -53,13 +54,32 @@ class MeasurementService:
                 }
 
                 risk_level, new_heart_rate = predict_risk(risk_data)
-                note = MeasurementService.generate_risk_note(glucose, bp_sys, bp_dia, new_heart_rate, body_temp, risk_level)
+
+                total_assessments = RiskAssessment.objects.filter(patient=patient).count()
+                personal_risk_level = predict_personal_risk(
+                    patient_id=patient.id,
+                    measurements={
+                        'SystolicBP': bp_sys,
+                        'DiastolicBP': bp_dia,
+                        'BS': glucose,
+                        'BodyTemp': body_temp,
+                        'HeartRate': heart_rate,
+                    },
+                    birth_date=birth_date,
+                    assessed_at=datetime.now(timezone.utc),
+                    pregnancy_week=pregnancy_week,
+                    total_assessments=total_assessments,
+                )
+                final_risk_level = get_final_risk(risk_level, personal_risk_level)
+
+                note = MeasurementService.generate_risk_note(glucose, bp_sys, bp_dia, new_heart_rate, body_temp, final_risk_level)
 
                 RiskAssessment.objects.create(
                     patient=patient,
                     global_risk_level=risk_level,
-                    personal_risk_level=risk_level,
+                    personal_risk_level=personal_risk_level,
                     personal_risk_note=note,
+                    final_risk_level=final_risk_level,
                     glucose_used=glucose,
                     bp_sys_used=bp_sys,
                     bp_dia_used=bp_dia,
@@ -68,10 +88,10 @@ class MeasurementService:
                     body_temp_used=body_temp,
                 )
 
-                if risk_level == 'HIGH':
-                    AlertService.sendRiskAlert(patient.user.email,f"High risk detected for patient {patient.id}. Note: {note}",'CRITICAL')
-                elif risk_level == 'MEDIUM':
-                    AlertService.sendRiskAlert(patient.user.email,f"Medium risk detected for patient {patient.id}. Note: {note}",'WARNING')
+                if final_risk_level == 'HIGH':
+                    AlertService.sendRiskAlert(patient.user.email, f"High risk detected for patient {patient.id}. Note: {note}", 'CRITICAL')
+                elif final_risk_level == 'MEDIUM':
+                    AlertService.sendRiskAlert(patient.user.email, f"Medium risk detected for patient {patient.id}. Note: {note}", 'WARNING')
 
                 return {
                     'data': {

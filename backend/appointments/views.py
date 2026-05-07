@@ -62,3 +62,21 @@ class AppointmentView(ViewSet):
         
         result = AppointmentService.GetDoctorTodayAppointments(pk)
         return Response(result['data'], status=result['status'])
+    
+    @extend_schema(request=AppointmentSerializer, responses=AppointmentSerializer)
+    @action(detail=True, methods=['get'], url_path="get_patient_appointments", permission_classes=[AllowAny])
+    def get_patient_appointments(self, request, pk=None):
+        if not pk:
+            return Response({'success': False, 'message': 'Patient ID is required'}, status=400)
+        
+        result = AppointmentService.GetPatientAppointments(pk)
+        return Response(result['data'], status=result['status'])
+    
+    @extend_schema(request=AppointmentSerializer, responses=AppointmentSerializer)
+    @action(detail=True, methods=['get'], url_path="get_doctor_appointments", permission_classes=[AllowAny])
+    def get_doctor_appointments(self, request, pk=None):
+        if not pk:
+            return Response({'success': False, 'message': 'Doctor ID is required'}, status=400)
+        
+        result = AppointmentService.GetDoctorAppointments(pk)
+        return Response(result['data'], status=result['status'])

@@ -9,6 +9,7 @@ from alerts.serializers import AlertSerializer
 from patients.models import Patient
 from doctors.models import Doctor
 from django.db import transaction
+from alerts.services import AlertService
 
 class AppointmentService:
     @staticmethod
@@ -148,6 +149,40 @@ class AppointmentService:
             
             now = datetime.now()
             appointments = Appointment.objects.filter(doctor_id=doctor_id, appointment_date__gte=now, status__in=['PENDING', 'CONFIRMED']).order_by('appointment_date')
+            serializer = AppointmentSerializer(appointments, many=True)
+            return {'data': {'success': True, 'appointments': serializer.data}, 'status': 200}
+        
+        except IntegrityError as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def GetPatientAppointments(patient_id):
+        try:
+            if not Patient.objects.filter(id=patient_id).exists():
+                return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
+            
+            appointments = Appointment.objects.filter(patient_id=patient_id).order_by('appointment_date')
+            serializer = AppointmentSerializer(appointments, many=True)
+            return {'data': {'success': True, 'appointments': serializer.data}, 'status': 200}
+        
+        except IntegrityError as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def GetDoctorAppointments(doctor_id):
+        try:
+            if not Doctor.objects.filter(id=doctor_id).exists():
+                return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}
+            
+            appointments = Appointment.objects.filter(doctor_id=doctor_id).order_by('appointment_date')
             serializer = AppointmentSerializer(appointments, many=True)
             return {'data': {'success': True, 'appointments': serializer.data}, 'status': 200}
         
