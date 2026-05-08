@@ -9,7 +9,7 @@ from django_apscheduler.models import DjangoJobExecution
 logger = logging.getLogger(__name__)
 
 _scheduler_started = False
-
+#you can test it directly in python manage.py shell
 
 def delete_old_job_executions(max_age=604_800):
     """Deletes job execution entries older than max_age seconds (default: 1 week)."""

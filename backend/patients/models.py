@@ -35,4 +35,8 @@ class MenstrualCycle(models.Model):
     end_date = models.DateField(null=True, blank=True)  
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE, related_name="menstrual_cycle")  
 
-        
+class PeriodEntry(models.Model):
+    menstrual_cycle = models.ForeignKey(MenstrualCycle, on_delete=models.CASCADE, related_name='periods')
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)        

@@ -172,6 +172,9 @@ DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Logging
 LOGGING = {
