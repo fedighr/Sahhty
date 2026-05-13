@@ -24,6 +24,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   bool _loading = true;
   String? _error;
   late AnimationController _glowController;
+  final Map<String, bool> _sectionExpanded = {
+    'personal': false,
+    'medical': false,
+    'menstrual': false,
+  };
 
   @override
   void initState() {
@@ -89,19 +94,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Mon profil', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Mon profil', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: AppColors.primary),
         actions: [
           IconButton(
             icon: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withAlpha(40),
+                color: Colors.grey.withAlpha(40),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.settings, color: Colors.white, size: 22),
+              child: const Icon(Iconsax.setting_2, color: Colors.grey, size: 22),
             ),
             onPressed: () => context.push('/settings'),
           ),
@@ -157,7 +162,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                 const SizedBox(height: 16),
                               ],
 
-                              _buildSection(Iconsax.user, 'Informations personnelles', [
+                              _buildCollapsibleSection('personal', Iconsax.user, 'Informations personnelles', [
                                 _infoRow(Iconsax.sms, 'Email', _patientData!['email'] ?? '--'),
                                 _infoRow(Iconsax.call, 'Téléphone', _patientData!['phone'] ?? '--'),
                                 _infoRow(Iconsax.calendar, 'Date de naissance', '${_patientData!['birth_date'] ?? '--'}'),
@@ -165,7 +170,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                               ]).animate().fadeIn(delay: 250.ms).slideY(begin: 0.08),
                               const SizedBox(height: 16),
 
-                              _buildSection(Iconsax.hospital, 'Informations médicales', [
+                              _buildCollapsibleSection('medical', Iconsax.hospital, 'Informations médicales', [
                                 _infoRow(Iconsax.ruler, 'Taille', '${_patientData!['height'] ?? '--'} cm'),
                                 _infoRow(Iconsax.weight, 'Poids', '${_patientData!['weight'] ?? '--'} kg'),
                                 _infoRow(Iconsax.health, 'Groupe sanguin', _patientData!['blood_type'] ?? 'Non renseigné'),
@@ -181,7 +186,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 
                               if (_patientData!['menstrual_cycle'] != null) ...[
                                 const SizedBox(height: 16),
-                                _buildSection(Iconsax.calendar, 'Cycle menstruel', [
+                                _buildCollapsibleSection('menstrual', Iconsax.calendar, 'Cycle menstruel', [
                                   _infoRow(Iconsax.chart_2, 'Statut', _menstrualStatusLabel(_patientData!['menstrual_cycle']['menstrual_status'])),
                                   if (_patientData!['menstrual_cycle']['start_date'] != null)
                                     _infoRow(Iconsax.calendar, 'Dernier début de cycle', '${_patientData!['menstrual_cycle']['start_date']}'),
@@ -372,32 +377,53 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     );
   }
 
-  Widget _buildSection(IconData icon, String title, List<Widget> children) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white.withAlpha(235),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 14, offset: const Offset(0, 4))],
-        border: Border.all(color: Colors.white.withAlpha(153)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, size: 20, color: AppColors.primary),
-              const SizedBox(width: 8),
-              Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-            ],
-          ),
-          const SizedBox(height: 14),
-          ...children,
-        ],
+  Widget _buildCollapsibleSection(String key, IconData icon, String title, List<Widget> children) {
+    final expanded = _sectionExpanded[key] ?? false;
+    return GestureDetector(
+      onTap: () => setState(() => _sectionExpanded[key] = !expanded),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white.withAlpha(235),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 14, offset: const Offset(0, 4))],
+          border: Border.all(color: expanded ? AppColors.primary.withAlpha(80) : Colors.white.withAlpha(153)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 20, color: AppColors.primary),
+                const SizedBox(width: 8),
+                Expanded(child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary))),
+                AnimatedRotation(
+                  turns: expanded ? 0.5 : 0,
+                  duration: const Duration(milliseconds: 300),
+                  child: const Icon(Iconsax.arrow_down, size: 20, color: AppColors.primary),
+                ),
+              ],
+            ),
+            AnimatedCrossFade(
+              duration: const Duration(milliseconds: 300),
+              crossFadeState: expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              firstChild: const SizedBox.shrink(),
+              secondChild: Column(
+                children: [
+                  const SizedBox(height: 14),
+                  ...children,
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+
 
   Widget _infoRow(IconData icon, String label, String value) {
     return Padding(

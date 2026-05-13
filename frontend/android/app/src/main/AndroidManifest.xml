@@ -1,14 +1,20 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.sahhty">
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- Health Connect permissions -->
     <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
     <uses-permission android:name="android.permission.health.READ_BODY_TEMPERATURE"/>
     <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION"/>
     <uses-permission android:name="android.permission.health.READ_BLOOD_PRESSURE"/>
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        tools:ignore="GoogleAppIndexingWarning,AllowBackup"
         android:label="sahhty"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
@@ -25,13 +31,17 @@
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"/>
+            <!-- Disable Impeller to fix black screen on emulator -->
+            <meta-data
+              android:name="io.flutter.embedding.android.EnableImpeller"
+              android:value="false"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!-- ✅ ADD THIS — makes your app visible in Health Connect -->
+        <!-- makes your app visible in Health Connect -->
         <activity-alias
             android:name="ViewPermissionUsageActivity"
             android:exported="true"
@@ -45,14 +55,14 @@
 
         <!-- Wear OS Data Layer listener — receives HR from paired watch -->
         <service
-            android:name=".PhoneWearListenerService"
-            android:exported="true">
+                android:name=".PhoneWearListenerService"
+                android:exported="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
                 <data
-                    android:host="*"
-                    android:pathPrefix="/sahhty"
-                    android:scheme="wear" />
+                        android:host="*"
+                        android:pathPrefix="/sahhty"
+                        android:scheme="wear" />
             </intent-filter>
         </service>
 

@@ -316,7 +316,7 @@ class _DoctorSettingsScreenState extends ConsumerState<DoctorSettingsScreen> {
                       const SizedBox(height: 8),
                       _Tile(
                         icon: Iconsax.trash,
-                        color: Colors.red,
+                        color: Colors.grey,
                         title: 'Supprimer mon compte',
                         subtitle: 'Suppression définitive',
                         isDanger: true,

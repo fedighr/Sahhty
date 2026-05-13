@@ -24,24 +24,24 @@ class AppColors {
 
   // Text
   static const Color textPrimary   = Color(0xFF2D2D2D);
-  static const Color textSecondary = Color(0xFF757575);
+  static const Color textSecondary = Color(0xFF424242);
   static const Color textLight     = Color(0xFFBDBDBD);
 
   // Status
   static const Color success       = Color(0xFF66BB6A);
-  static const Color warning       = Color(0xFFFFA726);
+  static const Color warning       = Color(0xFFE65100);
   static const Color error         = Color(0xFFEF5350);
   static const Color info          = Color(0xFF42A5F5);
 
   // Risk
   static const Color riskLow       = Color(0xFF66BB6A);
-  static const Color riskMedium    = Color(0xFFFFA726);
+  static const Color riskMedium    = Color(0xFFE65100);
   static const Color riskHigh      = Color(0xFFEF5350);
 
   // Drug interaction severity
   static const Color interactionContraindication = Color(0xFFD32F2F); // CONTRE_INDICATION
   static const Color interactionDiscouraged      = Color(0xFFE65100); // DECONSEILLEE
-  static const Color interactionPrecaution       = Color(0xFFF9A825); // PRECAUTION_EMPLOI
+  static const Color interactionPrecaution       = Color(0xFFE65100); // PRECAUTION_EMPLOI
   static const Color interactionConsideration    = Color(0xFF1976D2); // A_PRENDRE_EN_COMPTE
   static const Color interactionNone             = Color(0xFF9E9E9E); // NON_SIGNIFICATIVE
 }

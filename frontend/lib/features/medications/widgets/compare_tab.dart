@@ -376,37 +376,60 @@ class _CompareTabState extends State<CompareTab> {
   Widget _comparisonSection({required String title, required IconData icon, required List<Widget> rows}) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 8, offset: const Offset(0, 3))],
       ),
+      clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(icon, size: 18, color: AppColors.primary),
-              const SizedBox(width: 8),
-              Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-            ],
+          // Header
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
+            child: Row(
+              children: [
+                Icon(icon, size: 18, color: AppColors.primary),
+                const SizedBox(width: 8),
+                Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              ],
+            ),
           ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              const SizedBox(width: 100),
-              Expanded(
-                child: Text('Méd. 1', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.primary.withAlpha(178)), textAlign: TextAlign.center),
+          // Column headers
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.primary.withAlpha(12),
+              border: Border.symmetric(horizontal: BorderSide(color: Colors.grey.withAlpha(40))),
+            ),
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 110,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      child: Text('Champ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.textSecondary.withAlpha(180))),
+                    ),
+                  ),
+                  Container(width: 1, color: Colors.grey.withAlpha(50)),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text('Méd. 1', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppColors.primary.withAlpha(200)), textAlign: TextAlign.center),
+                    ),
+                  ),
+                  Container(width: 1, color: Colors.grey.withAlpha(50)),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text('Méd. 2', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppColors.accent.withAlpha(220)), textAlign: TextAlign.center),
+                    ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: Text('Méd. 2', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.accent.withAlpha(204)), textAlign: TextAlign.center),
-              ),
-            ],
+            ),
           ),
-          const SizedBox(height: 6),
-          const Divider(height: 1),
-          const SizedBox(height: 6),
           ...rows,
         ],
       ),
@@ -414,33 +437,53 @@ class _CompareTabState extends State<CompareTab> {
   }
 
   Widget _compRow(String label, String? left, String? right) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 100,
-            child: Text(label, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary, fontWeight: FontWeight.w500)),
-          ),
-          Expanded(
-            child: Text(
-              left ?? '--',
-              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.grey.withAlpha(30))),
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              width: 110,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                color: Colors.grey.withAlpha(8),
+                child: Text(
+                  label,
+                  style: const TextStyle(fontSize: 11, color: AppColors.textSecondary, fontWeight: FontWeight.w600),
+                ),
+              ),
             ),
-          ),
-          Expanded(
-            child: Text(
-              right ?? '--',
-              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            Container(width: 1, color: Colors.grey.withAlpha(30)),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                child: Text(
+                  left ?? '--',
+                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ),
-          ),
-        ],
+            Container(width: 1, color: Colors.grey.withAlpha(30)),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                child: Text(
+                  right ?? '--',
+                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

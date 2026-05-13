@@ -22,7 +22,6 @@ class _LanguageSelectionScreenState
 
   static const _languages = [
     {'code': 'fr', 'flag': '🇫🇷', 'name': 'Français', 'native': 'Bonjour !'},
-    {'code': 'ar', 'flag': '🇸🇦', 'name': 'العربية', 'native': 'مرحباً !'},
     {'code': 'en', 'flag': '🇬🇧', 'name': 'English', 'native': 'Hello!'},
   ];
 
@@ -80,7 +79,7 @@ class _LanguageSelectionScreenState
                       ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2),
                       const SizedBox(height: 8),
                       const Text(
-                        'اختر لغتك • Choose your language',
+                        'Choose your language • Choisissez votre langue',
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.textSecondary,

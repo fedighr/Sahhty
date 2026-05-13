@@ -101,17 +101,15 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mes mesures'),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          await context.push('/add-measurement');
-          _loadMeasurements();
-        },
-        icon: const Icon(Iconsax.add_circle, size: 20),
-        label: const Text('Ajouter'),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await context.push('/add-measurement');
+              _loadMeasurements();
+            },
+            icon: const Icon(Iconsax.add_circle, size: 26, color: AppColors.primary),
+          ),
+        ],
       ),
       body: Stack(
         children: [

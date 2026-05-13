@@ -110,21 +110,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: 60),
                     // Logo & Title with animations
                     Center(
-                      child: Container(
-                        width: 90,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [AppColors.primary, AppColors.primaryDark],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(color: AppColors.primary.withAlpha(77), blurRadius: 20, offset: const Offset(0, 8)),
-                          ],
-                        ),
-                        child: const Icon(Iconsax.heart5, size: 44, color: Colors.white),
+                      child: Image.asset(
+                        'assets/images/Logo_Sahhty.png',
+                        width: 110,
+                        height: 110,
+                        fit: BoxFit.contain,
                       ),
                     )
                         .animate()

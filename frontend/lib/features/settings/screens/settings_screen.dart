@@ -227,7 +227,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   // ── Language ─────────────────────────────────────────────────────
   static const _languages = [
     {'code': 'fr', 'flag': '🇫🇷', 'name': 'Français'},
-    {'code': 'ar', 'flag': '🇸🇦', 'name': 'العربية'},
     {'code': 'en', 'flag': '🇬🇧', 'name': 'English'},
   ];
 
@@ -415,7 +414,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     const SizedBox(height: 8),
                     _SettingsTile(
                       icon: Iconsax.trash,
-                      iconColor: AppColors.error,
+                      iconColor: Colors.grey,
                       title: 'Supprimer la grossesse',
                       subtitle: 'Supprimer les données de la grossesse actuelle',
                       isDanger: true,
@@ -472,7 +471,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   _SettingsTile(
                     icon: Iconsax.trash,
-                    iconColor: AppColors.error,
+                    iconColor: Colors.grey,
                     title: 'Supprimer mon compte',
                     subtitle: 'Suppression définitive de toutes vos données',
                     isDanger: true,
@@ -558,10 +557,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.primary.withAlpha(15),
+              color: Colors.grey.withAlpha(30),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Iconsax.setting_2, color: AppColors.primary, size: 22),
+            child: const Icon(Iconsax.setting_2, color: Colors.grey, size: 22),
           ),
         ],
       ),

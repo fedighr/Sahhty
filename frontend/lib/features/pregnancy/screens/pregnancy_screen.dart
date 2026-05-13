@@ -32,24 +32,29 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
 
   Future<void> _loadPregnancy() async {
     setState(() { _loading = true; _error = null; _noPregnancy = false; });
-    final patientId = _getPatientId();
-    if (patientId == null) {
-      setState(() { _loading = false; _error = 'ID patient non trouvé'; });
-      return;
-    }
-
-    final result = await ref.read(pregnancyServiceProvider).getCurrentPregnancy(patientId);
-    if (!mounted) return;
-    setState(() {
-      _loading = false;
-      if (result['success'] == true) {
-        _pregnancy = result['pregnancy'];
-        _weekFromBackend = result['week'] as int?;
-        _dayFromBackend = result['day'] as int?;
-      } else {
-        _noPregnancy = true;
+    try {
+      final patientId = _getPatientId();
+      if (patientId == null) {
+        setState(() { _loading = false; _error = 'ID patient non trouvé. Veuillez vous reconnecter.'; });
+        return;
       }
-    });
+
+      final result = await ref.read(pregnancyServiceProvider).getCurrentPregnancy(patientId);
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        if (result['success'] == true) {
+          _pregnancy = result['pregnancy'] as Map<String, dynamic>?;
+          _weekFromBackend = result['week'] as int?;
+          _dayFromBackend = result['day'] as int?;
+        } else {
+          _noPregnancy = true;
+        }
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() { _loading = false; _error = 'Erreur de chargement: $e'; });
+    }
   }
 
   int? _getPatientId() => int.tryParse(ref.read(authProvider).patientId ?? '');
@@ -145,13 +150,21 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
           const FloatingParticles(particleCount: 20, maxOpacity: 0.22),
           _loading
               ? Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CircularProgressIndicator(color: AppColors.primary),
-                const SizedBox(height: 16),
-                const Text('Chargement...', style: TextStyle(color: AppColors.textSecondary)),
-              ],
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [BoxShadow(color: Colors.black.withAlpha(20), blurRadius: 12)],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(color: AppColors.primary),
+                  const SizedBox(height: 16),
+                  const Text('Chargement de votre grossesse...', style: TextStyle(color: AppColors.textSecondary)),
+                ],
+              ),
             ).animate().fadeIn(),
           )
               : _error != null
@@ -171,8 +184,6 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
                       .moveY(begin: 0, end: -4, duration: 3500.ms, curve: Curves.easeInOut),
                   const SizedBox(height: 20),
                   _buildBabySizeCard().animate().fadeIn(delay: 100.ms).slideX(begin: 0.1),
-                  const SizedBox(height: 16),
-                  _buildTrimesterImageCard().animate().fadeIn(delay: 150.ms).scale(begin: const Offset(0.9, 0.9), duration: 500.ms, curve: Curves.easeOutBack),
                   const SizedBox(height: 16),
                   _buildProgressSection().animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
                   const SizedBox(height: 16),
@@ -249,107 +260,97 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
   }
 
   Widget _buildWeekHero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryDark, Color(0xFFB74B5B)],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(28),
+      child: Container(
+        width: double.infinity,
+        height: 340,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(color: AppColors.primary.withAlpha(89), blurRadius: 24, offset: const Offset(0, 10)),
+          ],
         ),
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(color: AppColors.primary.withAlpha(89), blurRadius: 24, offset: const Offset(0, 10)),
-        ],
-      ),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 80, height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withAlpha(30),
-                ),
-              )
-                  .animate(onPlay: (c) => c.repeat(reverse: true))
-                  .scale(begin: const Offset(1, 1), end: const Offset(1.2, 1.2), duration: 2500.ms),
-              Text(_babyEmoji, style: const TextStyle(fontSize: 56))
-                  .animate(onPlay: (c) => c.repeat(reverse: true))
-                  .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 2000.ms, curve: Curves.easeInOut),
-            ],
-          ),
-          const SizedBox(height: 12),
-          AnimatedWeekCounter(weeks: _weeks, days: _days, size: 130),
-          const SizedBox(height: 16),
-          if (_daysUntilDue != null && _daysUntilDue! > 0)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(51),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Iconsax.clock, color: Colors.white, size: 18),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${_daysUntilDue!} jours restants',
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15),
-                  ),
-                ],
-              ),
-            ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTrimesterImageCard() {
-    return Container(
-      width: double.infinity,
-      height: 160,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: _trimesterColor.withAlpha(40), blurRadius: 16, offset: const Offset(0, 6))],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
         child: Stack(
           fit: StackFit.expand,
           children: [
+            // Image de fond du trimestre
             Image.asset(
               _trimesterImage,
               fit: BoxFit.cover,
               errorBuilder: (_, __, ___) => Container(
-                color: _trimesterColor.withAlpha(30),
-                child: Center(
-                  child: Text(_babyEmoji, style: const TextStyle(fontSize: 64)),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [AppColors.primary, AppColors.primaryDark, Color(0xFFB74B5B)],
+                  ),
                 ),
               ),
             ),
+            // Overlay sombre pour lisibilité
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withAlpha(128)],
+                  colors: [Colors.black.withAlpha(100), Colors.black.withAlpha(160)],
                 ),
               ),
             ),
-            Positioned(
-              bottom: 16, left: 16, right: 16,
-              child: Text(
-                _trimesterLabel,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  shadows: [Shadow(color: Colors.black54, blurRadius: 8)],
+            // Contenu
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 80, height: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withAlpha(30),
+                          ),
+                        )
+                            .animate(onPlay: (c) => c.repeat(reverse: true))
+                            .scale(begin: const Offset(1, 1), end: const Offset(1.2, 1.2), duration: 2500.ms),
+                        Text(_babyEmoji, style: const TextStyle(fontSize: 56))
+                            .animate(onPlay: (c) => c.repeat(reverse: true))
+                            .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 2000.ms, curve: Curves.easeInOut),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    AnimatedWeekCounter(weeks: _weeks, days: _days, size: 130),
+                    const SizedBox(height: 8),
+                    Text(
+                      _trimesterLabel,
+                      style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(height: 16),
+                    if (_daysUntilDue != null && _daysUntilDue! > 0)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withAlpha(51),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Iconsax.clock, color: Colors.white, size: 18),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${_daysUntilDue!} jours restants',
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2),
+                  ],
                 ),
               ),
             ),
@@ -358,6 +359,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
       ),
     );
   }
+
 
   Widget _buildBabySizeCard() {
     return Container(

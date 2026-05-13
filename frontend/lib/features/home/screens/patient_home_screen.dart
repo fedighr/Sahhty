@@ -438,7 +438,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
           ).animate(onPlay: (c) => c.repeat()).shimmer(duration: 1200.ms, color: Colors.white38),
           const SizedBox(height: 20),
           Row(
-            children: List.generate(3, (_) => Expanded(
+            children: List.generate(4, (_) => Expanded(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 height: 90,
@@ -738,7 +738,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
               const SizedBox(width: 12),
               Expanded(child: _QuickActionCard(icon: Iconsax.calendar, label: 'Rendez-\nvous', color: AppColors.accentDark, onTap: () => context.push('/appointments')).animate().fadeIn(delay: 150.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
-              Expanded(child: _QuickActionCard(icon: Iconsax.health, label: 'Mes\nmédicaments', color: AppColors.accent, onTap: () => context.push('/medications')).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
+              Expanded(child: _QuickActionCard(icon: Iconsax.health, label: 'médicaments', color: AppColors.accent, onTap: () => context.push('/medications')).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
               Expanded(child: _QuickActionCard(icon: Iconsax.watch, label: 'Montre\nconnectée', color: AppColors.warning, onTap: () => context.push('/smartwatch')).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
             ],
@@ -942,7 +942,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
                           () => context.push('/doctors')),
                       _doctorActionCard('Profil', Iconsax.user, AppColors.success,
                           () => context.go('/profile')),
-                      _doctorActionCard('Paramètres', Iconsax.setting_2, AppColors.warning,
+                      _doctorActionCard('Paramètres', Iconsax.setting_2, Colors.grey,
                           () => context.push('/settings')),
                     ],
                   ).animate().fadeIn(delay: 200.ms),
@@ -1096,7 +1096,7 @@ class _MeasureCard extends StatelessWidget {
             child: Center(child: Icon(data.icon, size: 18, color: data.color)),
           ),
           const SizedBox(height: 12),
-          Text(data.label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+          Text(data.label, style: const TextStyle(fontSize: 12, color: Colors.black)),
           const SizedBox(height: 4),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -1106,7 +1106,7 @@ class _MeasureCard extends StatelessWidget {
                 const SizedBox(width: 2),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 2),
-                  child: Text(data.unit, style: TextStyle(fontSize: 11, color: data.color, fontWeight: FontWeight.w500)),
+                  child: Text(data.unit, style: const TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.w500)),
                 ),
               ],
             ],

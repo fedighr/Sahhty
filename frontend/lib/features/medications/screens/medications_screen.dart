@@ -410,7 +410,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                 const SizedBox(width: 8),
                 GestureDetector(
                   onTap: () => _deleteTreatment(t['id'] as int),
-                  child: const Icon(Iconsax.trash, color: AppColors.error, size: 20),
+                  child: const Icon(Iconsax.trash, color: Colors.grey, size: 20),
                 ),
               ],
             ),
@@ -459,15 +459,19 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                 }).toList(),
               ),
             ],
-            // ── Pregnancy risk badge ──────
-            if (t['pregnancy_data'] != null && t['pregnancy_data'] is Map<String, dynamic>) ...[
+            // ── Pregnancy risk + Interactions badges (horizontal) ──────
+            if ((t['pregnancy_data'] != null && t['pregnancy_data'] is Map<String, dynamic>) || interactions.isNotEmpty) ...[
               const SizedBox(height: 10),
-              _buildPregnancyRiskBadge(t['pregnancy_data'] as Map<String, dynamic>),
-            ],
-            // ── Interactions badges ──────
-            if (interactions.isNotEmpty) ...[
-              const SizedBox(height: 10),
-              _buildInteractionsBadges(interactions),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  if (t['pregnancy_data'] != null && t['pregnancy_data'] is Map<String, dynamic>)
+                    _buildPregnancyRiskBadge(t['pregnancy_data'] as Map<String, dynamic>),
+                  if (interactions.isNotEmpty)
+                    ..._buildInteractionsBadgesList(interactions),
+                ],
+              ),
             ],
             const SizedBox(height: 8),
             Row(
@@ -482,6 +486,51 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
         ),
       ),
     );
+  }
+
+  List<Widget> _buildInteractionsBadgesList(List<dynamic> interactions) {
+    final sorted = List<dynamic>.from(interactions);
+    sorted.sort((a, b) {
+      final pa = InteractionHelpers.severityPriority((a as Map<String, dynamic>)['severity']?.toString());
+      final pb = InteractionHelpers.severityPriority((b as Map<String, dynamic>)['severity']?.toString());
+      return pb.compareTo(pa);
+    });
+    final shown = sorted.take(3).toList();
+    final remaining = sorted.length - shown.length;
+    final result = <Widget>[
+      ...shown.map((i) {
+        final inter = i as Map<String, dynamic>;
+        final severity = inter['severity']?.toString();
+        final color = InteractionHelpers.severityColor(severity);
+        final userMed = inter['user_medication']?.toString() ?? '?';
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: color.withAlpha(15),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: color.withAlpha(51)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(InteractionHelpers.severityIcon(severity), size: 12, color: color),
+              const SizedBox(width: 4),
+              Text('⇌ $userMed', style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.w600)),
+            ],
+          ),
+        );
+      }),
+      if (remaining > 0)
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: AppColors.textSecondary.withAlpha(20),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text('+$remaining', style: const TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+        ),
+    ];
+    return result;
   }
 
   Widget _buildInteractionsBadges(List<dynamic> interactions) {
@@ -1178,14 +1227,16 @@ class _TreatmentDetailSheet extends StatelessWidget {
                   const Divider(),
                   const SizedBox(height: 12),
 
-                  // Info grid
-                  _DetailRow(icon: Icons.straighten_outlined, label: 'Dose', value: dose),
-                  _DetailRow(icon: Icons.repeat, label: 'Fréquence', value: freqLabel),
-                  _DetailRow(icon: Icons.calendar_today_outlined, label: 'Date début', value: startDate),
-                  _DetailRow(icon: Icons.event_outlined, label: 'Date fin', value: endDate ?? 'En cours'),
-                  if (medForm.isNotEmpty) _DetailRow(icon: Icons.local_pharmacy_outlined, label: 'Forme', value: medForm),
-                  if (medDosage.isNotEmpty) _DetailRow(icon: Icons.science_outlined, label: 'Dosage', value: medDosage),
-                  if (medPrice != null) _DetailRow(icon: Icons.attach_money, label: 'Prix public', value: '$medPrice DT'),
+                  // Info table
+                  _DetailTable(rows: [
+                    _DetailRowData(icon: Iconsax.receipt_item, label: 'Dose', value: dose),
+                    _DetailRowData(icon: Iconsax.timer_1, label: 'Fréquence', value: freqLabel),
+                    _DetailRowData(icon: Iconsax.calendar_1, label: 'Date début', value: startDate),
+                    _DetailRowData(icon: Iconsax.calendar_tick, label: 'Date fin', value: endDate ?? 'En cours'),
+                    if (medForm.isNotEmpty) _DetailRowData(icon: Iconsax.health, label: 'Forme', value: medForm),
+                    if (medDosage.isNotEmpty) _DetailRowData(icon: Iconsax.ruler, label: 'Dosage', value: medDosage),
+                    if (medPrice != null) _DetailRowData(icon: Iconsax.dollar_circle, label: 'Prix public', value: '$medPrice DT'),
+                  ]),
 
                   if (schedules.isNotEmpty) ...[
                     const SizedBox(height: 16),
@@ -1419,23 +1470,73 @@ class _TreatmentDetailSheet extends StatelessWidget {
   }
 }
 
-class _DetailRow extends StatelessWidget {
+class _DetailRowData {
   final IconData icon;
   final String label;
   final String value;
-  const _DetailRow({required this.icon, required this.label, required this.value});
+  const _DetailRowData({required this.icon, required this.label, required this.value});
+}
+
+class _DetailTable extends StatelessWidget {
+  final List<_DetailRowData> rows;
+  const _DetailTable({required this.rows});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Row(
-        children: [
-          Icon(icon, size: 18, color: AppColors.primary),
-          const SizedBox(width: 10),
-          SizedBox(width: 100, child: Text(label, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary))),
-          Expanded(child: Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.textPrimary))),
-        ],
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.primary.withAlpha(38)),
+        color: AppColors.primary.withAlpha(6),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Table(
+        columnWidths: const {
+          0: IntrinsicColumnWidth(),
+          1: FlexColumnWidth(1.2),
+          2: FlexColumnWidth(2),
+        },
+        border: TableBorder(
+          horizontalInside: BorderSide(color: AppColors.primary.withAlpha(20), width: 1),
+        ),
+        children: rows.asMap().entries.map((entry) {
+          final i = entry.key;
+          final row = entry.value;
+          final isEven = i % 2 == 0;
+          return TableRow(
+            decoration: BoxDecoration(
+              color: isEven ? Colors.white : AppColors.primary.withAlpha(8),
+            ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                child: Icon(row.icon, size: 18, color: AppColors.primary),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Text(
+                  row.label,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                child: Text(
+                  row.value,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }).toList(),
       ),
     );
   }

@@ -9,19 +9,19 @@ import 'package:sahhty/features/auth/providers/auth_provider.dart';
 
 // ── Doctor theme colors (Green) ──────────────────────────────────────
 class DoctorColors {
-  static const Color primary       = Color(0xFF2E7D32);
-  static const Color primaryDark   = Color(0xFF1B5E20);
-  static const Color primaryLight  = Color(0xFFE8F5E9);
-  static const Color primaryMid    = Color(0xFF388E3C);
-  static const Color accent        = Color(0xFF00897B);
-  static const Color accentLight   = Color(0xFFE0F2F1);
-  static const Color background    = Color(0xFFF1F8F1);
+  static const Color primary       = Color(0xFF81C784);
+  static const Color primaryDark   = Color(0xFF66BB6A);
+  static const Color primaryLight  = Color(0xFFF1FFF3);
+  static const Color primaryMid    = Color(0xFFA5D6A7);
+  static const Color accent        = Color(0xFF80CBC4);
+  static const Color accentLight   = Color(0xFFE8F5E9);
+  static const Color background    = Color(0xFFF5FBF5);
   static const Color surface       = Colors.white;
-  static const Color textPrimary   = Color(0xFF1B2E1B);
-  static const Color textSecondary = Color(0xFF5A6A5A);
-  static const Color textLight     = Color(0xFFADB5AD);
-  static const Color success       = Color(0xFF2E7D32);
-  static const Color successLight  = Color(0xFFE8F5E9);
+  static const Color textPrimary   = Color(0xFF263238);
+  static const Color textSecondary = Color(0xFF546E7A);
+  static const Color textLight     = Color(0xFFB0BEC5);
+  static const Color success       = Color(0xFF43A047);
+  static const Color successLight  = Color(0xFFF1F8E9);
   static const Color warning       = Color(0xFFF57F17);
   static const Color warningLight  = Color(0xFFFFF3E0);
   static const Color error         = Color(0xFFB71C1C);
@@ -38,6 +38,7 @@ class DoctorHomeScreen extends ConsumerStatefulWidget {
 class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
   Map<String, dynamic>? _doctorData;
   String? _profileError;
+  bool _isUnverified               = false;
   List<dynamic> _appointments     = [];
   List<dynamic> _schedule         = [];
   bool _loadingProfile            = true;
@@ -65,9 +66,23 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
     try {
       final res = await doctorSvc.getDoctorById(doctorId);
       if (mounted) setState(() {
-        _doctorData    = res['success'] == true ? res['doctor'] : null;
-        // Don't show error for unverified - use auth fallback in UI
-        _profileError  = null;
+        if (res['success'] == true) {
+          final doc = res['doctor'] as Map<String, dynamic>?;
+          // Only show "unverified" card if backend explicitly says so
+          final verified = doc?['is_verified'];
+          if (verified == false) {
+            _isUnverified = true;
+            _doctorData = null;
+          } else {
+            _isUnverified = false;
+            _doctorData = doc;
+          }
+        } else {
+          // API failure — don't confuse with unverified status
+          _isUnverified = false;
+          _doctorData = null;
+          _profileError = 'Impossible de charger le profil.';
+        }
         _loadingProfile = false;
       });
     } catch (_) {
@@ -101,6 +116,7 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
       _loadingAppointments = true;
       _loadingSchedule     = true;
       _profileError        = null;
+      _isUnverified        = false;
     });
     await _load();
   }
@@ -167,7 +183,7 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF1B5E20), Color(0xFF2E7D32), Color(0xFF388E3C)],
+              colors: [Color(0xFF81C784), Color(0xFF9CCC9C), Color(0xFFA5D6A7)],
             ),
           ),
           child: SafeArea(
@@ -277,7 +293,7 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFF2E7D32), Color(0xFF388E3C)]),
+                      gradient: const LinearGradient(colors: [Color(0xFF81C784), Color(0xFFA5D6A7)]),
                       borderRadius: BorderRadius.circular(14),
                       boxShadow: [BoxShadow(color: DoctorColors.primary.withAlpha(60), blurRadius: 8, offset: const Offset(0, 4))],
                     ),
@@ -400,7 +416,7 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
     if (_loadingProfile) {
       return const Padding(padding: EdgeInsets.all(32), child: Center(child: CircularProgressIndicator(color: DoctorColors.primary)));
     }
-    if (_doctorData == null) {
+    if (_isUnverified) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
@@ -427,6 +443,34 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
         ).animate().fadeIn(),
       );
     }
+    if (_doctorData == null) {
+      // Generic error - not an unverified account
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: const [BoxShadow(color: Color(0x0D000000), blurRadius: 10, offset: Offset(0, 4))],
+          ),
+          child: Row(children: [
+            Container(
+              width: 50, height: 50,
+              decoration: BoxDecoration(color: DoctorColors.errorLight, borderRadius: BorderRadius.circular(14)),
+              child: const Icon(Iconsax.warning_2, color: DoctorColors.error, size: 26),
+            ),
+            const SizedBox(width: 14),
+            const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Profil non disponible', style: TextStyle(fontWeight: FontWeight.bold, color: DoctorColors.textPrimary)),
+              SizedBox(height: 4),
+              Text('Impossible de charger les données du profil.',
+                  style: TextStyle(fontSize: 12, color: DoctorColors.textSecondary, height: 1.4)),
+            ])),
+          ]),
+        ).animate().fadeIn(),
+      );
+    }
     final d       = _doctorData!;
     final name    = '${d['first_name'] ?? ''} ${d['last_name'] ?? ''}'.trim();
     final initial = name.isNotEmpty ? name[0].toUpperCase() : 'D';
@@ -443,7 +487,7 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [Color(0xFF1B5E20), Color(0xFF388E3C)]),
+              gradient: const LinearGradient(colors: [Color(0xFF66BB6A), Color(0xFF81C784)]),
               borderRadius: BorderRadius.only(topLeft: Radius.circular(18), topRight: Radius.circular(18)),
             ),
             child: Row(children: [
@@ -509,18 +553,24 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
           boxShadow: const [BoxShadow(color: Color(0x0A000000), blurRadius: 10, offset: Offset(0, 4))],
         ),
-        child: Column(children: [
-          Icon(icon, size: 48, color: DoctorColors.textLight),
-          const SizedBox(height: 10),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: DoctorColors.textSecondary, fontSize: 14)),
-          const SizedBox(height: 4),
-          Text(subtitle, style: const TextStyle(color: DoctorColors.textLight, fontSize: 12), textAlign: TextAlign.center),
+        child: Row(children: [
+          Container(
+            width: 50, height: 50,
+            decoration: BoxDecoration(color: DoctorColors.primaryLight, borderRadius: BorderRadius.circular(14)),
+            child: Icon(icon, color: DoctorColors.textLight, size: 26),
+          ),
+          const SizedBox(width: 14),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: DoctorColors.textSecondary, fontSize: 14)),
+            const SizedBox(height: 4),
+            Text(subtitle, style: const TextStyle(color: DoctorColors.textLight, fontSize: 12, height: 1.4)),
+          ])),
         ]),
       ),
     );

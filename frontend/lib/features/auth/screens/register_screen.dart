@@ -30,6 +30,49 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _isLoading = false;
   int _currentStep = 0;
 
+  // ---------- password validation helpers ----------
+  bool _hasMinLength(String v) => v.length >= 8;
+  bool _hasUppercase(String v) => v.contains(RegExp(r'[A-Z]'));
+  bool _hasLowercase(String v) => v.contains(RegExp(r'[a-z]'));
+  bool _hasDigit(String v) => v.contains(RegExp(r'[0-9]'));
+  bool _hasSpecial(String v) => v.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_\-]'));
+
+  int _strengthScore(String v) {
+    int s = 0;
+    if (_hasMinLength(v)) s++;
+    if (_hasUppercase(v)) s++;
+    if (_hasLowercase(v)) s++;
+    if (_hasDigit(v)) s++;
+    if (_hasSpecial(v)) s++;
+    return s;
+  }
+
+  Color _strengthColor(int score) {
+    if (score <= 1) return Colors.red;
+    if (score == 2) return Colors.orange;
+    if (score == 3) return Colors.amber;
+    if (score == 4) return Colors.lightGreen;
+    return Colors.green;
+  }
+
+  String _strengthLabel(int score) {
+    if (score <= 1) return 'Très faible';
+    if (score == 2) return 'Faible';
+    if (score == 3) return 'Moyen';
+    if (score == 4) return 'Fort';
+    return 'Très fort';
+  }
+
+  String? _validatePassword(String? v) {
+    if (v == null || v.isEmpty) return 'Mot de passe requis';
+    if (!_hasMinLength(v)) return 'Minimum 8 caractères';
+    if (!_hasUppercase(v)) return 'Au moins une lettre majuscule (A–Z)';
+    if (!_hasLowercase(v)) return 'Au moins une lettre minuscule (a–z)';
+    if (!_hasDigit(v)) return 'Au moins un chiffre (0–9)';
+    if (!_hasSpecial(v)) return 'Au moins un caractère spécial (!@#\$%…)';
+    return null;
+  }
+
   @override
   void dispose() {
     _firstNameCtrl.dispose();
@@ -305,6 +348,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       TextFormField(
         controller: _passwordCtrl,
         obscureText: _obscure1,
+        onChanged: (v) => setState(() {}),
         decoration: InputDecoration(
           labelText: 'Mot de passe',
           prefixIcon: const Icon(Iconsax.lock, color: AppColors.primary, size: 20),
@@ -313,12 +357,40 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             onPressed: () => setState(() => _obscure1 = !_obscure1),
           ),
         ),
-        validator: (v) {
-          if (v == null || v.isEmpty) return 'Mot de passe requis';
-          if (v.length < 8) return 'Minimum 8 caractères';
-          return null;
-        },
+        validator: _validatePassword,
       ),
+      if (_passwordCtrl.text.isNotEmpty) ...[
+        const SizedBox(height: 8),
+        Builder(builder: (context) {
+          final score = _strengthScore(_passwordCtrl.text);
+          final color = _strengthColor(score);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: List.generate(5, (i) => Expanded(
+                  child: Container(
+                    height: 4,
+                    margin: const EdgeInsets.only(right: 4),
+                    decoration: BoxDecoration(
+                      color: i < score ? color : Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                )),
+              ),
+              const SizedBox(height: 4),
+              Text(_strengthLabel(score), style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 6),
+              _PasswordRule('8 caractères minimum', _hasMinLength(_passwordCtrl.text)),
+              _PasswordRule('Une majuscule (A–Z)', _hasUppercase(_passwordCtrl.text)),
+              _PasswordRule('Une minuscule (a–z)', _hasLowercase(_passwordCtrl.text)),
+              _PasswordRule('Un chiffre (0–9)', _hasDigit(_passwordCtrl.text)),
+              _PasswordRule('Un caractère spécial (!@#\$%…)', _hasSpecial(_passwordCtrl.text)),
+            ],
+          );
+        }),
+      ],
       const SizedBox(height: 16),
       TextFormField(
         controller: _confirmPasswordCtrl,
@@ -332,6 +404,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ),
         ),
         validator: (v) {
+          if (v == null || v.isEmpty) return 'Confirmation requise';
           if (v != _passwordCtrl.text) return 'Les mots de passe ne correspondent pas';
           return null;
         },
@@ -361,3 +434,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     );
   }
 }
+
+class _PasswordRule extends StatelessWidget {
+  final String label;
+  final bool met;
+  const _PasswordRule(this.label, this.met);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Row(
+        children: [
+          Icon(met ? Icons.check_circle : Icons.radio_button_unchecked,
+              size: 14, color: met ? Colors.green : Colors.grey),
+          const SizedBox(width: 6),
+          Text(label, style: TextStyle(fontSize: 12, color: met ? Colors.green : Colors.grey)),
+        ],
+      ),
+    );
+  }
+}
+

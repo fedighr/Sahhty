@@ -128,7 +128,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                                     ),
                                   ],
                                 ),
-                                child: const Icon(Iconsax.heart5, size: 64, color: AppColors.primary),
+                                child: Image.asset(
+                                  'assets/images/Logo_Sahhty.png',
+                                  width: 90,
+                                  height: 90,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             );
                           },

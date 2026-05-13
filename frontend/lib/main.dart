@@ -63,7 +63,7 @@ class SahhtyApp extends ConsumerWidget {
       theme: AppTheme.lightTheme,
       routerConfig: router,
       locale: locale,
-      supportedLocales: const [Locale('fr'), Locale('ar'), Locale('en')],
+      supportedLocales: const [Locale('fr'), Locale('en')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -76,12 +76,7 @@ class SahhtyApp extends ConsumerWidget {
           data: MediaQuery.of(context).copyWith(
             textScaler: TextScaler.linear(scale),
           ),
-          child: Directionality(
-            textDirection: locale.languageCode == 'ar'
-                ? TextDirection.rtl
-                : TextDirection.ltr,
-            child: child!,
-          ),
+          child: child!,
         );
       },
     );
