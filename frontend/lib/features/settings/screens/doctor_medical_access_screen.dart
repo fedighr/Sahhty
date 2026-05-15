@@ -557,18 +557,18 @@ class _PatientAccessCard extends StatelessWidget {
           style: const TextStyle(
               color: DoctorColors.textSecondary, fontSize: 12),
         ),
-        trailing: ElevatedButton.icon(
-          onPressed: onViewFiles,
-          icon: const Icon(Iconsax.document_text, size: 16, color: Colors.white),
-          label:
-              const Text('Voir', style: TextStyle(color: Colors.white, fontSize: 12)),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: DoctorColors.primary,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            elevation: 0,
+        trailing: SizedBox(
+          width: 80,
+          height: 36,
+          child: ElevatedButton(
+            onPressed: onViewFiles,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: DoctorColors.primary,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              elevation: 0,
+            ),
+            child: const Text('Voir', style: TextStyle(color: Colors.white, fontSize: 12)),
           ),
         ),
       ),
