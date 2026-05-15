@@ -12,6 +12,7 @@ from doctors.models import Doctor
 from doctors.serializers import DoctorSerializer
 from django.db import transaction
 from alerts.services import AlertService
+#from notifications.services import notify_user
 
 class MedicalFileService:
     @staticmethod
@@ -172,15 +173,34 @@ class MedicalFileService:
                     doctor=validated_data['doctor'],
                 )
 
-            Alert.objects.create(
-                user=validated_data['patient'].user,
-                type='SYSTEM',
-                message=f"Doctor {validated_data['doctor'].user.first_name} {validated_data['doctor'].user.last_name} has requested access to your medical files."
-            )
-            serializer = PatientDoctorAccessSerializer(access)
+            patient_user = validated_data['patient'].user
+            doctor_user = validated_data['doctor'].user
 
+            Alert.objects.create(
+                user=patient_user,
+                type='SYSTEM',
+                message=f"Doctor {doctor_user.first_name} {doctor_user.last_name} has requested access to your medical files."
+            )
+            """
+            device = patient_user.devices.first()
+            fcm_token = device.fcm_token if device else None
+
+            notify_user(
+                user_id=patient_user.id,
+                event_type='access_request',
+                data={
+                    'access_id': access.id,
+                    'doctor_name': f'{doctor_user.first_name} {doctor_user.last_name}',
+                    'specialty': validated_data['doctor'].speciality.name,
+                    'request_date': str(access.created_at),
+                },
+                fcm_token=fcm_token,
+                email=patient_user.email,
+            )
+            """
+            serializer = PatientDoctorAccessSerializer(access)
             return {'data': {'success': True, 'message': 'Medical access requested successfully', 'access': serializer.data}, 'status': 201}
-        
+
         except (IntegrityError, DatabaseError) as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 400}
         except Exception as e:

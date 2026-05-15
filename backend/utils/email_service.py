@@ -120,6 +120,106 @@ def send_verification_email(user_email, code, expires_at):
         print(f"Email error: {e}")
         return False
 
+def send_lockout_email(user_email):
+    cfg = {
+        'bg':          '#fff5f5',
+        'border':      '#e53e3e',
+        'header_bg':   '#e53e3e',
+        'badge_bg':    '#c53030',
+        'badge_text':  '#ffffff',
+        'icon':        '🔒',
+        'label':       'Account Locked',
+        'subject':     '🔒 Your Account Has Been Locked',
+    }
+
+    try:
+        subject = cfg['subject']
+        text_content = f'Your account has been locked for 15 minutes due to multiple failed login attempts.'
+        html_content = f'''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin:0;padding:0;background-color:#f7fafc;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7fafc;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:{cfg["bg"]};border-radius:12px;overflow:hidden;border:2px solid {cfg["border"]};box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background-color:{cfg["header_bg"]};padding:28px 32px;text-align:center;">
+              <p style="margin:0;font-size:36px;line-height:1;">{cfg["icon"]}</p>
+              <h1 style="margin:10px 0 0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">
+                {cfg["label"]}
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:13px;color:#718096;text-transform:uppercase;letter-spacing:1px;font-weight:600;">
+                Sahty Health
+              </p>
+              <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
+                Suspicious activity detected
+              </h2>
+
+              <!-- Message box -->
+              <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+                <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
+                  Your account has been temporarily locked for <strong>15 minutes</strong> due to multiple failed login attempts.
+                </p>
+                <p style="margin:0;font-size:15px;color:#2d3748;line-height:1.7;">
+                  If this was you, please wait 15 minutes and try again. If this was not you, we recommend resetting your password immediately.
+                </p>
+              </div>
+
+              <!-- Badge -->
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:{cfg["badge_bg"]};border-radius:20px;padding:6px 16px;">
+                    <span style="color:{cfg["badge_text"]};font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;">
+                      {cfg["label"]}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
+                If you did not attempt to login, please contact support immediately.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+              <p style="margin:0;font-size:12px;color:#718096;">
+                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        '''
+        email = EmailMultiAlternatives(subject, text_content, os.getenv('DEFAULT_FROM_EMAIL'), [user_email])
+        email.attach_alternative(html_content, "text/html")
+        email.send()
+        return True
+    except BadHeaderError:
+        return False
+    except Exception as e:
+        print(f"Email error: {e}")
+        return False
 
 def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
 
@@ -916,3 +1016,275 @@ def send_pregnancy_no_appointment_email(patient_email, patient_name):
     except Exception as e:
         print(f"Email error: {e}")
         return False
+
+def send_appointment_notification_email(doctor_email, patient_name, appointment_datetime):
+    """
+    Sent to the doctor when a patient books an appointment.
+    Action (confirm/decline) is done in the app.
+    """
+    try:
+        formatted_dt = appointment_datetime.strftime('%A, %B %d %Y at %H:%M')
+    except AttributeError:
+        formatted_dt = str(appointment_datetime)
+ 
+    cfg = {
+        'bg':         '#f0fff4',
+        'border':     '#38a169',
+        'header_bg':  '#38a169',
+        'badge_bg':   '#276749',
+        'badge_text': '#ffffff',
+        'icon':       '📅',
+        'label':      'New Appointment Request',
+        'subject':    '📅 New Appointment Request',
+    }
+ 
+    try:
+        text_content = (
+            f'You have a new appointment request from {patient_name} '
+            f'scheduled for {formatted_dt}. Please open the app to confirm or decline.'
+        )
+        html_content = f'''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin:0;padding:0;background-color:#f7fafc;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7fafc;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:{cfg["bg"]};border-radius:12px;overflow:hidden;border:2px solid {cfg["border"]};box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+ 
+          <!-- Header -->
+          <tr>
+            <td style="background-color:{cfg["header_bg"]};padding:28px 32px;text-align:center;">
+              <p style="margin:0;font-size:36px;line-height:1;">{cfg["icon"]}</p>
+              <h1 style="margin:10px 0 0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">
+                {cfg["label"]}
+              </h1>
+            </td>
+          </tr>
+ 
+          <!-- Body -->
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:13px;color:#718096;text-transform:uppercase;letter-spacing:1px;font-weight:600;">
+                Sahty Health
+              </p>
+              <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
+                You have a new appointment request
+              </h2>
+ 
+              <!-- Info box -->
+              <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+                <p style="margin:0 0 16px;font-size:15px;color:#2d3748;line-height:1.7;">
+                  A patient has requested an appointment with you. Please open the app to confirm or decline.
+                </p>
+ 
+                <table cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
+                      <span style="font-size:13px;color:#718096;">Patient</span>
+                    </td>
+                    <td style="padding:8px 0;text-align:right;border-bottom:1px solid #e2e8f0;">
+                      <strong style="font-size:14px;color:#2d3748;">👤 {patient_name}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:8px 0;">
+                      <span style="font-size:13px;color:#718096;">Date &amp; Time</span>
+                    </td>
+                    <td style="padding:8px 0;text-align:right;">
+                      <strong style="font-size:14px;color:#38a169;">🕐 {formatted_dt}</strong>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+ 
+              <!-- Badge -->
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:{cfg["badge_bg"]};border-radius:20px;padding:6px 16px;">
+                    <span style="color:{cfg["badge_text"]};font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;">
+                      Action required in app
+                    </span>
+                  </td>
+                </tr>
+              </table>
+ 
+              <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
+                Open the Sahty app to manage this appointment request.
+              </p>
+            </td>
+          </tr>
+ 
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+              <p style="margin:0;font-size:12px;color:#718096;">
+                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+              </p>
+            </td>
+          </tr>
+ 
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        '''
+        msg = EmailMultiAlternatives(
+            cfg['subject'], text_content,
+            os.getenv('DEFAULT_FROM_EMAIL'), [doctor_email]
+        )
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        return True
+    except BadHeaderError:
+        return False
+    except Exception as e:
+        print(f"Appointment email error: {e}")
+        return False
+ 
+ 
+def send_access_request_email(patient_email, doctor_name, specialty, request_date):
+    """
+    Sent to the patient when a doctor requests access to their health data.
+    Action (approve/decline) is done in the app.
+    """
+    try:
+        formatted_date = request_date.strftime('%A, %B %d %Y at %H:%M')
+    except AttributeError:
+        formatted_date = str(request_date)
+ 
+    cfg = {
+        'bg':         '#fffaf0',
+        'border':     '#dd6b20',
+        'header_bg':  '#dd6b20',
+        'badge_bg':   '#9c4221',
+        'badge_text': '#ffffff',
+        'icon':       '🔓',
+        'label':      'Doctor Access Request',
+        'subject':    '🔓 A Doctor Requested Access to Your Data',
+    }
+ 
+    try:
+        text_content = (
+            f'Dr. {doctor_name} ({specialty}) has requested access to your health data '
+            f'on {formatted_date}. Please open the app to approve or decline.'
+        )
+        html_content = f'''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin:0;padding:0;background-color:#f7fafc;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7fafc;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:{cfg["bg"]};border-radius:12px;overflow:hidden;border:2px solid {cfg["border"]};box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+ 
+          <!-- Header -->
+          <tr>
+            <td style="background-color:{cfg["header_bg"]};padding:28px 32px;text-align:center;">
+              <p style="margin:0;font-size:36px;line-height:1;">{cfg["icon"]}</p>
+              <h1 style="margin:10px 0 0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">
+                {cfg["label"]}
+              </h1>
+            </td>
+          </tr>
+ 
+          <!-- Body -->
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:13px;color:#718096;text-transform:uppercase;letter-spacing:1px;font-weight:600;">
+                Sahty Health
+              </p>
+              <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
+                A doctor wants to access your health data
+              </h2>
+ 
+              <!-- Info box -->
+              <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+                <p style="margin:0 0 16px;font-size:15px;color:#2d3748;line-height:1.7;">
+                  The following doctor has requested access to your personal health records. Open the app to approve or decline.
+                </p>
+ 
+                <table cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
+                      <span style="font-size:13px;color:#718096;">Doctor</span>
+                    </td>
+                    <td style="padding:8px 0;text-align:right;border-bottom:1px solid #e2e8f0;">
+                      <strong style="font-size:14px;color:#2d3748;">👨‍⚕️ Dr. {doctor_name}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
+                      <span style="font-size:13px;color:#718096;">Specialty</span>
+                    </td>
+                    <td style="padding:8px 0;text-align:right;border-bottom:1px solid #e2e8f0;">
+                      <strong style="font-size:14px;color:#2d3748;">🏥 {specialty}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:8px 0;">
+                      <span style="font-size:13px;color:#718096;">Requested at</span>
+                    </td>
+                    <td style="padding:8px 0;text-align:right;">
+                      <strong style="font-size:14px;color:#dd6b20;">🕐 {formatted_date}</strong>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+ 
+              <!-- Badge -->
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:{cfg["badge_bg"]};border-radius:20px;padding:6px 16px;">
+                    <span style="color:{cfg["badge_text"]};font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;">
+                      Action required in app
+                    </span>
+                  </td>
+                </tr>
+              </table>
+ 
+              <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
+                If you do not recognize this doctor, you can safely decline in the app.
+              </p>
+            </td>
+          </tr>
+ 
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+              <p style="margin:0;font-size:12px;color:#718096;">
+                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+              </p>
+            </td>
+          </tr>
+ 
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        '''
+        msg = EmailMultiAlternatives(
+            cfg['subject'], text_content,
+            os.getenv('DEFAULT_FROM_EMAIL'), [patient_email]
+        )
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        return True
+    except BadHeaderError:
+        return False
+    except Exception as e:
+        print(f"Access request email error: {e}")
+        return False
+ 

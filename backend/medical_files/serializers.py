@@ -9,6 +9,20 @@ class AttachmentSerializer(serializers.ModelSerializer):
         max_size = 10 * 1024 * 1024
         if value.size > max_size:
             raise serializers.ValidationError("File size must be under 10MB.")
+        allowed_types = [
+            'image/jpeg',
+            'image/png', 
+            'image/jpg',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'text/plain',
+        ]
+        if value.content_type not in allowed_types:
+            raise serializers.ValidationError("Only JPEG, PNG, PDF, Word, Excel and text files are allowed.")
+        
         return value
 
     patient = PatientSerializer(read_only=True)

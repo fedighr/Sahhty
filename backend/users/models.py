@@ -43,6 +43,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_verified = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     can_reset_password = models.BooleanField(default=False)
+    two_factor_code = models.CharField(max_length=6, null=True, blank=True)
+    two_factor_expiration = models.DateTimeField(null=True, blank=True)
+    two_factor_enabled = models.BooleanField(default=False)
+    failed_login_attempts = models.IntegerField(default=0)
+    lockout_until = models.DateTimeField(null=True, blank=True)
 
     objects = UserManager()
     USERNAME_FIELD = 'email'

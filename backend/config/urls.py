@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django_eventstream import urls as eventstream_urls
 from django.conf import settings
 
 urlpatterns = [
@@ -34,6 +35,8 @@ urlpatterns = [
     path('medical_files/', include('medical_files.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    #path('notifications/', include('notifications.urls')),
+    #path('events/', include(eventstream_urls)),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

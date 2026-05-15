@@ -11,6 +11,10 @@ from .services import AuthService
 from utils.constraints import IsOwnerOrAdmin
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from drf_spectacular.utils import extend_schema
+from django_ratelimit.decorators import ratelimit
+from django_ratelimit.exceptions import Ratelimited
+from django_ratelimit.core import is_ratelimited
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserAuth(ViewSet):
     @extend_schema(request=UserSerializer, responses=UserSerializer)
@@ -18,7 +22,7 @@ class UserAuth(ViewSet):
     def signup(self, request):
         if not request.data:
             return Response({'success': False, 'message': 'No data provided'}, status=400)
-        print(request.data)
+        
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = AuthService.register(serializer.validated_data)
@@ -28,6 +32,10 @@ class UserAuth(ViewSet):
     @extend_schema(request=LoginSerializer, responses=LoginSerializer)
     @action(detail=False, methods=['post'], url_path='signin', permission_classes=[AllowAny])
     def signin(self, request):
+        limited = is_ratelimited(request, fn=self.signin, key='ip', rate='5/m', method='POST', increment=True)
+        if limited:
+            return Response({'success': False, 'message': 'Too many login attempts. Please try again later.'}, status=429)
+
         if not request.data:
             return Response({'success': False, 'message': 'No data provided'}, status=400)
 
@@ -35,8 +43,16 @@ class UserAuth(ViewSet):
         serializer.is_valid(raise_exception=True)
         result = AuthService.login(serializer.validated_data)
         return Response(result['data'], status=result['status'])
-
     
+    @extend_schema(request=LoginSerializer, responses=LoginSerializer)
+    @action(detail=False, methods=['post'], url_path='verify_2fa', permission_classes=[AllowAny])
+    def verify_2fa(self, request):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
+        result = AuthService.verify_2fa(request.data)
+        return Response(result['data'], status=result['status'])
+
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path="resend_code", permission_classes=[AllowAny])
     def resend_code(self, request):
@@ -128,6 +144,16 @@ class UserAuth(ViewSet):
         
         except Exception as e:
             return Response({'success' : False ,'message' : str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    @action(detail=False, methods=['post'], url_path='logout', permission_classes=[IsAuthenticated])
+    def logout(self, request):
+        try:
+            refresh_token = request.data.get('refresh')
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({'success': True, 'message': 'Logged out successfully'}, status=200)
+        except Exception:
+            return Response({'success': False, 'message': 'Invalid token'}, status=400)
         
 
 class FCMDeviceView(ViewSet):

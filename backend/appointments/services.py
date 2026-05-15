@@ -10,6 +10,7 @@ from patients.models import Patient
 from doctors.models import Doctor
 from django.db import transaction
 from alerts.services import AlertService
+#from notifications.services import notify_user
 
 class AppointmentService:
     @staticmethod
@@ -27,23 +28,39 @@ class AppointmentService:
                 appointment = Appointment.objects.create(**data)
                 serializer = AppointmentSerializer(appointment)
 
-                doctor_user_id = doctor.user
-                patient_user_id = patient.user
+                doctor_user = doctor.user
+                patient_user = patient.user
+
                 doctor_alert = Alert(
                     type='SYSTEM',
-                    user=doctor_user_id,
-                    message=f'New appointment scheduled with patient {patient.user.first_name} {patient.user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")}. please confirm the appointment.',
+                    user=doctor_user,
+                    message=f'New appointment scheduled with patient {patient_user.first_name} {patient_user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")}. please confirm the appointment.',
                 )
                 patient_alert = Alert(
                     type='SYSTEM',
-                    user=patient_user_id,
-                    message=f'New appointment scheduled with doctor {doctor.user.first_name} {doctor.user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")}. please wait for the doctor to confirm the appointment.',
+                    user=patient_user,
+                    message=f'New appointment scheduled with doctor {doctor_user.first_name} {doctor_user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")}. please wait for the doctor to confirm the appointment.',
                 )
                 Alert.objects.bulk_create([doctor_alert, patient_alert])
+                """
+                device = doctor_user.devices.first()
+                fcm_token = device.fcm_token if device else None
+                
+                notify_user(
+                    user_id=doctor_user.id,
+                    event_type='appointment_request',
+                    data={
+                        'appointment_id': appointment.id,
+                        'patient_name': f'{patient_user.first_name} {patient_user.last_name}',
+                        'appointment_datetime': str(appointment.appointment_date),
+                    },
+                    fcm_token=fcm_token,
+                    email=doctor_user.email,
+                )"""
+
 
                 return {'data': {'success': True, 'appointment': serializer.data}, 'status': 201}
 
-        
         except IntegrityError as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 400}
         except DatabaseError:

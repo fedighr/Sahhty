@@ -2,6 +2,8 @@ import pickle
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from filelock import FileLock
+from django.db.models import Count
 from dateutil.relativedelta import relativedelta
 from sklearn.ensemble import IsolationForest
 
@@ -9,7 +11,6 @@ BASE_DIR = Path(__file__).resolve().parent
 SOURCES_DIR = BASE_DIR.parent / "sources"
 DATASET_PATH = SOURCES_DIR / "Maternal Health Risk Data Set.csv"
 PERSONAL_MODELS_DIR = BASE_DIR / "personal_models"
-PRETRAINED_PATH = BASE_DIR / "isolation_forest_pretrained.pkl"
 
 PERSONAL_MODELS_DIR.mkdir(exist_ok=True)
 
@@ -17,14 +18,31 @@ RAW_FEATURE_COLUMNS = ["SystolicBP", "DiastolicBP", "BS", "BodyTemp", "HeartRate
 
 KAGGLE_WEIGHT = 0.3
 PERSONAL_WEIGHT = 0.7
+KAGGLE_SIZE = 1014
 
-MIN_MEASUREMENTS = 15
-MIN_PREGNANCY_WEEK = 13
+CONTAMINATION = 0.1
+RETRAIN_EVERY_N_ROWS = 5
+ANOMALY_THRESHOLD = -0.5
+STAGE_CENTER = 150
+
+MIN_READINGS_PER_TYPE = {
+    "BLOOD_PRESSURE": 10,
+    "GLYCEMIA":       10,
+    "HEART_RATE":     8,
+    "TEMPERATURE":    5,
+}
 
 
-def add_features(df: pd.DataFrame, age: int) -> pd.DataFrame:
+def add_features(df: pd.DataFrame, age: int, pregnancy_week: int) -> pd.DataFrame:
     df = df.copy()
     df["Age"]           = age
+    df["PregnancyWeek"] = pregnancy_week
+    df["Trimester"]     = pd.cut(
+        pd.Series([pregnancy_week]),
+        bins=[0, 12, 26, 42],
+        labels=[1, 2, 3],
+        include_lowest=True,
+    ).astype(int).values[0]
     df["PulsePressure"] = df["SystolicBP"] - df["DiastolicBP"]
     df["BP_Ratio"]      = df["SystolicBP"] / (df["DiastolicBP"] + 1e-6)
     df["MAP"]           = (2 * df["DiastolicBP"] + df["SystolicBP"]) / 3
@@ -53,36 +71,6 @@ def convert_to_model_units(bp_sys, bp_dia, glucose_gl, body_temp_c, heart_rate):
     }
 
 
-def pretrain_on_kaggle():
-    df = pd.read_csv(DATASET_PATH)
-    df.columns = [c.strip() for c in df.columns]
-    df = df[RAW_FEATURE_COLUMNS + ["Age"]].dropna()
-
-    processed_rows = []
-    for _, row in df.iterrows():
-        row_df = pd.DataFrame([row[RAW_FEATURE_COLUMNS]])
-        row_df = add_features(row_df, age=int(row["Age"]))
-        processed_rows.append(row_df)
-
-    full_df = pd.concat(processed_rows, ignore_index=True)
-
-    model = IsolationForest(contamination=0.1, random_state=42, n_jobs=-1)
-    model.fit(full_df)
-
-    with open(PRETRAINED_PATH, "wb") as f:
-        pickle.dump(model, f)
-
-    return model
-
-
-def load_pretrained():
-    if not PRETRAINED_PATH.exists():
-        return pretrain_on_kaggle()
-
-    with open(PRETRAINED_PATH, "rb") as f:
-        return pickle.load(f)
-
-
 def get_personal_model_path(patient_id):
     return PERSONAL_MODELS_DIR / f"patient_{patient_id}.pkl"
 
@@ -91,17 +79,72 @@ def load_personal_model(patient_id):
     path = get_personal_model_path(patient_id)
     if not path.exists():
         return None
-
-    with open(path, "rb") as f:
-        return pickle.load(f)
+    with FileLock(str(path) + ".lock"):
+        with open(path, "rb") as f:
+            return pickle.load(f)
 
 
 def save_personal_model(patient_id, model):
-    with open(get_personal_model_path(patient_id), "wb") as f:
-        pickle.dump(model, f)
+    path = get_personal_model_path(patient_id)
+    with FileLock(str(path) + ".lock"):
+        with open(path, "wb") as f:
+            pickle.dump(model, f)
 
 
-def get_patient_measurements(patient_id):
+def has_enough_data(patient_id) -> bool:
+    from measurements.models import Measurement
+
+    counts = (
+        Measurement.objects
+        .filter(patient_id=patient_id, type__in=MIN_READINGS_PER_TYPE.keys())
+        .values("type")
+        .annotate(count=Count("id"))
+    )
+
+    counts_dict = {row["type"]: row["count"] for row in counts}
+
+    return all(
+        counts_dict.get(mtype, 0) >= minimum
+        for mtype, minimum in MIN_READINGS_PER_TYPE.items()
+    )
+
+
+def should_retrain(patient_id) -> bool:
+    from measurements.models import RiskAssessment, IFRetrainLog
+
+    last_retrain = (
+        IFRetrainLog.objects
+        .filter(patient_id=patient_id)
+        .order_by("-retrained_at")
+        .first()
+    )
+
+    if last_retrain is None:
+        return True
+
+    count_since = RiskAssessment.objects.filter(
+        patient_id=patient_id,
+        assessed_at__gt=last_retrain.retrained_at,
+    ).count()
+
+    return count_since >= RETRAIN_EVERY_N_ROWS
+
+
+def load_kaggle_data() -> pd.DataFrame:
+    df = pd.read_csv(DATASET_PATH)
+    df.columns = [c.strip() for c in df.columns]
+    df = df[RAW_FEATURE_COLUMNS + ["Age"]].dropna()
+
+    processed_rows = []
+    for _, row in df.iterrows():
+        row_df = pd.DataFrame([row[RAW_FEATURE_COLUMNS]])
+        row_df = add_features(row_df, age=int(row["Age"]), pregnancy_week=20)
+        processed_rows.append(row_df)
+
+    return pd.concat(processed_rows, ignore_index=True)
+
+
+def get_patient_measurements(patient_id) -> pd.DataFrame | None:
     from measurements.models import RiskAssessment
 
     records = RiskAssessment.objects.filter(
@@ -111,7 +154,7 @@ def get_patient_measurements(patient_id):
         glucose_used__isnull=False,
         body_temp_used__isnull=False,
         heart_rate_used__isnull=False,
-    ).select_related("patient__user").values(
+    ).select_related("patient__user").order_by("assessed_at").values(
         "bp_sys_used",
         "bp_dia_used",
         "glucose_used",
@@ -119,6 +162,7 @@ def get_patient_measurements(patient_id):
         "heart_rate_used",
         "assessed_at",
         "patient__user__birth_date",
+        "pregnancy_week",
     )
 
     if not records:
@@ -140,7 +184,7 @@ def get_patient_measurements(patient_id):
         )
 
         row_df = pd.DataFrame([converted])
-        row_df = add_features(row_df, age=age)
+        row_df = add_features(row_df, age=age, pregnancy_week=record["pregnancy_week"] or 20)
         processed_rows.append(row_df)
 
     if not processed_rows:
@@ -150,53 +194,57 @@ def get_patient_measurements(patient_id):
 
 
 def train_personal_model(patient_id):
+    from measurements.models import IFRetrainLog
+
     personal_data = get_patient_measurements(patient_id)
-    if personal_data is None or len(personal_data) < MIN_MEASUREMENTS:
+    if personal_data is None:
         return None
 
-    kaggle_df = pd.read_csv(DATASET_PATH)
-    kaggle_df.columns = [c.strip() for c in kaggle_df.columns]
-    kaggle_df = kaggle_df[RAW_FEATURE_COLUMNS + ["Age"]].dropna()
+    kaggle_data = load_kaggle_data()
 
-    kaggle_processed = []
-    for _, row in kaggle_df.iterrows():
-        row_df = pd.DataFrame([row[RAW_FEATURE_COLUMNS]])
-        row_df = add_features(row_df, age=int(row["Age"]))
-        kaggle_processed.append(row_df)
+    patient_weight_per_row = PERSONAL_WEIGHT / len(personal_data)
+    kaggle_weight_per_row  = KAGGLE_WEIGHT / KAGGLE_SIZE
 
-    kaggle_full = pd.concat(kaggle_processed, ignore_index=True)
+    combined = pd.concat([personal_data, kaggle_data], ignore_index=True)
+    weights  = (
+        [patient_weight_per_row] * len(personal_data) +
+        [kaggle_weight_per_row]  * len(kaggle_data)
+    )
 
-    n_kaggle = len(kaggle_full)
-    repeat_times = int(np.ceil((n_kaggle * PERSONAL_WEIGHT) / (len(personal_data) * KAGGLE_WEIGHT)))
-    personal_repeated = pd.concat([personal_data] * repeat_times, ignore_index=True)
-
-    combined = pd.concat([kaggle_full, personal_repeated], ignore_index=True)
-
-    model = IsolationForest(contamination=0.15, random_state=42, n_jobs=-1)
-    model.fit(combined)
+    model = IsolationForest(contamination=CONTAMINATION, random_state=42, n_jobs=-1)
+    model.fit(combined, sample_weight=weights)
 
     save_personal_model(patient_id, model)
+    IFRetrainLog.objects.create(patient_id=patient_id)
+
     return model
 
 
-def score_to_risk(score: float) -> str:
-    if score >= -0.46:
-        return "LOW"
-    elif score >= -0.53:
-        return "MEDIUM"
-    else:
-        return "HIGH"
+def combine_risks(global_risk: str, if_score: float) -> str:
+    if if_score >= ANOMALY_THRESHOLD:
+        return global_risk
+
+    upgrade = {"LOW": "MEDIUM", "MEDIUM": "HIGH", "HIGH": "HIGH"}
+    return upgrade[global_risk]
 
 
-def predict_personal_risk(patient_id, measurements, birth_date, assessed_at, pregnancy_week, total_assessments):
-    if pregnancy_week is None or pregnancy_week < MIN_PREGNANCY_WEEK or total_assessments < MIN_MEASUREMENTS:
-        return None
+def predict_personal_risk(
+    patient_id,
+    measurements,
+    birth_date,
+    assessed_at,
+    pregnancy_week,
+    total_assessments,
+    global_risk: str,
+) -> str:
+    if not has_enough_data(patient_id):
+        return global_risk
 
     model = load_personal_model(patient_id)
     if model is None:
         model = train_personal_model(patient_id)
     if model is None:
-        return None
+        return global_risk
 
     age = relativedelta(assessed_at.date(), birth_date).years
 
@@ -209,20 +257,18 @@ def predict_personal_risk(patient_id, measurements, birth_date, assessed_at, pre
     )
 
     input_df = pd.DataFrame([converted])
-    input_df = add_features(input_df, age=age)
+    input_df = add_features(input_df, age=age, pregnancy_week=pregnancy_week)
 
     score = model.score_samples(input_df)[0]
-    risk  = score_to_risk(score)
 
-    train_personal_model(patient_id)
+    final_risk = combine_risks(global_risk, score)
 
-    return risk
-
-
-def get_final_risk(global_risk: str, personal_risk) -> str:
     priority = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
 
-    if personal_risk is None:
-        return global_risk
+    if total_assessments < STAGE_CENTER:
+        final_risk = max(global_risk, final_risk, key=lambda x: priority[x])
 
-    return max(global_risk, personal_risk, key=lambda x: priority[x])
+    if should_retrain(patient_id):
+        train_personal_model(patient_id)
+
+    return final_risk
