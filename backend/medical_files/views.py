@@ -90,6 +90,18 @@ class MedicalFileView(ViewSet):
         return Response(result['data'], status=result['status'])
         
     @extend_schema(request=PatientDoctorAccessSerializer, responses=PatientDoctorAccessSerializer)
+    @action(detail=False, methods=['delete'], url_path="revoke_access", permission_classes=[AllowAny])
+    def revoke_access(self, request):
+        patient_id = request.data.get('patient_id')
+        doctor_id = request.data.get('doctor_id')
+        if not patient_id or not doctor_id:
+            return Response({'success': False, 'message': 'patient_id and doctor_id are required'}, status=400)
+        deleted, _ = PatientDoctorAccess.objects.filter(patient_id=patient_id, doctor_id=doctor_id).delete()
+        if deleted == 0:
+            return Response({'success': False, 'message': 'Access not found'}, status=404)
+        return Response({'success': True, 'message': 'Access revoked successfully'}, status=200)
+
+    @extend_schema(request=PatientDoctorAccessSerializer, responses=PatientDoctorAccessSerializer)
     @action(detail=False, methods=['post'], url_path="request_medical_access", permission_classes=[AllowAny])
     def request_medical_access(self, request):
         if not request.data:
@@ -98,4 +110,14 @@ class MedicalFileView(ViewSet):
         serializer = PatientDoctorAccessSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = MedicalFileService.requestMedicalAccess(serializer.validated_data)
+        return Response(result['data'], status=result['status'])
+
+    @extend_schema(request=PatientDoctorAccessSerializer, responses=PatientDoctorAccessSerializer)
+    @action(detail=True, methods=['get'], url_path="get_patient_doctors_requests", permission_classes=[AllowAny])
+    def get_patient_doctors_requests(self, request, pk=None):
+        patient_id = pk
+        if not patient_id:
+            return Response({'success': False, 'message': 'Patient ID is required'}, status=400)
+
+        result = MedicalFileService.getPatientDoctorsRequests(patient_id)
         return Response(result['data'], status=result['status'])

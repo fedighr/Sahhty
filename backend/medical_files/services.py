@@ -79,7 +79,20 @@ class MedicalFileService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 400}
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
-        
+
+    @staticmethod
+    def getPatientDoctorsRequests(patient_id):
+        try:
+            accesses = PatientDoctorAccess.objects.filter(patient_id=patient_id, status='PENDING').select_related('doctor')
+            doctor_list = [access.doctor for access in accesses]
+            serializer = DoctorSerializer(doctor_list, many=True)
+            return {'data': {'success': True, 'doctors': serializer.data}, 'status': 200}
+
+        except (IntegrityError, DatabaseError) as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+
     @staticmethod
     def deleteAttachment(attachment_id):
         try:

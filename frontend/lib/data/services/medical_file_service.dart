@@ -99,6 +99,17 @@ class MedicalFileService {
     }
   }
 
+  /// GET /medical_files/MedicalFileService/{pk}/get_patient_doctors_requests/
+  /// Returns list of doctors with PENDING access requests for patient
+  Future<Map<String, dynamic>> getPatientDoctorsRequests(int patientId) async {
+    try {
+      final response = await _dio.get(ApiEndpoints.getPatientDoctorsRequests(patientId));
+      return Map<String, dynamic>.from(response.data ?? {});
+    } catch (e) {
+      return _err(e);
+    }
+  }
+
   /// GET /medical_files/MedicalFileService/{pk}/get_patient_doctors/
   /// Returns list of doctors with ACCEPTED access to patient's files
   Future<Map<String, dynamic>> getPatientDoctors(int patientId) async {
@@ -116,6 +127,59 @@ class MedicalFileService {
       final response = await _dio.delete(ApiEndpoints.deletePatientDoctorAccess(accessId));
       return Map<String, dynamic>.from(response.data ?? {});
     } catch (e) {
+      return _err(e);
+    }
+  }
+
+  /// DELETE /medical_files/MedicalFileService/revoke_access/
+  /// Patient revokes a doctor's access (no access ID needed — uses patient+doctor IDs)
+  Future<Map<String, dynamic>> revokeAccess({
+    required int patientId,
+    required int doctorId,
+  }) async {
+    try {
+      final response = await _dio.delete(
+        ApiEndpoints.revokeAccess,
+        data: {'patient_id': patientId, 'doctor_id': doctorId},
+      );
+      return Map<String, dynamic>.from(response.data ?? {});
+    } catch (e) {
+      return _err(e);
+    }
+  }
+
+  /// GET /patients/PatientService/search/?q=<query>
+  /// Returns paginated list of patients matching the query
+  Future<Map<String, dynamic>> searchPatients(String query) async {
+    try {
+      final response = await _dio.get(
+        ApiEndpoints.searchPatients,
+        queryParameters: {'q': query},
+      );
+      return Map<String, dynamic>.from(response.data ?? {});
+    } on DioException catch (e) {
+      // 404 means no patient found — return empty results, not an error
+      if (e.response?.statusCode == 404) {
+        return {'success': true, 'results': [], 'count': 0};
+      }
+      return _err(e);
+    }
+  }
+
+  /// GET /doctors/DoctorService/search/?q=<query>
+  /// Returns paginated list of doctors matching the query
+  Future<Map<String, dynamic>> searchDoctors(String query) async {
+    try {
+      final response = await _dio.get(
+        ApiEndpoints.searchDoctors,
+        queryParameters: {'q': query},
+      );
+      return Map<String, dynamic>.from(response.data ?? {});
+    } on DioException catch (e) {
+      // 404 means no doctor found — return empty results, not an error
+      if (e.response?.statusCode == 404) {
+        return {'success': true, 'results': [], 'count': 0};
+      }
       return _err(e);
     }
   }

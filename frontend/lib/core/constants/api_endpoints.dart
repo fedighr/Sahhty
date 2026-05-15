@@ -106,6 +106,9 @@ class ApiEndpoints {
   static String getAlertsByUser(int userId) => '/alerts/AlertService/$userId/get_alerts_by_user/';
   static String markAlertAsRead(int alertId) => '/alerts/AlertService/$alertId/mark_as_read/';
 
+  // ── Patient search ───────────────────────────────────────────────────
+  static const String searchPatients               = '/patients/PatientService/search/';
+
   // ── Medical Files (ViewSet: medical_files/MedicalFileService/) ───────
   static const String createAttachment              = '/medical_files/MedicalFileService/create_attachment/';
   static String getPatientMedicalFiles(int pk)      => '/medical_files/MedicalFileService/$pk/get_patient_medical_files/';
@@ -117,6 +120,8 @@ class ApiEndpoints {
   static String getDoctorPatients(int pk)           => '/medical_files/MedicalFileService/$pk/get_doctor_patients/';
   static String getPatientDoctors(int pk)           => '/medical_files/MedicalFileService/$pk/get_patient_doctors/';
   static String deletePatientDoctorAccess(int pk)   => '/medical_files/MedicalFileService/$pk/delete_patient_doctor_access/';
+  static const String revokeAccess                  = '/medical_files/MedicalFileService/revoke_access/';
+  static String getPatientDoctorsRequests(int pk)   => '/medical_files/MedicalFileService/$pk/get_patient_doctors_requests/';
 }
 
 /// Secure storage keys

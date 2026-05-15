@@ -740,7 +740,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
               const SizedBox(width: 12),
               Expanded(child: _QuickActionCard(icon: Iconsax.health, label: 'médicaments', color: AppColors.accent, onTap: () => context.push('/medications')).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
               const SizedBox(width: 12),
-              Expanded(child: _QuickActionCard(icon: Iconsax.watch, label: 'Montre\nconnectée', color: AppColors.warning, onTap: () => context.push('/smartwatch')).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
+              Expanded(child: _QuickActionCard(icon: Iconsax.watch, label: 'Montre', color: AppColors.warning, onTap: () => context.push('/smartwatch')).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 500.ms, curve: Curves.easeOutBack)),
             ],
           ),
         ],

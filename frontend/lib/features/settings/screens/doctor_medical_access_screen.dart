@@ -14,7 +14,10 @@ final _doctorPatientsProvider =
     final res =
         await ref.read(medicalFileServiceProvider).getDoctorPatients(doctorId);
     if (res['success'] == true) {
-      return List<Map<String, dynamic>>.from(res['patients'] ?? []);
+      final rawList = res['patients'];
+      if (rawList == null) return [];
+      final list = rawList as List;
+      return list.map((item) => Map<String, dynamic>.from(item as Map)).toList();
     }
     throw res['message'] ?? 'Erreur chargement';
   },
@@ -30,23 +33,70 @@ class DoctorMedicalAccessScreen extends ConsumerStatefulWidget {
 
 class _DoctorMedicalAccessScreenState
     extends ConsumerState<DoctorMedicalAccessScreen> {
-  final _patientIdCtrl = TextEditingController();
+  final _searchCtrl = TextEditingController();
+  List<Map<String, dynamic>> _searchResults = [];
+  Map<String, dynamic>? _selectedPatient;
+  bool _searching = false;
   bool _requesting = false;
+  String? _searchError;
 
   int? get _doctorId =>
       int.tryParse(ref.read(authProvider).doctorId ?? '');
 
   @override
   void dispose() {
-    _patientIdCtrl.dispose();
+    _searchCtrl.dispose();
     super.dispose();
+  }
+
+  // ── Search patients by name ─────────────────────────────────────────────────
+  Future<void> _searchPatients(String query) async {
+    if (query.trim().length < 2) {
+      setState(() { _searchResults = []; _selectedPatient = null; _searchError = null; });
+      return;
+    }
+    setState(() { _searching = true; _searchError = null; });
+    try {
+      final res = await ref.read(medicalFileServiceProvider).searchPatients(query.trim());
+      if (!mounted) return;
+      if (res['success'] == false) {
+        setState(() {
+          _searchResults = [];
+          _searching = false;
+          _searchError = res['message']?.toString() ?? 'Erreur de recherche';
+        });
+        return;
+      }
+      final results = res['results'] as List? ?? [];
+      if (results.isEmpty) {
+        setState(() {
+          _searchResults = [];
+          _searching = false;
+          _searchError = 'Aucune patiente trouvée pour "${query.trim()}"';
+        });
+        return;
+      }
+      setState(() {
+        _searchResults = List<Map<String, dynamic>>.from(results);
+        _searching = false;
+        _searchError = null;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() { _searching = false; _searchError = 'Erreur: $e'; });
+    }
   }
 
   // ── Request access ─────────────────────────────────────────────────────────
   Future<void> _requestAccess() async {
-    final patientId = int.tryParse(_patientIdCtrl.text.trim());
+    final patient = _selectedPatient;
+    if (patient == null) {
+      _snack('Veuillez sélectionner une patiente', isError: true);
+      return;
+    }
+    final patientId = int.tryParse(patient['id']?.toString() ?? '');
     if (patientId == null) {
-      _snack('Veuillez entrer un ID patient valide', isError: true);
+      _snack('ID patiente invalide', isError: true);
       return;
     }
     final doctorId = _doctorId;
@@ -66,7 +116,8 @@ class _DoctorMedicalAccessScreenState
 
       if (res['success'] == true) {
         _snack('Demande d\'accès envoyée. La patiente sera notifiée pour valider.');
-        _patientIdCtrl.clear();
+        _searchCtrl.clear();
+        setState(() { _searchResults = []; _selectedPatient = null; });
         if (_doctorId != null) ref.invalidate(_doctorPatientsProvider(_doctorId!));
       } else {
         _snack(res['message'] ?? 'Erreur lors de la demande', isError: true);
@@ -124,11 +175,28 @@ class _DoctorMedicalAccessScreenState
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
+        actions: [
+          if (doctorId != null)
+            IconButton(
+              icon: const Icon(Iconsax.refresh_2, color: Colors.white),
+              tooltip: 'Actualiser',
+              onPressed: () => ref.invalidate(_doctorPatientsProvider(doctorId)),
+            ),
+        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+      body: RefreshIndicator(
+        color: DoctorColors.primary,
+        onRefresh: () async {
+          if (doctorId != null) {
+            ref.invalidate(_doctorPatientsProvider(doctorId));
+            await Future.delayed(const Duration(milliseconds: 600));
+          }
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // ── Request access card ──────────────────────────────────
             _SectionTitle(
@@ -153,23 +221,48 @@ class _DoctorMedicalAccessScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Entrez l\'ID de la patiente pour demander accès à son dossier médical. Elle recevra une notification pour accepter.',
+                    'Recherchez la patiente par nom pour demander accès à son dossier médical. Elle recevra une notification pour accepter.',
                     style: TextStyle(
                         color: DoctorColors.textSecondary, fontSize: 13),
                   ),
                   const SizedBox(height: 16),
+                  // ── Search field ──────────────────────────────────
                   TextField(
-                    controller: _patientIdCtrl,
-                    keyboardType: TextInputType.number,
+                    controller: _searchCtrl,
+                    onChanged: _searchPatients,
                     decoration: InputDecoration(
-                      labelText: 'ID Patiente',
-                      hintText: 'Ex: 11',
-                      prefixIcon: const Icon(Iconsax.user,
+                      labelText: 'Rechercher une patiente',
+                      hintText: 'Tapez le nom de la patiente...',
+                      prefixIcon: const Icon(Iconsax.search_normal,
                           color: DoctorColors.primary, size: 20),
+                      suffixIcon: _searching
+                          ? const Padding(
+                              padding: EdgeInsets.all(12),
+                              child: SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: DoctorColors.primary)),
+                            )
+                              : _searchCtrl.text.isNotEmpty
+                              ? IconButton(
+                                  icon: const Icon(Iconsax.close_circle,
+                                      size: 18,
+                                      color: DoctorColors.textSecondary),
+                                  onPressed: () {
+                                    _searchCtrl.clear();
+                                    setState(() {
+                                      _searchResults = [];
+                                      _selectedPatient = null;
+                                      _searchError = null;
+                                    });
+                                  },
+                                )
+                              : null,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
-                        borderSide:
-                            BorderSide(color: Colors.grey.shade300),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -180,6 +273,106 @@ class _DoctorMedicalAccessScreenState
                       fillColor: DoctorColors.background,
                     ),
                   ),
+                  // ── Search results ────────────────────────────────
+                  if (_searchError != null && _searchResults.isEmpty && _selectedPatient == null && !_searching) ...[
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade50,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.orange.shade200),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Iconsax.info_circle, color: Colors.orange.shade700, size: 16),
+                          const SizedBox(width: 8),
+                          Expanded(child: Text(_searchError!, style: TextStyle(color: Colors.orange.shade800, fontSize: 12))),
+                        ],
+                      ),
+                    ),
+                  ],
+                  if (_searchResults.isNotEmpty && _selectedPatient == null) ...[
+                    const SizedBox(height: 8),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade200),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: _searchResults.take(5).map((p) {
+                          final user = p['user'] as Map<String, dynamic>? ?? {};
+                          final name = '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: DoctorColors.primary.withAlpha(25),
+                              child: Text(
+                                name.isNotEmpty ? name[0].toUpperCase() : '?',
+                                style: const TextStyle(
+                                    color: DoctorColors.primary,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            title: Text(name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14)),
+                            subtitle: Text(
+                                user['email'] ?? '',
+                                style: const TextStyle(fontSize: 12)),
+                            onTap: () {
+                              setState(() {
+                                _selectedPatient = p;
+                                _searchCtrl.text = name;
+                                _searchResults = [];
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                  // ── Selected patient chip ─────────────────────────
+                  if (_selectedPatient != null) ...[
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: DoctorColors.primary.withAlpha(20),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: DoctorColors.primary.withAlpha(60)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Iconsax.tick_circle,
+                              color: DoctorColors.primary, size: 18),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              _searchCtrl.text,
+                              style: const TextStyle(
+                                  color: DoctorColors.primary,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => setState(() {
+                              _selectedPatient = null;
+                              _searchCtrl.clear();
+                            }),
+                            child: const Icon(Iconsax.close_circle,
+                                size: 18,
+                                color: DoctorColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
@@ -226,22 +419,49 @@ class _DoctorMedicalAccessScreenState
             const SizedBox(height: 12),
 
             if (doctorId == null)
-              const Center(
+              const SizedBox(
+                height: 80,
+                child: Center(
                   child: Text('ID médecin introuvable',
-                      style:
-                          TextStyle(color: DoctorColors.textSecondary)))
+                      style: TextStyle(color: DoctorColors.textSecondary))),
+              )
             else
               Consumer(
                 builder: (ctx, r, _) {
                   final patientsAsync =
                       r.watch(_doctorPatientsProvider(doctorId));
                   return patientsAsync.when(
-                    loading: () => const Center(
-                        child: CircularProgressIndicator(
-                            color: DoctorColors.primary)),
-                    error: (e, _) => _EmptyState(
-                      icon: Iconsax.warning_2,
-                      message: 'Erreur: $e',
+                    loading: () => const SizedBox(
+                        height: 150,
+                        child: Center(child: CircularProgressIndicator(color: DoctorColors.primary))),
+                    error: (e, _) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red.shade50,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.red.shade200),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Iconsax.warning_2, color: DoctorColors.error, size: 36),
+                              const SizedBox(height: 8),
+                              Text('Erreur de chargement', style: TextStyle(fontWeight: FontWeight.bold, color: DoctorColors.error)),
+                              const SizedBox(height: 4),
+                              Text('$e', style: const TextStyle(color: DoctorColors.textSecondary, fontSize: 12), textAlign: TextAlign.center),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextButton.icon(
+                          onPressed: () => ref.invalidate(_doctorPatientsProvider(doctorId)),
+                          icon: const Icon(Iconsax.refresh_2, size: 16),
+                          label: const Text('Réessayer'),
+                          style: TextButton.styleFrom(foregroundColor: DoctorColors.primary),
+                        ),
+                      ],
                     ),
                     data: (patients) {
                       if (patients.isEmpty) {
@@ -252,6 +472,7 @@ class _DoctorMedicalAccessScreenState
                         );
                       }
                       return Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: patients
                             .asMap()
                             .entries
@@ -276,6 +497,7 @@ class _DoctorMedicalAccessScreenState
             const SizedBox(height: 24),
           ],
         ),
+      ),
       ),
     );
   }
