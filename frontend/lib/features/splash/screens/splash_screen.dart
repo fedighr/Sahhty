@@ -128,11 +128,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                                     ),
                                   ],
                                 ),
-                                child: Image.asset(
-                                  'assets/images/Logo_Sahhty.png',
-                                  width: 90,
-                                  height: 90,
-                                  fit: BoxFit.contain,
+                                child: Icon(
+                                  Iconsax.heart5,
+                                  size: 70,
+                                  color: AppColors.primary,
                                 ),
                               ),
                             );
