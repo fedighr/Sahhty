@@ -7,21 +7,7 @@ import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/features/home/screens/doctor_home_screen.dart';
 
-// ── Provider: patients with access ──────────────────────────────────────────
-final _doctorPatientsProvider =
-    FutureProvider.autoDispose.family<List<Map<String, dynamic>>, int>(
-  (ref, doctorId) async {
-    final res =
-        await ref.read(medicalFileServiceProvider).getDoctorPatients(doctorId);
-    if (res['success'] == true) {
-      final rawList = res['patients'];
-      if (rawList == null) return [];
-      final list = rawList as List;
-      return list.map((item) => Map<String, dynamic>.from(item as Map)).toList();
-    }
-    throw res['message'] ?? 'Erreur chargement';
-  },
-);
+// ── No global provider needed — patients loaded in local state ──────────────
 
 class DoctorMedicalAccessScreen extends ConsumerStatefulWidget {
   const DoctorMedicalAccessScreen({super.key});
@@ -40,8 +26,49 @@ class _DoctorMedicalAccessScreenState
   bool _requesting = false;
   String? _searchError;
 
+  // Local state for patients list
+  List<Map<String, dynamic>> _patients = [];
+  bool _patientsLoading = true;
+  String? _patientsError;
+
   int? get _doctorId =>
       int.tryParse(ref.read(authProvider).doctorId ?? '');
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadPatients());
+  }
+
+  Future<void> _loadPatients() async {
+    final doctorId = _doctorId;
+    if (doctorId == null) {
+      if (mounted) setState(() { _patientsLoading = false; _patientsError = 'ID médecin introuvable'; });
+      return;
+    }
+    if (mounted) setState(() { _patientsLoading = true; _patientsError = null; });
+    try {
+      final res = await ref.read(medicalFileServiceProvider).getDoctorPatients(doctorId);
+      if (!mounted) return;
+      if (res['success'] == true) {
+        final rawList = res['patients'] as List? ?? [];
+        setState(() {
+          _patients = rawList.map((item) {
+            if (item is Map) return Map<String, dynamic>.from(item);
+            return <String, dynamic>{};
+          }).where((m) => m.isNotEmpty).toList();
+          _patientsLoading = false;
+        });
+      } else {
+        setState(() {
+          _patientsError = res['message']?.toString() ?? 'Erreur chargement';
+          _patientsLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() { _patientsLoading = false; _patientsError = 'Erreur: $e'; });
+    }
+  }
 
   @override
   void dispose() {
@@ -118,7 +145,7 @@ class _DoctorMedicalAccessScreenState
         _snack('Demande d\'accès envoyée. La patiente sera notifiée pour valider.');
         _searchCtrl.clear();
         setState(() { _searchResults = []; _selectedPatient = null; });
-        if (_doctorId != null) ref.invalidate(_doctorPatientsProvider(_doctorId!));
+        _loadPatients();
       } else {
         _snack(res['message'] ?? 'Erreur lors de la demande', isError: true);
       }
@@ -148,14 +175,15 @@ class _DoctorMedicalAccessScreenState
       _snack('ID patient invalide', isError: true);
       return;
     }
+    final userRaw = patient['user'];
+    final userMap = (userRaw is Map) ? Map<String, dynamic>.from(userRaw) : <String, dynamic>{};
+    final patientName = '${userMap['first_name'] ?? ''} ${userMap['last_name'] ?? ''}'.trim();
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => _PatientFilesReadOnlyScreen(
           patientId: patientId,
-          patientName:
-              '${patient['user']?['first_name'] ?? ''} ${patient['user']?['last_name'] ?? ''}'
-                  .trim(),
+          patientName: patientName,
         ),
       ),
     );
@@ -163,7 +191,6 @@ class _DoctorMedicalAccessScreenState
 
   @override
   Widget build(BuildContext context) {
-    final doctorId = _doctorId;
 
     return Scaffold(
       backgroundColor: DoctorColors.background,
@@ -176,21 +203,17 @@ class _DoctorMedicalAccessScreenState
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
         actions: [
-          if (doctorId != null)
-            IconButton(
-              icon: const Icon(Iconsax.refresh_2, color: Colors.white),
-              tooltip: 'Actualiser',
-              onPressed: () => ref.invalidate(_doctorPatientsProvider(doctorId)),
-            ),
+          IconButton(
+            icon: const Icon(Iconsax.refresh_2, color: Colors.white),
+            tooltip: 'Actualiser',
+            onPressed: _loadPatients,
+          ),
         ],
       ),
       body: RefreshIndicator(
         color: DoctorColors.primary,
         onRefresh: () async {
-          if (doctorId != null) {
-            ref.invalidate(_doctorPatientsProvider(doctorId));
-            await Future.delayed(const Duration(milliseconds: 600));
-          }
+          await _loadPatients();
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -294,44 +317,50 @@ class _DoctorMedicalAccessScreenState
                   ],
                   if (_searchResults.isNotEmpty && _selectedPatient == null) ...[
                     const SizedBox(height: 8),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: _searchResults.take(5).map((p) {
-                          final user = p['user'] as Map<String, dynamic>? ?? {};
-                          final name = '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: DoctorColors.primary.withAlpha(25),
-                              child: Text(
-                                name.isNotEmpty ? name[0].toUpperCase() : '?',
-                                style: const TextStyle(
-                                    color: DoctorColors.primary,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            title: Text(name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
-                            subtitle: Text(
-                                user['email'] ?? '',
-                                style: const TextStyle(fontSize: 12)),
-                            onTap: () {
-                              setState(() {
-                                _selectedPatient = p;
-                                _searchCtrl.text = name;
-                                _searchResults = [];
-                              });
-                            },
-                          );
-                        }).toList(),
+                    Material(
+                      elevation: 4,
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minHeight: 48, maxHeight: 300),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: _searchResults.take(5).map((p) {
+                              final userMap = p['user'];
+                              final user = (userMap is Map)
+                                  ? Map<String, dynamic>.from(userMap)
+                                  : <String, dynamic>{};
+                              final name = '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: DoctorColors.primary.withAlpha(25),
+                                  child: Text(
+                                    name.isNotEmpty ? name[0].toUpperCase() : '?',
+                                    style: const TextStyle(
+                                        color: DoctorColors.primary,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                title: Text(name,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14)),
+                                subtitle: Text(
+                                    user['email']?.toString() ?? '',
+                                    style: const TextStyle(fontSize: 12)),
+                                onTap: () {
+                                  setState(() {
+                                    _selectedPatient = p;
+                                    _searchCtrl.text = name;
+                                    _searchResults = [];
+                                  });
+                                },
+                              );
+                            }).toList(),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -418,81 +447,55 @@ class _DoctorMedicalAccessScreenState
             ).animate().fadeIn(delay: 200.ms, duration: 300.ms),
             const SizedBox(height: 12),
 
-            if (doctorId == null)
+            if (_patientsLoading)
               const SizedBox(
-                height: 80,
-                child: Center(
-                  child: Text('ID médecin introuvable',
-                      style: TextStyle(color: DoctorColors.textSecondary))),
+                height: 150,
+                child: Center(child: CircularProgressIndicator(color: DoctorColors.primary)),
               )
-            else
-              Consumer(
-                builder: (ctx, r, _) {
-                  final patientsAsync =
-                      r.watch(_doctorPatientsProvider(doctorId));
-                  return patientsAsync.when(
-                    loading: () => const SizedBox(
-                        height: 150,
-                        child: Center(child: CircularProgressIndicator(color: DoctorColors.primary))),
-                    error: (e, _) => Column(
-                      mainAxisSize: MainAxisSize.min,
+            else if (_patientsError != null)
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.red.shade200),
+                    ),
+                    child: Column(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade50,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.red.shade200),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Iconsax.warning_2, color: DoctorColors.error, size: 36),
-                              const SizedBox(height: 8),
-                              Text('Erreur de chargement', style: TextStyle(fontWeight: FontWeight.bold, color: DoctorColors.error)),
-                              const SizedBox(height: 4),
-                              Text('$e', style: const TextStyle(color: DoctorColors.textSecondary, fontSize: 12), textAlign: TextAlign.center),
-                            ],
-                          ),
-                        ),
+                        const Icon(Iconsax.warning_2, color: DoctorColors.error, size: 36),
                         const SizedBox(height: 8),
-                        TextButton.icon(
-                          onPressed: () => ref.invalidate(_doctorPatientsProvider(doctorId)),
-                          icon: const Icon(Iconsax.refresh_2, size: 16),
-                          label: const Text('Réessayer'),
-                          style: TextButton.styleFrom(foregroundColor: DoctorColors.primary),
-                        ),
+                        const Text('Erreur de chargement', style: TextStyle(fontWeight: FontWeight.bold, color: DoctorColors.error)),
+                        const SizedBox(height: 4),
+                        Text(_patientsError!, style: const TextStyle(color: DoctorColors.textSecondary, fontSize: 12), textAlign: TextAlign.center),
                       ],
                     ),
-                    data: (patients) {
-                      if (patients.isEmpty) {
-                        return const _EmptyState(
-                          icon: Iconsax.document_text,
-                          message:
-                              'Aucune patiente ne vous a encore accordé l\'accès',
-                        );
-                      }
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: patients
-                            .asMap()
-                            .entries
-                            .map(
-                              (e) => _PatientAccessCard(
-                                patient: e.value,
-                                onViewFiles: () =>
-                                    _viewPatientFiles(e.value),
-                              ).animate().fadeIn(
-                                    delay: Duration(
-                                        milliseconds:
-                                            300 + e.key * 60),
-                                    duration: 300.ms,
-                                  ),
-                            )
-                            .toList(),
-                      );
-                    },
-                  );
-                },
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton.icon(
+                    onPressed: _loadPatients,
+                    icon: const Icon(Iconsax.refresh_2, size: 16),
+                    label: const Text('Réessayer'),
+                    style: TextButton.styleFrom(foregroundColor: DoctorColors.primary),
+                  ),
+                ],
+              )
+            else if (_patients.isEmpty)
+              const _EmptyState(
+                icon: Iconsax.document_text,
+                message: 'Aucune patiente ne vous a encore accordé l\'accès',
+              )
+            else
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: _patients.asMap().entries.map((e) =>
+                  _PatientAccessCard(
+                    patient: e.value,
+                    onViewFiles: () => _viewPatientFiles(e.value),
+                  ).animate().fadeIn(delay: Duration(milliseconds: 300 + e.key * 60), duration: 300.ms),
+                ).toList(),
               ),
             const SizedBox(height: 24),
           ],
@@ -515,10 +518,11 @@ class _PatientAccessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = patient['user'] as Map<String, dynamic>? ?? {};
+    final userRaw = patient['user'];
+    final user = (userRaw is Map) ? Map<String, dynamic>.from(userRaw) : <String, dynamic>{};
     final name =
         '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
-    final email = user['email'] ?? '';
+    final email = user['email']?.toString() ?? '';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),

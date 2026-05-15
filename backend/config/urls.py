@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from django_eventstream import urls as eventstream_urls
+#from django_eventstream import urls as eventstream_urls
 from django.conf import settings
 
 urlpatterns = [

@@ -58,6 +58,18 @@ class _PatientDoctorAccessScreenState
       int.tryParse(ref.read(authProvider).patientId ?? '');
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final patientId = _patientId;
+      if (patientId != null) {
+        ref.invalidate(_pendingRequestsProvider(patientId));
+        ref.invalidate(_patientDoctorsProvider(patientId));
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _searchCtrl.dispose();
     super.dispose();

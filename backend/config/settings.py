@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_spectacular',
     'django_apscheduler',
-    'django_eventstream',
-    'channels',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
@@ -55,7 +53,6 @@ INSTALLED_APPS = [
     'medications',
     'medical_files',
     'dci',
-    'notifications',
 ]
 
 REST_FRAMEWORK = {
@@ -117,13 +114,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
 CORS_ALLOW_ALL_ORIGINS = True
 EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoStorage'
-
+"""
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
     }
 }
-
+"""
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
