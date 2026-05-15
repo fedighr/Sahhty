@@ -58,7 +58,6 @@ class DoctorService:
                 'experience': doctor.experience,
                 'consultation_price': doctor.consultation_price,
                 'bio': doctor.bio,
-                'is_available': doctor.is_available,
             }
             return {'data': {'success': True, 'doctor': data}, 'status': 200}
         

@@ -17,6 +17,29 @@ class DoctorSettingsScreen extends ConsumerStatefulWidget {
 
 class _DoctorSettingsScreenState extends ConsumerState<DoctorSettingsScreen> {
   bool _deletingAccount = false;
+  Map<String, dynamic>? _doctorData;
+  bool _loadingProfile = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    final auth = ref.read(authProvider);
+    final doctorId = int.tryParse(auth.doctorId ?? '') ?? 0;
+    if (doctorId == 0) { setState(() => _loadingProfile = false); return; }
+    try {
+      final res = await ref.read(doctorServiceProvider).getDoctorById(doctorId);
+      if (mounted) setState(() {
+        if (res['success'] == true) _doctorData = res['doctor'] as Map<String, dynamic>?;
+        _loadingProfile = false;
+      });
+    } catch (_) {
+      if (mounted) setState(() => _loadingProfile = false);
+    }
+  }
 
   static const _languages = [
     {'code': 'fr', 'flag': '🇫🇷', 'name': 'Français'},
@@ -183,10 +206,18 @@ class _DoctorSettingsScreenState extends ConsumerState<DoctorSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authProvider);
 
     return Scaffold(
       backgroundColor: DoctorColors.background,
+      appBar: AppBar(
+        backgroundColor: DoctorColors.primary,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Iconsax.arrow_left, color: Colors.white),
+          onPressed: () => context.go('/doctor-home'),
+        ),
+        title: const Text('Mon profil & Paramètres', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17)),
+      ),
       body: Stack(
         children: [
           if (_deletingAccount)
@@ -202,78 +233,9 @@ class _DoctorSettingsScreenState extends ConsumerState<DoctorSettingsScreen> {
             ),
           CustomScrollView(
             slivers: [
-              // ── Header ──────────────────────────────────────────────────
-              SliverAppBar(
-                expandedHeight: 200,
-                pinned: true,
-                backgroundColor: DoctorColors.primary,
-                elevation: 0,
-                automaticallyImplyLeading: false,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [DoctorColors.primaryDark, DoctorColors.primary, Color(0xFF42A5F5)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(children: [
-                              Container(
-                                width: 70, height: 70,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withAlpha(30),
-                                  borderRadius: BorderRadius.circular(22),
-                                  border: Border.all(color: Colors.white.withAlpha(60), width: 2),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    (authState.name ?? 'D').isNotEmpty
-                                        ? (authState.name ?? 'D')[0].toUpperCase()
-                                        : 'D',
-                                    style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Dr. ${authState.name ?? 'Médecin'}',
-                                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 4),
-                                  Text(authState.email ?? '',
-                                      style: TextStyle(color: Colors.white.withAlpha(180), fontSize: 13)),
-                                  const SizedBox(height: 6),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withAlpha(30),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: const Row(mainAxisSize: MainAxisSize.min, children: [
-                                      Icon(Iconsax.verify, size: 13, color: Colors.white),
-                                      SizedBox(width: 4),
-                                      Text('Médecin vérifié',
-                                          style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600)),
-                                    ]),
-                                  ),
-                                ],
-                              )),
-                            ]).animate().fadeIn(duration: 500.ms).slideX(begin: -0.1),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              // ── Header + Profile ─────────────────────────────────────
+              SliverToBoxAdapter(
+                child: _buildProfileHeader(ref.watch(authProvider)),
               ),
 
               // ── Content ──────────────────────────────────────────────────
@@ -293,6 +255,18 @@ class _DoctorSettingsScreenState extends ConsumerState<DoctorSettingsScreen> {
                         subtitle: 'Nom, téléphone, ville',
                         onTap: () => context.push('/doctor/edit-profile'),
                       ).animate().fadeIn(delay: 150.ms).slideX(begin: 0.05),
+                      const SizedBox(height: 28),
+
+                      // Section: Dossiers médicaux
+                      _sectionTitle(Iconsax.document_text, 'Dossiers médicaux').animate().fadeIn(delay: 175.ms),
+                      const SizedBox(height: 10),
+                      _Tile(
+                        icon: Iconsax.document_like,
+                        color: DoctorColors.primary,
+                        title: 'Accès aux dossiers médicaux',
+                        subtitle: 'Demander accès, voir les dossiers patients',
+                        onTap: () => context.push('/doctor/medical-access'),
+                      ).animate().fadeIn(delay: 190.ms).slideX(begin: 0.05),
                       const SizedBox(height: 28),
 
                       // Section: Sécurité
@@ -357,6 +331,138 @@ class _DoctorSettingsScreenState extends ConsumerState<DoctorSettingsScreen> {
       ),
     );
   }
+
+  Widget _buildProfileHeader(dynamic authState) {
+    final name = authState.name ?? 'Médecin';
+    final initial = name.isNotEmpty ? name[0].toUpperCase() : 'D';
+    final d = _doctorData;
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [BoxShadow(color: Color(0x12000000), blurRadius: 14, offset: Offset(0, 5))],
+      ),
+      child: Column(
+        children: [
+          // Gradient top banner
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 22, 20, 22),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF66BB6A), Color(0xFF81C784), Color(0xFFA5D6A7)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 36,
+                  backgroundColor: Colors.white.withAlpha(40),
+                  child: Text(initial, style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Dr. $name', style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 3),
+                      Text(authState.email ?? '', style: TextStyle(color: Colors.white.withAlpha(200), fontSize: 12)),
+                      const SizedBox(height: 6),
+                      if (_loadingProfile)
+                        Container(width: 100, height: 16, decoration: BoxDecoration(color: Colors.white.withAlpha(40), borderRadius: BorderRadius.circular(8)))
+                      else if (d != null)
+                        Wrap(spacing: 6, children: [
+                          _headerChip(Iconsax.award, d['speciality'] ?? 'Médecin'),
+                          _headerChip(Iconsax.location, d['ville'] ?? ''),
+                        ]),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.1),
+
+          // Profile details
+          if (_loadingProfile)
+            const Padding(
+              padding: EdgeInsets.all(24),
+              child: Center(child: CircularProgressIndicator(color: DoctorColors.primary, strokeWidth: 2)),
+            )
+          else if (d != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+              child: Column(
+                children: [
+                  // Stats row
+                  Row(
+                    children: [
+                      _statPill(Iconsax.clock, '${d['experience'] ?? 0} ans exp.'),
+                      const SizedBox(width: 8),
+                      _statPill(Iconsax.dollar_circle, '${d['consultation_price'] ?? '–'} TND'),
+                      const SizedBox(width: 8),
+                      _statPill(Iconsax.verify, 'Vérifié', color: DoctorColors.success),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  const Divider(height: 1, color: Color(0xFFF0F0F0)),
+                  const SizedBox(height: 14),
+                  _infoRow(Iconsax.home_2,  'Adresse', d['address'] ?? '–'),
+                  if ((d['phone'] ?? '').toString().isNotEmpty)
+                    _infoRow(Iconsax.call, 'Téléphone', d['phone'].toString()),
+                  if ((d['bio'] ?? '').toString().isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(color: DoctorColors.primaryLight, borderRadius: BorderRadius.circular(12)),
+                      child: Text(d['bio'], style: const TextStyle(fontSize: 13, color: DoctorColors.textSecondary, height: 1.5)),
+                    ),
+                  ],
+                ],
+              ),
+            ).animate().fadeIn(delay: 150.ms),
+        ],
+      ),
+    );
+  }
+
+  Widget _headerChip(IconData icon, String text) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    decoration: BoxDecoration(color: Colors.white.withAlpha(40), borderRadius: BorderRadius.circular(12)),
+    child: Row(mainAxisSize: MainAxisSize.min, children: [
+      Icon(icon, color: Colors.white70, size: 11),
+      const SizedBox(width: 4),
+      Text(text, style: const TextStyle(color: Colors.white, fontSize: 11)),
+    ]),
+  );
+
+  Widget _statPill(IconData icon, String label, {Color color = DoctorColors.primary}) => Expanded(
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(color: color.withAlpha(15), borderRadius: BorderRadius.circular(10)),
+      child: Column(children: [
+        Icon(icon, size: 16, color: color),
+        const SizedBox(height: 4),
+        Text(label, style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.w600), textAlign: TextAlign.center),
+      ]),
+    ),
+  );
+
+  Widget _infoRow(IconData icon, String label, String value) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    child: Row(children: [
+      Icon(icon, size: 15, color: DoctorColors.primary),
+      const SizedBox(width: 10),
+      Text('$label :', style: const TextStyle(color: DoctorColors.textSecondary, fontSize: 12)),
+      const SizedBox(width: 6),
+      Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600, color: DoctorColors.textPrimary, fontSize: 13), overflow: TextOverflow.ellipsis)),
+    ]),
+  );
 
   Widget _sectionTitle(IconData icon, String title) {
     return Row(children: [

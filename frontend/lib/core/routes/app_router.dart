@@ -31,8 +31,12 @@ import 'package:sahhty/features/auth/screens/doctor_setup_screen.dart';
 import 'package:sahhty/features/home/screens/doctor_home_screen.dart';
 import 'package:sahhty/features/home/screens/doctor_shell.dart';
 import 'package:sahhty/features/settings/screens/doctor_settings_screen.dart';
+import 'package:sahhty/features/doctors/screens/doctor_schedule_screen.dart';
 
 import '../../features/settings/screens/doctor_edit_profile_screen.dart';
+import 'package:sahhty/features/settings/screens/medical_files_screen.dart';
+import 'package:sahhty/features/settings/screens/doctor_medical_access_screen.dart';
+import 'package:sahhty/features/settings/screens/patient_doctor_access_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -203,8 +207,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ChangePasswordScreen(),
       ),
       GoRoute(
+        path: '/settings/medical-files',
+        builder: (context, state) => const MedicalFilesScreen(),
+      ),
+      GoRoute(
+        path: '/settings/doctor-access',
+        builder: (context, state) => const PatientDoctorAccessScreen(),
+      ),
+      GoRoute(
+        path: '/doctor/medical-access',
+        builder: (context, state) => const DoctorMedicalAccessScreen(),
+      ),
+      GoRoute(
         path: '/doctor/edit-profile',
         builder: (context, state) => const DoctorEditProfileScreen(),
+      ),
+      GoRoute(
+        path: '/doctor-schedule',
+        builder: (context, state) => const DoctorScheduleScreen(),
       ),
       GoRoute(
         path: '/smartwatch',

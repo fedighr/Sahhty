@@ -35,6 +35,7 @@ class ApiEndpoints {
   static const String searchDoctors            = '/doctors/DoctorService/search/';
   static String getDoctorSchedule(int pk)      => '/doctors/DoctorService/$pk/get_doctor_schedule/';
   static String getDoctorAvailableSlots(int pk) => '/doctors/DoctorService/$pk/get_doctor_available_slots/';
+  static const String addDoctorSchedule        = '/doctors/DoctorService/add_doctor_schedule/';
 
   // ── Pregnancy (ViewSet: pregnancies/PregnancyService/) ───────────────
   static const String createPregnancy           = '/pregnancies/PregnancyService/create_pregnancy/';
@@ -104,6 +105,18 @@ class ApiEndpoints {
   // ── Alert (ViewSet: alerts/AlertService/) ────────────────────────────
   static String getAlertsByUser(int userId) => '/alerts/AlertService/$userId/get_alerts_by_user/';
   static String markAlertAsRead(int alertId) => '/alerts/AlertService/$alertId/mark_as_read/';
+
+  // ── Medical Files (ViewSet: medical_files/MedicalFileService/) ───────
+  static const String createAttachment              = '/medical_files/MedicalFileService/create_attachment/';
+  static String getPatientMedicalFiles(int pk)      => '/medical_files/MedicalFileService/$pk/get_patient_medical_files/';
+  static String deleteAttachment(int pk)            => '/medical_files/MedicalFileService/$pk/delete_attachment/';
+  static String updateAttachment(int pk)            => '/medical_files/MedicalFileService/$pk/update_attachment/';
+  // Access control
+  static const String requestMedicalAccess          = '/medical_files/MedicalFileService/request_medical_access/';
+  static const String createPatientDoctorAccess     = '/medical_files/MedicalFileService/create_patient_doctor_access/';
+  static String getDoctorPatients(int pk)           => '/medical_files/MedicalFileService/$pk/get_doctor_patients/';
+  static String getPatientDoctors(int pk)           => '/medical_files/MedicalFileService/$pk/get_patient_doctors/';
+  static String deletePatientDoctorAccess(int pk)   => '/medical_files/MedicalFileService/$pk/delete_patient_doctor_access/';
 }
 
 /// Secure storage keys

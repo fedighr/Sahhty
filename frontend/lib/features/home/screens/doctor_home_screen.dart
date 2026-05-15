@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:sahhty/core/providers/refresh_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 
@@ -37,8 +38,8 @@ class DoctorHomeScreen extends ConsumerStatefulWidget {
 
 class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
   Map<String, dynamic>? _doctorData;
-  String? _profileError;
   bool _isUnverified               = false;
+  String? _profileError;
   List<dynamic> _appointments     = [];
   List<dynamic> _schedule         = [];
   bool _loadingProfile            = true;
@@ -49,6 +50,10 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
   void initState() {
     super.initState();
     _load();
+    // Listen for external reload triggers (e.g. after schedule save)
+    ref.listenManual(doctorHomeRefreshProvider, (prev, next) {
+      if (next > 0) _refresh();
+    });
   }
 
   Future<void> _load() async {
@@ -142,10 +147,8 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
                   _buildQuickActions(context),
                   _buildSectionTitle('Rendez-vous à venir', Iconsax.calendar, onSeeAll: () => context.go('/doctor-appointments')),
                   _buildAppointmentsList(),
-                  _buildSectionTitle('Mon planning', Iconsax.clock),
+                  _buildSectionTitle('Mon planning', Iconsax.clock, onSeeAll: () => context.push('/doctor-schedule')),
                   _buildSchedulePreview(),
-                  _buildSectionTitle('Mon profil', Iconsax.user),
-                  _buildProfileCard(),
                   const SizedBox(height: 32),
                 ],
               ),
@@ -167,7 +170,7 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
       backgroundColor: DoctorColors.primary,
       elevation: 0,
       actions: [
-
+        IconButton(icon: const Icon(Iconsax.timer_1, color: Colors.white, size: 22), tooltip: 'Mon Horaire', onPressed: () => context.push('/doctor-schedule')),
         IconButton(icon: const Icon(Iconsax.setting_2, color: Colors.white, size: 22), onPressed: () => context.go('/doctor-settings')),
         IconButton(
           icon: const Icon(Iconsax.logout, color: Colors.white, size: 22),
@@ -275,7 +278,8 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
   Widget _buildQuickActions(BuildContext context) {
     final actions = [
       ('Mes RDV',      Iconsax.calendar,    () => context.go('/doctor-appointments')),
-      ('Paramtres',   Iconsax.setting_2,   () => context.go('/doctor-settings')),
+      ('Mon Horaire',  Iconsax.timer_1,     () => context.push('/doctor-schedule')),
+      ('Paramètres',   Iconsax.setting_2,   () => context.go('/doctor-settings')),
     ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
@@ -412,142 +416,6 @@ class _DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
     );
   }
 
-  Widget _buildProfileCard() {
-    if (_loadingProfile) {
-      return const Padding(padding: EdgeInsets.all(32), child: Center(child: CircularProgressIndicator(color: DoctorColors.primary)));
-    }
-    if (_isUnverified) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: const [BoxShadow(color: Color(0x0D000000), blurRadius: 10, offset: Offset(0, 4))],
-          ),
-          child: Row(children: [
-            Container(
-              width: 50, height: 50,
-              decoration: BoxDecoration(color: DoctorColors.warningLight, borderRadius: BorderRadius.circular(14)),
-              child: const Icon(Iconsax.timer_1, color: DoctorColors.warning, size: 26),
-            ),
-            const SizedBox(width: 14),
-            const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('En attente de vérification', style: TextStyle(fontWeight: FontWeight.bold, color: DoctorColors.textPrimary)),
-              SizedBox(height: 4),
-              Text('Votre compte sera activé après validation par l\'administration.',
-                  style: TextStyle(fontSize: 12, color: DoctorColors.textSecondary, height: 1.4)),
-            ])),
-          ]),
-        ).animate().fadeIn(),
-      );
-    }
-    if (_doctorData == null) {
-      // Generic error - not an unverified account
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: const [BoxShadow(color: Color(0x0D000000), blurRadius: 10, offset: Offset(0, 4))],
-          ),
-          child: Row(children: [
-            Container(
-              width: 50, height: 50,
-              decoration: BoxDecoration(color: DoctorColors.errorLight, borderRadius: BorderRadius.circular(14)),
-              child: const Icon(Iconsax.warning_2, color: DoctorColors.error, size: 26),
-            ),
-            const SizedBox(width: 14),
-            const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Profil non disponible', style: TextStyle(fontWeight: FontWeight.bold, color: DoctorColors.textPrimary)),
-              SizedBox(height: 4),
-              Text('Impossible de charger les données du profil.',
-                  style: TextStyle(fontSize: 12, color: DoctorColors.textSecondary, height: 1.4)),
-            ])),
-          ]),
-        ).animate().fadeIn(),
-      );
-    }
-    final d       = _doctorData!;
-    final name    = '${d['first_name'] ?? ''} ${d['last_name'] ?? ''}'.trim();
-    final initial = name.isNotEmpty ? name[0].toUpperCase() : 'D';
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: const [BoxShadow(color: Color(0x0D000000), blurRadius: 10, offset: Offset(0, 4))],
-        ),
-        child: Column(children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF66BB6A), Color(0xFF81C784)]),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(18), topRight: Radius.circular(18)),
-            ),
-            child: Row(children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.white.withAlpha(40),
-                child: Text(initial, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-              ),
-              const SizedBox(width: 14),
-              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('Dr. $name', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                Text(d['speciality'] ?? '', style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                const SizedBox(height: 6),
-                Wrap(spacing: 6, children: [
-                  _profileChip('${d['experience'] ?? 0} ans'),
-                  _profileChip('${d['consultation_price'] ?? '–'} TND'),
-                ]),
-              ])),
-            ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(children: [
-              _infoRow(Iconsax.location, 'Ville',    d['ville']   ?? '–'),
-              _infoRow(Iconsax.home_2,   'Adresse',  d['address'] ?? '–'),
-              _infoRow(Iconsax.sms,      'Email',    d['email']   ?? '–'),
-              if ((d['phone'] ?? '').toString().isNotEmpty)
-                _infoRow(Iconsax.call, 'Téléphone', d['phone']),
-              if ((d['bio'] ?? '').toString().isNotEmpty) ...[
-                const Divider(height: 20, color: Color(0xFFF0F0F0)),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(d['bio'], style: const TextStyle(fontSize: 13, color: DoctorColors.textSecondary, height: 1.5)),
-                ),
-              ],
-            ]),
-          ),
-        ]),
-      ).animate().fadeIn(delay: 100.ms),
-    );
-  }
-
-  Widget _profileChip(String text) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-    decoration: BoxDecoration(color: Colors.white.withAlpha(40), borderRadius: BorderRadius.circular(10)),
-    child: Text(text, style: const TextStyle(color: Colors.white, fontSize: 10)),
-  );
-
-  Widget _infoRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(children: [
-        Icon(icon, size: 16, color: DoctorColors.primary),
-        const SizedBox(width: 10),
-        Text('$label :', style: const TextStyle(color: DoctorColors.textSecondary, fontSize: 12)),
-        const SizedBox(width: 6),
-        Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600, color: DoctorColors.textPrimary, fontSize: 13), overflow: TextOverflow.ellipsis)),
-      ]),
-    );
-  }
 
   Widget _emptyCard(IconData icon, String title, String subtitle) {
     return Padding(

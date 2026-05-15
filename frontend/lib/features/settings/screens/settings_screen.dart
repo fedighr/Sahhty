@@ -423,6 +423,27 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     const SizedBox(height: 24),
                   ],
 
+                  // ── Section: Dossier Médical ──
+                  _buildSectionTitle(Iconsax.folder_open, 'Dossier médical')
+                      .animate().fadeIn(delay: 300.ms).slideX(begin: -0.05),
+                  const SizedBox(height: 12),
+                  _SettingsTile(
+                    icon: Iconsax.folder_open,
+                    iconColor: Color(0xFF6C63FF),
+                    title: 'Mes fichiers médicaux',
+                    subtitle: 'Radios, analyses, ordonnances, résultats...',
+                    onTap: () => context.push('/settings/medical-files'),
+                  ).animate().fadeIn(delay: 350.ms).slideX(begin: 0.05),
+                  const SizedBox(height: 8),
+                  _SettingsTile(
+                    icon: Iconsax.shield_tick,
+                    iconColor: Color(0xFF43A047),
+                    title: 'Médecins autorisés',
+                    subtitle: 'Gérer l\'accès des médecins à votre dossier',
+                    onTap: () => context.push('/settings/doctor-access'),
+                  ).animate().fadeIn(delay: 380.ms).slideX(begin: 0.05),
+                  const SizedBox(height: 24),
+
                   // ── Section: Traitements ──
                   _buildSectionTitle(Iconsax.health, 'Traitements & Médicaments')
                       .animate().fadeIn(delay: 450.ms).slideX(begin: -0.05),

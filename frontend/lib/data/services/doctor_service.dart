@@ -85,6 +85,19 @@ class DoctorService {
     }
   }
 
+  /// POST /doctors/DoctorService/add_doctor_schedule/
+  Future<Map<String, dynamic>> addDoctorSchedule(List<Map<String, dynamic>> schedules) async {
+    try {
+      final response = await _dio.post(ApiEndpoints.addDoctorSchedule, data: schedules);
+      if (response.data is Map<String, dynamic>) {
+        return {'success': true, ...(response.data as Map<String, dynamic>)};
+      }
+      return {'success': true};
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   /// GET /doctors/DoctorService/{pk}/get_doctor_schedule/
   Future<Map<String, dynamic>> getDoctorSchedule(int doctorId) async {
     try {

@@ -9,6 +9,7 @@ import 'package:sahhty/data/services/medication_service.dart';
 import 'package:sahhty/data/services/health_connect_service.dart';
 import 'package:sahhty/data/services/vitals_sync_service.dart';
 import 'package:sahhty/data/services/appointment_service.dart';
+import 'package:sahhty/data/services/medical_file_service.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
 final patientServiceProvider = Provider<PatientService>((ref) => PatientService());
@@ -23,3 +24,4 @@ final vitalsSyncServiceProvider = Provider<VitalsSyncService>((ref) => VitalsSyn
   healthConnect: ref.read(healthConnectServiceProvider),
   measurementService: ref.read(measurementServiceProvider),
 ));
+final medicalFileServiceProvider = Provider<MedicalFileService>((ref) => MedicalFileService());
