@@ -28,6 +28,15 @@ class DoctorView(ViewSet):
         result = DoctorService.createDoctor(serializer.validated_data)
         return Response(result['data'], status=result['status'])
 
+    @extend_schema(request=DoctorSerializer,responses=DoctorSerializer)
+    @action(detail=True, methods=['patch'], url_path="update_location", permission_classes=[AllowAny])
+    def update_location(self, request, pk=None):
+        doctor = self.get_object()
+        serializer = DoctorSerializer(doctor, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'success': True, 'message': 'Location updated'}, status=200)
+
     @extend_schema(request=DoctorSerializer, responses=DoctorSerializer)
     @action(detail=True, methods=['get'], permission_classes=[AllowAny])
     def get_doctor_by_id(self, request, pk=None):
