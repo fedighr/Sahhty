@@ -62,6 +62,16 @@ class AppointmentService {
     }
   }
 
+  /// GET /appointments/AppointmentService/{doctorId}/get_doctor_appointments/
+  Future<Map<String, dynamic>> getDoctorAllAppointments(int doctorId) async {
+    try {
+      final response = await _dio.get(ApiEndpoints.getDoctorAllAppointments(doctorId));
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   Map<String, dynamic> _err(DioException e) {
     if (e.response?.data is Map<String, dynamic>) return e.response!.data;
     return {'success': false, 'message': e.message ?? 'Erreur réseau'};

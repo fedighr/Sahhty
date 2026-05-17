@@ -10,6 +10,7 @@ class MedicationDetailSheet extends StatelessWidget {
   final Map<String, dynamic> medication;
   final Map<String, dynamic>? pregnancyData;
   final List<dynamic> interactions;
+  final List<dynamic> allergyInteractions;
   final VoidCallback? onAddTreatment;
 
   const MedicationDetailSheet({
@@ -17,6 +18,7 @@ class MedicationDetailSheet extends StatelessWidget {
     required this.medication,
     this.pregnancyData,
     this.interactions = const [],
+    this.allergyInteractions = const [],
     this.onAddTreatment,
   });
 
@@ -220,6 +222,12 @@ class MedicationDetailSheet extends StatelessWidget {
                     ).animate().fadeIn(delay: 400.ms),
                   ],
                   const SizedBox(height: 8),
+
+                  // ── Allergy Warning Section ─────────────────────
+                  if (allergyInteractions.isNotEmpty) ...[
+                    _buildAllergySection(allergyInteractions).animate().fadeIn(delay: 200.ms),
+                    const SizedBox(height: 16),
+                  ],
                 ],
               ),
             ),
@@ -481,4 +489,68 @@ class MedicationDetailSheet extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildAllergySection(List<dynamic> allergyList) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFEBEE),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFEF9A9A)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Iconsax.warning_2, size: 20, color: Color(0xFFD32F2F)),
+              SizedBox(width: 8),
+              Text(
+                'Allergie détectée !',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFFD32F2F)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ...allergyList.map((a) {
+            final item = a as Map<String, dynamic>;
+            final allergy = item['allergy']?.toString() ?? '?';
+            final message = item['message']?.toString() ??
+                'Ce médicament contient un DCI auquel vous êtes allergique.';
+            return Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFEF9A9A)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.block, size: 18, color: Color(0xFFD32F2F)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'DCI allergène : $allergy',
+                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Color(0xFFD32F2F)),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(message, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
 }
+

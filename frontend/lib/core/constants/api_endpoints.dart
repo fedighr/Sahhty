@@ -92,6 +92,8 @@ class ApiEndpoints {
   static String cancelAppointment(int pk)         => '/appointments/AppointmentService/$pk/cancel_appointment/';
   static String getPatientTodayAppointments(int pk) => '/appointments/AppointmentService/$pk/get_patient_today_appointments/';
   static String getDoctorTodayAppointments(int pk)  => '/appointments/AppointmentService/$pk/get_doctor_today_appointments/';
+  static String getDoctorAllAppointments(int pk)    => '/appointments/AppointmentService/$pk/get_doctor_appointments/';
+  static String getPatientAllAppointments(int pk)   => '/appointments/AppointmentService/$pk/get_patient_appointments/';
 
   // ── Medications (ViewSet: medications/medicationsService/) ───────────
   static const String searchMedications             = '/medications/medicationsService/search/';

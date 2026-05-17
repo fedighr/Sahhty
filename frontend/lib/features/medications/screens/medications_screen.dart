@@ -27,6 +27,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
   List<dynamic> _treatments = [];
   bool _loadingTreatments = true;
   String? _treatmentsError;
+  List<String> _patientAllergies = []; // List of allergy DCI names (uppercase)
 
   // ── Search state ─────────────────────────────────────────────────
   final _searchCtrl = TextEditingController();
@@ -64,6 +65,16 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
       setState(() { _loadingTreatments = false; _treatmentsError = 'ID patient non trouvé'; });
       return;
     }
+
+    // Load patient allergies for allergy warning
+    final patientResult = await ref.read(patientServiceProvider).getPatientById(patientId);
+    if (patientResult['success'] == true) {
+      final rawAllergies = patientResult['patient']?['allergies']?.toString() ?? '';
+      _patientAllergies = rawAllergies.isNotEmpty
+          ? rawAllergies.split(',').map((e) => e.trim().toUpperCase()).where((e) => e.isNotEmpty).toList()
+          : [];
+    }
+
     final result = await ref.read(medicationServiceProvider).getTreatmentsByPatientId(patientId);
     if (!mounted) return;
     setState(() {
@@ -188,6 +199,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
     final detailMed = (detail['medication'] as Map<String, dynamic>?) ?? medication;
     final pregnancyData = detail['pregnancy_data'] as Map<String, dynamic>?;
     final interactions = (detail['medication_interactions'] as List<dynamic>?) ?? [];
+    final allergyInteractions = (detail['allergy_interactions'] as List<dynamic>?) ?? [];
 
     showModalBottomSheet(
       context: context,
@@ -197,6 +209,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
         medication: detailMed,
         pregnancyData: pregnancyData,
         interactions: interactions,
+        allergyInteractions: allergyInteractions,
         onAddTreatment: () {
           Navigator.of(sheetCtx).pop(); // Close detail sheet using sheet's own context
           if (mounted) _showAddTreatmentSheet(medication);
@@ -341,6 +354,10 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
     final active = _isActive(t);
     final interactions = t['interactions'] as List<dynamic>? ?? [];
 
+    // Detect allergy: check if medication's DCI matches any patient allergy
+    final medDci = (med?['dci'] ?? '').toString().toUpperCase();
+    final hasAllergyWarning = _patientAllergies.any((a) => medDci.contains(a) || a.split(' ').any((word) => word.length > 2 && medDci.contains(word)));
+
     // Find the worst interaction
     int worstPriority = 0;
     for (final inter in interactions) {
@@ -459,18 +476,23 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
                 }).toList(),
               ),
             ],
-            // ── Pregnancy risk + Interactions badges (horizontal) ──────
-            if ((t['pregnancy_data'] != null && t['pregnancy_data'] is Map<String, dynamic>) || interactions.isNotEmpty) ...[
+            // ── Pregnancy risk + Interactions + Allergy badges ────────
+            if ((t['pregnancy_data'] != null && t['pregnancy_data'] is Map<String, dynamic>) || interactions.isNotEmpty || hasAllergyWarning) ...[
               const SizedBox(height: 10),
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: [
-                  if (t['pregnancy_data'] != null && t['pregnancy_data'] is Map<String, dynamic>)
-                    _buildPregnancyRiskBadge(t['pregnancy_data'] as Map<String, dynamic>),
-                  if (interactions.isNotEmpty)
-                    ..._buildInteractionsBadgesList(interactions),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (t['pregnancy_data'] != null && t['pregnancy_data'] is Map<String, dynamic>) ...[
+                      _buildPregnancyRiskBadge(t['pregnancy_data'] as Map<String, dynamic>),
+                      if (interactions.isNotEmpty || hasAllergyWarning) const SizedBox(width: 6),
+                    ],
+                    ..._buildInteractionsBadgesListSpaced(interactions, trailingSpace: hasAllergyWarning),
+                    if (hasAllergyWarning)
+                      _buildAllergyBadge(medDci, _patientAllergies),
+                  ],
+                ),
               ),
             ],
             const SizedBox(height: 8),
@@ -486,6 +508,56 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
         ),
       ),
     );
+  }
+
+  List<Widget> _buildInteractionsBadgesListSpaced(List<dynamic> interactions, {bool trailingSpace = false}) {
+    if (interactions.isEmpty) return [];
+    final sorted = List<dynamic>.from(interactions);
+    sorted.sort((a, b) {
+      final pa = InteractionHelpers.severityPriority((a as Map<String, dynamic>)['severity']?.toString());
+      final pb = InteractionHelpers.severityPriority((b as Map<String, dynamic>)['severity']?.toString());
+      return pb.compareTo(pa);
+    });
+    final shown = sorted.take(3).toList();
+    final remaining = sorted.length - shown.length;
+    final result = <Widget>[];
+    for (int idx = 0; idx < shown.length; idx++) {
+      final inter = shown[idx] as Map<String, dynamic>;
+      final severity = inter['severity']?.toString();
+      final color = InteractionHelpers.severityColor(severity);
+      final userMed = inter['user_medication']?.toString() ?? '?';
+      result.add(Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: color.withAlpha(15),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: color.withAlpha(51)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(InteractionHelpers.severityIcon(severity), size: 12, color: color),
+            const SizedBox(width: 4),
+            Text('⇌ $userMed', style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.w600)),
+          ],
+        ),
+      ));
+      if (idx < shown.length - 1 || remaining > 0 || trailingSpace) {
+        result.add(const SizedBox(width: 6));
+      }
+    }
+    if (remaining > 0) {
+      result.add(Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: AppColors.textSecondary.withAlpha(20),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text('+$remaining', style: const TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+      ));
+      if (trailingSpace) result.add(const SizedBox(width: 6));
+    }
+    return result;
   }
 
   List<Widget> _buildInteractionsBadgesList(List<dynamic> interactions) {
@@ -814,6 +886,26 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
           Text('$currentTrimester : $riskLabel', style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w600)),
           const SizedBox(width: 4),
           Icon(icon, size: 14, color: color),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAllergyBadge(String medDci, List<String> allergies) {
+    final matched = allergies.where((a) => medDci.contains(a) || a.split(' ').any((w) => w.length > 2 && medDci.contains(w))).join(', ');
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.error.withAlpha(20),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.error.withAlpha(77)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Iconsax.warning_2, size: 13, color: AppColors.error),
+          const SizedBox(width: 4),
+          Text(' $matched', style: const TextStyle(fontSize: 11, color: AppColors.error, fontWeight: FontWeight.w700)),
         ],
       ),
     );
@@ -1367,6 +1459,22 @@ class _TreatmentDetailSheet extends StatelessWidget {
             const SizedBox(height: 6),
             Text(dciRisk['summary'].toString(), style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
           ],
+          if (dciRisk['source_url'] != null && dciRisk['source_url'].toString().isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Row(
+              children: [
+                const Icon(Iconsax.link, size: 12, color: AppColors.primary),
+                const SizedBox(width: 4),
+                Flexible(
+                  child: Text(
+                    'Source : ${dciRisk['source_url']}',
+                    style: TextStyle(fontSize: 10, color: AppColors.primary.withAlpha(153)),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -1460,6 +1568,63 @@ class _TreatmentDetailSheet extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAllergySection(List<dynamic> allergyInteractions) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.error.withAlpha(12),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.error.withAlpha(64)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Iconsax.warning_2, size: 20, color: AppColors.error),
+              SizedBox(width: 8),
+              Text('Allergie détectée !', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.error)),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ...allergyInteractions.map((a) {
+            final item = a as Map<String, dynamic>;
+            final allergy = item['allergy']?.toString() ?? '?';
+            final message = item['message']?.toString() ?? 'Ce médicament contient un DCI auquel vous êtes allergique.';
+            return Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.error.withAlpha(51)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.block, size: 18, color: AppColors.error),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('DCI allergène : $allergy',
+                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.error)),
+                        const SizedBox(height: 4),
+                        Text(message, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             );

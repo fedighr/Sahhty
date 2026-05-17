@@ -37,6 +37,7 @@ import '../../features/settings/screens/doctor_edit_profile_screen.dart';
 import 'package:sahhty/features/settings/screens/medical_files_screen.dart';
 import 'package:sahhty/features/settings/screens/doctor_medical_access_screen.dart';
 import 'package:sahhty/features/settings/screens/patient_doctor_access_screen.dart';
+import 'package:sahhty/features/alerts/screens/doctor_alerts_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -122,6 +123,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/doctor-appointments',
             pageBuilder: (context, state) => const NoTransitionPage(child: AppointmentsScreen()),
+          ),
+          GoRoute(
+            path: '/doctor-alerts',
+            pageBuilder: (context, state) => const NoTransitionPage(child: DoctorAlertsScreen()),
           ),
           GoRoute(
             path: '/doctor-settings',

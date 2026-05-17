@@ -1,15 +1,22 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sahhty/core/constants/api_endpoints.dart';
+import 'package:sahhty/data/services/dio_client.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // ─── Attachment type metadata ─────────────────────────────────────────────────
 class _TypeMeta {
@@ -485,8 +492,23 @@ class _FileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final meta = _metaFor(attachment['type'] ?? 'OTHER');
-    final fileUrl = attachment['file']?.toString() ?? '';
-    final name = _fileName(fileUrl);
+    final rawUrl = attachment['file']?.toString() ?? '';
+    // Normalize URL: always use 10.0.2.2:8000 as host for emulator
+    String fileUrl = '';
+    if (rawUrl.isNotEmpty) {
+      if (rawUrl.startsWith('http')) {
+        // Replace any host with 10.0.2.2:8000
+        try {
+          final uri = Uri.parse(rawUrl);
+          fileUrl = uri.replace(host: '10.0.2.2', port: 8000).toString();
+        } catch (_) {
+          fileUrl = rawUrl;
+        }
+      } else {
+        fileUrl = '${ApiEndpoints.baseUrl}$rawUrl';
+      }
+    }
+    final name = _fileName(rawUrl);
     final dateStr = _formatDate(attachment['upload_date']);
 
     return Container(
@@ -586,6 +608,11 @@ class _FileCard extends StatelessWidget {
     );
   }
 
+  bool _isImage(String url) {
+    final lower = url.toLowerCase().split('?').first;
+    return lower.endsWith('.jpg') || lower.endsWith('.jpeg') || lower.endsWith('.png') || lower.endsWith('.gif') || lower.endsWith('.webp');
+  }
+
   void _showDetail(BuildContext context, _TypeMeta meta, String fileUrl, String name, String dateStr) {
     showModalBottomSheet(
       context: context,
@@ -611,6 +638,16 @@ class _FileCard extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Preview or icon
+            if (_isImage(fileUrl) && fileUrl.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: SizedBox(
+                  width: 160,
+                  height: 120,
+                  child: _ImageViewerScreen.buildThumbnail(fileUrl),
+                ),
+              )
+            else
             Container(
               width: 80, height: 80,
               decoration: BoxDecoration(
@@ -691,14 +728,61 @@ class _FileCard extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: fileUrl.isNotEmpty
                         ? () async {
-                            final uri = Uri.parse(fileUrl);
-                            if (await canLaunchUrl(uri)) {
-                              await launchUrl(uri, mode: LaunchMode.externalApplication);
+                            Navigator.pop(ctx);
+                            if (_isImage(fileUrl)) {
+                              // Open image directly in Flutter viewer
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => _ImageViewerScreen(url: fileUrl, name: name),
+                              ));
                             } else {
-                              if (ctx.mounted) {
-                                ScaffoldMessenger.of(ctx).showSnackBar(
-                                  const SnackBar(content: Text('Impossible d\'ouvrir ce fichier')),
+                              // Download non-image files and open with system app
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Row(children: [
+                                    SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)),
+                                    SizedBox(width: 12),
+                                    Text('Téléchargement en cours...'),
+                                  ]),
+                                  duration: Duration(seconds: 30),
+                                ),
+                              );
+                              try {
+                                final tmpDir = await getTemporaryDirectory();
+                                final fileName = fileUrl.split('/').last.split('?').first;
+                                final savePath = '${tmpDir.path}/$fileName';
+                                final rawDio = Dio(BaseOptions(
+                                  connectTimeout: const Duration(seconds: 30),
+                                  receiveTimeout: const Duration(seconds: 60),
+                                  validateStatus: (s) => s != null && s < 500,
+                                ));
+                                final token = await const FlutterSecureStorage(
+                                  aOptions: AndroidOptions(encryptedSharedPreferences: true),
+                                ).read(key: StorageKeys.accessToken);
+                                await rawDio.download(
+                                  fileUrl,
+                                  savePath,
+                                  options: Options(
+                                    responseType: ResponseType.bytes,
+                                    followRedirects: true,
+                                    headers: token != null ? {'Authorization': 'Bearer $token'} : {},
+                                  ),
                                 );
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                  final result = await OpenFilex.open(savePath);
+                                  if (result.type != ResultType.done && context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('Impossible d\'ouvrir: ${result.message}')),
+                                    );
+                                  }
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Erreur: $e')),
+                                  );
+                                }
                               }
                             }
                           }
@@ -716,6 +800,118 @@ class _FileCard extends StatelessWidget {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Full-screen image viewer ──────────────────────────────────────────────────
+class _ImageViewerScreen extends StatelessWidget {
+  final String url;
+  final String name;
+  const _ImageViewerScreen({required this.url, required this.name});
+
+  /// Download image bytes via Dio with auth header
+  static Future<Uint8List> _fetchBytes(String url) async {
+    final token = await const FlutterSecureStorage(
+      aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    ).read(key: StorageKeys.accessToken);
+    final dio = Dio(BaseOptions(
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 60),
+      validateStatus: (s) => s != null && s < 500,
+    ));
+    final response = await dio.get<List<int>>(
+      url,
+      options: Options(
+        responseType: ResponseType.bytes,
+        headers: token != null ? {'Authorization': 'Bearer $token'} : {},
+      ),
+    );
+    if (response.statusCode != 200 || response.data == null) {
+      throw Exception('HTTP ${response.statusCode}');
+    }
+    return Uint8List.fromList(response.data!);
+  }
+
+  /// Build a thumbnail for the bottom sheet preview
+  static Widget buildThumbnail(String url) {
+    return FutureBuilder<Uint8List>(
+      future: _fetchBytes(url),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError || !snapshot.hasData) {
+          return const Center(child: Icon(Iconsax.image, size: 40, color: AppColors.textLight));
+        }
+        return Image.memory(snapshot.data!, fit: BoxFit.cover);
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(name, style: const TextStyle(color: Colors.white, fontSize: 14)),
+      ),
+      body: Center(
+        child: FutureBuilder<Uint8List>(
+          future: _fetchBytes(url),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator(color: Colors.white);
+            }
+            if (snapshot.hasError || !snapshot.hasData) {
+              final errMsg = '${snapshot.error}';
+              final isNotFound = errMsg.contains('404');
+              return Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      isNotFound ? Iconsax.document_text : Iconsax.image,
+                      size: 64,
+                      color: Colors.white38,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      isNotFound
+                          ? 'Fichier introuvable sur le serveur'
+                          : 'Impossible de charger le fichier',
+                      style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      isNotFound
+                          ? 'Ce fichier n\'est plus disponible. Veuillez le supprimer et le re-téléverser depuis cet appareil.'
+                          : errMsg,
+                      style: const TextStyle(
+                          color: Colors.white38, fontSize: 12, height: 1.5),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            }
+            return InteractiveViewer(
+              panEnabled: true,
+              scaleEnabled: true,
+              minScale: 0.5,
+              maxScale: 5.0,
+              child: Image.memory(snapshot.data!, fit: BoxFit.contain),
+            );
+          },
         ),
       ),
     );

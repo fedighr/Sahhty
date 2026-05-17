@@ -7,7 +7,7 @@ class DoctorShell extends StatelessWidget {
   final Widget child;
   const DoctorShell({super.key, required this.child});
 
-  static const _tabs = ['/doctor-home', '/doctor-appointments', '/doctor-settings'];
+  static const _tabs = ['/doctor-home', '/doctor-appointments', '/doctor-alerts', '/doctor-settings'];
 
   int _currentIndex(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
@@ -34,9 +34,10 @@ class DoctorShell extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _NavItem(icon: Iconsax.home_2,     label: 'Accueil',   isSelected: index == 0, onTap: () => context.go('/doctor-home')),
-                  _NavItem(icon: Iconsax.calendar,   label: 'Mes RDV',   isSelected: index == 1, onTap: () => context.go('/doctor-appointments')),
-                  _NavItem(icon: Iconsax.setting_2,  label: 'Paramètres',isSelected: index == 2, onTap: () => context.go('/doctor-settings')),
+                  _NavItem(icon: Iconsax.home_2,       label: 'Accueil',    isSelected: index == 0, onTap: () => context.go('/doctor-home')),
+                  _NavItem(icon: Iconsax.calendar,     label: 'Mes RDV',    isSelected: index == 1, onTap: () => context.go('/doctor-appointments')),
+                  _NavItem(icon: Iconsax.notification, label: 'Alertes',    isSelected: index == 2, onTap: () => context.go('/doctor-alerts')),
+                  _NavItem(icon: Iconsax.setting_2,    label: 'Paramètres', isSelected: index == 3, onTap: () => context.go('/doctor-settings')),
                 ],
               ),
             ),

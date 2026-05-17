@@ -661,6 +661,53 @@ class _CompareTabState extends State<CompareTab> {
               leftPreg?['dci_risk']?[trimester]?.toString(),
               rightPreg?['dci_risk']?[trimester]?.toString(),
             ),
+          // ── Sources ──────────────────────────────────────────────
+          if ((leftPreg?['dci_risk']?['source_url'] != null && leftPreg!['dci_risk']['source_url'].toString().isNotEmpty) ||
+              (rightPreg?['dci_risk']?['source_url'] != null && rightPreg!['dci_risk']['source_url'].toString().isNotEmpty)) ...[
+            const Divider(height: 16),
+            Row(
+              children: [
+                const SizedBox(width: 60),
+                if (leftPreg?['dci_risk']?['source_url'] != null && leftPreg!['dci_risk']['source_url'].toString().isNotEmpty)
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(Iconsax.link, size: 10, color: AppColors.primary.withAlpha(153)),
+                        const SizedBox(width: 3),
+                        Flexible(
+                          child: Text(
+                            leftPreg['dci_risk']['source_url'].toString(),
+                            style: TextStyle(fontSize: 9, color: AppColors.primary.withAlpha(153)),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  const Expanded(child: SizedBox()),
+                const SizedBox(width: 6),
+                if (rightPreg?['dci_risk']?['source_url'] != null && rightPreg!['dci_risk']['source_url'].toString().isNotEmpty)
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(Iconsax.link, size: 10, color: AppColors.accent.withAlpha(153)),
+                        const SizedBox(width: 3),
+                        Flexible(
+                          child: Text(
+                            rightPreg['dci_risk']['source_url'].toString(),
+                            style: TextStyle(fontSize: 9, color: AppColors.accent.withAlpha(153)),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  const Expanded(child: SizedBox()),
+              ],
+            ),
+          ],
         ],
       ),
     );

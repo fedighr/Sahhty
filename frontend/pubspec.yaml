@@ -50,6 +50,10 @@ dependencies:
   # File picker
   file_picker: ^8.3.7
 
+  # File opening
+  path_provider: ^2.1.4
+  open_filex: ^4.4.1
+
   # Firebase
   firebase_core: ^3.13.0
   firebase_messaging: ^15.2.5
