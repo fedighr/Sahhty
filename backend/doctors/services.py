@@ -6,6 +6,7 @@ from users.serializers import UserSerializer
 from django.db import IntegrityError, DatabaseError
 from datetime import datetime, timedelta, date
 from django.db import transaction
+from rest_framework.pagination import PageNumberPagination
 from django.utils import timezone
 
 class DoctorService:
@@ -97,11 +98,23 @@ class DoctorService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
     @staticmethod
-    def getAllDoctors():
+    def getAllDoctors(request, speciality_filter=None, ville_filter=None, gender_filter=None):
         try:
             doctors = Doctor.objects.select_related('user', 'speciality').all()
-            data = []
+
+            if speciality_filter:
+                doctors = doctors.filter(speciality__name__icontains=speciality_filter)
+
+            if ville_filter:
+                doctors = doctors.filter(ville__iexact=ville_filter)
+
+            if gender_filter:
+                doctors = doctors.filter(user__gender__iexact=gender_filter)
+
+            # nearest doctor filter — to be implemented
+            
             today = date.today()
+            data = []
             for doctor in doctors:
                 birth_date = doctor.user.birth_date
                 if birth_date:
@@ -117,7 +130,7 @@ class DoctorService:
                     'last_name': doctor.user.last_name,
                     'email': doctor.user.email,
                     'birth_date': doctor.user.birth_date,
-                    'age' : age,
+                    'age': age,
                     'phone': doctor.user.phone,
                     'gender': doctor.user.gender,
                     'speciality': doctor.speciality.name if doctor.speciality else None,
@@ -126,12 +139,16 @@ class DoctorService:
                     'experience': doctor.experience,
                     'consultation_price': doctor.consultation_price,
                     'bio': doctor.bio,
+                    'latitude': doctor.latitude,
+                    'longitude': doctor.longitude,
                 })
-            return {'data': {'success': True, 'doctors': data}, 'status': 200}
-        
+
+            paginator = PageNumberPagination()
+            result = paginator.paginate_queryset(data, request)
+            return {'data': paginator.get_paginated_response(result).data, 'status': 200}
+
         except DatabaseError:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
-        
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
         

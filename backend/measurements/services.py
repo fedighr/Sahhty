@@ -16,18 +16,30 @@ class MeasurementService:
     def createMeasurement(measurements):
         try:
             patient = measurements['patient']
-            Measurement.objects.create(**measurements)
 
             with transaction.atomic():
+                Measurement.objects.create(**measurements)
 
-                weight_obj = Measurement.objects.filter(patient=patient, type='WEIGHT').latest('measurement_date')
-                weight = weight_obj.value1 if weight_obj.value1 is not None else patient.weight
+                weight_obj = Measurement.objects.filter(patient=patient, type='WEIGHT').order_by('-measurement_date').first()
+                weight = weight_obj.value1 if weight_obj and weight_obj.value1 is not None else patient.weight
 
-                glucose = Measurement.objects.filter(patient=patient, type='GLYCEMIA').latest('measurement_date').value1
+                glucose_obj = Measurement.objects.filter(patient=patient, type='GLYCEMIA').order_by('-measurement_date').first()
+                glucose = glucose_obj.value1 if glucose_obj else None
 
-                bp = Measurement.objects.filter(patient=patient, type='BLOOD_PRESSURE', value2__isnull=False).latest('measurement_date')
-                bp_sys = bp.value1
-                bp_dia = bp.value2
+                bp = Measurement.objects.filter(patient=patient, type='BLOOD_PRESSURE', value2__isnull=False).order_by('-measurement_date').first()
+                bp_sys = bp.value1 if bp else None
+                bp_dia = bp.value2 if bp else None
+
+                if glucose is None or bp_sys is None or bp_dia is None:
+                    return {
+                        'data': {
+                            'success': True,
+                            'risk_level': None,
+                            'risk_percentage': None,
+                            'message': 'Measurement created, insufficient data for risk assessment',
+                        },
+                        'status': 200,
+                    }
 
                 heart_rate_obj = Measurement.objects.filter(patient=patient, type='HEART_RATE').order_by('-measurement_date').first()
                 heart_rate = heart_rate_obj.value1 if heart_rate_obj else None
@@ -181,14 +193,23 @@ class MeasurementService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
     @staticmethod
-    def getPatientMeasurements(pk, request):
+    def getPatientMeasurements(pk, request, type_filter=None, order='desc'):
         try:
             patient = Patient.objects.select_related('user').get(pk=pk)
         except Patient.DoesNotExist:
             return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
 
         try:
-            measurements = Measurement.objects.filter(patient=patient).order_by('-measurement_date')
+            measurements = Measurement.objects.filter(patient=patient)
+
+            if type_filter:
+                measurements = measurements.filter(type=type_filter)
+
+            if order == 'asc':
+                measurements = measurements.order_by('measurement_date')
+            else:
+                measurements = measurements.order_by('-measurement_date')
+
             paginator = PageNumberPagination()
             result = paginator.paginate_queryset(measurements, request)
             serializer = MeasurementSerializer(result, many=True)
@@ -223,8 +244,6 @@ class MeasurementService:
 
     @staticmethod
     def generate_risk_note(glucose, bp_sys, bp_dia, heart_rate, body_temp, risk_level):
-        print("generate_risk_note called with:",risk_level)
-        print(f"DEBUG generate_risk_note: glucose={glucose!r}, bp_sys={bp_sys!r}, bp_dia={bp_dia!r}, hr={heart_rate!r}, temp={body_temp!r}, risk={risk_level!r}")
         notes = []
         combinations = []
 

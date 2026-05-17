@@ -10,8 +10,11 @@ from .serializers import AttachmentSerializer, PatientDoctorAccessSerializer
 from .services import MedicalFileService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from drf_spectacular.utils import extend_schema
+from rest_framework.pagination import PageNumberPagination
 
 class MedicalFileView(ViewSet):
+    paginator_class = PageNumberPagination
+    
     @extend_schema(request=AttachmentSerializer, responses=AttachmentSerializer)
     @action(detail=False, methods=['post'], url_path="create_attachment", permission_classes=[AllowAny])
     def create_attachment(self, request):
@@ -32,13 +35,14 @@ class MedicalFileView(ViewSet):
         result = MedicalFileService.createPatientDoctorAccess(request.data)
         return Response(result['data'], status=result['status'])
     
-    @extend_schema(request=PatientDoctorAccessSerializer, responses=PatientDoctorAccessSerializer)
     @action(detail=True, methods=['get'], url_path="get_patient_medical_files", permission_classes=[AllowAny])
     def get_patient_medical_files(self, request, pk=None):
         if not pk:
             return Response({'success': False, 'message': 'Patient ID is required'}, status=400)
-
-        result = MedicalFileService.getPatientMedicalFiles(pk)
+        
+        type_filter = request.query_params.get('type', None)
+        order = request.query_params.get('order', 'asc')
+        result = MedicalFileService.getPatientMedicalFiles(pk, request, type_filter, order)
         return Response(result['data'], status=result['status'])
     
     @extend_schema(request=MedicalFileService, responses=MedicalFileService)
@@ -77,7 +81,6 @@ class MedicalFileView(ViewSet):
         serializer = AttachmentSerializer(data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         result = MedicalFileService.updateAttachment(pk, serializer.validated_data, request)
-        print(result['data']['attachment'])
         return Response(result['data'], status=result['status'])
 
     @extend_schema(request=PatientDoctorAccessSerializer, responses=PatientDoctorAccessSerializer)

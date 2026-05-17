@@ -11,6 +11,7 @@ from users.serializers import EmailSerializer
 from .services import AppointmentService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from drf_spectacular.utils import extend_schema
+from rest_framework.pagination import PageNumberPagination
 
 class AppointmentView(ViewSet):
     @extend_schema(request=AppointmentSerializer, responses=AppointmentSerializer)
@@ -69,14 +70,17 @@ class AppointmentView(ViewSet):
         if not pk:
             return Response({'success': False, 'message': 'Patient ID is required'}, status=400)
         
-        result = AppointmentService.GetPatientAppointments(pk)
+        status_filter = request.query_params.get('status', None)
+        order = request.query_params.get('order', 'desc')
+        result = AppointmentService.GetPatientAppointments(pk, request, status_filter, order)
         return Response(result['data'], status=result['status'])
-    
+
     @extend_schema(request=AppointmentSerializer, responses=AppointmentSerializer)
     @action(detail=True, methods=['get'], url_path="get_doctor_appointments", permission_classes=[AllowAny])
     def get_doctor_appointments(self, request, pk=None):
         if not pk:
             return Response({'success': False, 'message': 'Doctor ID is required'}, status=400)
-        
-        result = AppointmentService.GetDoctorAppointments(pk)
+        status_filter = request.query_params.get('status', None)
+        order = request.query_params.get('order', 'desc')
+        result = AppointmentService.GetDoctorAppointments(pk, request, status_filter, order)
         return Response(result['data'], status=result['status'])

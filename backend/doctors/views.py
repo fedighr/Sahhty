@@ -40,10 +40,12 @@ class DoctorView(ViewSet):
         result = DoctorService.updateDoctor(pk, request.data)
         return Response(result['data'], status=result['status'])
     
-    @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['get'], url_path="get_all_doctors", permission_classes=[AllowAny])
     def get_all_doctors(self, request):
-        result = DoctorService.getAllDoctors()
+        speciality_filter = request.query_params.get('speciality', None)
+        ville_filter = request.query_params.get('ville', None)
+        gender_filter = request.query_params.get('gender', None)
+        result = DoctorService.getAllDoctors(request, speciality_filter, ville_filter, gender_filter)
         return Response(result['data'], status=result['status'])
 
     @extend_schema(request=DoctorScheduleSerializer, responses=DoctorScheduleSerializer)

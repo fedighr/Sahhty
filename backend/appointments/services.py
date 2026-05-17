@@ -1,6 +1,7 @@
 from django.db import DatabaseError, IntegrityError
 
 from drf_spectacular.types import date
+from django.utils import timezone
 from rest_framework.utils.timezone import datetime
 from .models import Appointment
 from .serializers import AppointmentSerializer
@@ -10,7 +11,8 @@ from patients.models import Patient
 from doctors.models import Doctor
 from django.db import transaction
 from alerts.services import AlertService
-#from notifications.services import notify_user
+from notifications.services import notify_user
+from rest_framework.pagination import PageNumberPagination
 
 class AppointmentService:
     @staticmethod
@@ -42,10 +44,9 @@ class AppointmentService:
                     message=f'New appointment scheduled with doctor {doctor_user.first_name} {doctor_user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")}. please wait for the doctor to confirm the appointment.',
                 )
                 Alert.objects.bulk_create([doctor_alert, patient_alert])
-                """
                 device = doctor_user.devices.first()
                 fcm_token = device.fcm_token if device else None
-                
+
                 notify_user(
                     user_id=doctor_user.id,
                     event_type='appointment_request',
@@ -56,7 +57,7 @@ class AppointmentService:
                     },
                     fcm_token=fcm_token,
                     email=doctor_user.email,
-                )"""
+                )
 
 
                 return {'data': {'success': True, 'appointment': serializer.data}, 'status': 201}
@@ -146,7 +147,7 @@ class AppointmentService:
             if not Patient.objects.filter(id=patient_id).exists():
                 return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
             
-            now = datetime.now()
+            now = timezone.now()
             appointments = Appointment.objects.filter(patient_id=patient_id, appointment_date__gte=now, status__in=['PENDING', 'CONFIRMED']).order_by('appointment_date')
             serializer = AppointmentSerializer(appointments, many=True)
             return {'data': {'success': True, 'appointments': serializer.data}, 'status': 200}
@@ -164,7 +165,7 @@ class AppointmentService:
             if not Doctor.objects.filter(id=doctor_id).exists():
                 return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}
             
-            now = datetime.now()
+            now = timezone.now()
             appointments = Appointment.objects.filter(doctor_id=doctor_id, appointment_date__gte=now, status__in=['PENDING', 'CONFIRMED']).order_by('appointment_date')
             serializer = AppointmentSerializer(appointments, many=True)
             return {'data': {'success': True, 'appointments': serializer.data}, 'status': 200}
@@ -177,32 +178,55 @@ class AppointmentService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
         
     @staticmethod
-    def GetPatientAppointments(patient_id):
+    def GetPatientAppointments(patient_id, request, status_filter=None, order='desc'):
         try:
             if not Patient.objects.filter(id=patient_id).exists():
                 return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
-            
-            appointments = Appointment.objects.filter(patient_id=patient_id).order_by('appointment_date')
-            serializer = AppointmentSerializer(appointments, many=True)
-            return {'data': {'success': True, 'appointments': serializer.data}, 'status': 200}
-        
+
+            appointments = Appointment.objects.filter(patient_id=patient_id)
+
+            if status_filter:
+                appointments = appointments.filter(status=status_filter)
+
+            if order == 'asc':
+                appointments = appointments.order_by('appointment_date')
+            else:
+                appointments = appointments.order_by('-appointment_date')
+
+            paginator = PageNumberPagination()
+            result = paginator.paginate_queryset(appointments, request)
+            serializer = AppointmentSerializer(result, many=True)
+            return {'data': paginator.get_paginated_response(serializer.data).data, 'status': 200}
+
         except IntegrityError as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 400}
         except DatabaseError:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
-        
+
+
     @staticmethod
-    def GetDoctorAppointments(doctor_id):
+    def GetDoctorAppointments(doctor_id, request, status_filter=None, order='desc'):
         try:
             if not Doctor.objects.filter(id=doctor_id).exists():
                 return {'data': {'success': False, 'message': 'Doctor not found'}, 'status': 404}
-            
-            appointments = Appointment.objects.filter(doctor_id=doctor_id).order_by('appointment_date')
-            serializer = AppointmentSerializer(appointments, many=True)
-            return {'data': {'success': True, 'appointments': serializer.data}, 'status': 200}
-        
+
+            appointments = Appointment.objects.filter(doctor_id=doctor_id)
+
+            if status_filter:
+                appointments = appointments.filter(status=status_filter)
+
+            if order == 'asc':
+                appointments = appointments.order_by('appointment_date')
+            else:
+                appointments = appointments.order_by('-appointment_date')
+
+            paginator = PageNumberPagination()
+            result = paginator.paginate_queryset(appointments, request)
+            serializer = AppointmentSerializer(result, many=True)
+            return {'data': paginator.get_paginated_response(serializer.data).data, 'status': 200}
+
         except IntegrityError as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 400}
         except DatabaseError:

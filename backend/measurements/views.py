@@ -27,17 +27,27 @@ class MeasurementView(ViewSet):
     @extend_schema(request=MeasurementSerializer, responses=MeasurementSerializer)
     @action(detail=True, methods=['get'], permission_classes=[AllowAny])
     def get_latest_measurements(self, request, pk=None):
+        if not pk:
+            return Response({'success': False, 'message': 'Patient ID is required'}, status=400)
+        
         result = MeasurementService.getLeastestMeasurements(pk)
         return Response(result['data'], status=result['status'])
 
-    @extend_schema(request=MeasurementSerializer, responses=MeasurementSerializer)
     @action(detail=True, methods=['get'], url_path='get_patient_measurements', permission_classes=[AllowAny])
     def get_patient_measurements(self, request, pk=None):
-        result = MeasurementService.getPatientMeasurements(pk, request)
+        if not pk:
+            return Response({'success': False, 'message': 'Patient ID is required'}, status=400)
+        
+        type_filter = request.query_params.get('type', None)
+        order = request.query_params.get('order', 'desc')
+        result = MeasurementService.getPatientMeasurements(pk, request, type_filter, order)
         return Response(result['data'], status=result['status'])
 
     @extend_schema(request=RiskAssessmentSerializer, responses=RiskAssessmentSerializer)
     @action(detail=True, methods=['get'], url_path='get_risk_assessment', permission_classes=[AllowAny])
     def get_risk_assessment(self, request, pk=None):
+        if not pk:
+            return Response({'success': False, 'message': 'Patient ID is required'}, status=400)
+
         result = MeasurementService.getRiskAssessment(pk)
         return Response(result['data'], status=result['status'])

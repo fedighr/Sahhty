@@ -123,5 +123,124 @@ class PatientService:
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
         
+    @staticmethod
+    def getMenstrualCycle(patient_id):
+        try:
+            patient = Patient.objects.get(pk=patient_id)
+            if patient.user.gender != 'F':
+                return {'data': {'success': False, 'message': 'Patient is not female'}, 'status': 400}
+            
+            cycle = MenstrualCycle.objects.filter(patient=patient).first()
+            if not cycle:
+                return {'data': {'success': False, 'message': 'Menstrual cycle not found'}, 'status': 404}
+            
+            serializer = MenstrualCycleSerializer(cycle)
+            return {'data': {'success': True, 'menstrual_cycle': serializer.data}, 'status': 200}
+        
+        except Patient.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
+
+    @staticmethod
+    def updateMenstrualCycle(patient_id, data):
+        try:
+            patient = Patient.objects.get(pk=patient_id)
+            if patient.user.gender != 'F':
+                return {'data': {'success': False, 'message': 'Patient is not female'}, 'status': 400}
+
+            cycle = MenstrualCycle.objects.filter(patient=patient).first()
+            if not cycle:
+                return {'data': {'success': False, 'message': 'Menstrual cycle not found'}, 'status': 404}
+
+            serializer = MenstrualCycleSerializer(cycle, data=data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return {'data': {'success': True, 'message': 'Menstrual cycle updated', 'menstrual_cycle': serializer.data}, 'status': 200}
+
+        except Patient.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+
+
+    @staticmethod
+    def logPeriod(patient_id, data):
+        try:
+            patient = Patient.objects.get(pk=patient_id)
+            if patient.user.gender != 'F':
+                return {'data': {'success': False, 'message': 'Patient is not female'}, 'status': 400}
+
+            cycle = MenstrualCycle.objects.filter(patient=patient).first()
+            if not cycle:
+                return {'data': {'success': False, 'message': 'Menstrual cycle not found'}, 'status': 404}
+
+            # check if there's already an active period
+            active_period = PeriodEntry.objects.filter(menstrual_cycle=cycle, end_date__isnull=True).first()
+            if active_period:
+                return {'data': {'success': False, 'message': 'There is already an active period, end it first'}, 'status': 400}
+
+            serializer = PeriodEntrySerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            period = PeriodEntry.objects.create(menstrual_cycle=cycle, **serializer.validated_data)
+            return {'data': {'success': True, 'message': 'Period logged', 'period': PeriodEntrySerializer(period).data}, 'status': 201}
+
+        except Patient.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+
+
+    @staticmethod
+    def endPeriod(patient_id, data):
+        try:
+            patient = Patient.objects.get(pk=patient_id)
+            if patient.user.gender != 'F':
+                return {'data': {'success': False, 'message': 'Patient is not female'}, 'status': 400}
+
+            cycle = MenstrualCycle.objects.filter(patient=patient).first()
+            if not cycle:
+                return {'data': {'success': False, 'message': 'Menstrual cycle not found'}, 'status': 404}
+
+            active_period = PeriodEntry.objects.filter(menstrual_cycle=cycle, end_date__isnull=True).first()
+            if not active_period:
+                return {'data': {'success': False, 'message': 'No active period found'}, 'status': 404}
+
+            end_date = data.get('end_date')
+            if not end_date:
+                return {'data': {'success': False, 'message': 'end_date is required'}, 'status': 400}
+
+            if end_date < str(active_period.start_date):
+                return {'data': {'success': False, 'message': 'end_date cannot be before start_date'}, 'status': 400}
+
+            active_period.end_date = end_date
+            active_period.save()
+            return {'data': {'success': True, 'message': 'Period ended', 'period': PeriodEntrySerializer(active_period).data}, 'status': 200}
+
+        except Patient.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+
+
+    @staticmethod
+    def getPeriods(patient_id):
+        try:
+            patient = Patient.objects.get(pk=patient_id)
+            if patient.user.gender != 'F':
+                return {'data': {'success': False, 'message': 'Patient is not female'}, 'status': 400}
+
+            cycle = MenstrualCycle.objects.filter(patient=patient).first()
+            if not cycle:
+                return {'data': {'success': False, 'message': 'Menstrual cycle not found'}, 'status': 404}
+
+            periods = PeriodEntry.objects.filter(menstrual_cycle=cycle).order_by('-start_date')
+            serializer = PeriodEntrySerializer(periods, many=True)
+            return {'data': {'success': True, 'periods': serializer.data}, 'status': 200}
+
+        except Patient.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Patient not found'}, 'status': 404}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
         

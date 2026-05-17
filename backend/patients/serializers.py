@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from patients.models import Patient, MenstrualCycle
+from patients.models import Patient, MenstrualCycle, PeriodEntry
 from Pregnancies.serializers import PregnancySerializer
 from users.serializers import UserSerializer
 
@@ -8,6 +8,11 @@ class MenstrualCycleSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenstrualCycle
         exclude = ['patient']
+
+class PeriodEntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PeriodEntry
+        exclude = ['menstrual_cycle']
 
 class PatientSerializer(serializers.ModelSerializer):
     menstrual_cycle = MenstrualCycleSerializer(read_only=False, required=False)

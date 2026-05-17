@@ -14,6 +14,7 @@ from drf_spectacular.utils import extend_schema
 from django_ratelimit.decorators import ratelimit
 from django_ratelimit.exceptions import Ratelimited
 from django_ratelimit.core import is_ratelimited
+from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserAuth(ViewSet):
@@ -44,15 +45,6 @@ class UserAuth(ViewSet):
         result = AuthService.login(serializer.validated_data)
         return Response(result['data'], status=result['status'])
     
-    @extend_schema(request=LoginSerializer, responses=LoginSerializer)
-    @action(detail=False, methods=['post'], url_path='verify_2fa', permission_classes=[AllowAny])
-    def verify_2fa(self, request):
-        if not request.data:
-            return Response({'success': False, 'message': 'No data provided'}, status=400)
-
-        result = AuthService.verify_2fa(request.data)
-        return Response(result['data'], status=result['status'])
-
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path="resend_code", permission_classes=[AllowAny])
     def resend_code(self, request):
@@ -63,10 +55,28 @@ class UserAuth(ViewSet):
         serializer.is_valid(raise_exception=True)
         result = AuthService.resendCode(serializer.validated_data.get('email'))
         return Response(result['data'], status=result['status']) 
+    
+    @extend_schema(request=LoginSerializer, responses=LoginSerializer)
+    @action(detail=False, methods=['post'], url_path='verify_2fa', permission_classes=[AllowAny])
+    def verify_2fa(self, request):
+        limited = is_ratelimited(request, fn=self.verify_2fa, key='ip', rate='5/m', method='POST', increment=True)
+        if limited:
+            return Response({'success': False, 'message': 'Too many attempts. Please try again later.'}, status=429)
+
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+
+        result = AuthService.verify_2fa(request.data)
+        return Response(result['data'], status=result['status'])
+
 
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path='verify_reset_code', permission_classes=[AllowAny])
     def verify_reset_code(self, request):
+        limited = is_ratelimited(request, fn=self.verify_reset_code, key='ip', rate='5/m', method='POST', increment=True)
+        if limited:
+            return Response({'success': False, 'message': 'Too many attempts. Please try again later.'}, status=429)
+
         if not request.data:
             return Response({'success': False, 'message': 'No data provided'}, status=400)
 
@@ -78,13 +88,17 @@ class UserAuth(ViewSet):
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path='verify_code', permission_classes=[AllowAny])
     def verify_code(self, request):
+        limited = is_ratelimited(request, fn=self.verify_code, key='ip', rate='5/m', method='POST', increment=True)
+        if limited:
+            return Response({'success': False, 'message': 'Too many attempts. Please try again later.'}, status=429)
+
         if not request.data:
             return Response({'success': False, 'message': 'No data provided'}, status=400)
 
         serializer = EmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)        
         result = AuthService.verifyCode(serializer.validated_data.get('email'), request.data.get('code'))    
-        return Response(result['data'], status=result['status'])    
+        return Response(result['data'], status=result['status'])  
 
     @extend_schema(request=EmailSerializer, responses=EmailSerializer)
     @action(detail=False, methods=['post'], url_path="is_email_available", permission_classes=[AllowAny])
@@ -129,6 +143,15 @@ class UserAuth(ViewSet):
         serializer.is_valid(raise_exception=True)
         result = AuthService.forgetPassword(serializer.validated_data)
         return Response(result['data'], status=result['status'])
+
+    @extend_schema(request=LoginSerializer, responses=LoginSerializer)
+    @action(detail=True, methods=['patch'], url_path='toggle_2fa', permission_classes=[IsAuthenticated])
+    def toggle_2fa(self, request, pk=None):
+        if not pk:
+            return Response({'success': False, 'message': 'User ID is required'}, status=400)
+        
+        result = AuthService.toggle2FA(pk)
+        return Response(result['data'], status=result['status'])
     
     @extend_schema(request=UserSerializer, responses=UserSerializer)
     @action(detail=True, methods=['delete'], url_path='delete_account', permission_classes=[IsAuthenticated, IsOwnerOrAdmin])
@@ -138,6 +161,9 @@ class UserAuth(ViewSet):
             self.check_object_permissions(request, target_user)
             result = AuthService.delete_user_account(target_user)
             return Response(result['data'], status=result['status'])
+        
+        except PermissionDenied:
+            return Response({'success': False, 'message': 'You do not have permission to perform this action.'}, status=403)
         
         except Http404:
             return Response({'success' : False ,'message' : 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)

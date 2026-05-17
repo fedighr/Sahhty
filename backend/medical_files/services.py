@@ -12,7 +12,8 @@ from doctors.models import Doctor
 from doctors.serializers import DoctorSerializer
 from django.db import transaction
 from alerts.services import AlertService
-#from notifications.services import notify_user
+from notifications.services import notify_user
+from rest_framework.pagination import PageNumberPagination
 
 class MedicalFileService:
     @staticmethod
@@ -69,12 +70,23 @@ class MedicalFileService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
         
     @staticmethod
-    def getPatientMedicalFiles(patient_id):
+    def getPatientMedicalFiles(patient_id, request, type_filter=None, order='asc'):
         try:
             attachments = Attachment.objects.filter(patient_id=patient_id)
-            serializer = AttachmentSerializer(attachments, many=True)
-            return {'data': {'success': True, 'medical_files': serializer.data}, 'status': 200}
-        
+
+            if type_filter:
+                attachments = attachments.filter(type=type_filter)
+
+            if order == 'desc':
+                attachments = attachments.order_by('-upload_date')
+            else:
+                attachments = attachments.order_by('upload_date')
+
+            paginator = PageNumberPagination()
+            result = paginator.paginate_queryset(attachments, request)
+            serializer = AttachmentSerializer(result, many=True)
+            return {'data': paginator.get_paginated_response(serializer.data).data, 'status': 200}
+
         except (IntegrityError, DatabaseError) as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 400}
         except Exception as e:
@@ -181,6 +193,9 @@ class MedicalFileService:
     def requestMedicalAccess(validated_data):
         try:
             with transaction.atomic():
+                if PatientDoctorAccess.objects.filter(patient=validated_data['patient'], doctor=validated_data['doctor']).exists():
+                    return {'data': {'success': False, 'message': 'Access already requested or granted'}, 'status': 400}
+                
                 access = PatientDoctorAccess.objects.create(
                     patient=validated_data['patient'],
                     doctor=validated_data['doctor'],
@@ -194,7 +209,6 @@ class MedicalFileService:
                 type='SYSTEM',
                 message=f"Doctor {doctor_user.first_name} {doctor_user.last_name} has requested access to your medical files."
             )
-            """
             device = patient_user.devices.first()
             fcm_token = device.fcm_token if device else None
 
@@ -205,12 +219,11 @@ class MedicalFileService:
                     'access_id': access.id,
                     'doctor_name': f'{doctor_user.first_name} {doctor_user.last_name}',
                     'specialty': validated_data['doctor'].speciality.name,
-                    'request_date': str(access.created_at),
+                    'request_date': str(access.granted_at),
                 },
                 fcm_token=fcm_token,
                 email=patient_user.email,
             )
-            """
             serializer = PatientDoctorAccessSerializer(access)
             return {'data': {'success': True, 'message': 'Medical access requested successfully', 'access': serializer.data}, 'status': 201}
 

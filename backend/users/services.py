@@ -247,6 +247,19 @@ class AuthService:
         return {'data' : {'success' : True, 'message' : 'Password updated'}, 'status' : 200}
 
     @staticmethod
+    def toggle2FA(user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            user.two_factor_enabled = not user.two_factor_enabled
+            user.save()
+            return {'data': {'success': True, 'message': 'Two factor authentication updated successfully', 'two_factor_enabled': user.two_factor_enabled}, 'status': 200}
+        
+        except User.DoesNotExist:
+            return {'data': {'success': False, 'message': 'User not found'}, 'status': 404}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+
+    @staticmethod
     def delete_user_account(user):
         if user.is_deleted:
             return  {'data':{"success": False,"message": "Account already deleted"}, 'status' : 400}

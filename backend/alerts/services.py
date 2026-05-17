@@ -62,7 +62,7 @@ class AlertService:
                             time = schedule.dose_time.strftime("%H:%M")
                             result = send_medication_reminder_email(patient_email, medication_name, patient_name, time)
                             if result:
-                                Alert.objects.create(type='REMINDER', message=f"Medication reminder: Take {medication_name} at {time}", level='INFO', status='NEW', user=User.objects.get(email=patient_email))
+                                Alert.objects.create(type='REMINDER', message=f"Medication reminder: Take {medication_name} at {time}", level='INFO', status='NEW', user=treatment.patient.user)
                                 schedule.last_sent_at = now
                                 schedule.save(update_fields=['last_sent_at'])
                                 send_push_notification_to_user(
@@ -71,7 +71,7 @@ class AlertService:
                                     body=f"You have a medication reminder to take medication",
                                 )
 
-                    break  # Only check the next upcoming dose for each treatment
+                    #break  # Only check the next upcoming dose for each treatment
             return {'data': {'success': True, 'message': 'Medication reminders processed successfully'}, 'status': 200}
         
         except IntegrityError:
@@ -97,7 +97,6 @@ class AlertService:
                 appointment_time = appointment.appointment_date.strftime("%Y-%m-%d %H:%M")
                 result = send_appointment_reminder_email(patient_email, patient_name, doctor_name, appointment_time)
                 if result:
-                    print('aaaa')
                     Alert.objects.create(type='REMINDER', message=f"Appointment reminder: You have an appointment with Dr. {doctor_name} on {appointment_time}", level='INFO', status='NEW', user=appointment.patient.user)
                     appointment.is_reminder_sent = True
                     appointment.save(update_fields=['is_reminder_sent'])
@@ -137,8 +136,7 @@ class AlertService:
                     missing_measurements_str = ", ".join(missing_measurements)
                     result = send_missing_measurement_email(patient_email, patient_name, missing_measurements_str)
                     if result:
-                        Alert.objects.create(type='SYSTEM', message=f"Missing measurements alert: You have not recorded {missing_measurements_str} measurements in the last 7 days. Please update your measurements.", level='WARNING', status='NEW', user=User.objects.get(email=patient_email))
-
+                        Alert.objects.create(type='SYSTEM', message=f"Missing measurements alert: You have not recorded {missing_measurements_str} measurements in the last 7 days. Please update your measurements.", level='WARNING', status='NEW', user=patient.user)
             return {'data': {'success': True, 'message': 'Missing measurements alerts processed successfully'}, 'status': 200}
 
         except IntegrityError:
@@ -163,7 +161,7 @@ class AlertService:
                 appointment_time = appointment.appointment_date.strftime("%Y-%m-%d %H:%M")
                 result = send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name, doctor_email, appointment_time)
                 if result:
-                    Alert.objects.create(type='SYSTEM', message=f"Unconfirmed appointment alert: You have a pending appointment with Dr. {doctor_name} on {appointment_time}. Please confirm or reschedule.", level='WARNING', status='NEW', user=User.objects.get(email=patient_email))
+                    Alert.objects.create(type='SYSTEM', message=f"Unconfirmed appointment alert: You have a pending appointment with Dr. {doctor_name} on {appointment_time}. Please confirm or reschedule.", level='WARNING', status='NEW', user=appointment.patient.user)
 
             return {'data': {'success': True, 'message': 'Unconfirmed appointment alerts processed successfully'}, 'status': 200}
 
@@ -188,8 +186,7 @@ class AlertService:
                     patient_name = pregnancy.patient.user.first_name + " " + pregnancy.patient.user.last_name
                     result = send_pregnancy_no_appointment_email(patient_email, patient_name)
                     if result:
-                        Alert.objects.create(type='SYSTEM', message=f"No appointment alert: You have not had an appointment in the last 14 days for pregnancy {pregnancy.id}. Please schedule an appointment.", level='WARNING', status='NEW', user=User.objects.get(email=patient_email))
-
+                        Alert.objects.create(type='SYSTEM', message=f"No appointment alert: You have not had an appointment in the last 14 days for pregnancy {pregnancy.id}. Please schedule an appointment.", level='WARNING', status='NEW', user= pregnancy.patient.user)
             return {'data': {'success': True, 'message': 'Pregnancy no-appointment alerts processed successfully'}, 'status': 200}
 
         except IntegrityError:
@@ -202,18 +199,32 @@ class AlertService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
     @staticmethod
-    def getAlertsByUser(user_id, request):
+    def getAlertsByUser(user_id, request, type_filter=None, level_filter=None, status_filter=None, order='desc'):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return {'data': {'success': False, 'message': 'User not found'}, 'status': 404}
-        
+
         try:
-            alerts = Alert.objects.filter(user=user).order_by('-created_at')
+            alerts = Alert.objects.filter(user=user)
+
+            if type_filter:
+                alerts = alerts.filter(type=type_filter)
+            if level_filter:
+                alerts = alerts.filter(level=level_filter)
+            if status_filter:
+                alerts = alerts.filter(status=status_filter)
+
+            if order == 'asc':
+                alerts = alerts.order_by('created_at')
+            else:
+                alerts = alerts.order_by('-created_at')
+
             paginator = PageNumberPagination()
             result = paginator.paginate_queryset(alerts, request)
             serializer = AlertSerializer(result, many=True)
             return {'data': paginator.get_paginated_response(serializer.data).data, 'status': 200}
+
         except DatabaseError:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
         except Exception as e:

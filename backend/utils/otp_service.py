@@ -20,5 +20,6 @@ class OTPService:
 
     @staticmethod
     def is_expired(expires_at):
-
+        if not expires_at:
+            return False
         return timezone.now() > expires_at

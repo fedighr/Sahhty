@@ -166,7 +166,6 @@ def add_features(df):
 def predict_risk(data):
     try:
         values = validate_and_prepare_input(data)
-        print("Validated and prepared input:", values)
 
         if values["SystolicBP"] is not None and values["DiastolicBP"] is not None:
             if values["SystolicBP"] <= values["DiastolicBP"]:

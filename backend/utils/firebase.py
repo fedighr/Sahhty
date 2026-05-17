@@ -15,7 +15,6 @@ if not firebase_admin._apps:
 
 def send_push_notification(token, title, body, data=None):
     try:
-        print("aaaaa")
         message = messaging.Message(
             notification=messaging.Notification(
                 title=title,

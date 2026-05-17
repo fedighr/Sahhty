@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import sys
 from datetime import timedelta
 from urllib.parse import urlparse, parse_qsl
 
@@ -52,7 +53,9 @@ INSTALLED_APPS = [
     'appointments',
     'medications',
     'medical_files',
+    'channels',
     'dci',
+    'notifications',
 ]
 
 REST_FRAMEWORK = {
@@ -109,18 +112,20 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
 CORS_ALLOW_ALL_ORIGINS = True
 EVENTSTREAM_STORAGE_CLASS = 'django_eventstream.storage.DjangoStorage'
-"""
+
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
     }
 }
-"""
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -139,6 +144,17 @@ DATABASES = {
     }
 }
 
+if 'pytest' in sys.modules:
+    testPostgres = urlparse("postgresql://neondb_owner:npg_UczmkV2pHSu5@ep-cool-recipe-ad4xrbbw-pooler.c-2.us-east-1.aws.neon.tech/Sahhty?sslmode=require&channel_binding=require")
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': testPostgres.path.replace('/', ''),
+        'USER': testPostgres.username,
+        'PASSWORD': testPostgres.password,
+        'HOST': testPostgres.hostname,
+        'PORT': 5432,
+        'OPTIONS': dict(parse_qsl(testPostgres.query)),
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

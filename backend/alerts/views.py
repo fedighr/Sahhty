@@ -54,7 +54,14 @@ class AlertView(ViewSet):
     # This endpoints made for frontend to get the alerts for a specific user and mark them as read when the user opens them, they are not called by the services
     @action(detail=True, methods=['get'], permission_classes=[AllowAny])
     def get_alerts_by_user(self, request, pk=None):
-        result = AlertService.getAlertsByUser(pk, request)
+        if not pk:
+            return Response({'success': False, 'message': 'User ID is required'}, status=400)
+        
+        type_filter = request.query_params.get('type', None)
+        level_filter = request.query_params.get('level', None)
+        status_filter = request.query_params.get('status', None)
+        order = request.query_params.get('order', 'desc')
+        result = AlertService.getAlertsByUser(pk, request, type_filter, level_filter, status_filter, order)
         return Response(result['data'], status=result['status'])
 
     @action(detail=True, methods=['patch'], url_path='mark_as_read', permission_classes=[AllowAny])

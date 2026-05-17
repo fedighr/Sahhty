@@ -5,8 +5,8 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.db import IntegrityError, DatabaseError
-from .models import Patient, MenstrualCycle
-from .serializers import PatientSerializer, MenstrualCycleSerializer
+from .models import Patient, MenstrualCycle, PeriodEntry
+from .serializers import PatientSerializer, MenstrualCycleSerializer, PeriodEntrySerializer
 from users.serializers import EmailSerializer
 from .services import PatientService
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
@@ -66,3 +66,39 @@ class PatientView(ViewSet):
         serializer = PatientSerializer(result, many=True)
         return paginator.get_paginated_response(serializer.data)
     
+    @extend_schema(request=MenstrualCycleSerializer, responses=MenstrualCycleSerializer)
+    @action(detail=True, methods=['get'], url_path='menstrual_cycle', permission_classes=[AllowAny])
+    def get_menstrual_cycle(self, request, pk=None):
+        result = PatientService.getMenstrualCycle(pk)
+        return Response(result['data'], result['status'])
+
+    @extend_schema(request=MenstrualCycleSerializer, responses=MenstrualCycleSerializer)
+    @action(detail=True, methods=['patch'], url_path='menstrual_cycle/update', permission_classes=[AllowAny])
+    def update_menstrual_cycle(self, request, pk=None):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        result = PatientService.updateMenstrualCycle(pk, request.data)
+        return Response(result['data'], result['status'])
+
+    @extend_schema(request=PeriodEntrySerializer, responses=PeriodEntrySerializer)
+    @action(detail=True, methods=['post'], url_path='menstrual_cycle/log_period', permission_classes=[AllowAny])
+    def log_period(self, request, pk=None):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        result = PatientService.logPeriod(pk, request.data)
+        return Response(result['data'], result['status'])
+
+    @extend_schema(request=PeriodEntrySerializer, responses=PeriodEntrySerializer)
+    @action(detail=True, methods=['patch'], url_path='menstrual_cycle/end_period', permission_classes=[AllowAny])
+    def end_period(self, request, pk=None):
+        if not request.data:
+            return Response({'success': False, 'message': 'No data provided'}, status=400)
+        
+        result = PatientService.endPeriod(pk, request.data)
+        return Response(result['data'], result['status'])
+
+    @extend_schema(responses=PeriodEntrySerializer)
+    @action(detail=True, methods=['get'], url_path='menstrual_cycle/periods', permission_classes=[AllowAny])
+    def get_periods(self, request, pk=None):
+        result = PatientService.getPeriods(pk)
+        return Response(result['data'], result['status'])
