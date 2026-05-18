@@ -1,0 +1,7644 @@
+Dedications
+
+“
+
+I dedicate this work to those who have shaped who I am today.
+
+To my dear parents, whose unconditional love, endless
+sacrifices,and unwavering belief in me have been the foundation of
+every achievement in my life. No words could ever express the
+depth of my gratitude.Everything I am, I owe to you.
+
+To my brothers, for their constant encouragement,their patience,
+and for always standing by my side through every challenge.
+
+To my friends, for the laughter, the late nights, and the shared
+moments that made this journey not only bearable but truly
+memorable.
+
+To my binôme Manar, for her dedication, resilience, and the
+countless hours we spent side by side building something we are
+both proud of.
+
+To everyone who believed in me when I doubted myself . this is for
+you.
+
+”
+
+- Bilel Soudani
+
+i
+
+ii
+
+“
+
+I dedicate this work to the people who give meaning to my journey.
+
+To my parents, Monia and Neji, my foundation, my strength,
+and my greatest blessing. Your love, sacrifices, and endless prayers
+have shaped who I am today. This achievement is as much yours as
+it is mine.
+
+To my sisters, Maleek and Lamiss, my lifelong companions and
+my deepest bond ,Thank you for your unconditional love, your
+presence, and the comfort only sisters can bring.
+
+To my housemates in Sousse, my second home ,my daily
+comfort. We shared more than a place ,thank you for turning
+everyday struggles into lighter moments and shared memories.
+
+To my friends from Monastir, for your love, your support, and
+the bond that distance has never weakened. You have always been
+there when it mattered most.
+
+To Rayan Khairi, my safe place in human form. Thank you for
+your unwavering belief in me, your patience, and your presence
+through every high and low.
+
+To my binôme Bilel, fThank you for the incredible teamwork, the
+shared stress, and the success we built together. Our collaboration
+has been one of the most rewarding experiences of my academic
+journey.
+
+To my family and friends, for their love and constant supprt, near
+or far.
+
+— In Loving Memory —
+To my uncle, Mohsen Eltaief. You left us too soon, but your spirit
+never did. You were full of life, full of wisdom, and full of a joy that
+touched everyone around you.I hope wherever you are, you can see
+this and smile. Rest in peace, uncle. This one is for you.
+
+”
+
+-Manar Messaoudi
+
+Acknowledgements
+
+First and foremost, we would like to express our deepest gratitude to God Almighty for
+granting us the strength, patience, and perseverance needed to bring this project to comple-
+tion.
+
+We extend our sincere and heartfelt thanks to our academic supervisor, Mr. Ala Eddin
+Kharrat, for his invaluable guidance, insightful feedback, and continuous support through-
+out the entire duration of this project. His expertise and rigorous academic standards have
+been instrumental in shaping both the direction and the quality of our work. We are deeply
+grateful for his availability, his constructive critiques, and his genuine commitment to our
+success.
+
+We would also like to express our profound appreciation to our professional supervisor,
+Mr. Aziz Moussa, for his mentorship and practical guidance during our internship at Satisfy
+Insight. His industry experience and thoughtful advice helped us navigate the challenges
+of real-world software development and bridge the gap between academic knowledge and
+professional practice.
+
+Our warmest thanks go to Mr. Kantaoui Gallas, founder and director of Satisfy Insight,
+for welcoming us into his company and providing us with the opportunity to carry out this
+project in a dynamic and innovation-driven environment. His trust in our abilities and his
+willingness to support a student-led initiative have been deeply appreciated.
+
+We are also grateful to the members of the jury for the honor they bestow upon us
+by agreeing to evaluate this work. Their time, expertise, and constructive evaluation are
+invaluable to our academic and professional growth.
+
+We wish to express our gratitude to all the professors and staff of ESSTHS who have
+contributed to our education and formation throughout these years. The knowledge and
+skills we have acquired under their guidance have been the foundation upon which this
+project was built.
+
+Finally, we would like to thank our families for their unwavering love, encouragement,
+and support. Their sacrifices and belief in us have been our greatest source of motivation.
+To our friends and colleagues who have accompanied us on this journey, we extend our
+warmest appreciation for their solidarity and encouragement.
+
+Bilel Soudani & Manar Messaoudi
+May 2026
+
+iii
+
+Contents
+
+Dedications
+
+Acknowledgements
+
+General Introduction
+
+1 Project Foundations: Context, Analysis, and Methodology
+
+1.1
+
+Introduction . .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.2 Host Company Presentation: Satisfy Insight . . . . . . . . . . . . . . . . . . . .
+
+1.2.1 General Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.2.2 About Satisfy Insight . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.2.3 Why Satisfy Insight? . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.2.4 Course of the Internship . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.3 Project Context
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.3.1 General Context . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.3.2
+
+Formal Problem Statement
+
+. . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.3.3 Analysis of Existing Solutions . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.3.4 Proposed Solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.4 Project Management and Methodology . . . . . . . . . . . . . . . . . . . . . .
+
+1.4.1 The Agile Choice .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.4.2
+
+Sprint Execution Framework . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.4.3
+
+Sprint Planning and Deliverables . . . . . . . . . . . . . . . . . . . . . .
+
+1.4.4 Backlog Management and Task Prioritization . . . . . . . . . . . . . . .
+
+1.4.5 Project Planning and Timeline Management
+
+. . . . . . . . . . . . . . .
+
+1.5 Conclusion . .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2 Requirements Analysis and Specification
+
+2.1
+
+Introduction . .
+
+.
+
+.
+
+.
+
+2.2 Actor Identification .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.3 Functional Requirements .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+iv
+
+i
+
+iii
+
+1
+
+2
+
+2
+
+2
+
+2
+
+3
+
+4
+
+4
+
+5
+
+5
+
+5
+
+6
+
+9
+
+11
+
+11
+
+12
+
+12
+
+13
+
+15
+
+16
+
+17
+
+17
+
+17
+
+18
+
+Contents
+
+2.3.1 Authentication and Account Management
+
+. . . . . . . . . . . . . . . .
+
+2.3.2 Account Suspension System . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.3.3 User Profiles . .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.3.4 Map-Based Discovery . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.3.5 AI-Assisted Features . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.3.6
+
+Service Request Lifecycle . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.3.7 Real-Time Chat and Price Negotiation . . . . . . . . . . . . . . . . . . .
+
+2.3.8 Live GPS Tracking . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.3.9 Ratings System . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.3.10 Moderator Dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.4 Non-Functional Requirements . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.4.1 Performance .
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.4.2
+
+Security . .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.4.3
+
+Scalability .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.4.4 Privacy .
+
+. .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.4.5 Compatibility .
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.5 Requirements Modeling .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.5.1 UML Modeling Language . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.5.2 Global Use Case Diagram . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.6 Wireframes .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.6.1 Homepage .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.6.2
+
+Service Map Interface . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.6.3
+
+Service Request Interface . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.6.4 Chat and Negotiation Interface . . . . . . . . . . . . . . . . . . . . . . .
+
+2.6.5 Live Tracking Interface . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.6.6 Moderator Dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.7 Conclusion .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3 System Design and Modeling
+
+3.1
+
+Introduction .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.2 Modeling Methodology .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.2.1 Limitations of Traditional Modeling Approaches . . . . . . . . . . . . .
+
+3.2.2 Overview of the C4 Model . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.2.3 Why the C4 Model for Khadamni
+
+. . . . . . . . . . . . . . . . . . . . .
+
+3.3
+
+level 1
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.3.1 Overview of the Level
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+v
+
+18
+
+19
+
+20
+
+20
+
+22
+
+23
+
+24
+
+25
+
+25
+
+26
+
+27
+
+27
+
+28
+
+29
+
+30
+
+30
+
+31
+
+31
+
+31
+
+32
+
+32
+
+34
+
+34
+
+35
+
+35
+
+36
+
+36
+
+38
+
+38
+
+38
+
+38
+
+39
+
+40
+
+40
+
+40
+
+Contents
+
+3.3.2
+
+System Context Diagram . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.3.3 Actors of the System . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.3.4 External Systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.3.5
+
+Interactions with the System . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.4
+
+level 2 .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.4.1 Overview of the Level
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.4.2 Container Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.4.3 Description of Internal Containers . . . . . . . . . . . . . . . . . . . . .
+
+3.4.4
+
+Interactions Between Components . . . . . . . . . . . . . . . . . . . . .
+
+3.5
+
+level 3 .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.5.1 Overview of the Level
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.5.2 Actors and Entry Points . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.5.3 Controllers Layer .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.5.4
+
+Services Layer .
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.5.5 Repository Layer .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.5.6
+
+Interactions Between Components . . . . . . . . . . . . . . . . . . . . .
+
+3.6
+
+level 4
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.6.1 Overview of the Level
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.6.2 Auth Service . .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.6.3 Provider Service . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.6.4 Request Service .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.6.5 Chat Service .
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.6.6 Moderator Service . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.7 Conclusion .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4 Solution implementation and evaluation
+
+4.1
+
+Introduction .
+
+. .
+
+.
+
+.
+
+.
+
+4.2 Environmental Setup .
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.2.1
+
+Software Setup .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.3
+
+Interface Presentation .
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.3.1 Registration and Login . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.3.2 Provider Map .
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.3.3 Provider Profile . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.3.4
+
+Service Request and Chat
+
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.3.5 Price Negotiation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.3.6 Live Tracking .
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+vi
+
+41
+
+41
+
+42
+
+42
+
+42
+
+43
+
+43
+
+43
+
+44
+
+45
+
+45
+
+46
+
+46
+
+47
+
+47
+
+48
+
+48
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+55
+
+55
+
+55
+
+61
+
+61
+
+62
+
+62
+
+63
+
+64
+
+65
+
+Contents
+
+4.3.7 Notifications .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.3.8 Moderator Dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.4 AI Integration .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.4.1 Overview .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.4.2
+
+Feature 1 : Automatic Request Analysis . . . . . . . . . . . . . . . . . .
+
+4.4.3
+
+Feature 2 : AI-Assisted Dispute Mediation . . . . . . . . . . . . . . . .
+
+4.4.4 Provider Recommendation Scoring . . . . . . . . . . . . . . . . . . . .
+
+4.4.5 Technical Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.5 Conclusion .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5 Tests and Validation
+
+5.1
+
+Introduction .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.2 Testing Strategy and Methodology . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.3 Testing Environment
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.3.1 Hardware Environment
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.3.2
+
+Software Environment . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.3.3 Testing Tools
+
+.
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.3.4 Test Data Preparation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.4 Unit Testing .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.4.1 Objective . .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.4.2 Test Automation: Password Hashing Verification . . . . . . . . . . . .
+
+5.5 Functional Testing .
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.5.1 Objective . .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.5.2 Requirements Traceability Matrix . . . . . . . . . . . . . . . . . . . . .
+
+5.5.3 Detailed Functional Test Cases . . . . . . . . . . . . . . . . . . . . . . .
+
+5.6
+
+Integration Testing .
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.6.1 Objective . .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.6.2
+
+Frontend-Backend Integration . . . . . . . . . . . . . . . . . . . . . . .
+
+5.6.3 External Service Resilience Testing . . . . . . . . . . . . . . . . . . . . .
+
+5.6.4 External Service Resilience Summary . . . . . . . . . . . . . . . . . . .
+
+5.7 Automated Testing Strategy . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.7.1 Automation Approach . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.7.2 Automated Test Suite
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.7.3 Test Execution .
+
+5.8
+
+Security Testing .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.8.1 Objective . .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+vii
+
+65
+
+66
+
+68
+
+68
+
+68
+
+68
+
+69
+
+70
+
+70
+
+71
+
+71
+
+71
+
+72
+
+72
+
+73
+
+73
+
+74
+
+74
+
+74
+
+74
+
+75
+
+75
+
+75
+
+78
+
+79
+
+79
+
+79
+
+80
+
+82
+
+83
+
+83
+
+83
+
+84
+
+84
+
+84
+
+Contents
+
+5.8.2 Detailed Security Test Scenarios
+
+. . . . . . . . . . . . . . . . . . . . . .
+
+5.8.3
+
+Security Test Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.9 Performance Testing .
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.9.1 Objective . .
+
+. .
+
+. .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.9.2 Performance Testing Tool
+
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.9.3
+
+System Under Test -Characteristics . . . . . . . . . . . . . . . . . . . . .
+
+5.9.4 Detailed Performance Test Scenarios . . . . . . . . . . . . . . . . . . . .
+
+5.9.5 Performance Results Summary . . . . . . . . . . . . . . . . . . . . . . .
+
+5.10 Quality Metrics and Assessment
+
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.10.1 Test Execution Metrics . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.10.2 Defect Analysis .
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.10.3 Coverage Metrics .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.10.4 Strengths Identified . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.10.5 Limitations and Recommendations
+
+. . . . . . . . . . . . . . . . . . . .
+
+5.11 Conclusion .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+General Conclusion
+
+Webography
+
+viii
+
+85
+
+87
+
+88
+
+88
+
+88
+
+88
+
+88
+
+91
+
+92
+
+92
+
+93
+
+93
+
+93
+
+94
+
+94
+
+95
+
+97
+
+List of Tables
+
+1.1 TRUST-based evaluation of existing service platforms . . . . . . . . . . . . . .
+
+1.2 Feature comparison of existing platforms . . . . . . . . . . . . . . . . . . . . .
+
+1.3
+
+Structured sprint planning and deliverables . . . . . . . . . . . . . . . . . . . .
+
+1.4 Backlog prioritization model based on multi-criteria evaluation . . . . . . . .
+
+1.5 Gantt Chart - Khadamni Project Planning . . . . . . . . . . . . . . . . . . . . .
+
+7
+
+8
+
+13
+
+14
+
+15
+
+4.1 AI integration technical summary . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+70
+
+5.1 Test planning timeline and phase distribution . . . . . . . . . . . . . . . . . . .
+
+5.2 Hardware environment used for testing . . . . . . . . . . . . . . . . . . . . . .
+
+5.3 Testing tools and their associated test levels . . . . . . . . . . . . . . . . . . . .
+
+5.4 Test dataset generated by seed.py . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.5 UT-001 -Password hashing and verification unit test . . . . . . . . . . . . . . .
+
+5.6 Functional requirements traceability matrix -Part 1 (FR-1 to FR-11)
+
+. . . . . .
+
+5.7 Functional requirements traceability matrix -Part 2 (FR-12 to FR-21) . . . . . .
+
+5.8 FT-003 -Two-factor authentication validation . . . . . . . . . . . . . . . . . . .
+
+5.9 FT-014 -Request lifecycle state machine validation . . . . . . . . . . . . . . . .
+
+5.10 FT-010 -AI request analysis validation . . . . . . . . . . . . . . . . . . . . . . .
+
+5.11 IT-001- Authentication integration . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.12 IT-002- WebSocket chat integration . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.13 IT-003- Groq AI timeout and fallback validation . . . . . . . . . . . . . . . . .
+
+5.14 IT-004 -Nominatim unavailability and fallback validation . . . . . . . . . . . .
+
+5.15 IT-005 -OSRM routing failure and fallback validation . . . . . . . . . . . . . .
+
+5.16 External service resilience test summary . . . . . . . . . . . . . . . . . . . . . .
+
+5.17 Test automation distribution . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.18 SEC-001 - OTP expiry enforcement . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.19 SEC-002 -OTP single-use enforcement
+
+. . . . . . . . . . . . . . . . . . . . . . .
+
+5.20 SEC-003 -JWT verification on protected routes
+
+. . . . . . . . . . . . . . . . . .
+
+5.21 SEC-004 -Role-based access control . . . . . . . . . . . . . . . . . . . . . . . . .
+
+72
+
+73
+
+73
+
+74
+
+74
+
+76
+
+77
+
+78
+
+78
+
+79
+
+80
+
+80
+
+81
+
+82
+
+82
+
+83
+
+83
+
+85
+
+85
+
+86
+
+86
+
+ix
+
+List of Tables
+
+5.22 SEC-005 -Suspended account login block . . . . . . . . . . . . . . . . . . . . .
+
+5.23 Security test results summary with NFR traceability . . . . . . . . . . . . . . .
+
+5.24 System under test -configuration characteristics
+
+. . . . . . . . . . . . . . . . .
+
+5.25 PERF-001 -Normal operating load . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.26 PERF-002 -Peak load simulation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.27 PERF-003 -Stress test (500 concurrent users) . . . . . . . . . . . . . . . . . . . .
+
+5.28 PERF-004 -WebSocket real-time latency . . . . . . . . . . . . . . . . . . . . . .
+
+5.29 PERF-005 -AI analysis under concurrent load . . . . . . . . . . . . . . . . . . .
+
+5.30 PERF-006 -Geospatial provider search performance . . . . . . . . . . . . . . .
+
+5.31 Performance testing results summary . . . . . . . . . . . . . . . . . . . . . . .
+
+5.32 Test execution metrics summary . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.33 Defect tracking log .
+
+.
+
+5.34 Test coverage metrics .
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+x
+
+87
+
+87
+
+88
+
+89
+
+89
+
+90
+
+90
+
+91
+
+91
+
+92
+
+92
+
+93
+
+93
+
+List of Figures
+
+1.1
+
+Satisfy Insight Institutional Identity . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.2 Fiverr logo . .
+
+. .
+
+1.3 UpWork logo . .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+1.4
+
+InDrive platform logo .
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1.5 TaskRabbit platform logo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3
+
+6
+
+6
+
+6
+
+7
+
+1.6
+
+Iterative Agile development cycle . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+11
+
+2.1 Unified Modeling Language Logo . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.2 Global Use Case Diagram of the Khadamni Platform . . . . . . . . . . . . . .
+
+2.3 Homepage Interface 1/2 .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.4 Homepage Interface 2/2 .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.5
+
+2.6
+
+Service Map Interface .
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+Service Request Interface .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.7 Chat and Negotiation Interface . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.8 Live Tracking Interface .
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2.9 Moderator Dashboard Interface . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.1 Example of C4 modeling .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.2 C4 Level 1 - System Context Diagram . . . . . . . . . . . . . . . . . . . . . . .
+
+3.3 C4 Level 2 - Container Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.4 C4 Level 3 - Component Diagram . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.5 C4 Level 4 - auth-service .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.6 C4 Level 4 - provider-service
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.7 C4 Level 4- request-service . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.8 C4 Level 4 - chat-request .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3.9 C4 Level 4 - moderator-service . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.1 VS Code logo .
+
+4.2 Git logo .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+4.3 GitHub logo .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+31
+
+32
+
+33
+
+33
+
+34
+
+34
+
+35
+
+35
+
+36
+
+39
+
+41
+
+43
+
+46
+
+49
+
+50
+
+51
+
+52
+
+53
+
+55
+
+56
+
+56
+
+xi
+
+List of Figures
+
+4.4 Postman logo .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.5 MongoDB Compass logo .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.6 Overleaf logo . .
+
+4.7 Draw.io logo .
+
+. .
+
+4.8
+
+Structurizr logo .
+
+4.9 React logo .
+
+.
+
+.
+
+4.10 Vite logo . .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+4.11 Tailwind CSS logo .
+
+4.12 React Router logo .
+
+4.13 Leaflet logo . .
+
+. .
+
+4.14 Axios logo .
+
+.
+
+4.15 Python logo .
+
+4.16 FastAPI logo .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+4.17 WebSocket logo .
+
+4.18 JWT logo . .
+
+. .
+
+.
+
+4.19 MongoDB logo .
+
+4.20 Groq logo .
+
+.
+
+.
+
+.
+
+.
+
+4.21 Nominatim logo .
+
+4.22 OSRM logo .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.23 Login and registration interface . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.24 Provider search map interface . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.25 Provider profile interface 1/2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.26 Provider profile interface 2/2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.27 Service request and chat interface . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.28 Price negotiation interface - provider offer . . . . . . . . . . . . . . . . . . . . .
+
+4.29 Price negotiation interface - mutual confirmation . . . . . . . . . . . . . . . . .
+
+4.30 Live job tracking interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.31 Notifications interface - request updates . . . . . . . . . . . . . . . . . . . . . .
+
+4.32 Notifications interface -system alerts . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.33 Moderator dashboard - platform statistics . . . . . . . . . . . . . . . . . . . . .
+
+4.34 Moderator dashboard - user management . . . . . . . . . . . . . . . . . . . . .
+
+4.35 Moderator dashboard - dispute reports
+
+. . . . . . . . . . . . . . . . . . . . . .
+
+5.1 V-model testing .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.2 Automated unit test script . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.3 Result of the test .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5.4 Automated test suite execution -12 tests passing . . . . . . . . . . . . . . . . .
+
+xii
+
+56
+
+56
+
+57
+
+57
+
+57
+
+57
+
+58
+
+58
+
+58
+
+58
+
+58
+
+59
+
+59
+
+59
+
+59
+
+60
+
+60
+
+60
+
+60
+
+61
+
+62
+
+62
+
+63
+
+63
+
+64
+
+64
+
+65
+
+65
+
+66
+
+66
+
+67
+
+67
+
+71
+
+75
+
+75
+
+84
+
+General Introduction
+
+The rapid growth of digital platforms has significantly transformed the service economy,
+making it easier and faster for users to find and access services. Today, people can dis-
+cover, compare, and request services online with just a few clicks. However, despite these
+advancements, the service marketplace remains fragmented. Users often need to switch be-
+tween multiple platforms to meet different needs, each with its own rules, pricing systems,
+and limited communication features. At the same time, service providers face challenges in
+gaining visibility and reaching a wider audience across different types of services.
+
+This fragmentation is even more noticeable in emerging digital markets, where existing
+solutions are not always adapted to local needs. As a result, there is a clear gap between
+what users expect and what current platforms can offer. This situation highlights the need
+for a unified and intelligent service marketplace that can bring together different types of
+services, support both local and remote interactions, and provide a more seamless and effi-
+cient user experience.
+
+This project was carried out at Satisfy Insight, a Tunisian startup specializing in data-
+driven technological solutions. It was conducted as part of a final-year internship in partial
+fulfillment of the Bachelor’s degree in Computer Science, specializing in Software Engineer-
+ing, at the Higher Institute of Sciences and Technology of Hammam Sousse (ESSTHS).
+
+The internship lasted three months, from February 1 to April 30, and allowed the ap-
+plication of academic knowledge through a real-world project. Khadamni is an integrated
+service marketplace designed to unify various service interactions within a single place.
+The platform addresses a simple yet ambitious question: what would it look like if all service
+interactions local and remote, across all categories could happen in one place, in real time, with the
+intelligence and flexibility that modern users expect?
+
+The development of Khadamni follows an Agile approach based on iterative sprints.
+The platform is built using modern technologies, including React and Vite for the frontend,
+FastAPI for the backend, MongoDB for data management, and WebSocket for real-time com-
+munication.
+
+This report presents the full development process. Chapter 1 introduces the project con-
+text and methodology. Chapter 2 details the system requirements. Chapter 3 presents the
+system design using the C4 model. Chapter 4 describes the implementation, and Chapter 5
+covers testing and validation.
+
+Overall, this work aims to deliver a modern solution that improves service interactions
+
+while demonstrating a structured software engineering approach.
+
+1
+
+Chapter 1
+
+Project Foundations: Context, Analysis,
+and Methodology
+
+1.1
+
+Introduction
+
+This chapter presents the foundational context of the project by introducing the host com-
+pany, Satisfy Insight, and outlining its relevance to the work carried out. It then defines
+the general context and problem addressed, highlighting the limitations of existing service
+platforms.
+
+A comparative analysis of current solutions is conducted to identify gaps in the market
+and justify the need for a new approach. Based on this analysis, the proposed platform is
+presented along with its key objectives and innovative aspects.
+
+Finally, the chapter introduces the development methodology and planning strategy
+
+adopted, providing a structured framework for the realization of the project.
+
+1.2 Host Company Presentation: Satisfy Insight
+
+The success of a professional engineering project is deeply influenced by the environment
+in which it is conceived. This section introduces Satisfy Insight, the startup that hosted this
+internship, providing context on its strategic positioning within the technology sector.
+
+1.2.1 General Overview
+
+Satisfy Insight is an innovative startup established in April 2024, headquartered in Sousse,
+Tunisia. Founded by Mr. Kantaoui Gallas, the company operates at the intersection of Data
+Science and Travel Technology (TravelTech). It specializes in delivering high-performance
+digital solutions tailored for the tourism industry, enabling businesses to leverage data for
+operational efficiency and strategic growth.
+
+2
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+3
+
+The company acts as a technological catalyst for various stakeholders, including hotels,
+travel agencies, and tour operators, helping them navigate the challenges of digital transfor-
+mation, as illustrated in Figure 1.1.
+
+Figure 1.1: Satisfy Insight Institutional Identity
+
+1.2.2 About Satisfy Insight
+
+This subsection presents the mission, vision, and core values that guide the company’s strat-
+egy and activities.
+
+Mission
+
+Satisfy Insight’s mission is to help tourism businesses turn their raw data into actionable
+insights. Concretely, this means:
+
+✓ Enhancing the use of data for informed strategic decision-making.
+✓ Optimizing pricing and revenue management strategies.
+✓ Personalizing the customer experience using behavioral data.
+✓ Increasing customer satisfaction and loyalty through data-driven insights.
+
+Strategic Vision
+
+Satisfy Insight aims to consolidate its position as a leader in the North African TravelTech
+ecosystem. Its vision includes:
+
+• Becoming a good partner for digital transformation in the tunisian tourism sector.
+• Fostering the development of open-source and proprietary AI solutions for public and
+
+private stakeholders.
+
+• Driving innovation in real-time data processing and decision-support systems.
+
+Core Professional Values
+
+The professional culture of the startup is governed by five fundamental values which inform
+its project selection and development standards:
+
+• Innovation: Continuous search for disruptive technological approaches.
+• Excellence: Commitment to high-quality code and data integrity.
+• User-Centricity: Prioritizing the end-user experience in every design decision.
+• Agility: Swift adaptation to emerging market technologies and client feedback.
+• Collaboration: Maintaining a horizontal communication structure between mentors
+
+and interns.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+4
+
+1.2.3 Why Satisfy Insight?
+
+Choosing a host company for a final year project is not an easy decision. Beyond the formal-
+ity of an internship agreement, we were looking for an environment that would genuinely
+support ambitious ideas not just assign tasks.
+
+Satisfy Insight stood out for exactly that reason. Despite operating primarily in the
+tourism and data analytics sector, the company’s leadership demonstrated a genuine open-
+ness to student-driven initiatives. From the first meeting, it was clear that the team valued
+creative thinking and was willing to support a project that went beyond their core activity.
+They did not simply offer a predefined subject ,they also believed in us and encouraged us
+to bring our own vision and helped shape it into something buildable and meaningful.
+
+This spirit of intellectual openness, combined with a startup culture that moves fast and
+embraces new ideas, made Satisfy Insight the right environment to design and develop a
+platform as ambitious as Khadamni.
+
+1.2.4 Course of the Internship
+
+The internship at Satisfy Insight was carried out over a period of three months in a pro-
+fessional and collaborative environment that encouraged continuous learning and improve-
+ment. Throughout the development of the Khadamni platform, the company provided con-
+stant guidance and support, allowing us to progressively transform the project from an ini-
+tial concept into a functional and structured solution.
+
+Regular meetings were organized with the professional supervisors to monitor the progress
+
+of the project and discuss the different technical and organizational challenges encountered
+during the development. Daily exchanges allowed quick feedback and continuous follow-
+up, while weekly meetings provided opportunities to evaluate completed tasks, define up-
+coming objectives, and validate important technical decisions.
+
+The supervisors played an essential role during the entire internship by reviewing our
+work, following our progress, suggesting improvements, and guiding us toward better de-
+velopment practices and architectural choices. Their support helped strengthen both our
+technical skills and our ability to work within a real professional environment following an
+Agile and iterative approach.
+
+Beyond the technical aspect, the internship also offered valuable experience in team-
+work, communication, time management, and problem solving. Working on a real-world
+project within a startup environment provided a deeper understanding of the software de-
+velopment lifecycle and the challenges involved in designing scalable and user-oriented
+digital solutions.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+5
+
+1.3 Project Context
+
+1.3.1 General Context
+
+The way people find services has changed dramatically over the last decade. Where people
+once relied on word of mouth or physical directories, they now turn to their phones, expect-
+ing to find a plumber, an electrician, or a delivery service in under two minutes. Digital
+platforms have made this possible, but not without friction.
+
+The market is fragmented. A user who needs a plumber today, a cleaner tomorrow, and
+a moving company next week must navigate three different platforms, create three different
+accounts, and hope that each provider is trustworthy. For providers, the situation is not
+much better: visibility is limited, communication is restricted, and price negotiation is often
+either absent or one-sided.
+
+This fragmentation does not only affect physical, in-person services. A growing segment
+of service providers work entirely remotely -tutors, graphic designers, IT consultants, and
+translators -and they face the same problem in reverse: the platforms that host them are
+either too niche or too crowded, leaving them with poor visibility and no way to connect
+with local clients who might prefer a hybrid or online arrangement.
+
+The question Khadamni sets out to answer is simple: what would it look like if all of these
+interactions local and remote, across all service categories happened in one place, in real time, with
+the flexibility of a direct conversation?
+
+1.3.2 Formal Problem Statement
+
+Despite the proliferation of online service platforms, users continue to face a set of recurring
+and unresolved problems:
+
+• Fragmented service discovery: Most platforms specialize in a single service category
+or job type. Users searching for diverse services or a mix of in-person and remote
+providers must maintain accounts on multiple platforms, increasing friction and re-
+ducing efficiency.
+
+• No unified space for local and remote services: Platforms that handle location-based
+services typically ignore remote workers, and platforms for freelancers typically ignore
+proximity. There is no single environment where a client can find a nearby plumber
+and a remote translator in the same search.
+
+• Limited real-time interaction: Communication between clients and providers is often
+asynchronous, delayed, or mediated through rigid request forms. There is rarely a
+space for genuine negotiation or clarification.
+
+• Weak trust mechanisms: Some platforms require sensitive identity documents dur-
+ing registration without clear data protection guarantees. Others provide insufficient
+information about provider reliability, making selection feel uncertain.
+
+• Inflexible pricing and cancellation: Fixed-price models or opaque fee structures leave
+users with little control. Cancellation policies are often punitive and poorly communi-
+cated.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+6
+
+Because of these limitations, users still lack a unified and flexible platform where they
+can easily find different services in one place, communicate directly with providers, and
+choose them with confidence.
+
+1.3.3 Analysis of Existing Solutions
+
+This section presents an analysis of existing platforms in the market comparable to our vi-
+sion .To understand what already exists, four representative platforms were studied: Fiverr,
+Upwork, InDrive Services, and TaskRabbit. These platforms were selected because they
+each represent a different approach to service exchange; from fixed-offer marketplaces to
+real-time location-based matching.
+
+• Fiverr: Fiverr is an online marketplace for digital services where providers create pre-
+
+defined offers that clients can select and purchase (Figure 1.2).
+
+Figure 1.2: Fiverr logo
+
+• Upwork: Upwork is a professional freelance platform connecting clients with free-
+lancers for project-based or long-term work (Figure 1.3). Clients post job offers, and
+freelancers submit proposals.
+
+Figure 1.3: UpWork logo
+
+• InDrive : InDrive Services is a request-and-offer platform where users submit service
+requests with a proposed price, and nearby service providers may accept or negotiate
+the offer, primarily in real time (Figure 1.4).
+
+Figure 1.4: InDrive platform logo
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+7
+
+• TaskRabbit: A platform connecting users with local service providers for everyday
+physical tasks such as cleaning, furniture assembly, and home repairs, using location-
+based matching (Figure 1.5).
+
+Figure 1.5: TaskRabbit platform logo
+
+Structural Evaluation: The TRUST Methodology
+
+To quantify the gaps in current solutions, we applied the TRUST method. This framework
+measures the maturity of a marketplace across five critical dimensions:
+
+• T - Transparency: Clarity of pricing, service information, and process visibility.
+
+• R - Reliability: The platform’s ability to ensure dependable service delivery.
+
+• U - User Control: Flexibility given to users in negotiation and decision-making.
+
+• S - Security: Strength of identity verification and data protection mechanisms.
+
+• T - Traceability: Ability to track service history, communications, and transactions.
+
+Each criterion in the TRUST framework is evaluated using a binary score: 1 when the feature
+is clearly supported, and 0 when it is weak or absent. This approach ensures a simple and
+consistent comparison across all platforms, as summarized in Table 1.1.
+
+Table 1.1: TRUST-based evaluation of existing service platforms
+
+Platform
+
+T R U S T Score
+
+Fiverr
+
+Upwork
+
+InDrive
+
+TaskRabbit
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+0
+
+1
+
+0
+
+1
+
+1
+
+1
+
+1
+
+1
+
+0
+
+1
+
+1
+
+1
+
+0
+
+1
+
+4/5
+
+5/5
+
+2/5
+
+5/5
+
+The comparison presented in Table 1.2 highlights the strengths and limitations of current
+service platforms. Upwork and TaskRabbit score highest, satisfying all five criteria. How-
+ever, both remain narrow in scope .Upwork is focused on remote professional freelancing,
+while TaskRabbit is limited to physical household tasks in specific cities. This observation
+justifies the need for a more comprehensive comparison, which will be introduced in the
+next section.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+8
+
+Evaluation and Comparative Analysis of Existing Platforms
+
+To go beyond structural descriptions, a feature-based comparison is used to evaluate the ac-
+tual capabilities offered by each platform. This allows a clearer understanding of functional
+gaps and overlapping strengths across the selected solutions.
+
+Table 1.2: Feature comparison of existing platforms
+
+Feature
+
+Fiverr Upwork InDrive TaskRabbit
+
+Real-time service requests
+
+Client price proposal
+
+Direct 1-to-1 chat negotiation
+
+Flexible service categories
+
+Location-based provider matching
+
+Remote service providers
+
+Local and remote in one platform
+
+Secure identity verification
+
+Rating and service history
+
+Flexible payment (cash/card)
+
+Fair cancellation policy
+
+AI-assisted search
+
+Live GPS tracking
+
+✗
+
+✗
+
+✓
+
+✗
+
+✗
+
+✓
+
+✗
+
+✓
+
+✓
+
+✗
+
+✗
+
+✗
+
+✗
+
+✗
+
+✓
+
+✓
+
+✗
+
+✗
+
+✓
+
+✗
+
+✓
+
+✓
+
+✗
+
+✓
+
+✗
+
+✗
+
+✓
+
+✓
+
+✓
+
+✗
+
+✓
+
+✗
+
+✗
+
+✗
+
+✓
+
+✓
+
+✗
+
+✗
+
+✓
+
+✓
+
+✓
+
+✓
+
+✓
+
+✓
+
+✗
+
+✗
+
+✓
+
+✓
+
+✓
+
+✓
+
+✗
+
+✗
+
+This comparison highlights that each platform provides only a partial coverage of the
+overall service marketplace needs. Fiverr and Upwork are mainly oriented toward remote
+freelance work and professional services, while InDrive and TaskRabbit are more focused
+on local and in-person tasks. However, none of them offers a unified ecosystem combining
+both service types.
+
+In addition, advanced capabilities such as AI-assisted request understanding, integrated
+real-time coordination, and seamless multi-service management remain absent across all
+studied platforms. This reinforces the observation that current solutions are fragmented,
+forcing users to rely on multiple platforms depending on the nature of their request.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+9
+
+Platform-by-Platform Evaluation
+
+InDrive is widely recognized for its real-time map integration and live location tracking fea-
+tures, which ensure efficient coordination between users and service providers. Its flexible
+price negotiation model also enhances transparency during service agreements. However,
+its scope remains limited mainly to transportation and simple local services, without deeper
+service management or intelligent request handling capabilities.
+
+Upwork stands out due to its strong professional ecosystem and detailed provider port-
+folios, allowing freelancers to showcase skills, past work, and client feedback. This sig-
+nificantly strengthens trust in remote service delivery. Nevertheless, the platform is not
+designed for in-place services or real-time geographic coordination, and it lacks integrated
+tracking and local service support.
+
+TaskRabbit focuses on simplifying access to local services such as home maintenance,
+cleaning, and physical assistance tasks.
+Its workflow is straightforward and efficient for
+quick service requests. However, it remains limited to predefined local tasks and does not
+provide support for remote services or advanced intelligent automation.
+
+Overall, the analysis shows that each platform excels in a specific dimension: InDrive
+in real-time tracking and negotiation, Upwork in professional portfolio management, and
+TaskRabbit in local service accessibility. However, none of them integrates these strengths
+into a single unified system.
+
+This fragmentation leads to a disconnected user experience, where different platforms
+must be used depending on the type of service required. Khadamni is designed to address
+this gap by combining intelligent assistance, real-time interaction, portfolio management,
+live tracking, and both local and remote services within a single integrated platform.
+
+1.3.4 Proposed Solution
+
+In response to the limitations identified in existing platforms such as Fiverr, Upwork, In-
+Drive, and TaskRabbit, this project proposes the development of Khadamni, an integrated
+and intelligent service marketplace designed to unify diverse service interactions within a
+single digital environment.
+
+Unlike current solutions that specialize in either remote freelancing or location-based ser-
+vices, Khadamni adopts an all-in-one approach, combining multiple service categories, in-
+teraction models, and advanced functionalities into a coherent and user-centered platform.
+The objective is to eliminate fragmentation and provide users with a seamless experience,
+where a single application is sufficient to discover, negotiate, and manage services in real
+time.
+
+At its core, the platform is built around a simple yet powerful principle: the user expresses
+a need in natural language, and the system orchestrates the rest. Instead of navigating multiple
+platforms or complex interfaces, the user interacts with Khadamni in an intuitive manner,
+allowing the system to interpret the request, identify the relevant service category, and con-
+nect them with appropriate providers.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+10
+
+Hybrid Service Model
+
+One of the most distinctive aspects of Khadamni is its hybrid service model, which enables
+the coexistence of two complementary types of providers within the same platform:
+
+• In-place providers: These providers offer physical, on-site services such as plumbing,
+electrical work, cleaning, painting, and delivery. They are represented as dynamic
+markers on an interactive map, allowing users to visualize nearby providers and track
+their movement in real time once a service is confirmed.
+
+• Remote providers: These providers deliver services entirely online, including tutor-
+ing, translation, IT support, graphic design, and consulting. They are accessible through
+a dedicated interface that complements the map, enabling users to connect with them
+regardless of geographic constraints.
+
+This dual structure ensures that both local and remote services are treated as first-class
+entities, overcoming a major limitation observed in existing platforms. It allows users to
+access a wider range of services without switching between multiple applications.
+
+User Experience and Accessibility
+
+Khadamni is designed with a strong emphasis on usability and accessibility. The interface
+prioritizes clarity and efficiency, enabling users to quickly identify and access the services
+they need. Advanced filtering mechanisms allow users to refine their search based on crite-
+ria such as service type, location, availability, and provider rating.
+
+In addition, the platform reduces cognitive load by automating several steps in the ser-
+vice discovery process. This results in a smoother and faster user journey, minimizing the
+time and effort required to find suitable providers.
+
+Key Innovative Features
+
+Khadamni distinguishes itself from existing platforms through the integration of modern
+technologies designed to improve user interaction, service management, and overall plat-
+form efficiency. The main innovative aspects of the solution include:
+
+• Intelligent service request assistance: The platform allows users to describe their
+needs naturally, while artificial intelligence helps interpret requests and simplify the
+service creation process.
+
+• Real-time communication: Clients and service providers can interact instantly within
+the platform, enabling smoother discussions and faster agreement on service details.
+• Location-based service support: The system integrates live location features to facili-
+
+tate service delivery and improve coordination between users and providers.
+
+• Trust and reputation management: A review and evaluation mechanism is imple-
+mented to encourage reliability, transparency, and service quality across the platform.
+• Smart dispute assistance: The platform provides support tools to help moderators
+
+manage conflicts and improve decision-making during dispute resolution.
+
+Khadamni is a unified service marketplace combining AI assistance, real-time interac-
+
+tion, and geolocation to deliver an efficient and reliable experience.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+11
+
+1.4 Project Management and Methodology
+
+This section presents the methodological framework adopted for the design and develop-
+ment of the Khadamni platform. It outlines the engineering approach, organizational struc-
+ture, and planning strategies implemented to manage the project effectively. Particular at-
+tention is given to the development lifecycle, task prioritization, and coordination mecha-
+nisms that ensured both flexibility and control throughout the project. This structured ap-
+proach reflects modern software engineering practices, enabling the successful realization
+of a complex and evolving system.
+
+1.4.1 The Agile Choice
+
+The development of Khadamni involves multiple complex components, including real-time
+communication, artificial intelligence integration, geolocation services, and hybrid service
+interactions. Such a system cannot be effectively designed using a rigid, sequential method-
+ology, as requirements evolve continuously and technical constraints often emerge during
+implementation.
+
+For this reason, the project adopts an Agile development strategy, inspired by modern
+software engineering practices widely used in large technology companies. Agile promotes
+iterative development, rapid feedback cycles, and incremental delivery of functional value.
+
+Rather than attempting to fully define the system at the outset, the development pro-
+cess was structured around continuous refinement. Each iteration produces a working and
+testable increment of the platform, ensuring that progress remains measurable and aligned
+with user needs, as illustrated in Figure 1.6.
+
+Figure 1.6: Iterative Agile development cycle
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+12
+
+Engineering Principles Applied
+
+The methodology is guided by key principles inspired by industry practices:
+
+• Incremental Delivery: Each feature is developed, tested, and validated independently
+
+before integration.
+
+• Continuous Integration: System components are integrated progressively to detect
+
+issues early.
+
+• Adaptive Planning: Priorities evolve dynamically based on feedback and technical
+
+discoveries.
+
+• Fail-Fast Approach: Complex features are implemented early to quickly identify risks.
+
+• Working Product First: A functional version of the system is maintained throughout
+
+development.
+
+1.4.2 Sprint Execution Framework
+
+The project is divided into six structured sprints, each lasting approximately two weeks.
+This time-boxed approach ensures a consistent development rhythm and aligns with Agile
+practices used in professional environments.
+
+Each sprint follows a standardized execution cycle:
+
+• Sprint Planning: Definition of objectives and selection of prioritized tasks from the
+
+backlog.
+
+• Development Phase: Implementation of features with a focus on modularity and scal-
+
+ability.
+
+• Testing and Validation: Verification of functionality and system consistency.
+
+• Sprint Review: Evaluation of delivered features and identification of improvements.
+
+1.4.3 Sprint Planning and Deliverables
+
+The project was structured into a sequence of well-defined sprints, each focusing on a spe-
+cific set of objectives aligned with the overall system development. This iterative organi-
+zation allows the complexity of the platform to be managed progressively, while ensuring
+continuous delivery of functional components.
+
+The sprint plan follows a logical progression, starting with foundational elements such as
+system architecture and security, and gradually moving toward advanced features including
+real-time interaction and AI integration. Each sprint is associated with clear deliverables,
+enabling regular validation and reducing integration risks.
+
+The following table (Table 1.3) summarizes the sprint organization, their duration, objec-
+
+tives, and key deliverables.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+13
+
+Table 1.3: Structured sprint planning and deliverables
+
+Sprint Duration Objectives
+
+Key Deliverables
+
+Sprint 1
+
+2 weeks Define system foundations and
+
+architecture
+
+Sprint 2
+
+2 weeks
+
+Implement authentication and
+security layer
+
+Sprint 3
+
+3 weeks Develop
+
+service
+
+discovery
+
+mechanisms
+
+Sprint 4
+
+2 weeks
+
+Build service request lifecycle
+and AI integration
+
+Sprint 5
+
+2 weeks
+
+Enable real-time interaction and
+tracking
+
+Sprint 6
+
+2 weeks
+
+Finalize system and ensure pro-
+duction readiness
+
+Requirements analysis, system
+architecture design, database
+schema, development environ-
+ment setup
+
+User
+JWT
+registration/login,
+authentication, OTP verifica-
+tion, session management, ac-
+cess control
+
+Provider profiles,
+interactive
+map, geolocation services, re-
+mote provider interface
+
+Request management system,
+role-based access control, AI-
+powered request interpretation
+and recommendation
+
+communication,
+WebSocket
+real-time
+GPS
+tracking, route computation, AI
+dispute analysis
+
+negotiation,
+
+Moderation dashboard, rating
+system, portfolio management,
+testing, bug fixing, deployment
+
+1.4.4 Backlog Management and Task Prioritization
+
+Beyond sprint execution, the project adopts a backlog-driven development approach, a core
+practice in modern Agile environments and widely used in large-scale technology compa-
+nies. The backlog serves as a centralized and continuously evolving repository of all func-
+tional requirements, technical tasks, and improvement opportunities.
+
+Rather than being a static list, the backlog is actively managed and refined throughout
+the project lifecycle. Each item is progressively detailed, clarified, and prioritized to ensure
+alignment with both user needs and technical feasibility. This process, often referred to as
+backlog refinement, enables the team to maintain a clear and actionable development pipeline.
+
+Prioritization Strategy
+
+To ensure efficient resource allocation and maximize delivered value, backlog items are eval-
+uated according to multiple criteria inspired by industry best practices:
+
+• Business Value: The expected impact on user experience and overall platform utility.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+14
+
+• Technical Complexity: The level of effort and expertise required for implementation.
+
+• Dependencies: Relationships with other system components or prerequisite features.
+
+• Risk and Uncertainty: The likelihood of technical challenges or unforeseen issues.
+
+These criteria are combined to determine the priority of each task, ensuring that high-
+
+impact and high-risk features are addressed early in the development process.
+
+Backlog Classification and Prioritization Model
+
+In practice, backlog items are categorized and prioritized using a structured evaluation
+model, as illustrated in Table 1.4.
+
+Table 1.4: Backlog prioritization model based on multi-criteria evaluation
+
+Task Category
+
+Business Value Complexity
+
+Risk
+
+Priority Level
+
+Core Features (Auth, Requests)
+
+Real-time Systems (Chat, GPS)
+
+AI Integration (Search, Mediation)
+
+UI/UX Enhancements
+
+Optimization and Performance
+
+Secondary Features
+
+High
+
+High
+
+High
+
+Medium
+
+Medium
+
+Low
+
+Medium Medium
+
+High
+
+High
+
+High
+
+Low
+
+High
+
+High
+
+Low
+
+Critical
+
+Critical
+
+Medium
+
+Medium Medium
+
+Medium
+
+Low
+
+Low
+
+Low
+
+This structured prioritization ensures that critical system components, particularly those
+involving real-time interaction and AI processing, are developed and validated early. Such
+an approach reduces technical risk and enables faster feedback on the most complex parts
+of the system.
+
+Continuous Backlog Evolution
+
+Another key aspect of this approach is the dynamic nature of the backlog. New tasks may
+be added as requirements evolve, while existing ones are re-prioritized based on project
+progress and newly identified constraints. This continuous adaptation reflects practices ob-
+served in modern software engineering teams, where flexibility and responsiveness are es-
+sential.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+15
+
+1.4.5 Project Planning and Timeline Management
+
+While Agile methodology governs short-term development cycles, effective project execu-
+tion also requires a long-term planning perspective. To achieve this, a global planning
+strategy is established using a Gantt chart (Table 1.5), providing a structured overview of
+the project timeline from February to May 2026.
+
+Table 1.5: Gantt Chart - Khadamni Project Planning
+
+Activities
+
+February
+
+March
+
+April
+
+May
+
+W1 W2 W1 W2 W3 W4 W1 W2 W3 W4 W1 W2 W3
+
+Requirements & Architecture
+
+Authentication & Security
+
+Map & Provider Discovery
+
+Request Lifecycle & AI Search
+
+Chat, Tracking & AI Mediation
+
+Moderation, Ratings & Testing
+
+Report Writing
+
+The Gantt chart presented above illustrates the overall planning and distribution of tasks
+throughout the project lifecycle. The development process was organized progressively, be-
+ginning with requirements analysis and system architecture design, followed by the imple-
+mentation of core functionalities such as authentication, provider discovery, request man-
+agement, real-time communication, and AI-based features.
+
+The project was carried out using an Agile and iterative approach, allowing continuous
+evaluation and refinement during development. Each phase was completed incrementally
+through regular follow-up meetings and validations with the supervisors. This organiza-
+tion ensured better task management, improved adaptability to changes, and continuous
+monitoring of the project’s progress throughout the internship period. This planning layer
+complements Agile by ensuring coordination across major development phases, including:
+
+Parallelization and Workflow Optimization
+
+A key characteristic of the adopted planning strategy is the parallel execution of activities,
+a practice commonly used in large-scale software projects to improve efficiency and reduce
+overall delivery time.
+
+Instead of following a strictly sequential workflow, multiple processes are carried out
+
+simultaneously:
+
+• Development and testing phases overlap to enable early validation.
+• Documentation is produced continuously alongside implementation.
+• Integration begins before all components are fully completed, reducing bottlenecks.
+
+This approach ensures better resource utilization and minimizes delays, particularly in
+
+complex systems where dependencies between components are significant.
+
+Chapter 1. Project Foundations: Context, Analysis, and Methodology
+
+16
+
+Strategic Alignment with Agile Execution
+
+The combination of Agile iteration and structured timeline planning reflects a hybrid ap-
+proach widely adopted in professional environments. While sprints provide flexibility and
+responsiveness, the Gantt-based planning ensures strategic alignment and long-term visi-
+bility.
+
+Together, these mechanisms enable the project to balance adaptability with control, en-
+
+suring both continuous progress and adherence to overall deadlines.
+
+The adopted methodology combines Agile iteration with structured planning, reflecting
+practices used in modern technology companies. This hybrid approach ensures both flexi-
+bility and control, allowing the project to adapt to complexity while maintaining continuous
+progress.
+
+By emphasizing incremental delivery, early validation, and adaptive planning, the devel-
+opment process successfully supports the realization of a complex, real-time, and intelligent
+platform such as Khadamni.
+
+1.5 Conclusion
+
+This chapter laid the foundation for everything that follows. We introduced Satisfy Insight
+as the host company and explained why its open, innovation-friendly culture made it the
+right environment for a project like Khadamni.
+
+We then described the problem: a fragmented, limited service market where users juggle
+multiple platforms without ever finding a unified, flexible, and trustworthy solution. A
+comparative study of four existing platforms using the TRUST method confirmed this gap
+and revealed that no current solution combines real-time interaction, AI-assisted search, live
+GPS tracking, and multi-category service discovery in a single environment.
+
+This analysis directly shaped the design of Khadamni a platform built to fill exactly those
+gaps. Finally, we presented the Agile methodology and six-sprint development plan that
+structured the realization of the project over four months.
+
+The following chapter will move from context to specification, presenting the complete
+
+requirements analysis and system modeling that guided the development of the platform.
+
+Chapter 2
+
+Requirements Analysis and Specification
+
+2.1
+
+Introduction
+
+In this chapter, we present a comprehensive analysis of the requirements for the develop-
+ment of the Khadamni platform ,a real-time service marketplace that connects clients with
+service providers through an interactive digital environment.
+
+This phase plays an essential role in the development process, as it defines the platform’s
+expected functionalities, system constraints, and user interactions before implementation. It
+also establishes a solid foundation for understanding the upcoming stages of system design
+and development.
+
+The chapter first introduces the different system actors, presents the UML global use case
+modeling diagram .It then details the functional and non-functional requirements, followed
+by a set of interface wireframes illustrating the main features of the platform.
+
+2.2 Actor Identification
+
+The effective functioning of the Khadamni platform relies on the interaction between three
+primary categories of actors. Each actor is assigned a unique set of privileges and responsi-
+bilities tailored to their specific objectives within the service marketplace.
+
+• Client (Primary User): Represents users seeking services through the platform. The
+client’s main interactions revolve around finding providers using the interactive map
+or AI-assisted prompts, initiating secure service requests, and engaging in real-time
+price negotiations. Throughout the job, the client maintains visibility through live
+tracking and concludes the interaction by providing a quality-based rating.
+
+• Service Provider (Professional User): Represents professionals offering services on
+the platform. Providers manage their digital presence through a portfolio-driven pro-
+file. Their primary interactions include reviewing incoming requests, accepting or re-
+fusing jobs based on their availability, negotiating terms via the integrated chat, and
+providing real-time location updates during field interventions.
+
+17
+
+Chapter 2. Requirements Analysis and Specification
+
+18
+
+• Moderator (Administrator): The overseer of the ecosystem. Operating through a ded-
+icated administrative interface, the moderator ensures platform integrity by managing
+user accounts (suspension/activation), and reviews AI-generated dispute reports to
+mediate conflicts. The moderator’s role is critical for maintaining trust and resolving
+conflicts that cannot be settled automatically.
+
+2.3 Functional Requirements
+
+The functional requirements define the specific behaviors and capabilities that the Khadamni
+platform must deliver to each of its actors. Each requirement is categorized by feature area,
+assigned a priority level, and broken down into measurable sub-requirements.
+
+2.3.1 Authentication and Account Management
+
+FR-1: User Registration
+
+Priority: High
+
+Description: The platform shall enable new users to create personal accounts by selecting
+
+their role as either a Client or a Service Provider.
+
+Detailed Requirements
+
+• FR-1.1 The system shall collect first name, last name, email, password, phone number,
+
+and role during sign-up.
+
+• FR-1.2 The system shall block registration attempts using disposable or temporary
+
+email addresses using an offline domain blocklist.
+
+• FR-1.3 The system shall store passwords using the bcrypt hashing algorithm before
+
+persisting them to the database.
+
+• FR-1.4 The system shall reject any registration if the provided email already belongs to
+
+an existing account.
+
+FR-2: Provider Registration
+
+Priority: High
+
+Description: Users who register as Service Providers shall supply additional professional
+
+details beyond the standard registration fields.
+
+Detailed Requirements
+
+• FR-2.1 The system shall require a biography, at least one service category, job type
+
+(in-place or remote), and years of experience from every provider.
+
+• FR-2.2 The system shall automatically generate a provider profile document in provider_profiles
+
+collection upon successful registration.
+
+• FR-2.3 The system shall allow providers to optionally specify an hourly rate.
+
+Chapter 2. Requirements Analysis and Specification
+
+19
+
+FR-3: Two-Factor Login with Trusted Device Support
+
+Priority: High
+
+Description: The platform shall authenticate users through a two-step process combining
+password verification and a one-time email code. Trusted devices shall bypass the
+OTP step.
+
+Detailed Requirements
+
+• FR-3.1 The system shall verify the submitted email and password against stored cre-
+
+dentials on the first login step.
+
+• FR-3.2 Upon successful password check, if no valid trusted device token exists for that
+device, the system shall generate a six-digit one-time code and deliver it to the user’s
+registered email.
+
+• FR-3.3 The system shall accept the one-time code only within a five-minute window
+
+and invalidate it immediately after use.
+
+• FR-3.4 Upon successful OTP verification, the system shall issue a signed JWT access
+
+token and a UUID trusted device token valid for thirty days.
+
+• FR-3.5 On subsequent logins from a trusted device, the system shall skip the OTP step
+
+and return the JWT directly after password verification.
+
+• FR-3.6 The system shall allow users to revoke all trusted device tokens via a dedicated
+
+endpoint in their profile settings.
+
+2.3.2 Account Suspension System
+
+FR-4: Moderator-Initiated Suspension
+
+Priority: High
+
+Description: The platform shall allow the moderator to suspend user accounts for a defined
+
+duration and reason.
+
+Detailed Requirements
+
+• FR-4.1 The system shall support suspension durations of one day, three days, one
+
+week, one month, and permanent.
+
+• FR-4.2 The system shall send an automatic email to the suspended user containing the
+
+suspension reason and expiry date.
+
+• FR-4.3 On login, the system shall auto-lift any suspension whose expiry date has al-
+
+ready passed before returning the user object.
+
+• FR-4.4 Suspended users shall be allowed to log in but shall see a full-screen overlay
+displaying the suspension reason, the exact expiry date, and a live countdown timer.
+The only available action shall be to sign out.
+
+Chapter 2. Requirements Analysis and Specification
+
+20
+
+2.3.3 User Profiles
+
+FR-5: Client Profile
+
+Priority: High
+
+Description: Every client shall have a dedicated profile page presenting their personal in-
+
+formation and platform activity.
+
+Detailed Requirements
+
+• FR-5.1 The profile shall display the client’s name, email, phone number, and account
+
+creation date.
+
+• FR-5.2 The profile shall list the client’s completed jobs along with ratings received.
+
+• FR-5.3 The client shall be able to modify their personal details and upload a profile
+
+avatar at any time.
+
+FR-6: Provider Profile
+
+Priority: High
+
+Description: Providers shall have an enriched public profile that highlights their expertise,
+
+portfolio, and ratings.
+
+Detailed Requirements
+
+• FR-6.1 The profile shall present the provider’s biography, service categories, job type,
+
+years of experience, and optional hourly rate.
+
+• FR-6.2 The profile shall display an aggregated star rating, total number of reviews, and
+
+total completed jobs.
+
+• FR-6.3 The profile shall indicate whether the provider is currently available for new
+
+work via a visible availability toggle.
+
+• FR-6.4 The provider shall be able to upload portfolio photos with descriptions, which
+
+are displayed as a scrollable gallery to visiting clients.
+
+• FR-6.5 The provider shall be able to edit all professional details and upload a profile
+
+avatar at any time.
+
+2.3.4 Map-Based Discovery
+
+FR-7: Interactive Provider Map
+
+Priority: High
+
+Description: The platform shall offer an interactive Leaflet map where clients can visually
+
+locate nearby service providers in real time.
+
+Chapter 2. Requirements Analysis and Specification
+
+21
+
+Detailed Requirements
+
+• FR-7.1 The map shall render all available in-place providers as distinct markers color-
+
+coded by availability.
+
+• FR-7.2 The map shall never expose client coordinates on the provider discovery layer
+
+to preserve user privacy.
+
+• FR-7.3 Clicking a provider marker shall open a popup showing the provider’s name,
+
+rating, categories, and a button to view their full profile.
+
+• FR-7.4 Provider markers shall reflect availability changes in real time.
+
+FR-8: Provider Search and Filtering
+
+Priority: Medium
+
+Description: Clients shall be able to narrow down visible providers using category, dis-
+
+tance, and job type filters.
+
+Detailed Requirements
+
+• FR-8.1 The system shall allow filtering providers by their offered service category.
+
+• FR-8.2 The system shall allow filtering in-place providers within a chosen distance
+
+radius from the client’s position using a MongoDB geospatial query.
+
+• FR-8.3 Remote providers shall be displayed in a separate panel alongside the map, as
+
+they have no physical location.
+
+FR-9: Address Geocoding
+
+Priority: Medium
+
+Description: The platform shall allow clients to search for a location by address and center
+
+the map on the result.
+
+Detailed Requirements
+
+• FR-9.1 The system shall proxy address search requests to the Nominatim OpenStreetMap
+
+API server-side to avoid browser CORS restrictions.
+
+• FR-9.2 The map shall fly to the resolved coordinates upon a successful geocoding re-
+
+sponse.
+
+Chapter 2. Requirements Analysis and Specification
+
+22
+
+2.3.5 AI-Assisted Features
+
+FR-10: AI Request Analysis
+
+Priority: High
+
+Description: The platform shall analyze client service requests written in natural language,
+including Tunisian dialect, and extract structured information using the Groq API with
+the Llama 3.3-70B model.
+
+Detailed Requirements
+
+• FR-10.1 The system shall accept client input in any language or dialect, including
+
+Tunisian Arabic and French.
+
+• FR-10.2 The AI shall return a detected service category, urgency level, estimated price
+range in Tunisian Dinars, a professional French description, and key points from the
+request.
+
+• FR-10.3 The AI analysis result shall be stored in the service request document and
+
+displayed to the provider when reviewing the request.
+
+• FR-10.4: The AI response shall be enforced as valid JSON using the response_format:
+
+json_object parameter.
+
+FR-11: AI Provider Recommendation
+
+Priority: Medium
+
+Description: After AI analysis, the platform shall rank and display the most relevant avail-
+
+able providers based on a composite score.
+
+Detailed Requirements
+
+• FR-11.1 In-place providers shall be ranked using a score combining geographic prox-
+imity (60%) and quality (40%), where quality is derived from average rating and total
+completed jobs.
+
+• FR-11.2 Remote providers shall be ranked by quality score alone, as distance is not
+
+applicable.
+
+• FR-11.3 The top three in-place and top three remote providers shall be displayed as
+
+clickable recommendation cards.
+
+• FR-11.4 Clicking a recommendation card shall open the request modal pre-filled with
+
+the AI-generated description.
+
+Chapter 2. Requirements Analysis and Specification
+
+23
+
+FR-12: AI Dispute Mediation
+
+Priority: Medium
+
+Description: Either party may submit a dispute report after job completion. The AI shall
+analyze the full chat history and generate a structured mediation report for the mod-
+erator.
+
+Detailed Requirements
+
+• FR-12.1 The system shall allow either the client or the provider to file a dispute report
+
+after a job is completed, providing a written reason.
+
+• FR-12.2 The AI shall read the full conversation history with sender roles labeled and
+return a summary, a recommendation (client_favored, provider_favored, neutral, or
+insufficient_evidence), a confidence score, and a suggested action.
+
+• FR-12.3 The dispute report shall be persisted in the reports collection and surfaced
+
+in the moderator dashboard for review.
+
+2.3.6 Service Request Lifecycle
+
+FR-13: Service Request Creation
+
+Priority: High
+
+Description: Clients shall be able to initiate a service request to a specific provider directly
+
+from their public profile or from the map popup.
+
+Detailed Requirements
+
+• FR-13.1 The request form shall collect a service description, service category, and the
+
+client’s current location coordinates.
+
+• FR-13.2 Only users with the client role shall be permitted to create requests; providers
+
+and moderators shall receive a 403 error.
+
+• FR-13.3 Upon submission, the system shall immediately trigger an AI analysis of the
+
+description and store the result in the request document.
+
+FR-14: Request Lifecycle State Machine
+
+Priority: High
+
+Description: The platform shall manage service requests through a strict set of status tran-
+
+sitions, each validated server-side.
+
+Detailed Requirements
+
+• FR-14.1 A newly created request shall have the status pending. The provider may
+
+accept or reject it; the client may cancel it.
+
+Chapter 2. Requirements Analysis and Specification
+
+24
+
+• FR-14.2 When the provider accepts, the status shall transition to in_progress and a
+
+private chat room shall be created.
+
+• FR-14.3 When both parties confirm the agreed price in the chat interface, the status
+
+shall transition to confirmed.
+
+• FR-14.4 When the provider marks the job as done, the status shall transition to completed,
+
+unlocking the rating form for both parties.
+
+• FR-14.5 A provider rejection shall set the status to rejected. A client cancellation
+
+shall set the status to cancelled. Both are terminal states.
+
+2.3.7 Real-Time Chat and Price Negotiation
+
+FR-15: Real-Time Chat
+
+Priority: High
+
+Description: Upon request acceptance, both parties shall enter a private WebSocket-powered
+
+chat room for the duration of the job.
+
+Detailed Requirements
+
+• FR-15.1 Chat messages shall be delivered in under one second via a persistent Web-
+
+Socket connection authenticated by JWT token.
+
+• FR-15.2 All messages shall be persisted in the chat_messages collection so that his-
+
+tory survives page refreshes.
+
+• FR-15.3 The system shall broadcast a typing indicator to the other party while a user is
+
+composing a message.
+
+• FR-15.4 The WebSocket channel shall carry all real-time events for the room includ-
+ing text messages, price offer updates, job status changes,GPS coordinates, and rating
+notifications.
+
+FR-16: Price Negotiation System
+
+Priority: High
+
+Description: The provider shall be able to propose a price within the chat interface; the
+
+client shall be able to accept or request renegotiation.
+
+Detailed Requirements
+
+• FR-16.1 Only the provider shall be able to send price offers. Each offer shall include an
+
+amount in Tunisian Dinars and an optional note.
+
+• FR-16.2 Offers shall appear as distinct styled cards in the chat interface, separate from
+
+regular text messages.
+
+Chapter 2. Requirements Analysis and Specification
+
+25
+
+• FR-16.3 The client shall be presented with two actions on each pending offer card:
+Accept Offer and Negotiate. Selecting Negotiate shall allow the provider to send a
+revised offer.
+
+• FR-16.4 The system shall display historical price statistics for the detected service cat-
+egory (minimum, maximum, and average agreed prices from past completed jobs) in
+the provider’s offer panel to assist in price setting.
+
+• FR-16.5 Once the client accepts an offer, both parties shall see a Confirm Agreement
+button. The price shall be locked only when both parties have independently con-
+firmed.
+
+2.3.8 Live GPS Tracking
+
+FR-17: Real-Time Provider Tracking
+
+Priority: High
+
+Description: After price confirmation, the client shall be able to track the provider’s live
+
+GPS position on an interactive map until the job is complete.
+
+Detailed Requirements
+
+• FR-17.1 The provider’s browser shall use navigator.geolocation.watchPosition
+with high accuracy enabled and transmit position updates via WebSocket at most once
+every three seconds.
+
+• FR-17.2 The client’s map shall update the provider marker in real time upon receiving
+
+GPS events.
+
+• FR-17.3 The system shall compute and display the driving route between the client
+and provider using the OSRM public routing API, rendered as a polyline on the Leaflet
+map.
+
+• FR-17.4 A proximity notification shall appear when the provider is within 500 metres
+
+of the client’s location, calculated using the Haversine formula.
+
+• FR-17.5 All location sharing shall cease once the job status changes to completed or
+
+cancelled.
+
+2.3.9 Ratings System
+
+FR-18: Post-Job Rating
+
+Priority: Medium
+
+Description: Both parties shall be able to rate each other after a job is marked complete.
+
+Chapter 2. Requirements Analysis and Specification
+
+26
+
+Detailed Requirements
+
+• FR-18.1 The rating form shall accept a score from one to five stars and an optional
+
+written comment.
+
+• FR-18.2 Each party may submit at most one rating per completed job.
+
+• FR-18.3 The provider’s aggregate rating average and total rating count shall be up-
+dated atomically in the provider_profiles collection upon each new rating sub-
+mission.
+
+• FR-18.4 All ratings received by a provider shall be visible on their public profile page.
+
+2.3.10 Moderator Dashboard
+
+FR-19: Platform Statistics
+
+Priority: Medium
+
+Description: The moderator shall have access to a real-time overview of key platform met-
+
+rics upon accessing the dashboard.
+
+Detailed Requirements
+
+• FR-19.1 The dashboard shall display total user counts broken down by role, request
+
+counts by status, number of open reports, and active suspensions.
+
+• FR-19.2 The dashboard shall display the top three service categories for both in-place
+
+and remote providers, computed via a MongoDB aggregation pipeline.
+
+FR-20: User Account Management
+
+Priority: High
+
+Description: The moderator shall be able to search, view, edit, suspend, activate, and delete
+
+any user account from the dashboard.
+
+Detailed Requirements
+
+• FR-20.1 The user list shall support text search, role filtering, and suspension status
+
+filtering with pagination.
+
+• FR-20.2 Suspension shall require a mandatory reason and a duration selection (1 day, 3
+days, 1 week, 1 month, or permanent). The system shall send an automatic notification
+email to the suspended user.
+
+• FR-20.3 Account deletion shall cascade to all related collections: provider profile, ser-
+
+vice requests, ratings, portfolio items, device tokens, and dispute reports.
+
+Chapter 2. Requirements Analysis and Specification
+
+27
+
+FR-21: Dispute Report Review
+
+Priority: Medium
+
+Description: The moderator shall be able to review AI-generated dispute reports and take
+
+action on reported users without leaving the reports section.
+
+Detailed Requirements
+
+• FR-21.1 Each report card shall display the reporter’s name and role, the reported user’s
+name and role, the written reason, and the full AI analysis in an expandable section.
+
+• FR-21.2 The moderator shall be able to suspend or delete the reported user directly
+
+from the report card.
+
+• FR-21.3 The moderator shall be able to mark a report as reviewed with an optional
+
+moderator note.
+
+2.4 Non-Functional Requirements
+
+The non-functional requirements define the quality attributes and operational constraints
+that the Khadamni platform must satisfy beyond its core features.
+
+2.4.1 Performance
+
+NFR-1: API Response Time
+
+Priority: High
+
+Description: The platform shall deliver a responsive experience under standard network
+
+conditions.
+
+Detailed Requirements
+
+• NFR-1.1 The React frontend shall render initial page content within three seconds on
+
+a stable connection.
+
+• NFR-1.2 FastAPI backend endpoints shall return responses within 500 milliseconds for
+
+standard operations such as login, registration, and profile retrieval.
+
+• NFR-1.3 The interactive map shall load provider markers without blocking the user
+
+interface thread.
+
+NFR-2: Real-Time Responsiveness
+
+Priority: High
+
+Description: Features that rely on live data exchange shall operate with negligible delay.
+
+Chapter 2. Requirements Analysis and Specification
+
+28
+
+Detailed Requirements
+
+• NFR-2.1 Chat messages shall reach the recipient within one second of being sent over
+
+the WebSocket channel.
+
+• NFR-2.2 Live GPS position updates shall be transmitted at most once every three sec-
+
+onds to balance responsiveness and network load.
+
+• NFR-2.3 Price offer events and job status changes shall propagate to both parties within
+
+one second of the triggering action.
+
+2.4.2 Security
+
+NFR-3: Credential Protection
+
+Priority: High
+
+Description: The platform shall safeguard user credentials at every stage of storage and
+
+transmission.
+
+Detailed Requirements
+
+• NFR-3.1 Passwords shall be hashed using the bcrypt algorithm with a cost factor of 12
+
+before being stored in MongoDB.
+
+• NFR-3.2 Authentication tokens shall be generated using the JWT standard with the
+
+HS256 signing algorithm.
+
+• NFR-3.3 Access tokens shall expire after 30 minutes by default, extendable to 30 days
+
+when the user selects the remember-me option.
+
+• NFR-3.4 Email-based one-time codes shall expire after five minutes and become in-
+
+valid immediately upon first use to prevent replay attacks.
+
+• NFR-3.5 Sensitive fields such as password hashes never appear in any API response.
+
+NFR-4: API and Role Security
+
+Priority: High
+
+Description: All communication between the frontend and the backend shall be authenti-
+
+cated, role-validated, and protected against common threats.
+
+Detailed Requirements
+
+• NFR-4.1 Every protected API route shall verify the presence and validity of a JWT
+token via the get_current_user() dependency before executing any handler logic.
+
+• NFR-4.2 Role-based access control shall be enforced at the backend on every sensi-
+tive endpoint. Moderator endpoints shall use a dedicated require_moderator()
+dependency that returns 403 for any other role.
+
+Chapter 2. Requirements Analysis and Specification
+
+29
+
+• NFR-4.3 CORS middleware shall restrict accepted origins to the authorized frontend
+
+address only.
+
+• NFR-4.4 All incoming data shall be validated through Pydantic models to prevent in-
+
+jection attacks and malformed payloads.
+
+• NFR-4.5 The WebSocket endpoint shall validate the JWT token passed as a query pa-
+
+rameter during the handshake and reject unauthorized connections immediately.
+
+2.4.3 Scalability
+
+NFR-5: Concurrent User Handling
+
+Priority: Medium
+
+Description: The system architecture shall accommodate a growing user base without re-
+
+quiring structural changes.
+
+Detailed Requirements
+
+• NFR-5.1 The FastAPI backend shall handle concurrent HTTP and WebSocket connec-
+tions efficiently through its native async/await model running on the Uvicorn ASGI
+server.
+
+• NFR-5.2 The Motor async driver shall ensure that all MongoDB operations are non-
+blocking, keeping the event loop available for other requests during database I/O.
+
+• NFR-5.3 MongoDB shall serve as the primary data store, leveraging its horizontal scal-
+
+ing capabilities for future growth.
+
+NFR-6: Database Optimization
+
+Priority: Medium
+
+Description: The database layer shall be structured to support geospatial queries and fre-
+
+quent read operations efficiently.
+
+Detailed Requirements
+
+• NFR-6.1 Provider location data shall be indexed using MongoDB’s 2dsphere geospa-
+tial index on the provider_profiles.location field to enable efficient proximity-
+based discovery queries.
+
+• NFR-6.2 Frequently queried fields such as email and user role shall carry dedicated
+
+single-field indexes.
+
+• NFR-6.3 Expired OTP records shall be removed automatically using MongoDB’s TTL
+
+index feature set to a five-minute expiry on the expires_at field.
+
+Chapter 2. Requirements Analysis and Specification
+
+30
+
+2.4.4 Privacy
+
+NFR-7: Location Privacy
+
+Priority: High
+
+Description: The platform shall enforce strict controls over when and to whom location
+
+data is disclosed.
+
+Detailed Requirements
+
+• NFR-7.1 The map discovery feature shall query only the provider_profiles col-
+
+lection, ensuring that client coordinates are never exposed publicly.
+
+• NFR-7.2 A client’s exact position shall be shared exclusively with their assigned provider,
+
+and only after the service request has been accepted.
+
+• NFR-7.3 All location sharing shall cease immediately once the job status transitions to
+
+completed or cancelled.
+
+NFR-8: Data Protection
+
+Priority: High
+
+Description: Personal information shall be handled responsibly throughout the platform.
+
+Detailed Requirements
+
+• NFR-8.1 All environment variables including database credentials, JWT secret keys,
+and mail passwords shall be stored in a protected .env file excluded from version
+control.
+
+• NFR-8.2 User data shall be accessible only to the account owner and authorized mod-
+
+erators.
+
+• NFR-8.3 Deleting a user account shall trigger a cascade removal of all associated data
+
+across all collections to prevent orphaned documents.
+
+2.4.5 Compatibility
+
+NFR-9: Browser and Device Support
+
+Priority: High
+
+Description: The web application shall function correctly across all widely used modern
+
+browsers and device form factors.
+
+Chapter 2. Requirements Analysis and Specification
+
+31
+
+Detailed Requirements
+
+• NFR-9.1 The React frontend shall render consistently on the latest versions of Chrome,
+
+Firefox, Safari, and Edge.
+
+• NFR-9.2 All pages shall be styled with Tailwind CSS utility classes that support mobile,
+
+tablet, and desktop breakpoints.
+
+• NFR-9.3 The interactive map and all form inputs shall be touch-friendly and fully us-
+
+able on mobile devices.
+
+• NFR-9.4 The Vite build tool shall generate optimized production bundles compatible
+
+with ES2020 and above.
+
+2.5 Requirements Modeling
+
+2.5.1 UML Modeling Language
+
+UML (Unified Modeling Language) is a standard modeling language used to visually rep-
+resent a software system. It helps describe the system structure, functionalities, and interac-
+tions between its different components through diagrams such as use case, class, sequence,
+and activity diagrams, as shown in Figure 2.1.
+
+Figure 2.1: Unified Modeling Language Logo
+
+2.5.2 Global Use Case Diagram
+
+The global use case diagram (Figure 2.2) presents the main functionalities of the Khadamni
+platform and the interactions between the system actors.
+
+The Client searches for providers and manages service requests, the Service Provider
+handles availability and job execution, while the Moderator supervises the platform and
+manages disputes and users.
+
+Chapter 2. Requirements Analysis and Specification
+
+32
+
+Figure 2.2: Global Use Case Diagram of the Khadamni Platform
+
+Access Control Rule: All main features of the platform require user authentica-
+tion. Only registration and the landing page are public. Once logged in, users
+can access the map, chat system, and profile management, ensuring secure and
+private use of the platform.
+
+2.6 Wireframes
+
+In this section, we present interface wireframes that provide a concrete visual representation
+of how the identified requirements are translated into actual application screens. These
+wireframes serve as a bridge between the requirements specification and the system design
+presented in the following chapter.
+
+2.6.1 Homepage
+
+The homepage serves as the public entry point of the platform (Figure 2.3). It includes a
+navigation bar, a service discovery search area, highlights of platform capabilities, and quick
+access to authentication.
+
+Chapter 2. Requirements Analysis and Specification
+
+33
+
+Figure 2.3: Homepage Interface 1/2
+
+Figure 2.4: Homepage Interface 2/2
+
+Chapter 2. Requirements Analysis and Specification
+
+34
+
+2.6.2 Service Map Interface
+
+The map interface is the core discovery feature of the platform (Figure 2.5). It renders all
+available providers as interactive markers, supports category and distance filtering, and
+integrates the AI-assisted search panel.
+
+Figure 2.5: Service Map Interface
+
+2.6.3 Service Request Interface
+
+This interface allows clients to compose and submit a service request to a selected provider
+(Figure 2.6). The description field supports natural language input in any dialect, which is
+subsequently analyzed by the AI module.
+
+Figure 2.6: Service Request Interface
+
+Chapter 2. Requirements Analysis and Specification
+
+35
+
+2.6.4 Chat and Negotiation Interface
+
+The chat interface enables real-time communication between the client and the provider
+(Figure 2.7). It includes the standard messaging area, the provider’s price offer panel with
+market price statistics, and the confirmation controls for both parties.
+
+Figure 2.7: Chat and Negotiation Interface
+
+2.6.5 Live Tracking Interface
+
+This interface renders the provider’s real-time GPS position on a Leaflet map and draws the
+computed OSRM driving route between the two parties (Figure 2.8). It remains active only
+during jobs with a confirmed status.
+
+Figure 2.8: Live Tracking Interface
+
+Chapter 2. Requirements Analysis and Specification
+
+36
+
+2.6.6 Moderator Dashboard
+
+The moderator dashboard provides an isolated management interface with platform statis-
+tics, a searchable and filterable user management table, and a dispute reports section with
+AI analysis and direct action buttons (Figure 2.9).
+
+Figure 2.9: Moderator Dashboard Interface
+
+2.7 Conclusion
+
+This chapter presented a complete specification of the Khadamni platform requirements.
+The three platform actors - Client, Service Provider, and Moderator - were formally identi-
+fied with their respective scopes of interaction. Twenty-one functional requirements were
+defined across eight feature areas, covering the full service lifecycle from account creation
+and AI-assisted discovery to real-time negotiation, live tracking, post-job ratings, and AI-
+powered dispute mediation. Nine non-functional requirements were specified across per-
+formance, security, scalability, privacy, and compatibility dimensions. Finally, the global
+use case diagram and interface wireframes provided a visual foundation that bridges the
+requirements analysis with the system design developed in the following chapter.
+
+Chapter 2. Requirements Analysis and Specification
+
+37
+
+‘
+
+Chapter 3
+
+System Design and Modeling
+
+3.1
+
+Introduction
+
+In this chapter, we present the architectural design and modeling of the Khadamni plat-
+form.It provides a structured and progressive view of the system, describing its organiza-
+tion, components, and interactions.
+The objective is to move from a high-level perspective to more detailed technical represen-
+tations, ensuring clarity and coherence.
+
+To support this approach, the C4 model is adopted as a modern and relatively new ar-
+chitectural modeling approach, enabling the system to be described across multiple levels
+of abstraction.
+
+3.2 Modeling Methodology
+
+The modeling of the Khadamnicplatform follows a structured and hierarchical approach,
+representing the system across multiple levels of abstraction. This enables both technical
+and non-technical stakeholders to progressively understand the system, from a global view
+to detailed design elements.
+In this process , we adopted a top-down strategy, starting from an overall representation and
+gradually refining it into more detailed views, ensuring clarity, consistency, and alignment
+across perspectives.
+In parallel, the design is guided by Clean Architecture principles, organizing the system into
+layers such as controllers, services, and repositories. This separation improves maintainabil-
+ity, scalability, and testability, resulting in a clear and well-structured architecture.
+
+3.2.1 Limitations of Traditional Modeling Approaches
+
+Traditional modeling techniques, particularly UML (Unified Modeling Language), have
+long been widely adopted in software engineering due to their ability to represent differ-
+ent aspects of a system through various diagram types such as class, sequence, and use case
+diagrams. However, when applied to modern software systems, these approaches reveal
+several limitations.
+
+38
+
+Chapter 3. System Design and Modeling
+
+39
+
+One of the main challenges lies in the large number of available diagram types, which can
+introduce unnecessary complexity and lead to inconsistent modeling practices. In addition,
+UML diagrams tend to focus either on high-level abstractions or low-level implementation
+details, without providing a clear and continuous transition between the levels. This lack of
+hierarchical structuring makes it difficult to maintain a coherent overall view of the system.
+
+Furthermore, traditional modeling techniques were not specifically designed for mod-
+ern architectures such as distributed systems, web applications, or service-oriented envi-
+ronments. As a result, they often struggle to represent these systems in an intuitive and
+meaningful way.
+
+Finally, UML diagrams can become overloaded with technical details, reducing their
+
+readability and limiting their accessibility to non-technical stakeholders.
+
+These limitations highlight the need for a more structured, scalable, and accessible mod-
+
+eling approach, better suited to the complexity of contemporary software systems.
+
+3.2.2 Overview of the C4 Model
+
+The C4 model is a modern approach to software architecture visualization, focusing on clar-
+ity, simplicity, and consistency. It organizes the system into four hierarchical levels:
+
+• System Context: provides a high-level view of the system and its interactions with
+
+external actors.
+
+• Container: describes the main system building blocks and their responsibilities.
+
+• Component: details the internal structure of each container.
+
+• Code: represents the implementation-level structure of the system.
+
+Each level refines the previous one, enabling a progressive understanding of the system
+
+from a global perspective to detailed technical elements, as illustrated in Figure 3.1.
+
+Figure 3.1: Example of C4 modeling
+
+Chapter 3. System Design and Modeling
+
+40
+
+3.2.3 Why the C4 Model for Khadamni
+
+The adoption of the C4 model for the Khadamni platform is motivated by the following key
+factors:
+
+• Adaptation to modern systems: The platform involves multiple users, interactions,
+and services, which are effectively represented through the multi-level abstraction of
+the C4 model.
+
+• Alignment with Clean Architecture: The hierarchical structure of C4 naturally reflects
+the layered organization of the system (controllers, services, repositories), ensuring
+coherence between design and implementation.
+
+• Clarity and readability: The model prioritizes simplicity, making the architecture eas-
+
+ily understandable for both technical and non-technical stakeholders.
+
+• Architectural quality: It supports better scalability, maintainability, and clear defini-
+
+tion of system boundaries through a structured and consistent representation.
+
+3.3
+
+level 1
+
+The System Context diagram (Figure 3.2) represents the highest level of abstraction in the
+C4 model. It provides a global view of the Khadamni platform by presenting it as a single,
+unified system, without exposing any internal implementation details. The purpose of this
+level is to clearly define the system boundaries, identify the actors interacting with it, and
+highlight its dependencies on external services.
+
+3.3.1 Overview of the Level
+
+The System Context Diagram (Level 1) offers a strategic view of the system within its oper-
+ational environment. At this level, the platform is modeled as a black box, focusing exclu-
+sively on external interactions rather than internal structure. This abstraction is essential for
+communicating the system’s purpose and scope to a wide range of stakeholders, including
+both technical and non-technical audiences.
+More specifically, this level answers three fundamental questions:
+
+• What does the system do?
+• Who interacts with the system?
+• Which external systems does it rely on?
+
+At this level, the Khadamni platform is positioned as a real-time service marketplace that
+
+integrates multiple advanced capabilities:
+
+• Geolocation-based provider discovery
+• Service request lifecycle management
+• Real-time communication and price negotiation
+• AI-powered request analysis and recommendations
+• User reputation and rating system
+• Dispute management and moderation tools
+
+Chapter 3. System Design and Modeling
+
+41
+
+This abstraction ensures a clear understanding of the system’s role within its ecosystem
+
+before moving to more detailed architectural levels.
+
+3.3.2 System Context Diagram
+
+Figure 3.2: C4 Level 1 - System Context Diagram
+
+3.3.3 Actors of the System
+
+At the first context level, the platform interacts with three primary human actors, each rep-
+resenting a distinct role with specific objectives and interaction patterns:
+
+• Client: The end user of the platform. The client searches for services, submits requests,
+monitors their execution, and evaluates providers upon job execution. This actor rep-
+resents the demand side of the marketplace.
+
+• Service Provider: The supply-side actor who offers services through the platform.
+Providers receive requests, manage their availability, and engage in real-time commu-
+nication and negotiation with clients.
+
+• Moderator: The administrative actor responsible for ensuring platform integrity. This
+role includes user management, dispute resolution, content moderation, and monitor-
+ing of platform activities.
+
+These actors interact exclusively with the Khadamni platform, which serves as the central
+
+coordination point for all operations.
+
+Chapter 3. System Design and Modeling
+
+42
+
+3.3.4 External Systems
+
+In addition to human actors, the platform integrates several external systems to provide spe-
+cialized functionalities that would be complex or inefficient to implement internally. These
+systems extend the platform’s capabilities while maintaining a clear separation of concerns.
+
+• Nominatim: An open-source geocoding service based on OpenStreetMap. It converts
+addresses or geographic coordinates into structured location data, enabling accurate
+location-based service discovery.
+
+• OSRM (Open Source Routing Machine): A high-performance routing engine used
+It supports
+
+to compute travel distances and routes between clients and providers.
+proximity-based ranking and real-time navigation features.
+
+• AI Processing Service (Groq): An external AI inference service used to enhance plat-
+form intelligence. It processes user requests to generate structured outputs such as
+service categorization, pricing suggestions, and dispute analysis.
+
+• Email Notification Service (SMTP): A communication service responsible for sending
+
+transactional emails, including OTP verification codes and system notifications.
+
+3.3.5
+
+Interactions with the System
+
+At this level, the Khadamni platform acts as the single integration point between all actors
+and external systems. This architectural choice enforces a strict interaction model:
+
+• All user interactions are mediated by the platform.
+• No actor communicates directly with external systems.
+• All external service calls are orchestrated internally by the platform.
+
+This centralized interaction model ensures better control over data flow, security, and
+
+system consistency.
+
+The System Context Diagram establishes a clear definition of the system’s scope, its ac-
+tors, and its external dependencies. It provides a high-level understanding of how the plat-
+form fits within its environment and sets the foundation for deeper architectural analysis in
+the next levels of the C4 model.
+
+3.4
+
+level 2
+
+The Container diagram descends one level into the Khadamni system boundary and de-
+composes the platform into its main deployable units. Each container represents a sepa-
+rately runnable process with a distinct technical responsibility, and all communication links
+between containers are annotated with the protocol they use. This level moves beyond the
+question of what the system does and begins to answer how it is structured at the infrastruc-
+ture level, making it the primary reference for understanding the overall technical architec-
+ture of the platform.
+
+Chapter 3. System Design and Modeling
+
+43
+
+3.4.1 Overview of the Level
+
+The diagram presented in this section corresponds to Level 2 of the C4 model, referred to
+as the Container Diagram (Figure 3.3). This level provides an architectural zoom into the
+Khadamni platform by decomposing it into its major internal technological building blocks
+called containers while illustrating their interactions with human actors and external sys-
+tems. the context of the C4 model, a container represents an independently deployable and
+executable unit: a web application, an API server, a database, or a real-time server.
+
+This diagram therefore answers the fundamental architectural question: how is the system
+
+technically structured, and how do its components communicate with one another?
+
+3.4.2 Container Diagram
+
+The Container diagram zooms one level deeper into the Khadamni system and reveals the
+four internal building blocks that make it run. Each container has a distinct role and com-
+municates with the others through well-defined interfaces.
+
+Figure 3.3: C4 Level 2 - Container Diagram
+
+3.4.3 Description of Internal Containers
+
+The Khadamni platform is internally composed of four containers, each carrying a distinct
+and well-defined responsibility:
+
+• Frontend Application: a web application built with React, Vite, and Tailwind CSS. It’s
+the user-facing layer of the system and is the sole point of interaction for all actors. It
+communicates with the backend through two distinct channels: standard REST API
+calls for transactional operations, and a persistent WebSocket connection for real-time
+features.
+
+Chapter 3. System Design and Modeling
+
+44
+
+• Backend API: a Python-based application developed with FastAPI. It exposes REST
+endpoints responsible for authentication, request lifecycle management, business logic
+orchestration, and integration with all external services. It is the central processing unit
+of the platform.
+
+• Real-time Server: a dedicated WebSocket server handling all event-driven and low-
+latency communication, including live chat between clients and providers, price nego-
+tiation sessions, GPS tracking updates, and real-time platform events.
+
+• Database: a MongoDB instance that serves as the persistent storage layer for the en-
+tire platform. It stores users, service requests, chat histories, moderation reports, and
+geospatial data. Its document-oriented model and native geospatial indexing
+capabilities make it well suited to the nature of the data managed by Khadamni.
+
+3.4.4 Interactions Between Components
+
+The communication flows between all components of the diagram can be described as fol-
+lows:
+
+• The Client, Service Provider, and Moderator each interact bidirectionally with the
+Frontend Application, which renders the appropriate interface and collects user in-
+puts depending on the actor’s role.
+
+• The Frontend Application communicates with the Backend API over HTTP using a
+REST interface with JSON payloads. This channel handles all standard operations:
+authentication, service browsing, request submission, and data retrieval.
+
+• The Frontend Application maintains a persistent bidirectional WebSocket connection
+with the Real-time Server. This channel supports live chat, real-time price negotiation
+between clients and providers, GPS location tracking, and instant event notifications.
+
+• The Backend API performs read and write operations on the Database, which stores
+
+all persistent data managed by the platform.
+
+• The Backend API queries Nominatim with address or coordinate inputs and receives
+structured geocoded location data in return, enabling geographic validation and en-
+richment of service requests.
+
+• The Backend API sends route computation requests to OSRM and receives route ge-
+ometry along with distance estimations, which are used for provider-client proximity
+matching and pricing logic.
+
+• The Backend API forwards service request descriptions to the AI Processing Service
+(Groq) and receives structured analytical outputs — including category classification,
+suggested pricing, and dispute resolution summaries — which are integrated into the
+platform’s decision-making flows.
+
+• The Backend API instructs the Email Notification Service (SMTP) to deliver OTP
+verification codes and system notification emails to users at key moments in their in-
+teraction with the platform.
+
+Chapter 3. System Design and Modeling
+
+45
+
+This container-level view reveals a clean separation of concerns across the system: the
+frontend handles presentation and real-time user experience, the backend API centralizes
+business logic and external integrations, the real-time server isolates event-driven commu-
+nication, and the database provides a unified persistence layer. Together, these containers
+form a cohesive and scalable architecture for the Khadamni service marketplace platform.
+
+3.5
+
+level 3
+
+The Component diagram focuses on a single container: the FastAPI backend andreveals its
+internal organisation. At this level, the backend is decomposed into its individual modules
+and the relationships between them are made explicit. The components are structured into
+three distinct layers that enforce a clear separation of concerns: an entry point layer respon-
+sible for handling and validating all incoming requests, a business logic layer where the
+core service rules are applied, and a shared infrastructure layer that provides cross-cutting
+capabilities used across the entire backend.
+
+3.5.1 Overview of the Level
+
+The Component Diagram (Figure 3.4) represents Level 3 of the C4 model and provides the
+most detailed architectural view in this documentation. It zooms into the Backend API con-
+tainer identified at Level 2 and decomposes it into its internal components . the individually
+deployable units of code, together implement the platform’s business logic.
+
+This level is primarily addressed to developers and technical architects, as it reveals the
+internal organization of the backend, the responsibilities of each component, and the precise
+flow of data from the frontend and external systems down to the database.
+
+It answers the question: how is the Backend API internally structured, and how do its parts
+
+collaborate to fulfill the system’s requirements?
+
+The Backend API is organized according to a layered architecture composed of three
+distinct groups: Controllers, Services, and a Repository. This separation enforces a clean divi-
+sion between HTTP request handling, business logic execution, and data access, resulting in
+a maintainable and testable codebase.
+
+The Component diagram zooms into the Backend API and shows its internal structure.
+
+Each controller calls a service, and each service interacts with the database through
+repositories. External APIs are also accessed within the service layer. The architecture fol-
+lows three layers:
+
+• Controllers (handle HTTP requests)
+
+• Services (business logic)
+
+• Repositories (database access)
+
+Chapter 3. System Design and Modeling
+
+46
+
+Figure 3.4: C4 Level 3 - Component Diagram
+
+3.5.2 Actors and Entry Points
+
+At this level, the Frontend Application acts as the sole external caller of the Backend API. It
+communicates with the API exclusively through REST calls directed at the five controllers,
+each of which maps to a specific functional domain of the platform. No actor communicates
+directly with any service or repository component.
+
+3.5.3 Controllers Layer
+
+The Controllers layer is the HTTP-facing layer of the backend. Each controller is imple-
+mented as a FastAPI Router and is responsible for receiving incoming REST requests from
+the Frontend Application, validating input, and delegating processing to the corresponding
+service. Five controllers are defined:
+
+• Auth Controller: handles all authentication-related endpoints including user login,
+
+registration, and OTP verification flows.
+
+• Provider Controller: exposes endpoints for provider search, availability queries, and
+
+geolocation-based discovery.
+
+Chapter 3. System Design and Modeling
+
+47
+
+• Request Controller: manages the full lifecycle of service requests — creation, accep-
+
+tance, and completion.
+
+• Chat Controller: provides endpoints for retrieving chat history and coordinating mes-
+
+saging between actors.
+
+• Moderator Controller: exposes administrative endpoints for user management, report
+
+handling, and platform statistics.
+
+3.5.4 Services Layer
+
+The Services layer contains the core business logic of the platform. Each service compo-
+nent is implemented in Python and operates independently of the HTTP transport layer,
+receiving its inputs from the corresponding controller and producing outputs that are either
+returned to the caller or persisted via the repository. Five services are defined:
+
+• Auth Service: implements authentication logic including OTP generation and valida-
+tion, password hashing, and JWT token management. It communicates with the Email
+Notification Service (SMTP) to deliver OTP codes and notification emails to users.
+
+• Provider Service: implements provider filtering algorithms, distance-based ranking,
+and profile composition logic. It integrates with Nominatim to geocode addresses and
+coordinates, and with OSRM to compute road-network distances between providers
+and clients.
+
+• Request Service: implements the service request state machine, enforcing business
+rules governing valid state transitions. It integrates with the AI Processing Service
+(Groq) to analyze incoming request descriptions and return structured outputs includ-
+ing category classification and suggested pricing.
+
+• Chat Service: handles message persistence and implements the negotiation logic as-
+
+sociated with price discussions between clients and providers.
+
+• Moderator Service:
+
+implements account suspension workflows, report processing
+pipelines, and statistical aggregation logic used to populate administrative dashboards.
+
+3.5.5 Repository Layer
+
+A single Database Repository component abstracts all read and write operations against
+the MongoDB database. It is implemented using Motor, Python’s asynchronous MongoDB
+driver, ensuring that all database I/O is non-blocking and compatible with the asynchronous
+execution model of FastAPI. All five service components route their persistence needs exclu-
+sively through this repository, which provides a clean and centralized data access interface.
+The repository in turn communicates directly with the Database container defined at
+Level 2.
+
+Chapter 3. System Design and Modeling
+
+48
+
+3.5.6 Interactions Between Components
+
+The data flow within the Backend API follows a strict top-down layered pattern:
+
+• The Frontend Application sends REST requests to the appropriate Controller based
+
+on the functional domain of the operation.
+
+• Each Controller delegates execution to its corresponding Service: the Auth Controller
+to the Auth Service, the Provider Controller to the Provider Service, the Request Con-
+troller to the Request Service, the Chat Controller to the Chat Service, and the Moder-
+ator Controller to the Moderator Service.
+
+• Each Service performs its business logic and, when persistence is required, issues read
+
+or write operations through the shared Database Repository.
+
+• The Database Repository translates these operations into asynchronous MongoDB
+
+queries directed at the Database container.
+
+• In parallel, three services maintain outbound integrations with external systems: the
+Auth Service triggers email delivery via SMTP; the Provider Service queries Nomi-
+natim for geocoding and OSRM for routing; and the Request Service submits request
+descriptions to the Groq AI inference engine and processes the structured responses it
+returns.
+
+This three-layer internal organization Controllers, Services, Repository reflects a delib-
+erate application of the separation of concerns principle. It ensures that HTTP handling,
+business logic, and data access remain independently testable and modifiable, providing a
+solid architectural foundation for the continued development and scaling of the Khadamni
+platform.
+
+3.6
+
+level 4
+
+The Code level is the most granular level of the C4 model. Rather than attempting to doc-
+ument the entire codebase, this level selectively targets the five components whose internal
+design has the most architectural significance. Each is represented as a class diagram that
+exposes the internal classes, their responsibilities, and how they collaborate to deliver the
+feature. Every diagram follows the same three-layer structure — Controller, Service, and
+Repository — ensuring consistency across all domains of the platform.
+
+3.6.1 Overview of the Level
+
+At this level , the architecture focuses on how each feature is concretely implemented inside
+the backend. Every feature follows the same three-layer structure: a Controller that receives
+and validates HTTP requests, a Service that contains the business logic, and a Repository
+that handles all database operations. This separation ensures that each layer has a single re-
+sponsibility and can be understood, tested, and modified independently. The five diagrams
+that follow cover the five core domains of Khadamni: Authentication, Provider Discovery,
+Service Requests, Real-Time Chat, and Moderation.
+
+Chapter 3. System Design and Modeling
+
+49
+
+3.6.2 Auth Service
+
+The Auth Service (Figure 3.5) manages the full authentication lifecycle. A user has at most
+one active OTP at a time (0..1) since the old one is deleted before a new one is created. A
+user can have multiple trusted device tokens (0..*), one per saved device. The EmailClient is
+called once per registration to deliver the OTP, and once per suspension event to notify the
+user.
+
+Figure 3.5: C4 Level 4 - auth-service
+
+Chapter 3. System Design and Modeling
+
+50
+
+3.6.3 Provider Service
+
+The Provider Service (Figure 3.6) handles geolocation-based search using the MongoDB
+2dsphere index, then joins with the users collection to fetch avatars. Nominatim converts
+text addresses to GPS coordinates, and OSRM computes the real driving route. The scoring
+formula (0.6 * distance + 0.4*quality) ranks results before returning them to the client.
+
+Figure 3.6: C4 Level 4 - provider-service
+
+Chapter 3. System Design and Modeling
+
+51
+
+3.6.4 Request Service
+
+The Request Service (Figure 3.7) controls the full state machine: pending -> in progress ->
+completed, with cancelled and rejected as exit states. Every request has exactly one chat
+room (1..1) created at submission time. The WebSocketManager broadcasts status changes
+in real time so both client and provider are notified instantly without refreshing.
+
+Figure 3.7: C4 Level 4- request-service
+
+Chapter 3. System Design and Modeling
+
+52
+
+3.6.5 Chat Service
+
+The Chat Service (Figure 3.8) manages both messaging and price negotiation within the
+same room. Messages can be regular text, price offers, or system events. All new messages
+and offer updates are broadcast via WebSocket so both parties see changes instantly. A chat
+room accumulates unlimited messages (0..*) over the lifetime of the job.
+
+Figure 3.8: C4 Level 4 - chat-request
+
+Chapter 3. System Design and Modeling
+
+53
+
+3.6.6 Moderator Service
+
+The Moderator Service (Figure 3.9) is the only service that reads across all collections si-
+multaneously to aggregate platform statistics. Suspension is stored directly on the user
+document with an optional expiry date the login check auto-lifts it when the date passes.
+Reports come pre-analyzed by Groq AI, so the moderator only needs to read the summary
+and confirm a decision.
+
+Figure 3.9: C4 Level 4 - moderator-service
+
+Chapter 3. System Design and Modeling
+
+54
+
+3.7 Conclusion
+
+This chapter provided a complete architectural study of the Khadamni platform using the
+C4 modeling approach. The system was progressively refined from a high-level contextual
+view down to detailed implementation-level structures, ensuring a clear and consistent un-
+derstanding of its internal organization.
+
+At the context level, the platform was positioned within its ecosystem, identifying the
+main actors and external services. The container level then decomposed the system into
+its core deployable components, highlighting their responsibilities and interactions. The
+component level further detailed the internal structure of the backend API through a clean
+layered architecture, separating concerns between controllers, services, and data access. Fi-
+nally, the code level illustrated the concrete implementation of the main services and their
+interaction logic.
+
+Overall, this architectural breakdown provides a solid and coherent foundation for the
+system. It ensures clarity in design decisions, and establishes a clear bridge between require-
+ments and implementation in the following development phase.
+
+Chapter 4
+
+Solution implementation and evaluation
+
+4.1
+
+Introduction
+
+This chapter presents the complete technical environment and implementation process be-
+hind the Khadamni platform. It translates the architectural design into a concrete working
+system by detailing the technologies and tools that power both the frontend and backend
+layers.We begin by outlining the development ecosystem, including software tools, frame-
+works, and external services that shaped the implementation. Finally, we showcase the main
+user interfaces of the platform through real usage scenarios, illustrating how the system be-
+haves from an end-user perspective.
+
+4.2 Environmental Setup
+
+4.2.1 Software Setup
+
+This subsection presents all software tools and technologies used in the development of the
+Khadamni platform, organized by functional category.
+
+Development and Collaboration Tools
+
+Visual Studio Code (Figure 4.1) is a lightweight but powerful code editor developed by Mi-
+crosoft. It supports a large number of programming languages and comes with built-in tools
+for debugging, version control, and terminal access. Its extension marketplace allowed us
+to install plugins for Python, JavaScript, and code formatting, making it our main working
+environment throughout the project[1].
+
+Figure 4.1: VS Code logo
+
+55
+
+Chapter 4. Solution implementation and evaluation
+
+56
+
+Git (Figure 4.2) is a version control system that records every change made to the code-
+base. It allows developers to work on different features simultaneously, merge their work,
+and undo mistakes at any point. Every commit in our project was tracked using Git, giving
+us a complete and reliable history of the development process[2].
+
+Figure 4.2: Git logo
+
+GitHub (Figure 4.3) is an online hosting service for Git repositories. It serves as a cen-
+tral location where the project code is stored and shared. Beyond storage, it also provides
+tools for tracking issues and reviewing changes. The Khadamni source code was hosted on
+GitHub throughout the entire development period[3].
+
+Figure 4.3: GitHub logo
+
+Postman (Figure 4.4) is a tool dedicated to testing HTTP APIs. It provides a graphical
+interface where the developer can send requests to any endpoint, inspect the response, and
+verify that the backend behaves correctly. We used Postman extensively during backend
+development to validate every API route before connecting it to the frontend[4].
+
+Figure 4.4: Postman logo
+
+MongoDB Compass (Figure 4.5) is the official desktop interface for MongoDB. It lets de-
+velopers browse collections, read and edit documents, and inspect indexes visually without
+writing shell commands. During development, we used it to verify that data was correctly
+saved and structured in the database after each operation[5].
+
+Figure 4.5: MongoDB Compass logo
+
+Chapter 4. Solution implementation and evaluation
+
+57
+
+Documentation and Design Tools
+
+Overleaf (Figure 4.6) is a cloud-based LATEX editor used for writing technical and academic
+documents. It compiles the document in real time and produces clean, professionally for-
+matted PDFs. We chose it to write this report because it handles formatting, numbering, and
+references automatically[6].
+
+Figure 4.6: Overleaf logo
+
+Draw.io (Figure 4.7) is a browser-based diagram editor that requires no installation. It
+supports a wide variety of diagram types and lets users export their work in multiple for-
+mats. We relied on it to produce UML diagrams including use case, sequence, and class
+diagrams for this report[7].
+
+Figure 4.7: Draw.io logo
+
+Structurizr (Figure 4.8) is an architecture diagramming tool built around the C4 model.
+Instead of drawing diagrams manually, the developer writes a simple text description of the
+system and Structurizr generates the visual output automatically. We used it to produce the
+three levels of C4 diagrams for Khadamni: system context, containers, and components[8].
+
+Figure 4.8: Structurizr logo
+
+Frontend Technologies
+
+React (Figure 4.9) is a JavaScript library created by Meta for building user interfaces.
+It
+works by breaking the UI into small, independent pieces called components, each managing
+its own state and rendering logic. Khadamni’s entire frontend is built with React 19, which
+introduced improved performance and a cleaner rendering model[9].
+
+Figure 4.9: React logo
+
+Chapter 4. Solution implementation and evaluation
+
+58
+
+Vite (Figure 4.10) is a modern frontend build tool that dramatically speeds up the devel-
+opment experience. Unlike older tools, it does not bundle the entire application on startup -
+it serves files on demand, resulting in near-instant server start and fast hot reload. We used
+Vite as the build system for the React frontend[10].
+
+Figure 4.10: Vite logo
+
+Tailwind CSS (Figure 4.11) is a utility-first CSS framework. Instead of writing separate
+stylesheet files, developers apply small predefined classes directly in the HTML or JSX. This
+approach keeps the styling close to the component and makes building consistent interfaces
+faster. The entire visual design of Khadamni was implemented using Tailwind CSS v4.[11]
+
+Figure 4.11: Tailwind CSS logo
+
+React Router (Figure 4.12) is the standard routing library for React applications. It maps
+URL paths to specific page components and handles navigation within a single-page appli-
+cation without reloading the browser. We also used it to implement route guards that restrict
+access based on user role and authentication status[12].
+
+Figure 4.12: React Router logo
+
+Leaflet (Figure 4.13) is a lightweight open-source JavaScript library for interactive maps.
+It renders map tiles from OpenStreetMap and supports markers, polylines, popups, and
+custom layers. We used Leaflet to display the provider map, show provider locations as
+pins, and draw the real road route during live job tracking.[13, 14]
+
+Figure 4.13: Leaflet logo
+
+Axios (Figure 4.14) is a promise-based HTTP client for JavaScript.
+
+It simplifies send-
+ing requests to a REST API and handling responses, with built-in support for request and
+response interceptors. We configured Axios with a base URL and an interceptor that auto-
+matically attaches the JWT token to every outgoing request [15, 16].
+
+Figure 4.14: Axios logo
+
+Chapter 4. Solution implementation and evaluation
+
+59
+
+Backend Technologies
+
+Python (Figure 4.15) is a high-level, general-purpose programming language valued for its
+readability and large ecosystem of libraries. It is widely adopted in web development, data
+processing, and artificial intelligence. We used Python 3.11 as the language for the entire
+backend of Khadamni[17].
+
+Figure 4.15: Python logo
+
+FastAPI (Figure 4.16) is a modern Python web framework built for building APIs quickly
+and reliably. It is fully asynchronous, which means it can handle many requests at the same
+time without blocking.
+It also generates interactive API documentation automatically at
+/docs. The entire Khadamni backend is structured around FastAPI with nine domain-
+specific routers[18].
+
+Figure 4.16: FastAPI logo
+
+WebSocket (Figure 4.17) is a communication protocol that establishes a persistent two-
+way connection between the client and the server. Unlike standard HTTP where the client
+always initiates the exchange, WebSocket allows the server to push data to the client at any
+time. We used it to power real-time chat, live price negotiation, and GPS tracking during
+active jobs[19].
+
+Figure 4.17: WebSocket logo
+
+JWT (Figure 4.18): JSON Web Token (JWT) is an open standard for securely transmitting
+information between two parties as a signed token. Once a user logs in, the server issues a
+JWT that the frontend stores and attaches to every subsequent request. The backend verifies
+the token’s signature to confirm the user’s identity without querying the database on every
+call[16].
+
+Figure 4.18: JWT logo
+
+Chapter 4. Solution implementation and evaluation
+
+60
+
+Database
+
+MongoDB (Figure 4.19) is a NoSQL database that stores data as flexible JSON-like docu-
+ments instead of fixed rows and columns. This makes it well suited for applications where
+data structures vary between records. We also made use of its geospatial indexing feature to
+run efficient location-based queries for the provider map. The Khadamni database contains
+ten collections[20].
+
+Figure 4.19: MongoDB logo
+
+External Services and APIs
+
+Groq (Figure 4.20) is a cloud-based AI inference platform that provides fast access to large
+language models through a simple API. We used Groq to run the Llama 3.3-70B model,
+which powers two features in Khadamni: automatic analysis of service requests written in
+natural language, and AI-assisted dispute mediation between clients and providers[21, 22].
+
+Figure 4.20: Groq logo
+
+Nominatim (Figure 4.21) is the geocoding service of OpenStreetMap. It converts a typed
+address into GPS coordinates and can also do the reverse. We use it on the backend to
+resolve provider and client locations so they can be correctly placed on the map[23].
+
+Figure 4.21: Nominatim logo
+
+OSRM (Figure 4.22) (Open Source Routing Machine) is a routing engine that calculates
+real driving routes between two GPS coordinates. It returns the route as a GeoJSON polyline
+which we display on the Leaflet map during live tracking, showing the client the exact road
+path the provider is taking to reach them[24].
+
+Figure 4.22: OSRM logo
+
+Chapter 4. Solution implementation and evaluation
+
+61
+
+4.3
+
+Interface Presentation
+
+This section presents the main screens of the Khadamni application. The interfaces are
+shown in the following order:
+
+• User registration and login
+
+• Provider search on the map
+
+• Provider profile page
+
+• Service request and chat
+
+• Price negotiation
+
+• Live job tracking
+
+• Notifications
+
+• Moderator dashboard
+
+4.3.1 Registration and Login
+
+The login and registration interface (Figure 4.23) allows new users to create an account by
+selecting their role and provides existing users with a secure two-factor authentication flow.
+
+Figure 4.23: Login and registration interface
+
+Chapter 4. Solution implementation and evaluation
+
+62
+
+4.3.2 Provider Map
+
+The interactive map (Figure 4.24) is the core discovery feature of the platform, displaying all
+available in-place providers as markers that clients can browse, filter, and select.
+
+Figure 4.24: Provider search map interface
+
+4.3.3 Provider Profile
+
+The provider profile page (Figure 4.25) presents all professional details, including biography,
+service categories, ratings, completed jobs, and a portfolio gallery.
+
+Figure 4.25: Provider profile interface 1/2
+
+Chapter 4. Solution implementation and evaluation
+
+63
+
+The lower section of the profile (Figure 4.26) displays client reviews and the provider’s
+
+portfolio of past work.
+
+Figure 4.26: Provider profile interface 2/2
+
+4.3.4 Service Request and Chat
+
+Once a provider accepts a request, both parties enter a private chat room (Figure 4.27) where
+they can exchange messages and discuss service details in real time.
+
+Figure 4.27: Service request and chat interface
+
+Chapter 4. Solution implementation and evaluation
+
+64
+
+4.3.5 Price Negotiation
+
+The price negotiation interface (Figure 4.28) allows the provider to submit a price offer dis-
+played as a styled card, while the client can choose to accept or request a revised offer.
+
+Figure 4.28: Price negotiation interface - provider offer
+
+Once both parties agree on the price (Figure 4.29), they each confirm independently to
+
+lock the agreement and proceed to service execution.
+
+Figure 4.29: Price negotiation interface - mutual confirmation
+
+Chapter 4. Solution implementation and evaluation
+
+65
+
+4.3.6 Live Tracking
+
+After price confirmation, the client can track the provider’s real-time GPS position (Fig-
+ure 4.30) on an interactive map with the driving route computed via OSRM.
+
+Figure 4.30: Live job tracking interface
+
+4.3.7 Notifications
+
+The notification system (Figure 4.31) keeps users informed of important events such as in-
+coming requests, status changes, and new messages.
+
+Figure 4.31: Notifications interface - request updates
+
+Notifications are displayed in real time (Figure 4.32) and include contextual actions that
+
+allow users to respond directly without navigating away.
+
+Chapter 4. Solution implementation and evaluation
+
+66
+
+Figure 4.32: Notifications interface -system alerts
+
+4.3.8 Moderator Dashboard
+
+The moderator dashboard (Figure 4.33) provides an overview of platform statistics includ-
+ing user counts, request distributions, and active reports.
+
+Figure 4.33: Moderator dashboard - platform statistics
+
+Chapter 4. Solution implementation and evaluation
+
+67
+
+The user management section (Figure 5.1) allows the moderator to search, filter, suspend,
+
+activate, and delete any user account on the platform.
+
+Figure 4.34: Moderator dashboard - user management
+
+The reports section (Figure 4.35) displays AI-generated dispute analyses and provides
+
+direct action buttons for the moderator to resolve conflicts.
+
+Figure 4.35: Moderator dashboard - dispute reports
+
+Chapter 4. Solution implementation and evaluation
+
+68
+
+4.4 AI Integration
+
+4.4.1 Overview
+
+Khadamni integrates artificial intelligence through Groq, a cloud inference platform that
+runs the Llama 3.3-70B large language model. The AI is not a standalone feature - it is
+embedded into two core workflows of the platform: helping clients describe what they need,
+and helping moderators resolve disputes between users. Both features work by sending text
+to Groq and receiving a structured response that the backend then uses to take action.
+
+4.4.2 Feature 1 : Automatic Request Analysis
+
+When a client wants to request a service, they describe their problem in their own words,
+Instead of forcing him to navigate dropdowns and categories
+even the Tunisian dialect.
+manually, the platform sends that description to the AI and lets it figure out the rest.
+
+What happens step by step:
+
+1. The client types a free-text description of their problem (example: "3and¯ı problema fil
+
+robiniyya")
+
+2. The frontend sends the description to the backend via POST /api/ai/analyze
+
+3. The backend constructs a prompt and sends it to the Groq API
+
+4. Llama 3.3-70B reads the description and returns a structured JSON response contains:
+
+• The detected service category (example: Plumbing)
+
+• An estimated price range based on the type of job
+
+• A confidence level for the detected category
+
+5. The backend returns this result to the frontend
+
+6. The client sees the suggested category and price, and can confirm or adjust before
+
+submitting
+
+Why this matters: Without AI, the client would need to manually know which category
+their problem belongs to. With AI, they just describe the problem in any language or di-
+alect and the platform handles the classification automatically. This significantly lowers the
+barrier for non-technical users.
+
+4.4.3 Feature 2 : AI-Assisted Dispute Mediation
+
+When a conflict arises between a client and a provider - for example, a disagreement over
+whether the job was completed correctly - either party can file a dispute report. The moder-
+ator then needs to review it and make a decision. To help with this, the platform uses AI to
+analyze the full conversation and produce an independent assessment before the moderator
+even opens the report.
+
+Chapter 4. Solution implementation and evaluation
+
+69
+
+What happens step by step:
+
+1. A user submits a dispute report through the platform
+
+2. The backend retrieves the complete chat transcript between the client and the provider
+
+3. A structured prompt is built containing the transcript and the context of the job
+
+4. The prompt is sent to Groq - Llama 3.3-70B reads the full conversation and produces a
+
+report containing:
+
+• A summary of what happened
+
+• A recommendation - in favor of the client, in favor of the provider, or neutral
+
+• The key evidence from the conversation that supports the recommendation
+
+• A suggested action for the moderator to take
+
+5. The AI report is saved in the reports collection in MongoDB
+
+6. The moderator sees the AI analysis directly on their dashboard before making a final
+
+decision
+
+Why this matters: Without AI, the moderator would need to read through every mes-
+sage in the conversation manually to understand what happened. The AI pre-processes the
+conversation and highlights the important parts, saving time and reducing the chance of
+a biased or uninformed decision. The moderator always makes the final call - the AI only
+provides a recommendation.
+
+4.4.4 Provider Recommendation Scoring
+
+In addition to the two main AI features, the platform uses a scoring formula to rank providers
+when a client searches for nearby help. The score is calculated on the backend using the fol-
+lowing formula:
+
+Score = 0.6 × Distance Score + 0.4 × Quality Score
+
+• Distance Score how close the provider is to the client’s location (closer = higher score)
+
+• Quality Score based on the provider’s average rating from past jobs
+
+Providers are sorted by this score so that the most relevant result , a nearby provider
+with a good reputation appears at the top of the list. The Groq API can also be called to
+generate a natural language explanation of why a particular provider was recommended, as
+summarized in Table 4.1.
+
+Chapter 4. Solution implementation and evaluation
+
+70
+
+4.4.5 Technical Summary
+
+Table 4.1: AI integration technical summary
+
+Component
+AI Provider
+Model
+Integration method Official Groq Python client via groq package
+Features powered
+
+Details
+Groq cloud inference platform
+Llama 3.3-70B
+
+Request analysis, dispute mediation, provider
+recommendation explanation
+English, French, Arabic, Tunisian dialect
+Structured JSON parsed by the backend before
+returning to the frontend
+If Groq is unavailable, the user can manually se-
+lect a category
+
+Input languages
+Response format
+
+Fallback
+
+4.5 Conclusion
+
+This chapter detailed the full implementation ecosystem of the Khadamni platform, bridg-
+ing the gap between architectural design and real-world execution. It highlighted the tech-
+nologies, tools, and external services that collectively form a modern, scalable, and real-time
+service marketplace.
+
+Beyond a simple technical description, this chapter demonstrated how each component
+contributes to a unified system experience from development tooling and backend logic to
+frontend interaction and AI-powered services. The presented interfaces further illustrated
+how these technologies converge to deliver an intuitive and responsive platform for all user
+roles.
+
+Chapter 5
+
+Tests and Validation
+
+5.1
+
+Introduction
+
+This chapter presents the testing strategy used to validate the Khadamni platform. It ensures
+that all features work correctly across different user roles and scenarios.A test dataset was
+prepared using a seeding script. This provides realistic and reproducible testing conditions.
+
+The strategy is based on six levels. Unit testing checks isolated logic, while functional
+testing verifies Chapter 2 requirements. Integration testing ensures proper communication
+between components and external services.Automated testing prevents regressions, secu-
+rity testing enforces access control, and performance testing evaluates system load han-
+dling.Professional quality metrics are reported to assess platform readiness.
+
+5.2 Testing Strategy and Methodology
+
+Although the project development followed an Agile Scrum methodology, the testing strat-
+egy adopts the V-Model principle, where each development phase is associated with a cor-
+responding testing level. Requirements identified in Chapter 2 are traced to functional test
+cases to ensure complete coverage and validation. The testing process is organized into se-
+quential phases, with each phase relying on the successful validation of the previous one, as
+outlined in Table 5.1.
+
+Figure 5.1: V-model testing
+
+71
+
+Chapter 5. Tests and Validation
+
+72
+
+Table 5.1: Test planning timeline and phase distribution
+
+Phase
+
+Duration Activities
+
+Deliverables
+
+Phase 1 -Unit & Automated Testing
+
+3 days
+
+Phase 2 -Integration Testing
+
+4 days
+
+Phase 3 -Functional Testing
+
+3 days
+
+Phase 4 -Security & Performance
+
+4 days
+
+Individual
+function test-
+pytest
+ing,
+suite
+ex-
+ecution,
+component
+isolation
+Frontend–
+Backend
+communica-
+tion, external
+API resilience
+(Groq, Nom-
+inatim,
+OSRM), Web-
+Socket
+sync,
+fallback vali-
+dation
+Requirement-
+by-
+requirement
+validation
+(FR-1 to FR-
+21), cross-role
+scenario test-
+ing
+Route
+tection,
+validation,
+suspension
+enforcement,
+load testing,
+WebSocket
+latency
+
+pro-
+JWT
+
+test
+Unit
+reports, code
+coverage
+data
+
+Integration
+test
+results,
+API flow doc-
+umentation
+
+critical
+
+Success Cri-
+teria
+All
+functions
+pass,
+age ≥ 70%
+
+cover-
+
+flow,
+
+Seamless
+data
+graceful
+degradation
+on
+failures
+
+external
+
+Functional
+test matrix,
+traceability
+report
+
+of
+100%
+high-priority
+requirements
+validated
+
+Security au-
+dit summary,
+performance
+benchmarks
+
+No
+critical
+security gaps,
+response
+<
+times
+500ms (NFR-
+1.2)
+
+5.3 Testing Environment
+
+5.3.1 Hardware Environment
+
+All tests were conducted on the development machines used throughout the project. The
+hardware specifications are presented in Table 5.2.
+
+Chapter 5. Tests and Validation
+
+73
+
+Table 5.2: Hardware environment used for testing
+
+Specification
+
+Machine 1 (Bilel)
+
+Machine 2 (Manar)
+
+Operating System Windows 11 Pro 64-bit
+
+Windows 11 Home 64-bit
+
+Processor
+
+Intel Core i5-12400
+
+Intel Core i7-1165G7
+
+RAM
+
+Storage
+
+Browser
+
+Network
+
+16 GB DDR4
+
+8 GB DDR4
+
+512 GB NVMe SSD
+
+256 GB NVMe SSD
+
+Google Chrome 125
+
+Google Chrome 125
+
+20 Mbps fiber connection 15 Mbps ADSL connection
+
+5.3.2 Software Environment
+
+• Backend: FastAPI running on Uvicorn at http://localhost:8000
+• Frontend: React 19 served by Vite at http://localhost:5173
+• Database: MongoDB 7.0 running as a local Windows service
+• External services: Nominatim, OSRM (internet), Groq API (API key)
+• Email: Gmail SMTP for real OTP delivery testing
+
+5.3.3 Testing Tools
+
+Together, these tools provide end-to-end test coverage across all levels, combining automa-
+tion, manual inspection, and real-time monitoring to ensure both correctness and perfor-
+mance of the platform (Table 5.3).
+
+Table 5.3: Testing tools and their associated test levels
+
+Tool
+
+pytest
+
+Locust 2.43
+
+Purpose
+
+Automated unit and integration testing for
+Python backend
+
+Test Level
+
+Unit, Integration
+
+Python-based load testing framework for
+HTTP performance and stress tests
+
+Performance
+
+Swagger UI (/docs)
+
+Interactive API endpoint testing with JWT
+auth
+
+Functional
+
+Postman
+
+Manual API testing with custom headers
+and tokens
+
+Functional, Integration
+
+MongoDB Compass Visual database inspection after test opera-
+
+All levels
+
+tions
+
+Chrome DevTools
+
+Network, WebSocket, and console inspec-
+tion
+
+Integration, Performance
+
+seed.py
+
+Automated reproducible test dataset gen-
+eration
+
+All levels
+
+Chapter 5. Tests and Validation
+
+74
+
+5.3.4 Test Data Preparation
+
+A custom seeding script (seed.py) populates the database with representative data before
+each test session, as detailed in Table 5.4:
+
+Table 5.4: Test dataset generated by seed.py
+
+Data Type
+Moderator account
+Client accounts
+In-place providers
+Remote providers
+Completed requests
+Ratings
+Dispute report
+
+Count Description
+
+1
+3
+8
+4
+8
+6
+1
+
+mod@test.com - OTP bypassed for @test.com
+Complete profiles with verified status
+GeoJSON coordinates, multiple categories
+Online services (IT, design, accounting)
+Used for statistics and rating tests
+Cross-ratings between clients and providers
+With AI analysis output for moderator review
+
+5.4 Unit Testing
+
+5.4.1 Objective
+
+Unit testing verifies individual functions or methods in isolation to ensure they produce
+correct results for defined inputs, including edge cases.
+
+5.4.2 Test Automation: Password Hashing Verification
+
+The following test (Figure 5.2 and Table 5.5) verifies that the password hashing function
+correctly secures user credentials and that verification works bidirectionally.
+
+Table 5.5: UT-001 -Password hashing and verification unit test
+
+Test ID
+Objective
+Component under test app/utils/security.py
+
+UT-001
+Validate password hashing and verification behavior.
+
+-hash_password(),
+
+Type
+Priority
+Prerequisites
+Test procedure
+
+Expected results
+
+Status
+
+verify_password()
+Automated unit test (pytest)
+Critical
+Security module importable and PBKDF2 support available.
+1. Hash a valid password.
+2. Verify it with the correct password.
+3. Verify it with an incorrect password.
+4. Hash the same password twice and compare both results.
+The generated value is a PBKDF2-SHA256 hash distinct from the plain
+text; verification returns True for the valid password and False for
+the invalid one; repeated hashing produces different values due to ran-
+dom salting.
+Pass
+
+Chapter 5. Tests and Validation
+
+75
+
+Figure 5.2: Automated unit test script
+
+Execution result (Figure 5.3):
+
+Figure 5.3: Result of the test
+
+5.5 Functional Testing
+
+5.5.1 Objective
+
+Functional testing validates that each functional requirement defined in Chapter 2 is cor-
+rectly implemented by the system. Each test case is mapped directly to a specific require-
+ment identifier (FR-1 through FR-21), ensuring full requirements traceability. Testing was
+conducted manually using Swagger UI, Postman, and browser-based interaction.
+
+5.5.2 Requirements Traceability Matrix
+
+The following matrices (Table 5.6 and Table 5.7) trace every functional requirement to its
+corresponding test case, result, and validation status. The table is divided into two parts .
+
+Chapter 5. Tests and Validation
+
+76
+
+Table 5.6: Functional requirements traceability matrix -Part 1 (FR-1 to FR-11)
+
+Req. ID Test ID Validation Criteria
+
+Priority
+
+Result
+
+Status
+
+FR-1
+
+FT-001
+
+FR-2
+
+FT-002
+
+FR-3
+
+FT-003
+
+User registers with all re-
+quired fields; duplicate email
+rejected; password stored as
+PBKDF2-SHA256 hash
+
+Provider supplies biography,
+categories,
+job type; pro-
+file document auto-created
+in provider_profiles
+
+password
+Two-step login:
+then OTP;
+trusted device
+skips OTP; OTP expires after
+5 min
+
+FR-4
+
+FT-004 Moderator suspends account
+with reason/duration; email
+sent; auto-lift on expiry
+
+FR-5
+
+FT-005
+
+FR-6
+
+FT-006
+
+Client profile displays name,
+email,
+completed
+phone,
+jobs, and editable fields
+
+Provider profile shows bio,
+categories, rating, portfolio
+gallery; all fields editable
+
+FR-7
+
+FT-007 Map renders providers as
+shows
+
+popup
+
+markers;
+name/rating/categories;
+real-time availability
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+FR-8
+
+FT-008
+
+FR-9
+
+FT-009
+
+FR-10
+
+FT-010
+
+FR-11
+
+FT-011
+
+Filtering by category, dis-
+tance radius, and job type re-
+turns correct subset
+
+Address typed in search is
+geocoded via Nominatim;
+map flies to resolved coordi-
+nates
+
+AI analyzes natural language
+input (including Tunisian di-
+alect);
+returns category +
+price
+
+Top 3 in-place and top 3 re-
+mote providers ranked by
+composite score displayed
+
+Medium As expected
+
+Pass
+
+Medium As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+Medium As expected
+
+Pass
+
+Chapter 5. Tests and Validation
+
+77
+
+Table 5.7: Functional requirements traceability matrix -Part 2 (FR-12 to FR-21)
+
+Req. ID Test ID Validation Criteria
+
+Priority
+
+Result
+
+Status
+
+FR-12
+
+FT-012
+
+FR-13
+
+FT-013
+
+FR-14
+
+FT-014
+
+Dispute report submitted; AI
+reads chat history; structured
+mediation report generated
+
+Client creates request with
+description + location; AI
+analysis auto-triggered and
+stored
+
+Request transitions: pend-
+ing → accepted → confirmed
+→ completed; invalid transi-
+tions rejected
+
+FR-15
+
+FT-015 WebSocket
+
+chat
+
+delivers
+messages <1s; history per-
+typing
+sists on refresh;
+indicator works
+
+FR-16
+
+FT-016
+
+FR-17
+
+FT-017
+
+FR-18
+
+FT-018
+
+FR-19
+
+FT-019
+
+Provider sends price offer;
+client
+accepts/negotiates;
+both confirm to lock price
+
+GPS tracking activates after
+confirmation;
+route drawn
+via OSRM; proximity alert at
+500m
+
+Both parties rate (1–5 stars
++ comment);
+one rating
+per job; aggregate updated
+atomically
+
+shows
+
+Dashboard
+user
+counts, request counts, open
+reports, top categories
+
+Medium As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+High
+
+As expected
+
+Pass
+
+Medium As expected
+
+Pass
+
+Medium As expected
+
+Pass
+
+FR-20
+
+FT-020 Moderator
+
+High
+
+As expected
+
+Pass
+
+searches/suspends/activates/deletes
+users;
+works
+
+deletion
+
+cascade
+
+FR-21
+
+FT-021
+
+Dispute report card shows
+AI analysis; moderator can
+suspend/delete and mark re-
+viewed
+
+Medium As expected
+
+Pass
+
+Chapter 5. Tests and Validation
+
+78
+
+5.5.3 Detailed Functional Test Cases
+
+The following test cases illustrate the detailed validation of selected critical requirements.
+
+The detailed validation steps and results for the two-factor authentication system are
+
+presented in Table 5.8: Test Case FT-003 -Two-Factor Authentication (FR-3)
+
+Table 5.8: FT-003 -Two-factor authentication validation
+
+Test ID
+Requirement
+Precondition
+Steps
+
+FT-003
+FR-3: Two-Factor Login with Trusted Device Support
+Registered user account, valid email
+1. Submit email and password via login form
+2. Verify OTP is received at registered email within 30
+seconds
+3. Enter OTP within the 5-minute validity window
+4. Confirm JWT access token and trusted device token
+are issued
+5. Log out and log in again from the same device
+6. Confirm OTP step is skipped on the trusted device
+Expected Result Full 2FA flow completes; trusted device bypasses OTP
+
+Actual Result
+
+Status
+
+on subsequent logins
+OTP received in 8 seconds maximum; JWT issued cor-
+rectly; trusted device bypass confirmed
+Pass
+
+The formal validation of the service request state machine is summarized in Table 5.9:
+
+Test Case FT-014 -Request Lifecycle State Machine (FR-14)
+
+Table 5.9: FT-014 -Request lifecycle state machine validation
+
+Test ID
+Requirement
+Steps
+
+transitions
+
+Provider accepts → status
+
+FT-014
+FR-14: Request Lifecycle State Machine
+1. Client creates a request → status is pending
+2.
+in_progress; chat room created
+3. Both parties confirm agreed price → status transi-
+tions to confirmed
+4. Provider marks job complete → status transitions
+to completed
+5. Attempt an invalid transition (completed → pend-
+ing) via API
+6. Confirm the backend returns HTTP 400
+
+to
+
+Expected Result All valid transitions succeed; invalid transitions are
+
+Actual Result
+
+Status
+
+rejected server-side
+State machine enforced correctly; invalid transition re-
+turned 400 Bad Request
+Pass
+
+Chapter 5. Tests and Validation
+
+79
+
+The following table (Table 5.10) presents the results of the natural language processing
+(NLP) analysis using the Llama 3.3-70B model: Test Case FT-010 -AI Request Analysis (FR-
+10)
+
+Table 5.10: FT-010 -AI request analysis validation
+
+Test ID
+Requirement
+Steps
+
+FT-010
+FR-10: AI Request Analysis
+1. Log in as client
+2. Submit a request with Tunisian dialect: “3and¯ı
+mushkla fil robiniyya, andi ken 50 dt”
+3. Confirm the AI returns: category = Plumbing, esti-
+mated price in range
+4. Submit a second request in French: “Je cherche un
+électricien pour installer des prises”
+5. Confirm: category = Electricity, estimated price =
+50–120 TND
+
+Expected Result AI correctly classifies both requests with valid JSON
+
+Actual Result
+
+Status
+
+responses in <5 seconds
+Tunisian input classified in 2 seconds; French input
+classified in 1.5s; both correct
+Pass
+
+5.6
+
+Integration Testing
+
+5.6.1 Objective
+
+Integration testing verifies that the different layers of the system -React frontend, FastAPI
+backend, MongoDB, WebSocket server, and external APIs -communicate correctly. A critical
+focus of this phase is external service resilience: validating the system’s behavior when
+third-party services become unavailable or respond slowly.
+
+5.6.2 Frontend-Backend Integration
+
+The following table (Table 5.11) summarizes the end-to-end authentication flow, including
+registration, OTP delivery, and JWT issuance: Test Case IT-001- Complete Authentication
+Flow
+
+Chapter 5. Tests and Validation
+
+80
+
+Table 5.11: IT-001- Authentication integration
+
+Test ID
+Description
+
+Steps
+
+IT-001
+Validate end-to-end registration → OTP → JWT is-
+suance → protected route access
+1. Submit registration form from the React frontend
+2. Confirm OTP email arrives via Gmail SMTP
+3. Enter OTP; confirm JWT stored in browser
+4. Access a protected route; confirm token accepted
+
+Actual Result Full flow completed; JWT accepted on all protected
+
+Status
+
+endpoints
+Pass
+
+The bidirectional communication between users via WebSockets is validated in Table 5.12:
+
+Test Case IT-002- Real-Time Chat Synchronization
+
+Table 5.12: IT-002- WebSocket chat integration
+
+Test ID
+Description
+
+Steps
+
+IT-002
+Verify bidirectional WebSocket message delivery be-
+tween client and provider
+1. Open chat as client in Tab A; open same room as
+provider in Tab B
+2. Client sends a message
+3. Verify instant appearance on provider’s tab
+4. Provider replies; verify reverse delivery
+
+Actual Result Messages delivered in 0.3–0.8 seconds; no refresh re-
+
+Status
+
+quired; history persisted
+Pass
+
+5.6.3 External Service Resilience Testing
+
+A key concern for any platform depending on third-party APIs is graceful degradation: the
+system must not crash or display raw errors when an external service is unavailable. The
+following tests simulate failure scenarios for each critical external dependency.
+
+The system’s behavior during a Groq AI API timeout is detailed in Table 5.13: Test Case
+
+IT-003 - Groq AI Timeout Scenario
+
+Chapter 5. Tests and Validation
+
+81
+
+Table 5.13: IT-003- Groq AI timeout and fallback validation
+
+Test ID
+Description
+
+Simulation Method Set
+
+Expected Behavior
+
+Actual Result
+
+Fallback Verified
+
+Status
+
+IT-003
+Verify system behavior when the Groq AI API exceeds
+its response timeout
+the Groq API
+
+to 1 second while
+timeout
+the model processes a complex request, forcing a
+TimeoutError
+The backend catches the timeout, returns a struc-
+tured error response, and the frontend displays a user-
+friendly message with a manual category selection
+fallback
+Backend returned HTTP 503 with message: “The AI
+service is taking too long to respond. Please try again
+in a few seconds.” The frontend displayed a red er-
+ror banner with a dismiss button inside the AI search
+panel. No page refresh was required.
+Yes –user successfully submitted request with manu-
+ally selected category
+Pass
+
+Chapter 5. Tests and Validation
+
+82
+
+The following table (Table 5.14) presents the platform behavior when the geocoding ser-
+
+vice becomes unavailable. Test Case IT-004 - Nominatim Unavailability Scenario
+
+Table 5.14: IT-004 -Nominatim unavailability and fallback validation
+
+Test ID
+Description
+
+IT-004
+Verify system behavior when the Nominatim geocod-
+ing service is unreachable
+
+Simulation Method Redirect backend proxy URL to a non-existent host to
+
+Expected Behavior
+
+Actual Result
+
+Fallback Verified
+
+Status
+
+simulate Nominatim being unreachable
+The backend catches the connection error and returns
+an appropriate error. The map remains functional us-
+ing the user’s browser geolocation as a fallback.
+Backend returned HTTP 503 with message “Geocod-
+ing service unavailable”. The search bar displayed:
+“Location search temporarily unavailable. Use the
+map to set your position manually.” The map con-
+tinued to function normally with browser GPS.
+Yes -manual map positioning via click worked cor-
+rectly
+Pass
+
+The following table (Table 5.15) summarizes the routing failure scenario and the system
+
+fallback behavior. Test Case IT-005 -OSRM Routing Service Failure
+
+Table 5.15: IT-005 -OSRM routing failure and fallback validation
+
+Test ID
+Description
+
+IT-005
+Verify system behavior when OSRM fails to return a
+route during live GPS tracking
+Simulation Method Temporarily redirect OSRM API calls to a non-
+
+Expected Behavior
+
+Actual Result
+
+Status
+
+responsive endpoint
+GPS tracking continues showing the provider’s live
+position marker; the route polyline is not drawn but
+the map remains fully functional
+The route fetch failed silently via .catch(() =>
+[]). The map continued to load and function nor-
+mally -provider markers, tiles, and all other features
+remained unaffected. Route polyline was not drawn
+but no error was surfaced to the user.
+Acceptable
+
+5.6.4 External Service Resilience Summary
+
+All critical external dependencies were tested under simulated failure conditions, as sum-
+marized in Table 5.16. Groq, Nominatim, and Gmail SMTP degraded gracefully with clear
+fallbacks, while OSRM failure is handled silently without breaking the core map experience.
+
+Chapter 5. Tests and Validation
+
+83
+
+Table 5.16: External service resilience test summary
+
+Service
+
+Groq AI
+
+Failure Type
+
+Fallback Behavior
+
+Result
+
+Timeout / API error Manual category se-
+
+Pass
+
+lection
+
+Nominatim Network unreachable Browser GPS + man-
+
+Pass
+
+OSRM
+
+Service unavailable
+
+Gmail SMTP Delivery delay
+
+ual map click
+
+Silent failure, map re-
+mains functional
+
+Retry mechanism +
+user notification
+
+Acceptable
+
+Pass
+
+5.7 Automated Testing Strategy
+
+5.7.1 Automation Approach
+
+While the majority of testing was conducted manually due to the academic scope of the
+project, a targeted automated testing strategy was implemented for critical backend logic
+using pytest. The automation strategy follows the test pyramid principle: a broad base of
+fast unit tests, a narrower layer of integration tests, and selective manual validation above,
+as outlined in Table 5.17.
+
+Table 5.17: Test automation distribution
+
+Framework
+
+Scope
+
+Test Count
+
+Test Level
+
+Unit Tests
+
+pytest
+
+Integration Tests
+
+pytest + httpx
+
+Password hashing,
+ken generation
+
+to-
+
+Request status transi-
+tions, JWT enforcement
+
+Manual Functional
+
+Swagger / Browser FR-1 to FR-21 require-
+
+Manual E2E
+
+Browser-based
+
+ment validation
+
+Full user journeys for all
+3 roles
+
+6
+
+6
+
+21
+
+4
+
+5.7.2 Automated Test Suite
+
+Unit Tests -tests/test_security.py
+
+Six unit tests verify the correctness of the security utility functions in isolation, with no
+
+database or network dependency:
+
+Chapter 5. Tests and Validation
+
+84
+
+• Hash differs from plain text and starts with $pbkdf2-sha256$
+• Correct password verified successfully
+• Wrong password correctly rejected
+• Each hash call produces a unique salt
+• Empty string hashed and verified without errors
+• create_access_token() returns a valid non-trivial JWT string
+
+Integration Tests -tests/test_request_transitions.py
+
+Six integration tests hit the live API over HTTP to verify state machine enforcement and
+
+JWT protection:
+
+• Completed request cannot be re-accepted (expects HTTP 400)
+• Completed request cannot be re-completed (expects HTTP 400)
+• Completed request cannot be cancelled (expects HTTP 400)
+• Completed request is readable with valid token (expects HTTP 200)
+• Invalid JWT token is rejected (expects HTTP 401)
+• Tampered JWT signature is rejected (expects HTTP 401)
+
+5.7.3 Test Execution
+
+The full suite is executed with the following command, producing the output shown in
+Figure 5.4:
+
+$ pytest tests/ -v
+
+Figure 5.4: Automated test suite execution -12 tests passing
+
+5.8 Security Testing
+
+5.8.1 Objective
+
+Security testing verifies that the platform correctly enforces access restrictions, protects sen-
+sitive data, and resists common attack patterns. Each test case targets a specific security
+mechanism of the Khadamni platform.
+
+Chapter 5. Tests and Validation
+
+85
+
+5.8.2 Detailed Security Test Scenarios
+
+Test Case SEC-001 - OTP Expiry Enforcement (Table 5.18)
+
+Table 5.18: SEC-001 - OTP expiry enforcement
+
+Test ID
+Description
+
+SEC-001
+Verify that an OTP code is rejected after its 5-minute
+validity window has passed
+1. Register a new account; OTP is sent to email
+2. Wait 6 minutes without entering the OTP
+3. Enter the expired OTP and submit
+Expected Result Backend returns HTTP 400 with message “OTP ex-
+
+Steps
+
+Actual Result
+
+Status
+
+pired”; user must restart login
+HTTP 400 returned after 5:02 min; OTP document
+auto-deleted by MongoDB TTL index
+Pass
+
+Test Case SEC-002 - OTP Single-Use Enforcement (Table 5.19)
+
+Table 5.19: SEC-002 -OTP single-use enforcement
+
+Test ID
+Description
+Steps
+
+Expected Result
+
+Actual Result
+
+Status
+
+SEC-002
+Confirm that a valid OTP can only be used once
+1. Register and receive OTP
+2. Enter the correct OTP -account verified successfully
+3. Immediately resubmit the same OTP code via Post-
+man
+Second submission rejected; OTP document deleted
+from otp_codes
+Second attempt returned HTTP 400 “Invalid OTP”;
+MongoDB Compass confirmed OTP document re-
+moved
+Pass
+
+Chapter 5. Tests and Validation
+
+86
+
+Test Case SEC-003 - JWT Verification on Protected Routes (Table 5.20)
+
+Table 5.20: SEC-003 -JWT verification on protected routes
+
+Test ID
+Description
+
+Steps
+
+SEC-003
+Confirm that all protected API endpoints
+reject requests without a valid JWT token
+1.
+to
+/api/requests/my with an invalid
+token in the Authorization header
+2. Send the same request with a tampered
+JWT signature
+
+a GET
+
+request
+
+Send
+
+Expected Result All requests return HTTP 401 Unautho-
+
+Actual Result
+
+Status
+
+rized
+Backend returned HTTP 401 Unauthorized
+for both invalid and tampered tokens on
+GET /api/requests/my
+Pass
+
+Test Case SEC-004 -Role-Based Access Control (Table 5.21)
+
+Table 5.21: SEC-004 -Role-based access control
+
+Test ID
+Description
+
+SEC-004
+Verify that role-restricted routes block users without
+the required role
+1.
+in
+/api/moderator/stats with the client JWT
+2. Attempt to navigate to /moderator in the browser
+Expected Result API returns HTTP 403 Forbidden; frontend redirects
+
+and call GET
+
+Steps
+
+client
+
+Log
+
+as
+
+a
+
+Actual Result
+
+Status
+
+to home page
+Backend returned HTTP 403 Forbidden when
+JWT was used to call GET
+a non-moderator
+/api/moderator/stats
+Pass
+
+Chapter 5. Tests and Validation
+
+87
+
+Test Case SEC-005 - Suspended Account Login Block (Table 5.22)
+
+Table 5.22: SEC-005 -Suspended account login block
+
+Test ID
+Description
+
+Steps
+
+SEC-005
+Confirm that a suspended user cannot access the plat-
+form
+1. As moderator, suspend a test client account via the
+moderator dashboard
+2. Attempt to log in as the suspended client with cor-
+rect credentials
+
+Expected Result Login blocked with HTTP 403; suspension overlay
+
+Actual Result
+
+Status
+
+displayed
+Backend returned HTTP 403 with “Account sus-
+pended”; login form displayed the suspension over-
+lay
+Pass
+
+5.8.3 Security Test Summary
+
+All five security mechanisms passed validation, as summarized in Table 5.23, confirming
+that authentication, access control, and account enforcement are correctly implemented and
+traceable to their respective functional and non-functional requirements.
+
+Table 5.23: Security test results summary with NFR traceability
+
+Test ID
+
+Security Mechanism
+
+Validated Against
+
+SEC-001 OTP expiry enforcement (5 min
+
+NFR-3.4
+
+TTL)
+
+SEC-002 OTP single-use (replay preven-
+
+NFR-3.4
+
+tion)
+
+SEC-003
+
+JWT validation on all protected
+routes
+
+NFR-4.1
+
+SEC-004 Role-based
+
+access
+
+control
+
+NFR-4.2
+
+(RBAC)
+
+SEC-005
+
+Suspended account
+ment
+
+enforce-
+
+FR-4
+
+Status
+
+Pass
+
+Pass
+
+Pass
+
+Pass
+
+Pass
+
+Chapter 5. Tests and Validation
+
+88
+
+5.9 Performance Testing
+
+5.9.1 Objective
+
+Performance testing evaluates how the system behaves under varying levels of concurrent
+load, measuring response times, throughput, error rates, and real-time feature latency. The
+objective is to identify the platform’s operational limits and confirm that response times
+meet the thresholds defined in NFR-1 and NFR-2.
+
+5.9.2 Performance Testing Tool
+
+All load and stress tests were conducted using Locust 2.43, an open-source Python-based
+load testing framework. Test scenarios were written as Python classes simulating realistic
+user behavior across all major API endpoints. Each virtual user alternates between provider
+search, request management, chat history retrieval, and AI analysis calls, with a wait time
+of 1–3 seconds between actions to simulate realistic browsing patterns.
+
+5.9.3 System Under Test -Characteristics
+
+Performance tests were conducted on a local machine running a single-worker FastAPI in-
+stance backed by MongoDB, with external API calls routed over a 20 Mbps fiber connec-
+tion. This configuration, detailed in Table 5.24, reflects a realistic development environment
+rather than a production-grade deployment.
+
+Table 5.24: System under test -configuration characteristics
+
+Component
+Backend Server
+Database
+Frontend
+WebSocket Server
+External APIs
+Test Machine
+Network
+
+Configuration
+FastAPI on Uvicorn, single worker, async mode
+MongoDB 7.0, local instance, 2dsphere + TTL indexes active
+React 19 + Vite dev server (not load-tested directly)
+Integrated FastAPI WebSocket, JWT-authenticated
+Groq (AI), Nominatim (geocoding), OSRM (routing)
+Intel Core i5-12400, 16 GB RAM, NVMe SSD, Windows 11
+Localhost (backend); 20 Mbps fiber (external APIs)
+
+5.9.4 Detailed Performance Test Scenarios
+
+The following table presents the platform behavior under normal concurrent usage condi-
+tions.
+
+Test Case PERF-001 -Normal Operating Load The following table (Table 5.25) presents
+
+the platform behavior under normal concurrent usage conditions.
+
+Chapter 5. Tests and Validation
+
+89
+
+Table 5.25: PERF-001 -Normal operating load
+
+Test ID
+Tool
+Description
+
+Configuration
+
+PERF-001
+Locust 2.43
+Simulate normal platform usage with clients brows-
+ing providers, checking requests, and accessing chat
+history simultaneously
+50 concurrent virtual users; ramp-up: 5 users/sec;
+mixed workload across provider search, request man-
+agement, and chat endpoints
+3 minutes; 3,953 total requests served
+
+Duration
+Acceptance Criteria Core endpoint avg. response < 500ms (NFR-1.2); er-
+
+Results
+
+Status
+
+ror rate < 1%
+Core endpoints (provider search, requests, chat): avg
+5–14 ms, 95th percentile 13 ms, error rate 0%. AI anal-
+ysis endpoint: avg 4,200 ms with 156 HTTP 500 errors
+caused by Groq free-tier rate limiting under concur-
+rent load. Excluding AI calls, overall error rate: 0%.
+Pass -core platform meets NFR-1.2; AI degradation is
+an external service limitation
+
+Test Case PERF-002 -Peak Load Simulation The results of the peak concurrent load sim-
+
+ulation are summarized in Table 5.26.
+
+Table 5.26: PERF-002 -Peak load simulation
+
+Test ID
+Tool
+Description
+
+Configuration
+
+PERF-002
+Locust 2.43
+Simulate peak traffic with a high number of users per-
+forming diverse operations simultaneously
+200 concurrent virtual users; ramp-up: 10 users/sec;
+mixed workload
+3 minutes; 15,179 total requests served
+
+Duration
+Acceptance Criteria Core endpoint avg. response < 500ms; overall error
+
+Results
+
+Status
+
+rate < 5%
+Core endpoints maintained fast response times (50th
+percentile: 8 ms, error rate 0%). AI endpoint produced
+810 HTTP 500 errors under concurrent load. Overall
+error rate: 5.3% (entirely from AI calls).
+Acceptable -core platform stable under 200 users; AI
+rate limiting worsens under higher concurrency
+
+Test Case PERF-003 -Stress Test The following table (Table 5.27) presents the system
+
+degradation behavior under extreme load conditions.
+
+Chapter 5. Tests and Validation
+
+90
+
+Table 5.27: PERF-003 -Stress test (500 concurrent users)
+
+Test ID
+Tool
+Description
+
+Configuration
+
+Duration
+Acceptance Criteria
+
+Results
+
+PERF-003
+Locust 2.43
+Stress test to identify the system’s breaking point by
+ramping to 500 concurrent users
+500 concurrent virtual users; ramp-up: 20 users/sec;
+mixed workload
+3 minutes; 13,004 total requests
+Identify degradation threshold; system must not crash
+or corrupt data
+The single-worker Uvicorn server began refusing con-
+nections (ConnectionRefusedError) beyond ap-
+proximately 200–300 concurrent users.
+Response
+times reached 4,100 ms (connection timeout). No data
+corruption was observed. The server recovered nor-
+mally after load was removed.
+
+Degradation Threshold ∼200–300 concurrent users on a single-machine,
+single-worker deployment
+Acceptable -system degrades gracefully without
+crashing or data loss
+
+Status
+
+Test Case PERF-004 -WebSocket Real-Time Latency The latency measurements observed
+
+during real-time communication testing are summarized in Table 5.28.
+
+Table 5.28: PERF-004 -WebSocket real-time latency
+
+Test ID
+Tool
+
+Description
+
+Configuration
+
+PERF-004
+Manual observation via Chrome DevTools (Network
+tab)
+Measure WebSocket message delivery latency be-
+tween a client and a provider under normal operating
+conditions
+Two simultaneous browser sessions (client and
+provider) in the same active chat room; 20 messages
+exchanged
+
+Acceptance Criteria Message delivery < 1s (NFR-2.1); no dropped connec-
+
+Results
+
+Status
+
+tions
+Messages consistently appeared on the recipient’s
+screen within 0.3–0.8 seconds. No dropped frames or
+missed messages were observed. WebSocket connec-
+tions remained stable throughout.
+Pass
+
+Test Case PERF-005 -AI Analysis Under Concurrent Load The following table (Table 5.29)
+
+highlights the limitations observed during concurrent AI processing.
+
+Test ID
+Tool
+Description
+
+Configuration
+
+Status
+
+Test ID
+Tool
+Description
+
+Configuration
+
+Status
+
+Chapter 5. Tests and Validation
+
+91
+
+Table 5.29: PERF-005 -AI analysis under concurrent load
+
+Duration
+Acceptance Criteria AI response time < 5s per request; error rate < 5%
+Results
+
+PERF-005
+Locust 2.43
+Measure the AI analysis endpoint behavior when
+multiple users submit requests simultaneously
+10 concurrent users submitting AI analysis requests;
+varied input languages (French, Tunisian dialect)
+2 minutes
+
+All 470 requests failed with HTTP 500. The Groq free-
+tier plan enforces strict concurrent request limits that
+are immediately exceeded under parallel load. Single
+sequential requests succeed in 2–5 seconds, but con-
+current calls are rejected at the API gateway level.
+Fail -known external limitation of the Groq free tier;
+not a backend defect
+
+Test Case PERF-006 -Geospatial Provider Search Performance The performance results
+
+of MongoDB geospatial provider search queries are presented in Table 5.30.
+
+Table 5.30: PERF-006 -Geospatial provider search performance
+
+PERF-006
+Locust 2.43
+Measure provider search response time using Mon-
+goDB 2dsphere geospatial queries under concurrent
+load
+50 concurrent users querying providers across multi-
+ple categories
+2 minutes; 2,895 total requests
+
+Avg. response: 6 ms; 95th percentile: 9 ms; Max: 45
+ms; Error rate: 0%. The MongoDB 2dsphere index
+delivers consistently fast geospatial queries regardless
+of concurrent load.
+Pass
+
+Duration
+Acceptance Criteria Avg. response < 500ms (NFR-1.2)
+Results
+
+5.9.5 Performance Results Summary
+
+Table 5.31 summarizes the main performance test results across the evaluated scenarios. The
+core API remained stable under normal and peak loads, with very low response times and
+no observed errors. Geospatial search also showed efficient behavior, while WebSocket com-
+munication remained within an acceptable latency range. However, the AI concurrent-load
+scenario failed completely, indicating a clear scalability limitation in that component. The
+stress test also revealed that the server reached its connection-handling limit when subjected
+to a higher load.
+
+Chapter 5. Tests and Validation
+
+92
+
+Table 5.31: Performance testing results summary
+
+Test ID
+
+Scenario
+
+Users Avg. Response (core) Error Rate (core)
+
+Status
+
+PERF-001
+
+Normal load
+
+PERF-002
+
+Peak load
+
+PERF-003
+
+Stress test
+
+PERF-004 WebSocket latency
+
+PERF-005 AI concurrent load
+
+PERF-006 Geospatial search
+
+50
+
+200
+
+500
+
+2
+
+10
+
+50
+
+9 ms
+
+8 ms
+
+N/A (server refused)
+
+0.3–0.8 s
+
+N/A
+
+6 ms
+
+0%
+
+0%
+
+N/A
+
+0%
+
+100%
+
+0%
+
+Pass
+
+Acceptable
+
+Acceptable
+
+Pass
+
+Fail
+
+Pass
+
+5.10 Quality Metrics and Assessment
+
+This section presents the quantitative quality metrics collected throughout the testing pro-
+cess, providing an objective assessment of the platform’s maturity and readiness.
+
+5.10.1 Test Execution Metrics
+
+Across 52 executed test cases, the platform achieved a 98.1% pass rate with full coverage of
+all 21 functional and 9 non-functional requirements, as shown in Table 5.32. The single failed
+test and two minor defects were identified and resolved, with no critical issues remaining.
+
+Table 5.32: Test execution metrics summary
+
+Metric
+
+Total test cases executed
+
+Tests passed
+
+Tests acceptable (partial pass)
+
+Tests failed
+
+Pass rate
+
+Value
+
+52
+
+49
+
+2
+
+1
+
+98.1%
+
+Functional requirements covered (FR-1 to FR-21)
+
+21/21 (100%)
+
+Non-functional requirements validated (NFR-1 to NFR-9)
+
+9/9 (100%)
+
+Critical defects found
+
+Minor defects found
+
+Defects resolved
+
+0
+
+2
+
+2/2 (100%)
+
+Chapter 5. Tests and Validation
+
+93
+
+5.10.2 Defect Analysis
+
+Both defects were minor, isolated to the OTP authentication flow, and resolved through
+targeted frontend fixes without impacting any other system component, as recorded in Ta-
+ble 5.33.
+
+Table 5.33: Defect tracking log
+
+Defect ID Description
+
+Severity Resolution
+
+DEF-001
+
+DEF-002
+
+OTP input accepts
+non-numeric charac-
+ters
+
+OTP expiry shows
+“login again” instead
+of resend option
+
+Minor
+
+Minor
+
+Added regex valida-
+tion /ˆ\d{6}$/ on
+frontend input
+
+Added resend but-
+ton that triggers new
+OTP generation
+
+Status
+
+Fixed
+
+Fixed
+
+5.10.3 Coverage Metrics
+
+The test suite achieved full requirement and actor coverage across all dimensions (Table 5.34),
+with backend code coverage reaching 72%, satisfying the defined threshold of 70%.
+
+Table 5.34: Test coverage metrics
+
+Coverage Dimension
+
+Covered Percentage
+
+Functional requirements (FR)
+
+21/21
+
+Non-functional requirements (NFR)
+
+System actors tested
+
+External service integrations tested
+
+Fallback scenarios validated
+
+Backend code coverage (pytest)
+
+9/9
+
+3/3
+
+4/4
+
+4/4
+
+-
+
+100%
+
+100%
+
+100%
+
+100%
+
+100%
+
+72%
+
+5.10.4 Strengths Identified
+
+• Async backend performance: FastAPI with Motor handles concurrent requests with-
+out blocking, maintaining response times under 15ms for all standard operations un-
+der 200 concurrent users
+
+• Stable real-time communication: WebSocket connections remain reliable across chat,
+
+GPS tracking, and price negotiation with latency under 800ms
+
+• Effective access control: All route guards correctly enforce role restrictions on both
+
+frontend and API layers
+
+• AI dialect handling: Groq integration successfully classifies service categories from
+
+informal Tunisian dialect in under 2 seconds for sequential requests
+
+Chapter 5. Tests and Validation
+
+94
+
+• Graceful degradation: All external service failures trigger appropriate fallback mech-
+
+anisms without system crashes
+
+• Geospatial query efficiency: MongoDB 2dsphere index delivers provider search re-
+
+sults in under 10ms regardless of concurrent load
+
+5.10.5 Limitations and Recommendations
+
+• Groq rate limits: The free-tier plan rejects all concurrent AI requests, causing 100%
+failure under parallel load (PERF-005); upgrading to a paid plan or implementing a
+sequential request queue is required for production
+
+• Single-worker deployment: Stress testing revealed connection refusal beyond 200–
+300 concurrent users on a single Uvicorn worker; deploying with multiple workers or
+behind a load balancer is recommended for production
+
+• Limited automated E2E coverage: End-to-end scenarios were validated manually; im-
+plementing Cypress or Playwright would enable automated regression for full user
+journeys
+
+• Local file storage: Uploaded images are stored on disk; migrating to a cloud solution
+
+(S3, Cloudinary) is necessary for production scalability
+
+5.11 Conclusion
+
+This chapter presented the comprehensive testing and validation strategy applied to the
+Khadamni platform, structured around six complementary testing levels. Unit tests con-
+firmed the correctness of isolated backend functions using PBKDF2-SHA256 password hash-
+ing, with a real pytest suite providing automated regression protection across 12 test cases.
+Functional tests systematically validated all 21 functional requirements defined in Chapter 2
+through a complete traceability matrix. Integration tests verified the correct communication
+between all system layers and confirmed the platform’s resilience to external service failures
+-including Groq AI timeouts, Nominatim unavailability, and OSRM routing failures -with
+graceful fallback mechanisms in each case. Security tests validated access control, OTP life-
+cycle enforcement, JWT protection, and suspension mechanics through detailed scenario-
+based testing, all passing against their corresponding NFR targets. Performance tests, con-
+ducted using Locust 2.43, established that core API endpoints respond in under 15ms under
+200 concurrent users, with geospatial queries averaging 6ms. The system’s degradation
+threshold was identified at approximately 200–300 concurrent users on a single-worker de-
+ployment, and the Groq free-tier AI endpoint was confirmed unable to handle concurrent
+requests -a known external limitation.
+
+The quantitative metrics demonstrate a 98.1% pass rate across 52 test cases, 100% re-
+quirements coverage, and 72% automated code coverage. Two minor defects were identi-
+fied and resolved during the testing phase. These results confirm that the Khadamni plat-
+form meets its defined functional and non-functional requirements and is functionally ready
+for deployment, with clearly documented areas for improvement in AI scalability, horizon-
+tal scaling, and automated end-to-end testing coverage.
+
+General Conclusion
+
+This report presented the complete design, development, and validation of Khadamni, an
+integrated and intelligent service marketplace platform developed as part of a final-year en-
+gineering internship at Satisfy Insight. The project was motivated by a clearly identified gap
+in the current service platform landscape: the absence of a unified solution capable of com-
+bining local and remote service discovery, real-time interaction, and intelligent automation
+within a single coherent environment.
+
+The first chapter established the project foundations by introducing the host company,
+analyzing the limitations of existing platforms through a comparative study using the TRUST
+evaluation method, and presenting the proposed solution along with the Agile development
+methodology adopted. The second chapter formalized the system requirements, identify-
+ing three actors, twenty-one functional requirements, and nine non-functional requirements,
+supported by use case diagrams and interface wireframes. The third chapter addressed the
+architectural design using the C4 modeling approach, progressively decomposing the sys-
+tem across four levels of abstraction and applying Clean Architecture principles to ensure
+maintainability and scalability. The fourth chapter detailed the technical implementation,
+covering the technology stack, the development environment, and the integration of AI-
+powered features including natural language request analysis and dispute mediation. Fi-
+nally, the fifth chapter presented a comprehensive testing and validation strategy spanning
+unit, functional, integration, security, and performance testing, achieving a 96.2% pass rate
+across 52 test cases with 100% requirements coverage.
+
+The resulting platform delivers several notable contributions. Khadamni successfully
+unifies in-place and remote service providers within a single interface, a capability absent
+from all existing solutions examined. The integration of artificial intelligence through the
+Groq API enables users to express service needs in natural language, including Tunisian
+dialect while the system automatically classifies requests and recommends providers. Real-
+time communication, price negotiation, and live GPS tracking operate seamlessly through
+WebSocket technology, providing an interactive and transparent user experience. The plat-
+form’s moderation system, enhanced by AI-assisted dispute analysis, offers an efficient
+mechanism for maintaining trust and accountability.
+
+Nevertheless, certain limitations remain. The current deployment operates on a single-
+machine architecture, which, as demonstrated by stress testing, begins to degrade beyond
+approximately 600 concurrent users. The reliance on the free tier of the Groq API intro-
+duces rate-limiting constraints that could affect availability under heavy usage. Addition-
+ally, while the automated test suite covers backend logic, end-to-end testing remains man-
+ual, and uploaded media files are stored locally rather than on a scalable cloud infrastruc-
+ture.
+
+95
+
+General Conclusion
+
+96
+
+Several directions for future work can be envisioned to extend the platform’s capabilities
+
+and prepare it for production deployment:
+
+• Mobile application: Developing native or cross-platform mobile clients (React Native
+or Flutter) to improve accessibility and enable push notifications for real-time service
+updates.
+
+• Payment integration:
+
+Incorporating a secure payment gateway to support in-app
+
+transactions, escrow mechanisms, and automated invoicing.
+
+• Cloud deployment and scaling: Migrating the infrastructure to a cloud environment
+with containerization (Docker) and orchestration (Kubernetes) to support horizontal
+scaling and high availability.
+
+• Advanced AI capabilities: Enhancing the recommendation engine with collaborative
+filtering based on user behavior history, and introducing predictive demand analysis
+for service categories.
+
+• Automated end-to-end testing: Implementing a CI/CD pipeline with Cypress or Play-
+
+wright to automate regression testing across all user journeys.
+
+This project provided a valuable opportunity to apply the knowledge and skills acquired
+throughout our academic training to a real-world engineering challenge. It required mas-
+tering a modern and diverse technology stack, adopting professional software engineering
+practices, and delivering a functional, tested, and documented system within a defined time-
+line. The experience reinforced the importance of rigorous requirements analysis, iterative
+development, and systematic validation in producing software that is not only technically
+sound but also aligned with genuine user needs.
+
+Webography
+
+[1] Microsoft. Visual studio code – code editor. https://code.visualstudio.com/.
+
+Accessed: May 2025.
+
+[2] Git. Git – distributed version control system. https://git-scm.com/. Accessed:
+
+May 2025.
+
+[3] GitHub. Github – code hosting platform. https://github.com/. Accessed: May
+
+2025.
+
+[4] Postman. Postman – api development platform. https://www.postman.com/. Ac-
+
+cessed: May 2025.
+
+[5] MongoDB Inc. Mongodb compass – gui for mongodb. https://www.mongodb.com/
+
+products/compass. Accessed: May 2025.
+
+[6] Overleaf. Overleaf – online latex editor. https://www.overleaf.com/. Accessed:
+
+May 2025.
+
+[7] diagrams.net.
+
+diagrams.net (draw.io) – online diagram editor.
+
+https://app.
+
+diagrams.net/. Accessed: May 2025.
+
+[8] Structurizr. Structurizr – architecture diagrams as code. https://structurizr.
+
+com/. Accessed: May 2025.
+
+[9] Meta. React – a javascript library for building user interfaces. https://react.dev/.
+
+Accessed: May 2025.
+
+[10] Vite. Vite – next generation frontend tooling. https://vitejs.dev/. Accessed:
+
+May 2025.
+
+[11] Tailwind Labs. Tailwind css – a utility-first css framework. https://tailwindcss.
+
+com/. Accessed: May 2025.
+
+[12] React Router. React router – declarative routing for react. https://reactrouter.
+
+com/. Accessed: May 2025.
+
+[13] Leaflet. Leaflet – open-source javascript library for interactive maps. https://
+
+leafletjs.com/. Accessed: May 2025.
+
+[14] OpenStreetMap Foundation. Openstreetmap – the free wiki world map. https://
+
+www.openstreetmap.org/. Accessed: May 2025.
+
+[15] Axios. Axios – promise-based http client for javascript. https://axios-http.com/.
+
+Accessed: May 2025.
+
+97
+
+Webography
+
+98
+
+[16] Auth0.
+
+Json web tokens – introduction. https://jwt.io/introduction. Ac-
+
+cessed: May 2025.
+
+[17] Python Software Foundation.
+
+Python programming language.
+
+https://www.
+
+python.org/. Accessed: May 2025.
+
+[18] FastAPI. Fastapi – modern web framework for building apis with python. https:
+
+//fastapi.tiangolo.com/. Accessed: May 2025.
+
+[19] IETF. The websocket protocol – rfc 6455. https://datatracker.ietf.org/doc/
+
+html/rfc6455. Accessed: May 2025.
+
+[20] MongoDB Inc. Mongodb – the developer data platform. https://www.mongodb.
+
+com/. Accessed: May 2025.
+
+[21] Groq. Groq – fast ai inference platform. https://groq.com/. Accessed: May 2025.
+
+[22] Meta. Llama 3.3 – meta ai large language model. https://ai.meta.com/llama/.
+
+Accessed: May 2025.
+
+[23] OpenStreetMap Foundation. Nominatim – openstreetmap geocoding service. https:
+
+//nominatim.openstreetmap.org/. Accessed: May 2025.
+
+[24] Project OSRM. Osrm – open source routing machine. https://project-osrm.
+
+org/. Accessed: May 2025.
+
+[25] pytest Development Team. pytest – python testing framework. https://docs.
+
+pytest.org/. Accessed: May 2025.
+
+[26] Apache Software Foundation. Apache jmeter – load testing tool. https://jmeter.
+
+apache.org/. Accessed: May 2025.
+
+[27] Grafana Labs. Grafana k6 – modern load testing tool. https://k6.io/. Accessed:
+
+May 2025.
+
+[28] SmartBear Software.
+
+Swagger ui – interactive api documentation.
+
+https://
+
+swagger.io/tools/swagger-ui/. Accessed: May 2025.
+
+[29] Scrum.org. What is scrum? https://www.scrum.org/resources/what-scrum.
+
+Accessed: May 2025.
+
+[30] Object Management Group. Unified modeling language (uml) – introduction. https:
+
+//www.uml.org/. Accessed: May 2025.
+
+[31] Simon Brown.
+
+The c4 model for visualising software architecture.
+
+https://
+
+c4model.com/. Accessed: May 2025.
+
+[32] Robert C. Martin.
+
+Clean architecture.
+uncle-bob/2012/08/13/the-clean-architecture.html.
+2025.
+
+https://blog.cleancoder.com/
+Accessed: May
+
+[33] Fiverr. Fiverr – freelance services marketplace. https://www.fiverr.com/. Ac-
+
+cessed: April 2025.
+
+Webography
+
+99
+
+[34] Upwork. Upwork – the world’s work marketplace. https://www.upwork.com/.
+
+Accessed: April 2025.
+
+[35] TaskRabbit. Taskrabbit – local services marketplace. https://www.taskrabbit.
+
+com/. Accessed: April 2025.
+
+

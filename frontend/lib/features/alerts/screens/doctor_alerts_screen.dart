@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:sahhty/core/widgets/pagination_bar.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/features/home/screens/doctor_home_screen.dart';
@@ -19,22 +20,40 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
+  static const int _pageSize = 5;
+
   // ── Appointments ─────────────────────────────────────────────────
-  List<dynamic> _pendingAppts  = [];
-  List<dynamic> _confirmedAppts = [];
+  List<dynamic> _allPending    = [];
+  List<dynamic> _allConfirmed  = [];
   bool _loadingAppts           = true;
+  int _apptPage                = 1;
+
+  List<dynamic> get _pendingAppts   => _paginate(_allPending,   _apptPage);
+  List<dynamic> get _confirmedAppts => _paginate(_allConfirmed, _apptPage);
+  int get _apptTotal => _allPending.length + _allConfirmed.length;
 
   // ── Access requests ──────────────────────────────────────────────
-  // We load doctor's patients list and filter PENDING
-  // (backend: GET /medical_files/MedicalFileService/{doctorId}/get_doctor_patients/)
-  List<dynamic> _accessRequests = [];
-  bool _loadingAccess           = true;
+  List<dynamic> _allAccess     = [];
+  bool _loadingAccess          = true;
+  int _accessPage              = 1;
+
+  List<dynamic> get _accessRequests => _paginate(_allAccess, _accessPage);
+  int get _accessTotal => _allAccess.length;
 
   // ── System alerts ────────────────────────────────────────────────
-  List<dynamic> _systemAlerts  = [];
-  bool _loadingSystem          = true;
-  int _alertPage               = 1;
-  bool _alertHasNext           = false;
+  List<dynamic> _allSystemAlerts = [];
+  bool _loadingSystem            = true;
+  int _alertPage                 = 1;
+  int _alertTotal                = 0;
+
+  List<dynamic> get _systemAlerts => _paginate(_allSystemAlerts, _alertPage);
+
+  List<dynamic> _paginate(List<dynamic> list, int page) {
+    final start = (page - 1) * _pageSize;
+    if (start >= list.length) return [];
+    final end = (start + _pageSize).clamp(0, list.length);
+    return list.sublist(start, end);
+  }
 
   @override
   void initState() {
@@ -61,9 +80,9 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
     if (mounted) {
       final list = (apptRes['appointments'] as List<dynamic>? ?? []);
       setState(() {
-        _pendingAppts   = list.where((a) => a['status'] == 'PENDING').toList();
-        _confirmedAppts = list.where((a) => a['status'] == 'CONFIRMED').toList();
-        _loadingAppts   = false;
+        _allPending   = list.where((a) => a['status'] == 'PENDING').toList();
+        _allConfirmed = list.where((a) => a['status'] == 'CONFIRMED').toList();
+        _loadingAppts = false;
       });
     }
 
@@ -73,8 +92,8 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
     if (mounted) {
       final patients = accessRes['patients'] as List<dynamic>? ?? [];
       setState(() {
-        _accessRequests = patients; // already filtered to accepted; pending comes from patient side
-        _loadingAccess  = false;
+        _allAccess     = patients;
+        _loadingAccess = false;
       });
     }
 
@@ -84,9 +103,9 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
       final alertRes  = await alertSvc.getAlertsByUser(userId, page: 1);
       if (mounted) {
         setState(() {
-          _systemAlerts  = alertRes['alerts'] ?? [];
-          _alertHasNext  = alertRes['next'] != null;
-          _loadingSystem = false;
+          _allSystemAlerts = alertRes['alerts'] ?? [];
+          _alertTotal      = alertRes['count'] ?? _allSystemAlerts.length;
+          _loadingSystem   = false;
         });
       }
     } else {
@@ -97,6 +116,8 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
   Future<void> _refresh() async {
     setState(() {
       _loadingAppts = _loadingAccess = _loadingSystem = true;
+      _apptPage = 1;
+      _accessPage = 1;
       _alertPage = 1;
     });
     await _load();
@@ -224,17 +245,19 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
 
   Widget _buildAppointmentsTab() {
     if (_loadingAppts) return _loader();
-    if (_pendingAppts.isEmpty && _confirmedAppts.isEmpty) {
+    if (_allPending.isEmpty && _allConfirmed.isEmpty) {
       return _emptyState(Iconsax.calendar_1, 'Aucun rendez-vous', 'Tous vos rendez-vous apparaîtront ici');
     }
+    final totalAppts = _apptTotal;
+    final totalPages = totalAppts == 0 ? 1 : ((totalAppts - 1) ~/ _pageSize) + 1;
     return RefreshIndicator(
       color: DoctorColors.primary,
       onRefresh: _refresh,
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         children: [
           if (_pendingAppts.isNotEmpty) ...[
-            _sectionHeader(Iconsax.clock, 'En attente de confirmation', DoctorColors.warning, _pendingAppts.length),
+            _sectionHeader(Iconsax.clock, 'En attente de confirmation', DoctorColors.warning, _allPending.length),
             ..._pendingAppts.asMap().entries.map((e) =>
               _ApptCard(appt: e.value, isPending: true, onConfirm: _confirmAppt, onCancel: _cancelAppt)
                 .animate().fadeIn(delay: (e.key * 60).ms).slideX(begin: -0.1),
@@ -242,12 +265,22 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
             const SizedBox(height: 16),
           ],
           if (_confirmedAppts.isNotEmpty) ...[
-            _sectionHeader(Iconsax.tick_circle, 'Confirmés à venir', DoctorColors.success, _confirmedAppts.length),
+            _sectionHeader(Iconsax.tick_circle, 'Confirmés à venir', DoctorColors.success, _allConfirmed.length),
             ..._confirmedAppts.asMap().entries.map((e) =>
               _ApptCard(appt: e.value, isPending: false, onConfirm: _confirmAppt, onCancel: _cancelAppt)
                 .animate().fadeIn(delay: (e.key * 60).ms).slideX(begin: -0.1),
             ),
           ],
+          if (totalPages > 1)
+            PaginationBar(
+              currentPage: _apptPage,
+              totalCount: totalAppts,
+              pageSize: _pageSize,
+              hasPrev: _apptPage > 1,
+              hasNext: _apptPage < totalPages,
+              onPrev: _apptPage > 1 ? () => setState(() => _apptPage--) : null,
+              onNext: _apptPage < totalPages ? () => setState(() => _apptPage++) : null,
+            ),
         ],
       ),
     );
@@ -257,20 +290,31 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
 
   Widget _buildAccessTab() {
     if (_loadingAccess) return _loader();
-    if (_accessRequests.isEmpty) {
+    if (_allAccess.isEmpty) {
       return _emptyState(Iconsax.people, 'Aucun patient', 'Vos patients autorisés apparaîtront ici');
     }
+    final totalPages = _accessTotal == 0 ? 1 : ((_accessTotal - 1) ~/ _pageSize) + 1;
     return RefreshIndicator(
       color: DoctorColors.primary,
       onRefresh: _refresh,
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         children: [
-          _sectionHeader(Iconsax.people, 'Patients avec accès accordé', DoctorColors.primary, _accessRequests.length),
+          _sectionHeader(Iconsax.people, 'Patients avec accès accordé', DoctorColors.primary, _accessTotal),
           ..._accessRequests.asMap().entries.map((e) =>
             _PatientAccessCard(patient: e.value, onViewFile: () => context.push('/doctor/medical-access'))
               .animate().fadeIn(delay: (e.key * 60).ms).slideY(begin: 0.1),
           ),
+          if (totalPages > 1)
+            PaginationBar(
+              currentPage: _accessPage,
+              totalCount: _accessTotal,
+              pageSize: _pageSize,
+              hasPrev: _accessPage > 1,
+              hasNext: _accessPage < totalPages,
+              onPrev: _accessPage > 1 ? () => setState(() => _accessPage--) : null,
+              onNext: _accessPage < totalPages ? () => setState(() => _accessPage++) : null,
+            ),
         ],
       ),
     );
@@ -283,40 +327,51 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
     if (_systemAlerts.isEmpty) {
       return _emptyState(Iconsax.notification, 'Aucune alerte système', 'Tout est en ordre !');
     }
+    final totalPages = _alertTotal == 0 ? 1 : ((_alertTotal - 1) ~/ _pageSize) + 1;
     return RefreshIndicator(
       color: DoctorColors.primary,
       onRefresh: _refresh,
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         children: [
+          _sectionHeader(Iconsax.notification, 'Alertes système', DoctorColors.primary, _alertTotal),
           ..._systemAlerts.asMap().entries.map((e) {
             final a = e.value as Map<String, dynamic>;
             return _SystemAlertCard(alert: a, onMarkRead: () => _markRead(a['id'] as int? ?? 0))
               .animate().fadeIn(delay: (e.key * 60).ms);
           }),
-          if (_alertHasNext)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: TextButton.icon(
-                icon: const Icon(Iconsax.arrow_down_1),
-                label: const Text('Charger plus'),
-                style: TextButton.styleFrom(foregroundColor: DoctorColors.primary),
-                onPressed: () async {
-                  final userId = int.tryParse(ref.read(authProvider).userId ?? '') ?? 0;
-                  if (userId == 0) return;
-                  final res = await ref.read(alertServiceProvider).getAlertsByUser(userId, page: _alertPage + 1);
-                  if (!mounted) return;
-                  setState(() {
-                    _alertPage++;
-                    _systemAlerts.addAll(res['alerts'] ?? []);
-                    _alertHasNext = res['next'] != null;
-                  });
-                },
-              ),
+          if (totalPages > 1)
+            PaginationBar(
+              currentPage: _alertPage,
+              totalCount: _alertTotal,
+              pageSize: _pageSize,
+              hasPrev: _alertPage > 1,
+              hasNext: _alertPage < totalPages,
+              onPrev: _alertPage > 1 ? () async {
+                setState(() => _alertPage--);
+                await _loadSystemPage(_alertPage);
+              } : null,
+              onNext: _alertPage < totalPages ? () async {
+                setState(() => _alertPage++);
+                await _loadSystemPage(_alertPage);
+              } : null,
             ),
         ],
       ),
     );
+  }
+
+  Future<void> _loadSystemPage(int page) async {
+    final userId = int.tryParse(ref.read(authProvider).userId ?? '') ?? 0;
+    if (userId == 0) return;
+    setState(() => _loadingSystem = true);
+    final res = await ref.read(alertServiceProvider).getAlertsByUser(userId, page: page);
+    if (!mounted) return;
+    setState(() {
+      _allSystemAlerts = res['alerts'] ?? [];
+      _alertTotal      = res['count'] ?? _allSystemAlerts.length;
+      _loadingSystem   = false;
+    });
   }
 
   // ─── Helpers ─────────────────────────────────────────────────────

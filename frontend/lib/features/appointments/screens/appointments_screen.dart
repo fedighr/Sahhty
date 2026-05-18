@@ -385,7 +385,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
         : [AppColors.primary, AppColors.primaryDark];
 
     return SliverAppBar(
-      expandedHeight: 200,
+      expandedHeight: 160,
       pinned: true,
       backgroundColor: Colors.transparent,
       elevation: 0,

@@ -16,10 +16,31 @@ class DoctorService {
   }
 
   /// GET /doctors/DoctorService/get_all_doctors/
-  Future<Map<String, dynamic>> getAllDoctors() async {
+  Future<Map<String, dynamic>> getAllDoctors({String? speciality, String? ville, String? gender}) async {
     try {
-      final response = await _dio.get(ApiEndpoints.getAllDoctors);
-      return response.data;
+      final Map<String, dynamic> params = {};
+      if (speciality != null && speciality.isNotEmpty) params['speciality'] = speciality;
+      if (ville != null && ville.isNotEmpty) params['ville'] = ville;
+      if (gender != null && gender.isNotEmpty) params['gender'] = gender;
+      final response = await _dio.get(
+        ApiEndpoints.getAllDoctors,
+        queryParameters: params.isNotEmpty ? params : null,
+      );
+      final data = response.data;
+      // Backend returns paginated format: {count, next, previous, results: [...]}
+      if (data is Map && data.containsKey('results')) {
+        return {
+          'success': true,
+          'doctors': data['results'],
+          'count': data['count'],
+          'next': data['next'],
+          'previous': data['previous'],
+        };
+      }
+      if (data is Map && data.containsKey('success')) {
+        return Map<String, dynamic>.from(data);
+      }
+      return {'success': false, 'message': 'Format de réponse inattendu'};
     } on DioException catch (e) {
       return _err(e);
     }
