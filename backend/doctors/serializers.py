@@ -24,7 +24,24 @@ class DoctorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ['id', 'ville', 'address', 'latitude', 'longitude', 'experience', 'consultation_price', 'bio', 'is_doctor_verified', 'user', 'user_id', 'speciality', 'speciality_id']
+        fields = ['id', 'ville', 'address', 'latitude', 'longitude', 'experience', 'consultation_price', 'consultation_duration', 'bio', 'is_doctor_verified', 'user', 'user_id', 'speciality', 'speciality_id']
+
+class DoctorMapSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+    speciality_name = serializers.SerializerMethodField()
+
+    def get_full_name(self, obj):
+        return f"{obj.user.first_name} {obj.user.last_name}"
+
+    def get_speciality_name(self, obj):
+        return obj.speciality.name
+
+    class Meta:
+        model = Doctor
+        fields = [
+            'id', 'latitude', 'longitude', 'full_name',
+            'speciality_name', 'consultation_price', 'ville'
+        ]
 
 class DoctorScheduleSerializer(serializers.ModelSerializer):
     def validate(self, data):
