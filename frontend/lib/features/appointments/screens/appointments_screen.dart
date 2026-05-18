@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
+import 'package:sahhty/core/widgets/pagination_bar.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/features/home/screens/doctor_home_screen.dart';
@@ -25,14 +26,33 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
   late AnimationController _headerController;
   String _statusFilter = 'Tous';
 
+  // Pagination
+  static const int _pageSize = 5;
+  int _currentPage = 1;
+
   static const _statusFilters = ['Tous', 'En attente', 'Confirmé', 'Annulé'];
 
   List<dynamic> get _filteredAppointments {
-    if (_statusFilter == 'Tous') return _appointments;
-    final map = {'En attente': 'PENDING', 'Confirmé': 'CONFIRMED', 'Annulé': 'CANCELLED'};
-    final key = map[_statusFilter];
-    return _appointments.where((a) => a['status'] == key).toList();
+    List<dynamic> list;
+    if (_statusFilter == 'Tous') {
+      list = _appointments;
+    } else {
+      final map = {'En attente': 'PENDING', 'Confirmé': 'CONFIRMED', 'Annulé': 'CANCELLED'};
+      final key = map[_statusFilter];
+      list = _appointments.where((a) => a['status'] == key).toList();
+    }
+    return list;
   }
+
+  List<dynamic> get _pagedAppointments {
+    final list = _filteredAppointments;
+    final start = (_currentPage - 1) * _pageSize;
+    if (start >= list.length) return [];
+    final end = (start + _pageSize).clamp(0, list.length);
+    return list.sublist(start, end);
+  }
+
+  int get _totalPages => (_filteredAppointments.length / _pageSize).ceil().clamp(1, 999);
 
   int _countByStatus(String status) {
     final map = {'PENDING': 0, 'CONFIRMED': 0, 'CANCELLED': 0};
@@ -58,7 +78,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
   }
 
   Future<void> _loadAppointments() async {
-    setState(() { _loading = true; _error = null; });
+    setState(() { _loading = true; _error = null; _currentPage = 1; });
     final auth = ref.read(authProvider);
     final isDoctor = auth.role == 'D';
     if (isDoctor) {
@@ -67,7 +87,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
         setState(() { _loading = false; _error = 'ID médecin non trouvé'; });
         return;
       }
-      final result = await ref.read(appointmentServiceProvider).getDoctorTodayAppointments(doctorId);
+      final result = await ref.read(appointmentServiceProvider).getDoctorAllAppointments(doctorId);
       if (!mounted) return;
       setState(() {
         _loading = false;
@@ -302,8 +322,8 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
               itemBuilder: (_, i) {
                 final f = _statusFilters[i];
                 final selected = _statusFilter == f;
-                return GestureDetector(
-                  onTap: () => setState(() => _statusFilter = f),
+                  child: GestureDetector(
+                    onTap: () => setState(() { _statusFilter = f; _currentPage = 1; }),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 250),
                     margin: const EdgeInsets.only(right: 8),
@@ -573,14 +593,14 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
             child: Icon(isDoctor ? Iconsax.people : Iconsax.calendar, size: 56, color: primary),
           ).animate().scale(delay: 200.ms, curve: Curves.elasticOut),
           const SizedBox(height: 24),
-          Text(isDoctor ? 'Aucun patient aujourd\'hui' : 'Aucun rendez-vous aujourd\'hui',
+          Text(isDoctor ? 'Aucun rendez-vous' : 'Aucun rendez-vous aujourd\'hui',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,
               color: isDoctor ? DoctorColors.textPrimary : AppColors.textPrimary),
             textAlign: TextAlign.center),
           const SizedBox(height: 8),
           Text(
             isDoctor
-              ? 'Aucun rendez-vous patient pour le moment'
+              ? 'Vos rendez-vous patients apparaîtront ici'
               : 'Prenez rendez-vous avec un médecin pour un suivi personnalisé',
             style: TextStyle(
               color: isDoctor ? DoctorColors.textSecondary : AppColors.textSecondary,
@@ -616,26 +636,42 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
   }
 
   Widget _buildAppointmentsList() {
-    final list = _filteredAppointments;
+    final list = _pagedAppointments;
     final isDoctor = ref.read(authProvider).role == 'D';
+    final primary = isDoctor ? DoctorColors.primary : AppColors.primary;
     return RefreshIndicator(
       onRefresh: _loadAppointments,
-      color: isDoctor ? DoctorColors.primary : AppColors.primary,
+      color: primary,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
         child: Column(
-          children: List.generate(list.length, (i) {
-            final appt = list[i];
-            return _AppointmentCard(
-              appointment: appt,
-              index: i,
-              isLast: i == list.length - 1,
-              onCancel: () => _cancelAppointment(appt['id']),
-              onConfirm: isDoctor ? () => _confirmAppointment(appt['id']) : null,
-              showPatient: isDoctor,
-              isDoctor: isDoctor,
-            ).animate().fadeIn(delay: (80 * i).ms).slideY(begin: 0.08);
-          }),
+          children: [
+            ...List.generate(list.length, (i) {
+              final appt = list[i];
+              return _AppointmentCard(
+                appointment: appt,
+                index: i,
+                isLast: i == list.length - 1,
+                onCancel: () => _cancelAppointment(appt['id']),
+                onConfirm: isDoctor ? () => _confirmAppointment(appt['id']) : null,
+                showPatient: isDoctor,
+                isDoctor: isDoctor,
+              ).animate().fadeIn(delay: (80 * i).ms).slideY(begin: 0.08);
+            }),
+            if (_filteredAppointments.length > _pageSize) ...[
+              const SizedBox(height: 8),
+              PaginationBar(
+                currentPage: _currentPage,
+                totalCount: _filteredAppointments.length,
+                pageSize: _pageSize,
+                hasNext: _currentPage < _totalPages,
+                hasPrev: _currentPage > 1,
+                onNext: _currentPage < _totalPages ? () => setState(() => _currentPage++) : null,
+                onPrev: _currentPage > 1 ? () => setState(() => _currentPage--) : null,
+              ),
+            ],
+            const SizedBox(height: 80),
+          ],
         ),
       ),
     );

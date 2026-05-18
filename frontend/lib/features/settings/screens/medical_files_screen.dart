@@ -45,10 +45,15 @@ _TypeMeta _metaFor(String code) =>
 final _medFilesProvider = FutureProvider.autoDispose.family<List<Map<String, dynamic>>, int>(
   (ref, patientId) async {
     final result = await ref.read(medicalFileServiceProvider).getPatientMedicalFiles(patientId);
+    // Backend returns paginated response: {count, next, previous, results: [...]}
+    if (result.containsKey('results')) {
+      return List<Map<String, dynamic>>.from(result['results'] ?? []);
+    }
+    // Fallback: legacy {success, medical_files} format
     if (result['success'] == true) {
       return List<Map<String, dynamic>>.from(result['medical_files'] ?? []);
     }
-    throw result['message'] ?? 'Erreur lors du chargement';
+    throw Exception(result['message']?.toString() ?? 'Erreur lors du chargement');
   },
 );
 

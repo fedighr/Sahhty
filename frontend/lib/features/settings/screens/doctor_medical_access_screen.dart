@@ -638,20 +638,30 @@ class _PatientFilesReadOnlyScreenState
 
   Future<void> _loadFiles() async {
     setState(() { _filesLoading = true; _filesError = null; });
-    final res = await ref
-        .read(medicalFileServiceProvider)
-        .getPatientMedicalFiles(widget.patientId);
-    if (!mounted) return;
-    if (res['success'] == true) {
-      setState(() {
-        _files = List<Map<String, dynamic>>.from(res['medical_files'] ?? []);
-        _filesLoading = false;
-      });
-    } else {
-      setState(() {
-        _filesError = res['message'] ?? 'Erreur chargement';
-        _filesLoading = false;
-      });
+    try {
+      final res = await ref
+          .read(medicalFileServiceProvider)
+          .getPatientMedicalFiles(widget.patientId);
+      if (!mounted) return;
+      // Backend returns paginated response: {count, next, previous, results: [...]}
+      List<Map<String, dynamic>> files = [];
+      if (res['results'] is List) {
+        files = List<Map<String, dynamic>>.from(
+            (res['results'] as List).map((e) => Map<String, dynamic>.from(e as Map)));
+      } else if (res['medical_files'] is List) {
+        files = List<Map<String, dynamic>>.from(
+            (res['medical_files'] as List).map((e) => Map<String, dynamic>.from(e as Map)));
+      } else if (res['success'] == false) {
+        setState(() {
+          _filesError = res['message']?.toString() ?? 'Erreur chargement';
+          _filesLoading = false;
+        });
+        return;
+      }
+      setState(() { _files = files; _filesLoading = false; });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() { _filesError = 'Erreur: $e'; _filesLoading = false; });
     }
   }
 
