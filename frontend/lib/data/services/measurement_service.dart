@@ -31,11 +31,13 @@ class MeasurementService {
 
   /// GET all measurements for a patient with pagination
   /// Backend returns DRF paginated: {count, next, previous, results: [...]}
-  Future<Map<String, dynamic>> getPatientMeasurements(int patientId, {int page = 1}) async {
+  Future<Map<String, dynamic>> getPatientMeasurements(int patientId, {int page = 1, String? typeFilter}) async {
     try {
+      final params = <String, dynamic>{'page': page};
+      if (typeFilter != null) params['type'] = typeFilter;
       final response = await _dio.get(
         ApiEndpoints.getPatientMeasurements(patientId),
-        queryParameters: {'page': page},
+        queryParameters: params,
       );
       final data = response.data;
       if (data is Map && data.containsKey('results')) {

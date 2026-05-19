@@ -18,6 +18,14 @@ class MeasurementsScreen extends ConsumerStatefulWidget {
   ConsumerState<MeasurementsScreen> createState() => _MeasurementsScreenState();
 }
 
+class _FilterType {
+  final String? value;
+  final String label;
+  final IconData icon;
+  final Color color;
+  const _FilterType(this.value, this.label, this.icon, this.color);
+}
+
 class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
   List<dynamic> _measurements = [];
   bool _loading = true;
@@ -27,6 +35,17 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
   bool _hasNext = false;
   bool _hasPrev = false;
   static const int _pageSize = 10;
+  String? _selectedType;
+
+  static const List<_FilterType> _filters = [
+    _FilterType(null, 'Tous', Iconsax.category, AppColors.primary),
+    _FilterType('WEIGHT', 'Poids', Iconsax.weight, Color(0xFF8B5CF6)),
+    _FilterType('BLOOD_PRESSURE', 'Tension', Iconsax.heart, Color(0xFFEF4444)),
+    _FilterType('GLYCEMIA', 'Glycémie', Iconsax.drop, Color(0xFF3B82F6)),
+    _FilterType('TEMPERATURE', 'Temp.', Iconsax.health, Color(0xFFF59E0B)),
+    _FilterType('HEART_RATE', 'Rythme', Iconsax.activity, Color(0xFFEC4899)),
+    _FilterType('OXYGEN', 'Oxygène', Iconsax.wind_2, Color(0xFF06B6D4)),
+  ];
 
   @override
   void initState() {
@@ -34,7 +53,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
     _loadMeasurements();
   }
 
-  Future<void> _loadMeasurements({int page = 1}) async {
+  Future<void> _loadMeasurements({int page = 1, String? type}) async {
     setState(() { _loading = true; _error = null; });
     final patientId = _getPatientId();
     if (patientId == null) {
@@ -42,7 +61,11 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
       return;
     }
 
-    final result = await ref.read(measurementServiceProvider).getPatientMeasurements(patientId, page: page);
+    final result = await ref.read(measurementServiceProvider).getPatientMeasurements(
+      patientId,
+      page: page,
+      typeFilter: type ?? _selectedType,
+    );
     if (!mounted) return;
     setState(() {
       _loading = false;
@@ -61,15 +84,10 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
   int? _getPatientId() => int.tryParse(ref.read(authProvider).patientId ?? '');
 
   IconData _iconForType(String type) {
-    switch (type) {
-      case 'WEIGHT': return Iconsax.weight;
-      case 'BLOOD_PRESSURE': return Iconsax.heart;
-      case 'GLYCEMIA': return Iconsax.health;
-      case 'TEMPERATURE': return Iconsax.health;
-      case 'HEART_RATE': return Iconsax.activity;
-      case 'OXYGEN': return Iconsax.activity;
-      default: return Iconsax.chart_2;
+    for (final f in _filters) {
+      if (f.value == type) return f.icon;
     }
+    return Iconsax.chart_2;
   }
 
   String _formatType(String type) {
@@ -85,15 +103,16 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
   }
 
   Color _colorForType(String type) {
-    switch (type) {
-      case 'WEIGHT': return AppColors.primary;
-      case 'BLOOD_PRESSURE': return AppColors.error;
-      case 'GLYCEMIA': return AppColors.info;
-      case 'TEMPERATURE': return AppColors.warning;
-      case 'HEART_RATE': return AppColors.primaryDark;
-      case 'OXYGEN': return AppColors.accent;
-      default: return AppColors.textSecondary;
+    for (final f in _filters) {
+      if (f.value == type) return f.color;
     }
+    return AppColors.textSecondary;
+  }
+
+  void _onFilterTap(_FilterType filter) {
+    if (_selectedType == filter.value) return;
+    setState(() { _selectedType = filter.value; });
+    _loadMeasurements(page: 1, type: filter.value);
   }
 
   @override
@@ -105,7 +124,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
           IconButton(
             onPressed: () async {
               await context.push('/add-measurement');
-              _loadMeasurements();
+              _loadMeasurements(page: 1);
             },
             icon: const Icon(Iconsax.add_circle, size: 26, color: AppColors.primary),
           ),
@@ -115,53 +134,148 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
         children: [
           const AnimatedBackground(showImage: false, imageOpacity: 0),
           const FloatingParticles(particleCount: 10, maxOpacity: 0.1),
-          _loading
-              ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
-              : _error != null
-                  ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
-                      const SizedBox(height: 8),
-                      Text(_error!, style: const TextStyle(color: AppColors.error)),
-                      TextButton(onPressed: _loadMeasurements, child: const Text('Réessayer')),
-                    ]))
-                  : _measurements.isEmpty
-                      ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                          const Icon(Iconsax.chart_2, size: 64, color: AppColors.primary),
-                          const SizedBox(height: 16),
-                          const Text('Aucune mesure', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                          const SizedBox(height: 4),
-                          const Text('Ajoutez votre première mesure', style: TextStyle(color: AppColors.textSecondary)),
-                        ]).animate().fadeIn())
-                      : RefreshIndicator(
-                          onRefresh: () async {
-                            _loadMeasurements(page: 1);
-                          },
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                                  itemCount: _measurements.length,
-                                  itemBuilder: (context, i) {
-                                    final m = _measurements[i];
-                                    return _buildMeasurementCard(m, i);
-                                  },
-                                ),
-                              ),
-                              if (_hasNext || _hasPrev) ...[
-                                PaginationBar(
-                                  currentPage: _currentPage,
-                                  totalCount: _totalCount,
-                                  pageSize: _pageSize,
-                                  hasNext: _hasNext,
-                                  hasPrev: _hasPrev,
-                                  onPrev: () => _loadMeasurements(page: _currentPage - 1),
-                                  onNext: () => _loadMeasurements(page: _currentPage + 1),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
+          Column(
+            children: [
+              // ─── Filter bar ───────────────────────────────────────
+              _buildFilterBar(),
+              // ─── Content ─────────────────────────────────────────
+              Expanded(child: _buildContent()),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterBar() {
+    return Container(
+      height: 90,
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: _filters.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 10),
+        itemBuilder: (context, i) {
+          final f = _filters[i];
+          final isSelected = _selectedType == f.value;
+          return GestureDetector(
+            onTap: () => _onFilterTap(f),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeOutCubic,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected ? f.color : Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: isSelected ? f.color.withAlpha(80) : Colors.black.withAlpha(15),
+                    blurRadius: isSelected ? 12 : 6,
+                    offset: const Offset(0, 3),
+                  )
+                ],
+                border: Border.all(
+                  color: isSelected ? f.color : Colors.grey.withAlpha(40),
+                  width: 1.5,
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(f.icon, size: 20, color: isSelected ? Colors.white : f.color),
+                  const SizedBox(height: 4),
+                  Text(
+                    f.label,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? Colors.white : AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ).animate(target: isSelected ? 1 : 0).scaleXY(begin: 1, end: 1.05),
+          );
+        },
+      ),
+    ).animate().fadeIn().slideY(begin: -0.2);
+  }
+
+  Widget _buildContent() {
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+    }
+    if (_error != null) {
+      return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+        const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
+        const SizedBox(height: 8),
+        Text(_error!, style: const TextStyle(color: AppColors.error)),
+        TextButton(onPressed: _loadMeasurements, child: const Text('Réessayer')),
+      ]));
+    }
+    if (_measurements.isEmpty) {
+      final f = _filters.firstWhere((f) => f.value == _selectedType, orElse: () => _filters[0]);
+      return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: f.color.withAlpha(20),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(f.icon, size: 48, color: f.color),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          _selectedType == null ? 'Aucune mesure' : 'Aucune mesure de type « ${_formatType(_selectedType!)} »',
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 4),
+        const Text('Ajoutez votre première mesure', style: TextStyle(color: AppColors.textSecondary)),
+      ]).animate().fadeIn());
+    }
+
+    return RefreshIndicator(
+      onRefresh: () async => _loadMeasurements(page: 1),
+      child: Column(
+        children: [
+          // Count badge
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withAlpha(20),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    '$_totalCount résultat${_totalCount > 1 ? 's' : ''}',
+                    style: const TextStyle(fontSize: 12, color: AppColors.primary, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+              itemCount: _measurements.length,
+              itemBuilder: (context, i) => _buildMeasurementCard(_measurements[i], i),
+            ),
+          ),
+          if (_hasNext || _hasPrev)
+            PaginationBar(
+              currentPage: _currentPage,
+              totalCount: _totalCount,
+              pageSize: _pageSize,
+              hasNext: _hasNext,
+              hasPrev: _hasPrev,
+              onPrev: () => _loadMeasurements(page: _currentPage - 1),
+              onNext: () => _loadMeasurements(page: _currentPage + 1),
+            ),
         ],
       ),
     );
@@ -190,46 +304,65 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 3))],
-        border: Border(left: BorderSide(color: color.withAlpha(128), width: 3)),
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 50, height: 50,
-            decoration: BoxDecoration(
-              color: color.withAlpha(25),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Center(child: Icon(_iconForType(type), size: 24, color: color)),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_formatType(type), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                const SizedBox(height: 2),
-                Text(displayValue, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 16)),
-                if (ctxField.isNotEmpty) ...[
-                  const SizedBox(height: 2),
-                  Text(ctxField, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: Stack(
+          children: [
+            // Colored left accent
+            Positioned(left: 0, top: 0, bottom: 0, child: Container(width: 4, color: color)),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 14, 14, 14),
+              child: Row(
+                children: [
+                  Container(
+                    width: 50, height: 50,
+                    decoration: BoxDecoration(color: color.withAlpha(25), borderRadius: BorderRadius.circular(14)),
+                    child: Center(child: Icon(_iconForType(type), size: 24, color: color)),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(_formatType(type), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black87)),
+                        const SizedBox(height: 3),
+                        Text(displayValue, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 17)),
+                        if (ctxField.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Row(children: [
+                            Icon(Iconsax.info_circle, size: 11, color: AppColors.textLight),
+                            const SizedBox(width: 3),
+                            Text(ctxField, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
+                          ]),
+                        ],
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: color.withAlpha(15),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(dateStr, style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.w500)),
+                      ),
+                    ],
+                  ),
                 ],
-              ],
+              ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(dateStr, style: const TextStyle(fontSize: 11, color: AppColors.textLight)),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
-    ).animate().fadeIn(delay: (60 * index).ms).slideX(begin: 0.06);
+    ).animate().fadeIn(delay: (50 * index).ms).slideX(begin: 0.06);
   }
 }

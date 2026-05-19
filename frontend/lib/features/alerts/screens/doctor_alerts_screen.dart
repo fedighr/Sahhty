@@ -26,11 +26,11 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
   List<dynamic> _allPending    = [];
   List<dynamic> _allConfirmed  = [];
   bool _loadingAppts           = true;
-  int _apptPage                = 1;
+  int _pendingPage             = 1;
+  int _confirmedPage           = 1;
 
-  List<dynamic> get _pendingAppts   => _paginate(_allPending,   _apptPage);
-  List<dynamic> get _confirmedAppts => _paginate(_allConfirmed, _apptPage);
-  int get _apptTotal => _allPending.length + _allConfirmed.length;
+  List<dynamic> get _pendingAppts   => _paginate(_allPending,   _pendingPage);
+  List<dynamic> get _confirmedAppts => _paginate(_allConfirmed, _confirmedPage);
 
   // ── Access requests ──────────────────────────────────────────────
   List<dynamic> _allAccess     = [];
@@ -46,7 +46,10 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
   int _alertPage                 = 1;
   int _alertTotal                = 0;
 
-  List<dynamic> get _systemAlerts => _paginate(_allSystemAlerts, _alertPage);
+  // Server-side pagination: _allSystemAlerts already contains the current page only
+  List<dynamic> get _systemAlerts => _allSystemAlerts;
+
+  int _totalPages(int total) => total == 0 ? 1 : ((total - 1) ~/ _pageSize) + 1;
 
   List<dynamic> _paginate(List<dynamic> list, int page) {
     final start = (page - 1) * _pageSize;
@@ -116,7 +119,8 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
   Future<void> _refresh() async {
     setState(() {
       _loadingAppts = _loadingAccess = _loadingSystem = true;
-      _apptPage = 1;
+      _pendingPage = 1;
+      _confirmedPage = 1;
       _accessPage = 1;
       _alertPage = 1;
     });
@@ -248,39 +252,49 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
     if (_allPending.isEmpty && _allConfirmed.isEmpty) {
       return _emptyState(Iconsax.calendar_1, 'Aucun rendez-vous', 'Tous vos rendez-vous apparaîtront ici');
     }
-    final totalAppts = _apptTotal;
-    final totalPages = totalAppts == 0 ? 1 : ((totalAppts - 1) ~/ _pageSize) + 1;
+    final pendingTotalPages   = _totalPages(_allPending.length);
+    final confirmedTotalPages = _totalPages(_allConfirmed.length);
     return RefreshIndicator(
       color: DoctorColors.primary,
       onRefresh: _refresh,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         children: [
-          if (_pendingAppts.isNotEmpty) ...[
+          if (_allPending.isNotEmpty) ...[
             _sectionHeader(Iconsax.clock, 'En attente de confirmation', DoctorColors.warning, _allPending.length),
             ..._pendingAppts.asMap().entries.map((e) =>
               _ApptCard(appt: e.value, isPending: true, onConfirm: _confirmAppt, onCancel: _cancelAppt)
                 .animate().fadeIn(delay: (e.key * 60).ms).slideX(begin: -0.1),
             ),
+            if (pendingTotalPages > 1)
+              PaginationBar(
+                currentPage: _pendingPage,
+                totalCount: _allPending.length,
+                pageSize: _pageSize,
+                hasPrev: _pendingPage > 1,
+                hasNext: _pendingPage < pendingTotalPages,
+                onPrev: _pendingPage > 1 ? () => setState(() => _pendingPage--) : null,
+                onNext: _pendingPage < pendingTotalPages ? () => setState(() => _pendingPage++) : null,
+              ),
             const SizedBox(height: 16),
           ],
-          if (_confirmedAppts.isNotEmpty) ...[
+          if (_allConfirmed.isNotEmpty) ...[
             _sectionHeader(Iconsax.tick_circle, 'Confirmés à venir', DoctorColors.success, _allConfirmed.length),
             ..._confirmedAppts.asMap().entries.map((e) =>
               _ApptCard(appt: e.value, isPending: false, onConfirm: _confirmAppt, onCancel: _cancelAppt)
                 .animate().fadeIn(delay: (e.key * 60).ms).slideX(begin: -0.1),
             ),
+            if (confirmedTotalPages > 1)
+              PaginationBar(
+                currentPage: _confirmedPage,
+                totalCount: _allConfirmed.length,
+                pageSize: _pageSize,
+                hasPrev: _confirmedPage > 1,
+                hasNext: _confirmedPage < confirmedTotalPages,
+                onPrev: _confirmedPage > 1 ? () => setState(() => _confirmedPage--) : null,
+                onNext: _confirmedPage < confirmedTotalPages ? () => setState(() => _confirmedPage++) : null,
+              ),
           ],
-          if (totalPages > 1)
-            PaginationBar(
-              currentPage: _apptPage,
-              totalCount: totalAppts,
-              pageSize: _pageSize,
-              hasPrev: _apptPage > 1,
-              hasNext: _apptPage < totalPages,
-              onPrev: _apptPage > 1 ? () => setState(() => _apptPage--) : null,
-              onNext: _apptPage < totalPages ? () => setState(() => _apptPage++) : null,
-            ),
         ],
       ),
     );
@@ -293,7 +307,7 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
     if (_allAccess.isEmpty) {
       return _emptyState(Iconsax.people, 'Aucun patient', 'Vos patients autorisés apparaîtront ici');
     }
-    final totalPages = _accessTotal == 0 ? 1 : ((_accessTotal - 1) ~/ _pageSize) + 1;
+    final totalPages = _totalPages(_accessTotal);
     return RefreshIndicator(
       color: DoctorColors.primary,
       onRefresh: _refresh,
@@ -324,10 +338,10 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
 
   Widget _buildSystemTab() {
     if (_loadingSystem) return _loader();
-    if (_systemAlerts.isEmpty) {
+    if (_alertTotal == 0 && _systemAlerts.isEmpty) {
       return _emptyState(Iconsax.notification, 'Aucune alerte système', 'Tout est en ordre !');
     }
-    final totalPages = _alertTotal == 0 ? 1 : ((_alertTotal - 1) ~/ _pageSize) + 1;
+    final totalPages = _totalPages(_alertTotal);
     return RefreshIndicator(
       color: DoctorColors.primary,
       onRefresh: _refresh,
@@ -335,11 +349,17 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         children: [
           _sectionHeader(Iconsax.notification, 'Alertes système', DoctorColors.primary, _alertTotal),
-          ..._systemAlerts.asMap().entries.map((e) {
-            final a = e.value as Map<String, dynamic>;
-            return _SystemAlertCard(alert: a, onMarkRead: () => _markRead(a['id'] as int? ?? 0))
-              .animate().fadeIn(delay: (e.key * 60).ms);
-          }),
+          if (_systemAlerts.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 32),
+              child: Center(child: Text('Aucune alerte sur cette page', style: TextStyle(color: DoctorColors.textSecondary))),
+            )
+          else
+            ..._systemAlerts.asMap().entries.map((e) {
+              final a = e.value as Map<String, dynamic>;
+              return _SystemAlertCard(alert: a, onMarkRead: () => _markRead(a['id'] as int? ?? 0))
+                .animate().fadeIn(delay: (e.key * 60).ms);
+            }),
           if (totalPages > 1)
             PaginationBar(
               currentPage: _alertPage,
@@ -348,12 +368,14 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
               hasPrev: _alertPage > 1,
               hasNext: _alertPage < totalPages,
               onPrev: _alertPage > 1 ? () async {
-                setState(() => _alertPage--);
-                await _loadSystemPage(_alertPage);
+                final newPage = _alertPage - 1;
+                setState(() => _alertPage = newPage);
+                await _loadSystemPage(newPage);
               } : null,
               onNext: _alertPage < totalPages ? () async {
-                setState(() => _alertPage++);
-                await _loadSystemPage(_alertPage);
+                final newPage = _alertPage + 1;
+                setState(() => _alertPage = newPage);
+                await _loadSystemPage(newPage);
               } : null,
             ),
         ],
@@ -364,13 +386,12 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
   Future<void> _loadSystemPage(int page) async {
     final userId = int.tryParse(ref.read(authProvider).userId ?? '') ?? 0;
     if (userId == 0) return;
-    setState(() => _loadingSystem = true);
+    // Do NOT set _loadingSystem = true here to preserve the pagination bar
     final res = await ref.read(alertServiceProvider).getAlertsByUser(userId, page: page);
     if (!mounted) return;
     setState(() {
       _allSystemAlerts = res['alerts'] ?? [];
-      _alertTotal      = res['count'] ?? _allSystemAlerts.length;
-      _loadingSystem   = false;
+      _alertTotal      = res['count'] ?? _alertTotal; // keep previous total if not returned
     });
   }
 

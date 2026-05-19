@@ -46,7 +46,12 @@ class AppointmentService {
   Future<Map<String, dynamic>> getPatientTodayAppointments(int patientId) async {
     try {
       final response = await _dio.get(ApiEndpoints.getPatientTodayAppointments(patientId));
-      return response.data;
+      final data = response.data;
+      if (data is Map && data.containsKey('results')) {
+        return {'success': true, 'appointments': data['results'] ?? []};
+      }
+      if (data is Map && data.containsKey('success')) return Map<String, dynamic>.from(data);
+      return {'success': false, 'message': 'Format de réponse inattendu'};
     } on DioException catch (e) {
       return _err(e);
     }
@@ -56,7 +61,12 @@ class AppointmentService {
   Future<Map<String, dynamic>> getDoctorTodayAppointments(int doctorId) async {
     try {
       final response = await _dio.get(ApiEndpoints.getDoctorTodayAppointments(doctorId));
-      return response.data;
+      final data = response.data;
+      if (data is Map && data.containsKey('results')) {
+        return {'success': true, 'appointments': data['results'] ?? []};
+      }
+      if (data is Map && data.containsKey('success')) return Map<String, dynamic>.from(data);
+      return {'success': false, 'message': 'Format de réponse inattendu'};
     } on DioException catch (e) {
       return _err(e);
     }
@@ -66,7 +76,16 @@ class AppointmentService {
   Future<Map<String, dynamic>> getDoctorAllAppointments(int doctorId) async {
     try {
       final response = await _dio.get(ApiEndpoints.getDoctorAllAppointments(doctorId));
-      return response.data;
+      final data = response.data;
+      // Backend returns Django paginated response: {count, next, previous, results: [...]}
+      if (data is Map && data.containsKey('results')) {
+        return {'success': true, 'appointments': data['results'] ?? []};
+      }
+      // Fallback if already wrapped with success key
+      if (data is Map && data.containsKey('success')) {
+        return Map<String, dynamic>.from(data);
+      }
+      return {'success': false, 'message': 'Format de réponse inattendu'};
     } on DioException catch (e) {
       return _err(e);
     }
