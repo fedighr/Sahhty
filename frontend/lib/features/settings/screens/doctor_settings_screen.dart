@@ -255,6 +255,14 @@ class _DoctorSettingsScreenState extends ConsumerState<DoctorSettingsScreen> {
                         subtitle: 'Nom, téléphone, ville',
                         onTap: () => context.push('/doctor/edit-profile'),
                       ).animate().fadeIn(delay: 150.ms).slideX(begin: 0.05),
+                      const SizedBox(height: 8),
+                      _Tile(
+                        icon: Iconsax.location,
+                        color: DoctorColors.accent,
+                        title: 'Ma localisation',
+                        subtitle: 'Définir l\'emplacement de mon cabinet sur la carte',
+                        onTap: () => context.push('/doctor/location'),
+                      ).animate().fadeIn(delay: 165.ms).slideX(begin: 0.05),
                       const SizedBox(height: 28),
 
                       // Section: Dossiers médicaux

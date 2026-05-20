@@ -142,6 +142,19 @@ class DoctorService {
     }
   }
 
+  /// PATCH /doctors/DoctorService/{pk}/update_doctor/ — save location
+  Future<Map<String, dynamic>> updateDoctorLocation(int doctorId, double latitude, double longitude) async {
+    try {
+      final response = await _dio.patch(
+        ApiEndpoints.updateDoctor(doctorId),
+        data: {'latitude': latitude, 'longitude': longitude},
+      );
+      return response.data ?? {'success': true};
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   Map<String, dynamic> _err(DioException e) {
     if (e.response?.data is Map<String, dynamic>) return e.response!.data;
     return {'success': false, 'message': e.message ?? 'Erreur réseau'};

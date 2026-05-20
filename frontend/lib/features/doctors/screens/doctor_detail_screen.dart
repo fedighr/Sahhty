@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
 import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
@@ -220,6 +222,7 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen>
                       slivers: [
                         _buildHeroHeader(),
                         SliverToBoxAdapter(child: _buildStatsRow()),
+                        SliverToBoxAdapter(child: _buildLocationSection()),
                         SliverToBoxAdapter(child: _buildTabBar()),
                         SliverToBoxAdapter(child: _buildTabContent()),
                         const SliverToBoxAdapter(child: SizedBox(height: 100)),
@@ -355,6 +358,101 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen>
       Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       Text(label, style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
     ]);
+  }
+
+  Widget _buildLocationSection() {
+    final d = _doctor;
+    if (d == null) return const SizedBox.shrink();
+
+    final lat = double.tryParse('${d['latitude'] ?? ''}');
+    final lng = double.tryParse('${d['longitude'] ?? ''}');
+    final address = d['address']?.toString() ?? '';
+    final ville = d['ville']?.toString() ?? '';
+
+    if (lat == null || lng == null || lat == 0 || lng == 0) {
+      // Show address only
+      if (address.isEmpty && ville.isEmpty) return const SizedBox.shrink();
+      return Container(
+        margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
+        ),
+        child: Row(children: [
+          const Icon(Iconsax.location, color: AppColors.primary, size: 20),
+          const SizedBox(width: 10),
+          Expanded(child: Text('$address${ville.isNotEmpty ? ', $ville' : ''}',
+            style: const TextStyle(fontSize: 13, color: AppColors.textSecondary))),
+        ]),
+      ).animate().fadeIn(delay: 450.ms);
+    }
+
+    final loc = LatLng(lat, lng);
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [BoxShadow(color: AppColors.primary.withAlpha(30), blurRadius: 12, offset: const Offset(0, 4))],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
+            child: Row(children: [
+              const Icon(Iconsax.location, color: AppColors.primary, size: 18),
+              const SizedBox(width: 8),
+              const Text('Localisation du cabinet', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              const Spacer(),
+              if (address.isNotEmpty)
+                Text(address, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+            ]),
+          ),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+            child: SizedBox(
+              height: 180,
+              child: FlutterMap(
+                options: MapOptions(
+                  initialCenter: loc,
+                  initialZoom: 15,
+                  interactionOptions: const InteractionOptions(flags: InteractiveFlag.none),
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    userAgentPackageName: 'com.example.sahhty',
+                  ),
+                  MarkerLayer(markers: [
+                    Marker(
+                      point: loc,
+                      width: 50,
+                      height: 50,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                          boxShadow: [BoxShadow(color: AppColors.primary.withAlpha(100), blurRadius: 10, spreadRadius: 2)],
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        child: const Icon(Iconsax.hospital, color: Colors.white, size: 20),
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ).animate().fadeIn(delay: 450.ms).slideY(begin: 0.1);
   }
 
   Widget _buildTabBar() {

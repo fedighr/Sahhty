@@ -38,6 +38,8 @@ import 'package:sahhty/features/settings/screens/medical_files_screen.dart';
 import 'package:sahhty/features/settings/screens/doctor_medical_access_screen.dart';
 import 'package:sahhty/features/settings/screens/patient_doctor_access_screen.dart';
 import 'package:sahhty/features/alerts/screens/doctor_alerts_screen.dart';
+import 'package:sahhty/features/doctors/screens/doctors_map_screen.dart';
+import 'package:sahhty/features/doctors/screens/doctor_location_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -174,6 +176,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/doctors',
         builder: (context, state) => const DoctorsListScreen(),
+      ),
+      GoRoute(
+        path: '/doctors/map',
+        builder: (context, state) => const DoctorsMapScreen(),
+      ),
+      GoRoute(
+        path: '/doctor/location',
+        builder: (context, state) => const DoctorLocationScreen(),
       ),
       GoRoute(
         path: '/doctors/:id',

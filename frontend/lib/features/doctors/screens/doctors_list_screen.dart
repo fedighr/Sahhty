@@ -307,6 +307,26 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
                             style: const TextStyle(color: Colors.white70, fontSize: 13)),
                         ],
                       )),
+                      // Map view button
+                      GestureDetector(
+                        onTap: () => context.push('/doctors/map'),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withAlpha(50),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.white.withAlpha(100)),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Iconsax.location, color: Colors.white, size: 16),
+                              SizedBox(width: 4),
+                              Text('Carte', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ).animate(controller: _headerAnim).fadeIn().slideX(begin: -0.1),
                 ],
