@@ -19,9 +19,34 @@ class SettingsScreen extends ConsumerStatefulWidget {
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _deletingAccount = false;
+  bool? _twoFactorEnabled; // null = unknown (not yet loaded), true/false = known
+  bool _toggling2FA = false;
 
   int? _getPatientId() => int.tryParse(ref.read(authProvider).patientId ?? '');
   int? _getUserId() => int.tryParse(ref.read(authProvider).userId ?? '');
+
+  Future<void> _toggle2FA() async {
+    final userId = _getUserId();
+    if (userId == null) return;
+    setState(() => _toggling2FA = true);
+    final result = await ref.read(authServiceProvider).toggle2FA(userId);
+    if (!mounted) return;
+    setState(() {
+      _toggling2FA = false;
+      if (result['success'] == true) {
+        _twoFactorEnabled = result['two_factor_enabled'] as bool? ?? !(_twoFactorEnabled ?? false);
+      }
+    });
+    _showSnackBar(
+      result['success'] == true
+          ? (_twoFactorEnabled == true
+              ? 'Authentification à deux facteurs activée'
+              : 'Authentification à deux facteurs désactivée')
+          : (result['message'] ?? 'Erreur'),
+      isError: result['success'] != true,
+    );
+  }
+
 
   // ── Delete Account ───────────────────────────────────────────────
   Future<void> _deleteAccount() async {
@@ -482,6 +507,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     onTap: () => context.push('/settings/change-password'),
                   ).animate().fadeIn(delay: 700.ms).slideX(begin: 0.05),
                   const SizedBox(height: 8),
+                  // 2FA toggle tile
+                  _TwoFATile(
+                    enabled: _twoFactorEnabled,
+                    loading: _toggling2FA,
+                    onToggle: _toggle2FA,
+                  ).animate().fadeIn(delay: 720.ms).slideX(begin: 0.05),
+                  const SizedBox(height: 8),
                   _SettingsTile(
                     icon: Iconsax.logout,
                     iconColor: AppColors.warning,
@@ -702,3 +734,84 @@ class _SettingsTileState extends State<_SettingsTile> {
     );
   }
 }
+
+// ══════════════════════════════════════════════════════════════════════
+//  2FA Toggle Tile
+// ══════════════════════════════════════════════════════════════════════
+class _TwoFATile extends StatelessWidget {
+  final bool? enabled;
+  final bool loading;
+  final VoidCallback onToggle;
+
+  const _TwoFATile({
+    required this.enabled,
+    required this.loading,
+    required this.onToggle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isOn = enabled ?? false;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withAlpha(235),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Colors.white.withAlpha(180)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(10),
+            blurRadius: 12,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: const Color(0xFF7C3AED).withAlpha(20),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(Iconsax.shield_security, color: Color(0xFF7C3AED), size: 22),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Authentification à deux facteurs',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: AppColors.textPrimary),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  enabled == null
+                      ? 'Appuyez pour activer / désactiver'
+                      : isOn
+                          ? 'Activée — un code sera envoyé par email à chaque connexion'
+                          : 'Désactivée — connexion directe sans code',
+                  style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                ),
+              ],
+            ),
+          ),
+          loading
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF7C3AED)),
+                )
+              : Switch.adaptive(
+                  value: isOn,
+                  onChanged: (_) => onToggle(),
+                  activeColor: const Color(0xFF7C3AED),
+                ),
+        ],
+      ),
+    );
+  }
+}
+

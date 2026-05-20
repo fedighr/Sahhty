@@ -26,6 +26,12 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
   bool _hasPrev = false;
   static const int _pageSize = 10;
 
+  // Filters
+  String? _filterType;   // HEALTH, REMINDER, SYSTEM, DOCTOR_MESSAGE
+  String? _filterLevel;  // CRITICAL, WARNING, INFO
+  String? _filterStatus; // NEW, READ
+  String _order = 'desc';
+
   @override
   void initState() {
     super.initState();
@@ -45,7 +51,14 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
       return;
     }
 
-    final result = await ref.read(alertServiceProvider).getAlertsByUser(uid, page: page);
+    final result = await ref.read(alertServiceProvider).getAlertsByUser(
+      uid,
+      page: page,
+      type: _filterType,
+      level: _filterLevel,
+      status: _filterStatus,
+      order: _order,
+    );
     if (!mounted) return;
     setState(() {
       _loading = false;
@@ -65,6 +78,18 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     await ref.read(alertServiceProvider).markAsRead(alertId);
     _loadAlerts(page: _currentPage);
   }
+
+  void _resetFilters() {
+    setState(() {
+      _filterType = null;
+      _filterLevel = null;
+      _filterStatus = null;
+      _order = 'desc';
+    });
+    _loadAlerts(page: 1);
+  }
+
+  bool get _hasActiveFilters => _filterType != null || _filterLevel != null || _filterStatus != null || _order != 'desc';
 
   IconData _iconForLevel(String level) {
     switch (level) {
@@ -92,62 +117,320 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     }
   }
 
+  void _showFilterSheet() {
+    String? tempType = _filterType;
+    String? tempLevel = _filterLevel;
+    String? tempStatus = _filterStatus;
+    String tempOrder = _order;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setLocal) => Container(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(width: 40, height: 4,
+                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2))),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(Iconsax.filter, color: AppColors.primary),
+                  const SizedBox(width: 8),
+                  const Text('Filtrer les alertes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      setLocal(() {
+                        tempType = null; tempLevel = null; tempStatus = null; tempOrder = 'desc';
+                      });
+                    },
+                    child: const Text('Réinitialiser', style: TextStyle(color: AppColors.primary)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              // Type filter
+              const Text('Type', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textSecondary)),
+              const SizedBox(height: 8),
+              Wrap(spacing: 8, children: [
+                _chip('Tous', tempType == null, () => setLocal(() => tempType = null)),
+                _chip('Santé', tempType == 'HEALTH', () => setLocal(() => tempType = 'HEALTH')),
+                _chip('Rappel', tempType == 'REMINDER', () => setLocal(() => tempType = 'REMINDER')),
+                _chip('Système', tempType == 'SYSTEM', () => setLocal(() => tempType = 'SYSTEM')),
+                _chip('Médecin', tempType == 'DOCTOR_MESSAGE', () => setLocal(() => tempType = 'DOCTOR_MESSAGE')),
+              ]),
+              const SizedBox(height: 16),
+
+              // Level filter
+              const Text('Niveau', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textSecondary)),
+              const SizedBox(height: 8),
+              Wrap(spacing: 8, children: [
+                _chip('Tous', tempLevel == null, () => setLocal(() => tempLevel = null)),
+                _chip('Critique', tempLevel == 'CRITICAL', () => setLocal(() => tempLevel = 'CRITICAL'),
+                    color: AppColors.riskHigh),
+                _chip('Attention', tempLevel == 'WARNING', () => setLocal(() => tempLevel = 'WARNING'),
+                    color: AppColors.riskMedium),
+                _chip('Info', tempLevel == 'INFO', () => setLocal(() => tempLevel = 'INFO'),
+                    color: AppColors.info),
+              ]),
+              const SizedBox(height: 16),
+
+              // Status filter
+              const Text('Statut', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textSecondary)),
+              const SizedBox(height: 8),
+              Wrap(spacing: 8, children: [
+                _chip('Tous', tempStatus == null, () => setLocal(() => tempStatus = null)),
+                _chip('Non lues', tempStatus == 'NEW', () => setLocal(() => tempStatus = 'NEW')),
+                _chip('Lues', tempStatus == 'READ', () => setLocal(() => tempStatus = 'READ')),
+              ]),
+              const SizedBox(height: 16),
+
+              // Order
+              const Text('Ordre', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textSecondary)),
+              const SizedBox(height: 8),
+              Row(children: [
+                Expanded(child: _orderBtn('Plus récent', Iconsax.arrow_down_2, tempOrder == 'desc',
+                    () => setLocal(() => tempOrder = 'desc'))),
+                const SizedBox(width: 8),
+                Expanded(child: _orderBtn('Plus ancien', Iconsax.arrow_up_3, tempOrder == 'asc',
+                    () => setLocal(() => tempOrder = 'asc'))),
+              ]),
+              const SizedBox(height: 20),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                    setState(() {
+                      _filterType = tempType;
+                      _filterLevel = tempLevel;
+                      _filterStatus = tempStatus;
+                      _order = tempOrder;
+                    });
+                    _loadAlerts(page: 1);
+                  },
+                  child: const Text('Appliquer', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _chip(String label, bool selected, VoidCallback onTap, {Color? color}) {
+    final c = color ?? AppColors.primary;
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: selected ? c.withAlpha(30) : Colors.grey[100],
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: selected ? c : Colors.transparent, width: 1.5),
+        ),
+        child: Text(label, style: TextStyle(
+          fontSize: 13, fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+          color: selected ? c : AppColors.textSecondary,
+        )),
+      ),
+    );
+  }
+
+  Widget _orderBtn(String label, IconData icon, bool selected, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.primary.withAlpha(20) : Colors.grey[100],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: selected ? AppColors.primary : Colors.transparent, width: 1.5),
+        ),
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(icon, size: 16, color: selected ? AppColors.primary : AppColors.textSecondary),
+          const SizedBox(width: 6),
+          Text(label, style: TextStyle(fontSize: 13,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+            color: selected ? AppColors.primary : AppColors.textSecondary,
+          )),
+        ]),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Alertes')),
+      appBar: AppBar(
+        title: const Text('Alertes'),
+        actions: [
+          Stack(
+            children: [
+              IconButton(
+                icon: Icon(Iconsax.filter, color: _hasActiveFilters ? AppColors.primary : null),
+                onPressed: _showFilterSheet,
+                tooltip: 'Filtrer',
+              ),
+              if (_hasActiveFilters)
+                Positioned(
+                  right: 8, top: 8,
+                  child: Container(
+                    width: 8, height: 8,
+                    decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           const AnimatedBackground(showImage: false, imageOpacity: 0),
           const FloatingParticles(particleCount: 10, maxOpacity: 0.1),
-          _loading
-              ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
-              : _error != null
-                  ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
-                      const SizedBox(height: 8),
-                      Text(_error!, style: const TextStyle(color: AppColors.error)),
-                      TextButton(onPressed: _loadAlerts, child: const Text('Réessayer')),
-                    ]))
-                  : _alerts.isEmpty
-                      ? Center(
-                          child: Column(mainAxisSize: MainAxisSize.min, children: [
-                            const Icon(Iconsax.notification, size: 64, color: AppColors.primary),
-                            const SizedBox(height: 16),
-                            const Text('Aucune alerte', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                            const SizedBox(height: 4),
-                            const Text('Tout est en ordre !', style: TextStyle(color: AppColors.textSecondary)),
-                          ]).animate().fadeIn(),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: () async { _loadAlerts(page: 1); },
-                          child: Column(
-                            children: [
-                              Expanded(
+          Column(
+            children: [
+              // Active filters summary bar
+              if (_hasActiveFilters)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      const Icon(Iconsax.filter_tick, size: 16, color: AppColors.primary),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Wrap(spacing: 6, children: [
+                          if (_filterType != null)
+                            _activeFilterBadge(_formatType(_filterType!), () {
+                              setState(() => _filterType = null);
+                              _loadAlerts(page: 1);
+                            }),
+                          if (_filterLevel != null)
+                            _activeFilterBadge(_filterLevel!, () {
+                              setState(() => _filterLevel = null);
+                              _loadAlerts(page: 1);
+                            }),
+                          if (_filterStatus != null)
+                            _activeFilterBadge(_filterStatus == 'NEW' ? 'Non lues' : 'Lues', () {
+                              setState(() => _filterStatus = null);
+                              _loadAlerts(page: 1);
+                            }),
+                          if (_order != 'desc')
+                            _activeFilterBadge('Plus ancien', () {
+                              setState(() => _order = 'desc');
+                              _loadAlerts(page: 1);
+                            }),
+                        ]),
+                      ),
+                      TextButton(
+                        onPressed: _resetFilters,
+                        style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
+                        child: const Text('Effacer tout', style: TextStyle(fontSize: 12, color: AppColors.primary)),
+                      ),
+                    ],
+                  ),
+                ).animate().fadeIn(),
+              Expanded(
+                child: _loading
+                    ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+                    : _error != null
+                        ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+                            const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
+                            const SizedBox(height: 8),
+                            Text(_error!, style: const TextStyle(color: AppColors.error)),
+                            TextButton(onPressed: _loadAlerts, child: const Text('Réessayer')),
+                          ]))
+                        : _alerts.isEmpty
+                            ? Center(
+                                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                                  const Icon(Iconsax.notification, size: 64, color: AppColors.primary),
+                                  const SizedBox(height: 16),
+                                  const Text('Aucune alerte', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    _hasActiveFilters ? 'Aucun résultat pour ces filtres' : 'Tout est en ordre !',
+                                    style: const TextStyle(color: AppColors.textSecondary),
+                                  ),
+                                  if (_hasActiveFilters) ...[
+                                    const SizedBox(height: 12),
+                                    TextButton.icon(
+                                      onPressed: _resetFilters,
+                                      icon: const Icon(Iconsax.refresh_2, size: 16),
+                                      label: const Text('Réinitialiser les filtres'),
+                                    ),
+                                  ],
+                                ]).animate().fadeIn(),
+                              )
+                            : RefreshIndicator(
+                                onRefresh: () async { _loadAlerts(page: 1); },
                                 child: ListView.builder(
-                                  padding: const EdgeInsets.all(16),
+                                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                                   itemCount: _alerts.length,
                                   itemBuilder: (context, i) {
                                     final alert = _alerts[i];
-                                    return _buildAlertCard(alert).animate().fadeIn(delay: (60 * i).ms).slideX(begin: 0.08);
+                                    return _buildAlertCard(alert)
+                                        .animate()
+                                        .fadeIn(delay: (60 * i).ms)
+                                        .slideX(begin: 0.08);
                                   },
                                 ),
                               ),
-                              if (_hasNext || _hasPrev)
-                                PaginationBar(
-                                  currentPage: _currentPage,
-                                  totalCount: _totalCount,
-                                  pageSize: _pageSize,
-                                  hasNext: _hasNext,
-                                  hasPrev: _hasPrev,
-                                  onPrev: () => _loadAlerts(page: _currentPage - 1),
-                                  onNext: () => _loadAlerts(page: _currentPage + 1),
-                                ),
-                            ],
-                          ),
-                        ),
+              ),
+              if (_hasNext || _hasPrev)
+                PaginationBar(
+                  currentPage: _currentPage,
+                  totalCount: _totalCount,
+                  pageSize: _pageSize,
+                  hasNext: _hasNext,
+                  hasPrev: _hasPrev,
+                  onPrev: () => _loadAlerts(page: _currentPage - 1),
+                  onNext: () => _loadAlerts(page: _currentPage + 1),
+                ),
+            ],
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _activeFilterBadge(String label, VoidCallback onRemove) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withAlpha(15),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primary.withAlpha(60)),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Text(label, style: const TextStyle(fontSize: 11, color: AppColors.primary, fontWeight: FontWeight.w500)),
+        const SizedBox(width: 4),
+        GestureDetector(
+          onTap: onRemove,
+          child: const Icon(Icons.close, size: 12, color: AppColors.primary),
+        ),
+      ]),
     );
   }
 

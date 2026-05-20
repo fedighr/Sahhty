@@ -5,6 +5,7 @@ import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/features/auth/screens/login_screen.dart';
 import 'package:sahhty/features/auth/screens/register_screen.dart';
 import 'package:sahhty/features/auth/screens/verify_code_screen.dart';
+import 'package:sahhty/features/auth/screens/verify_2fa_screen.dart';
 import 'package:sahhty/features/auth/screens/forgot_password_screen.dart';
 import 'package:sahhty/features/auth/screens/patient_setup_screen.dart';
 import 'package:sahhty/features/splash/screens/splash_screen.dart';
@@ -54,6 +55,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final isAuthRoute = location == '/login' ||
           location == '/register' ||
           location == '/verify' ||
+          location == '/verify-2fa' ||
           location == '/forgot-password' ||
           location == '/patient-setup' ||
           location == '/doctor-setup' ||
@@ -87,6 +89,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final email = state.extra as String? ?? '';
           return VerifyCodeScreen(email: email);
+        },
+      ),
+      GoRoute(
+        path: '/verify-2fa',
+        builder: (context, state) {
+          final email = state.extra as String? ?? '';
+          return Verify2FAScreen(email: email);
         },
       ),
       GoRoute(

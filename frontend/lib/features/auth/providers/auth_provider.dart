@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/data/services/auth_service.dart';
 
-enum AuthStatus { initial, loading, authenticated, unauthenticated, needsVerification, needsProfileSetup, error }
+enum AuthStatus { initial, loading, authenticated, unauthenticated, needsVerification, needsProfileSetup, needs2FA, error }
 
 class AuthState {
   final AuthStatus status;
@@ -90,7 +90,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(status: AuthStatus.loading);
     final result = await _authService.signin(email, password);
 
-    if (result['success'] == true) {
+    if (result['success'] == true && result['requires_2fa'] == true) {
+      // 2FA enabled — need to verify the OTP code sent to email
+      state = AuthState(
+        status: AuthStatus.needs2FA,
+        email: email,
+      );
+    } else if (result['success'] == true) {
       final info = await _authService.getStoredUserInfo();
       state = AuthState(
         status: AuthStatus.authenticated,
@@ -140,6 +146,31 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(
         status: AuthStatus.error,
         errorMessage: result['message'] ?? 'Erreur lors de l\'inscription',
+      );
+    }
+    return result;
+  }
+
+  Future<Map<String, dynamic>> verify2FA(String email, String code) async {
+    state = state.copyWith(status: AuthStatus.loading);
+    final result = await _authService.verify2FA(email, code);
+    if (result['success'] == true) {
+      final info = await _authService.getStoredUserInfo();
+      state = AuthState(
+        status: AuthStatus.authenticated,
+        email: info['email'],
+        name: info['name'],
+        role: info['role'],
+        userId: info['userId'],
+        patientId: info['patientId'],
+        doctorId: info['doctorId'],
+        gender: info['gender'],
+      );
+    } else {
+      state = state.copyWith(
+        status: AuthStatus.needs2FA,
+        errorMessage: result['message'],
+        email: email,
       );
     }
     return result;

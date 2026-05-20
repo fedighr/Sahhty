@@ -18,32 +18,32 @@ class DoctorsListScreen extends ConsumerStatefulWidget {
 
 class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
     with TickerProviderStateMixin {
-  List<dynamic> _allDoctors = []; // full list from getAllDoctors
-  List<dynamic> _doctors = [];   // current page doctors
+  List<dynamic> _doctors = [];
   bool _loading = true;
   String? _error;
   final _searchCtrl = TextEditingController();
   Timer? _debounce;
-  String _selectedFilter = 'Tous';
+  String _selectedFilter = 'Tous'; // 'Tous' or speciality name from backend
   late AnimationController _headerAnim;
 
+  // Dynamic specialities from backend
+  List<String> _specialities = ['Tous'];
+
   // Pagination state
-  static const int _pageSize = 8;
   int _currentPage = 1;
   int _totalCount = 0;
   String? _nextUrl;
   String? _prevUrl;
   bool _isSearchMode = false;
 
-  static const _filters = ['Tous', 'Gynécologie', 'Cardiologie', 'Pédiatrie', 'Généraliste'];
-
-  int get _totalPages => (_totalCount / _pageSize).ceil().clamp(1, 9999);
+  int get _totalPages => _totalCount == 0 ? 1 : ((_totalCount + 7) ~/ 8).clamp(1, 9999);
 
   @override
   void initState() {
     super.initState();
     _headerAnim = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
     _headerAnim.forward();
+    _loadSpecialities();
     _loadDoctors();
   }
 
@@ -55,45 +55,42 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
     super.dispose();
   }
 
+  Future<void> _loadSpecialities() async {
+    final result = await ref.read(doctorServiceProvider).getSpecialities();
+    if (!mounted) return;
+    if (result['success'] == true) {
+      final list = (result['specialities'] as List?)?.map((s) => s['name']?.toString() ?? '').where((s) => s.isNotEmpty).toList() ?? [];
+      setState(() {
+        _specialities = ['Tous', ...list];
+      });
+    }
+  }
+
   Future<void> _loadDoctors() async {
     setState(() { _loading = true; _error = null; _isSearchMode = false; });
-    final result = await ref.read(doctorServiceProvider).getAllDoctors();
+    final speciality = _selectedFilter == 'Tous' ? null : _selectedFilter;
+    final result = await ref.read(doctorServiceProvider).getAllDoctors(speciality: speciality);
     if (!mounted) return;
     setState(() {
       _loading = false;
       if (result['success'] == true) {
-        _allDoctors = result['doctors'] ?? [];
+        _doctors = result['doctors'] ?? [];
+        _totalCount = result['count'] ?? _doctors.length;
+        _nextUrl = result['next'];
+        _prevUrl = result['previous'];
         _currentPage = 1;
-        _nextUrl = null;
-        _prevUrl = null;
-        _updateLocalPage();
       } else {
         _error = result['message'] ?? 'Erreur';
       }
     });
   }
 
-  void _updateLocalPage() {
-    final filtered = _filteredAllDoctors;
-    _totalCount = filtered.length;
-    final start = (_currentPage - 1) * _pageSize;
-    final end = (start + _pageSize).clamp(0, filtered.length);
-    _doctors = filtered.sublist(start, end);
-  }
-
-  List<dynamic> get _filteredAllDoctors {
-    if (_selectedFilter == 'Tous') return _allDoctors;
-    return _allDoctors.where((d) {
-      final spec = d['speciality'];
-      final specName = spec is Map ? (spec['name'] ?? '') : (spec?.toString() ?? '');
-      return specName.toString().toLowerCase().contains(_selectedFilter.toLowerCase());
-    }).toList();
-  }
 
   void _onSearchChanged(String query) {
     _debounce?.cancel();
     if (query.isEmpty) {
-      setState(() { _isSearchMode = false; _currentPage = 1; _updateLocalPage(); });
+      setState(() { _isSearchMode = false; _currentPage = 1; });
+      _loadDoctors();
       return;
     }
     if (query.length < 2) return;
@@ -142,21 +139,23 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
 
   void _goToPage(int page) {
     if (!_isSearchMode) {
-      setState(() { _currentPage = page; _updateLocalPage(); });
+      // For non-search mode, each page navigates using URL from backend
+      setState(() { _currentPage = page; });
     }
   }
 
   void _onFilterChanged(String filter) {
+    if (_selectedFilter == filter) return;
     setState(() {
       _selectedFilter = filter;
-      _currentPage = 1;
-      if (!_isSearchMode) _updateLocalPage();
+      _searchCtrl.clear();
+      _isSearchMode = false;
     });
+    _loadDoctors();
   }
 
   @override
   Widget build(BuildContext context) {
-    final displayDoctors = _isSearchMode ? _doctors : _doctors;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
@@ -172,22 +171,22 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
                       child: SizedBox(height: 300, child: Center(child: CircularProgressIndicator(color: AppColors.primary))))
                   : _error != null
                       ? SliverToBoxAdapter(child: _buildError())
-                      : displayDoctors.isEmpty
+                      : _doctors.isEmpty
                           ? SliverToBoxAdapter(child: _buildEmpty())
                           : SliverPadding(
                               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                               sliver: SliverList(
                                 delegate: SliverChildBuilderDelegate(
                                   (ctx, i) => _DoctorCard(
-                                    doctor: displayDoctors[i],
+                                    doctor: _doctors[i],
                                     index: i,
-                                    onTap: () => context.push('/doctors/${displayDoctors[i]['id']}', extra: displayDoctors[i]),
+                                    onTap: () => context.push('/doctors/${_doctors[i]['id']}', extra: _doctors[i]),
                                   ).animate().fadeIn(delay: (60 * i).ms).slideX(begin: 0.06),
-                                  childCount: displayDoctors.length,
+                                  childCount: _doctors.length,
                                 ),
                               ),
                             ),
-              if (!_loading && _error == null && _totalCount > _pageSize)
+              if (!_loading && _error == null && _totalPages > 1)
                 SliverToBoxAdapter(child: _buildPagination()),
               const SliverToBoxAdapter(child: SizedBox(height: 100)),
             ],
@@ -254,7 +253,7 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
   }
 
   Widget _buildSliverAppBar() {
-    final total = _isSearchMode ? _totalCount : _filteredAllDoctors.length;
+    final total = _totalCount;
     return SliverAppBar(
       expandedHeight: 160,
       pinned: true,
@@ -374,9 +373,9 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
             height: 36,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: _filters.length,
+              itemCount: _specialities.length,
               itemBuilder: (_, i) {
-                final f = _filters[i];
+                final f = _specialities[i];
                 final selected = _selectedFilter == f;
                 return GestureDetector(
                   onTap: () => _onFilterChanged(f),
@@ -410,7 +409,7 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
                   Text(
                     _isSearchMode
                         ? '$_totalCount résultat${_totalCount > 1 ? 's' : ''} trouvé${_totalCount > 1 ? 's' : ''}'
-                        : 'Page $_currentPage sur $_totalPages · ${_filteredAllDoctors.length} médecin${_filteredAllDoctors.length > 1 ? 's' : ''}',
+                        : 'Page $_currentPage sur $_totalPages · $_totalCount médecin${_totalCount > 1 ? 's' : ''}',
                     style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
                   ),
                 ],

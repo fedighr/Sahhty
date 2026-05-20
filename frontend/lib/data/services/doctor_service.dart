@@ -142,6 +142,16 @@ class DoctorService {
     }
   }
 
+  /// GET /doctors/DoctorService/get_all_specialities/
+  Future<Map<String, dynamic>> getSpecialities() async {
+    try {
+      final response = await _dio.get(ApiEndpoints.getAllSpecialities);
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   /// PATCH /doctors/DoctorService/{pk}/update_doctor/ — save location
   Future<Map<String, dynamic>> updateDoctorLocation(int doctorId, double latitude, double longitude) async {
     try {

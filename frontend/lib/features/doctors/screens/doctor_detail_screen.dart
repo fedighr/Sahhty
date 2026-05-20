@@ -412,47 +412,108 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen>
                 Text(address, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
             ]),
           ),
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-            ),
-            child: SizedBox(
-              height: 180,
-              child: FlutterMap(
-                options: MapOptions(
-                  initialCenter: loc,
-                  initialZoom: 15,
-                  interactionOptions: const InteractionOptions(flags: InteractiveFlag.none),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
                 ),
-                children: [
-                  TileLayer(
-                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'com.example.sahhty',
-                  ),
-                  MarkerLayer(markers: [
-                    Marker(
-                      point: loc,
-                      width: 50,
-                      height: 50,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                          boxShadow: [BoxShadow(color: AppColors.primary.withAlpha(100), blurRadius: 10, spreadRadius: 2)],
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: const Icon(Iconsax.hospital, color: Colors.white, size: 20),
-                      ),
+                child: SizedBox(
+                  height: 200,
+                  child: FlutterMap(
+                    options: MapOptions(
+                      initialCenter: loc,
+                      initialZoom: 15,
+                      interactionOptions: const InteractionOptions(flags: InteractiveFlag.all),
                     ),
-                  ]),
-                ],
+                    children: [
+                      TileLayer(
+                        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        userAgentPackageName: 'com.example.sahhty',
+                      ),
+                      MarkerLayer(markers: [
+                        Marker(
+                          point: loc,
+                          width: 50,
+                          height: 50,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.circle,
+                              boxShadow: [BoxShadow(color: AppColors.primary.withAlpha(100), blurRadius: 10, spreadRadius: 2)],
+                            ),
+                            padding: const EdgeInsets.all(10),
+                            child: const Icon(Iconsax.hospital, color: Colors.white, size: 20),
+                          ),
+                        ),
+                      ]),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: GestureDetector(
+                  onTap: () => _openFullMap(context, loc, address),
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [BoxShadow(color: Colors.black.withAlpha(40), blurRadius: 4)],
+                    ),
+                    child: const Icon(Icons.fullscreen, size: 20, color: AppColors.primary),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     ).animate().fadeIn(delay: 450.ms).slideY(begin: 0.1);
+  }
+
+  void _openFullMap(BuildContext context, LatLng loc, String address) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => Scaffold(
+        appBar: AppBar(
+          title: Text(address.isNotEmpty ? address : 'Localisation du cabinet'),
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+        ),
+        body: FlutterMap(
+          options: MapOptions(
+            initialCenter: loc,
+            initialZoom: 15,
+            interactionOptions: const InteractionOptions(flags: InteractiveFlag.all),
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'com.example.sahhty',
+            ),
+            MarkerLayer(markers: [
+              Marker(
+                point: loc,
+                width: 60,
+                height: 60,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                    boxShadow: [BoxShadow(color: AppColors.primary.withAlpha(100), blurRadius: 10, spreadRadius: 2)],
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  child: const Icon(Iconsax.hospital, color: Colors.white, size: 24),
+                ),
+              ),
+            ]),
+          ],
+        ),
+      ),
+    ));
   }
 
   Widget _buildTabBar() {

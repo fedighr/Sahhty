@@ -48,6 +48,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       _registerFcmDevice();
       // Redirect based on role
       context.go(auth.role == 'D' ? '/doctor-home' : '/home');
+    } else if (auth.status == AuthStatus.needs2FA) {
+      context.push('/verify-2fa', extra: _emailController.text.trim());
     } else if (auth.status == AuthStatus.needsVerification) {
       context.push('/verify', extra: _emailController.text.trim());
     } else if (auth.status == AuthStatus.needsProfileSetup) {

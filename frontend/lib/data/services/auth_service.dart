@@ -62,6 +62,33 @@ class AuthService {
     }
   }
 
+  // ── Verify 2FA code (after login with 2FA enabled) ──────────────────
+  Future<Map<String, dynamic>> verify2FA(String email, String code) async {
+    try {
+      final response = await _dio.post(
+        ApiEndpoints.verify2fa,
+        data: {'email': email, 'code': code},
+      );
+      final data = response.data as Map<String, dynamic>;
+      if (data['success'] == true && data['access'] != null) {
+        await _saveTokens(data['access'], data['refresh']);
+      }
+      return data;
+    } on DioException catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  // ── Toggle 2FA ───────────────────────────────────────────────────────
+  Future<Map<String, dynamic>> toggle2FA(int userId) async {
+    try {
+      final response = await _dio.patch(ApiEndpoints.toggle2fa(userId));
+      return response.data;
+    } on DioException catch (e) {
+      return _handleError(e);
+    }
+  }
+
   // ── Verify Code (after signup) ───────────────────────────────────────
   Future<Map<String, dynamic>> verifyCode(String email, String code) async {
     try {

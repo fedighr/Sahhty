@@ -1,7 +1,7 @@
 /// All API endpoints matching the Django REST backend exactly.
 class ApiEndpoints {
   ApiEndpoints._();
-  static const String baseUrl = 'http://192.168.100.10:8000';
+  static const String baseUrl = 'http://10.0.2.2:8000';
 
 
 
@@ -18,6 +18,8 @@ class ApiEndpoints {
   static const String isEmailAvailable  = '/users/auth/is_email_available/';
   static const String verifyPhone       = '/users/auth/verify_phone/';
   static String deleteAccount(int userId) => '/users/auth/$userId/delete_account/';
+  static const String verify2fa            = '/users/auth/verify_2fa/';
+  static String toggle2fa(int userId)      => '/users/auth/$userId/toggle_2fa/';
 
   // ── FCM Device (ViewSet: users/devices/) ──────────────────────────────
   static const String registerDevice    = '/users/devices/register_device/';
@@ -35,8 +37,8 @@ class ApiEndpoints {
   static const String searchDoctors            = '/doctors/DoctorService/search/';
   static String getDoctorSchedule(int pk)      => '/doctors/DoctorService/$pk/get_doctor_schedule/';
   static String getDoctorAvailableSlots(int pk) => '/doctors/DoctorService/$pk/get_doctor_available_slots/';
-  static const String addDoctorSchedule        =
-'/doctors/DoctorService/add_doctor_schedule/';
+  static const String addDoctorSchedule        = '/doctors/DoctorService/add_doctor_schedule/';
+  static const String getAllSpecialities        = '/doctors/DoctorService/get_all_specialities/';
   static String updateDoctorLocation(int pk)   =>
 '/doctors/DoctorService/$pk/update_location/';
 

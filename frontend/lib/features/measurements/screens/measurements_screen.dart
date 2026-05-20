@@ -36,6 +36,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
   bool _hasPrev = false;
   static const int _pageSize = 10;
   String? _selectedType;
+  String _order = 'desc'; // 'desc' = plus récent en premier, 'asc' = plus ancien en premier
 
   static const List<_FilterType> _filters = [
     _FilterType(null, 'Tous', Iconsax.category, AppColors.primary),
@@ -65,6 +66,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
       patientId,
       page: page,
       typeFilter: type ?? _selectedType,
+      order: _order,
     );
     if (!mounted) return;
     setState(() {
@@ -121,6 +123,23 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
       appBar: AppBar(
         title: const Text('Mes mesures'),
         actions: [
+          IconButton(
+            tooltip: _order == 'desc' ? 'Plus ancien en premier' : 'Plus récent en premier',
+            onPressed: () {
+              setState(() { _order = _order == 'desc' ? 'asc' : 'desc'; });
+              _loadMeasurements(page: 1);
+            },
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, anim) => RotationTransition(turns: anim, child: FadeTransition(opacity: anim, child: child)),
+              child: Icon(
+                _order == 'desc' ? Iconsax.arrow_down_2 : Iconsax.arrow_up_3,
+                key: ValueKey(_order),
+                size: 22,
+                color: AppColors.primary,
+              ),
+            ),
+          ),
           IconButton(
             onPressed: () async {
               await context.push('/add-measurement');
