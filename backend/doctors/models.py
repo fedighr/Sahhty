@@ -37,8 +37,8 @@ class Doctor(models.Model):
 
     ville = models.CharField(max_length=20, choices=VILLE_CHOICES, default='TUNIS')
     address = models.TextField()
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    latitude = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
     experience = models.IntegerField(validators=[MinValueValidator(0)])
     consultation_price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
     bio = models.TextField(blank=True, null=True)

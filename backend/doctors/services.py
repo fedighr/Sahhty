@@ -78,11 +78,14 @@ class DoctorService:
         try:
             doctor_serializer = DoctorSerializer(doctor, data=data, partial=True)
             if not doctor_serializer.is_valid():
+                print(data)
+                print(doctor_serializer.errors)
                 return {'data': {'success': False, 'message': doctor_serializer.errors}, 'status': 400}
             doctor_serializer.save()
 
             user_serializer = UserSerializer(doctor.user, data=data, partial=True)
             if not user_serializer.is_valid():
+                print(user_serializer.errors)
                 return {'data': {'success': False, 'message': user_serializer.errors}, 'status': 400}
             user_serializer.save()
 

@@ -31,7 +31,10 @@ class DoctorView(ViewSet):
     @extend_schema(request=DoctorSerializer,responses=DoctorSerializer)
     @action(detail=True, methods=['patch'], url_path="update_location", permission_classes=[AllowAny])
     def update_location(self, request, pk=None):
-        doctor = self.get_object()
+        doctor = Doctor.objects.filter(pk=pk).first()
+        if not doctor:
+            return Response({'success': False, 'message': 'Doctor not found'}, status=404)
+        
         serializer = DoctorSerializer(doctor, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
