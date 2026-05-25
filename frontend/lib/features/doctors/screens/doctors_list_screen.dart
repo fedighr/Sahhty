@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
@@ -22,8 +23,21 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
   bool _loading = true;
   String? _error;
   final _searchCtrl = TextEditingController();
+  String? _selectedVille;
+
+  static const _tunisianCities = [
+    'Tunis', 'Ariana', 'Ben Arous', 'Manouba', 'Nabeul', 'Zaghouan',
+    'Bizerte', 'Béja', 'Jendouba', 'El Kef', 'Siliana', 'Sousse',
+    'Monastir', 'Mahdia', 'Sfax', 'Kairouan', 'Kasserine', 'Sidi Bouzid',
+    'Gabès', 'Médenine', 'Tataouine', 'Gafsa', 'Tozeur', 'Kebili',
+  ];
   Timer? _debounce;
-  String _selectedFilter = 'Tous'; // 'Tous' or speciality name from backend
+  String _selectedFilter = 'Tous';
+  String _selectedGender = 'Tous'; // 'Tous', 'M', 'F'
+  bool _sortByProximity = false;
+  bool _gettingLocation = false;
+  double? _userLat;
+  double? _userLon;
   late AnimationController _headerAnim;
 
   // Dynamic specialities from backend
@@ -69,7 +83,15 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
   Future<void> _loadDoctors() async {
     setState(() { _loading = true; _error = null; _isSearchMode = false; });
     final speciality = _selectedFilter == 'Tous' ? null : _selectedFilter;
-    final result = await ref.read(doctorServiceProvider).getAllDoctors(speciality: speciality);
+    final gender = _selectedGender == 'Tous' ? null : _selectedGender;
+    final ville = _selectedVille;
+    final result = await ref.read(doctorServiceProvider).getAllDoctors(
+      speciality: speciality,
+      gender: gender,
+      ville: ville,
+      latitude: _sortByProximity ? _userLat : null,
+      longitude: _sortByProximity ? _userLon : null,
+    );
     if (!mounted) return;
     setState(() {
       _loading = false;
@@ -143,6 +165,60 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
       setState(() { _currentPage = page; });
     }
   }
+
+  Future<void> _toggleProximity() async {
+    if (_sortByProximity) {
+      setState(() { _sortByProximity = false; _userLat = null; _userLon = null; });
+      _loadDoctors();
+      return;
+    }
+    setState(() => _gettingLocation = true);
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Veuillez activer la localisation')));
+        }
+        setState(() => _gettingLocation = false);
+        return;
+      }
+      LocationPermission perm = await Geolocator.checkPermission();
+      if (perm == LocationPermission.denied) {
+        perm = await Geolocator.requestPermission();
+      }
+      if (perm == LocationPermission.deniedForever || perm == LocationPermission.denied) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Permission de localisation refusée')));
+        }
+        setState(() => _gettingLocation = false);
+        return;
+      }
+      final pos = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(accuracy: LocationAccuracy.medium));
+      setState(() {
+        _userLat = pos.latitude;
+        _userLon = pos.longitude;
+        _sortByProximity = true;
+        _gettingLocation = false;
+      });
+      _loadDoctors();
+    } catch (e) {
+      setState(() => _gettingLocation = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur de localisation: $e')));
+      }
+    }
+  }
+
+  void _onGenderChanged(String gender) {
+    if (_selectedGender == gender) return;
+    setState(() { _selectedGender = gender; });
+    _loadDoctors();
+  }
+
 
   void _onFilterChanged(String filter) {
     if (_selectedFilter == filter) return;
@@ -341,6 +417,7 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Search bar
           Container(
@@ -367,8 +444,120 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
               ),
             ),
           ),
-          const SizedBox(height: 12),
-          // Filter chips
+          const SizedBox(height: 10),
+          // Ville dropdown
+          GestureDetector(
+            onTap: () async {
+              final selected = await showModalBottomSheet<String>(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => _CityPickerSheet(
+                  cities: _tunisianCities,
+                  selected: _selectedVille,
+                ),
+              );
+              if (selected != null) {
+                setState(() => _selectedVille = selected == '' ? null : selected);
+                _loadDoctors();
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 3))],
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              child: Row(
+                children: [
+                  const Icon(Iconsax.location, color: AppColors.accent, size: 20),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      _selectedVille ?? 'Filtrer par ville...',
+                      style: TextStyle(
+                        color: _selectedVille != null ? AppColors.textPrimary : AppColors.textLight,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  if (_selectedVille != null)
+                    GestureDetector(
+                      onTap: () { setState(() => _selectedVille = null); _loadDoctors(); },
+                      child: const Icon(Iconsax.close_circle, size: 18, color: AppColors.textSecondary),
+                    )
+                  else
+                    const Icon(Iconsax.arrow_down, size: 16, color: AppColors.textSecondary),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          // Gender + Proximity row
+          Row(
+            children: [
+              // Gender chips
+              const Text('Genre :', style: TextStyle(fontSize: 12, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+              const SizedBox(width: 8),
+              ...[('Tous', null), ('H', 'M'), ('F', 'F')].map((entry) {
+                final label = entry.$1;
+                final value = entry.$2 ?? 'Tous';
+                final selected = _selectedGender == value;
+                return GestureDetector(
+                  onTap: () => _onGenderChanged(value),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.only(right: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: selected ? AppColors.accent : Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: selected ? AppColors.accent : const Color(0xFFE0E0E0)),
+                    ),
+                    child: Text(label, style: TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.w600,
+                      color: selected ? Colors.white : AppColors.textSecondary,
+                    )),
+                  ),
+                );
+              }),
+              const Spacer(),
+              // Proximity toggle
+              GestureDetector(
+                onTap: _gettingLocation ? null : _toggleProximity,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: _sortByProximity ? AppColors.accent : Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: _sortByProximity ? AppColors.accent : const Color(0xFFE0E0E0)),
+                    boxShadow: _sortByProximity
+                        ? [BoxShadow(color: AppColors.accent.withAlpha(60), blurRadius: 8)]
+                        : [],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_gettingLocation)
+                        const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent))
+                      else
+                        Icon(Iconsax.location_tick, size: 14,
+                            color: _sortByProximity ? Colors.white : AppColors.textSecondary),
+                      const SizedBox(width: 5),
+                      Text('Proximité', style: TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w600,
+                        color: _sortByProximity ? Colors.white : AppColors.textSecondary,
+                      )),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          // Speciality chips
           SizedBox(
             height: 36,
             child: ListView.builder(
@@ -412,6 +601,24 @@ class _DoctorsListScreenState extends ConsumerState<DoctorsListScreen>
                         : 'Page $_currentPage sur $_totalPages · $_totalCount médecin${_totalCount > 1 ? 's' : ''}',
                     style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
                   ),
+                  if (_sortByProximity) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: AppColors.accent.withAlpha(30),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Iconsax.location_tick, size: 11, color: AppColors.accent),
+                          SizedBox(width: 3),
+                          Text('Triés par proximité', style: TextStyle(fontSize: 11, color: AppColors.accent, fontWeight: FontWeight.w600)),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -632,3 +839,124 @@ class _DoctorCard extends StatelessWidget {
     ]);
   }
 }
+
+// ── City Picker Bottom Sheet ──────────────────────────────────────────────────
+class _CityPickerSheet extends StatefulWidget {
+  final List<String> cities;
+  final String? selected;
+  const _CityPickerSheet({required this.cities, this.selected});
+
+  @override
+  State<_CityPickerSheet> createState() => _CityPickerSheetState();
+}
+
+class _CityPickerSheetState extends State<_CityPickerSheet> {
+  final _ctrl = TextEditingController();
+  late List<String> _filtered;
+
+  @override
+  void initState() {
+    super.initState();
+    _filtered = widget.cities;
+  }
+
+  void _onSearch(String q) {
+    setState(() {
+      _filtered = q.isEmpty
+          ? widget.cities
+          : widget.cities.where((c) => c.toLowerCase().contains(q.toLowerCase())).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.75,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      child: Column(
+        children: [
+          const SizedBox(height: 8),
+          Container(
+            width: 40, height: 4,
+            decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2)),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                const Icon(Iconsax.location, color: AppColors.accent, size: 20),
+                const SizedBox(width: 8),
+                const Text('Choisir une ville',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                const Spacer(),
+                if (widget.selected != null)
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context, ''),
+                    child: const Text('Effacer', style: TextStyle(color: AppColors.accent, fontWeight: FontWeight.w600)),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              controller: _ctrl,
+              onChanged: _onSearch,
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: 'Rechercher une ville...',
+                prefixIcon: const Icon(Iconsax.search_normal, color: AppColors.textLight, size: 18),
+                filled: true,
+                fillColor: const Color(0xFFF5F5F5),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filtered.length,
+              itemBuilder: (_, i) {
+                final city = _filtered[i];
+                final isSelected = city == widget.selected;
+                return ListTile(
+                  leading: Icon(
+                    Iconsax.location,
+                    size: 18,
+                    color: isSelected ? AppColors.accent : AppColors.textSecondary,
+                  ),
+                  title: Text(city,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected ? AppColors.accent : AppColors.textPrimary,
+                      )),
+                  trailing: isSelected
+                      ? const Icon(Iconsax.tick_circle, color: AppColors.accent, size: 20)
+                      : null,
+                  onTap: () => Navigator.pop(context, city),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+

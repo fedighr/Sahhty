@@ -16,12 +16,14 @@ class DoctorService {
   }
 
   /// GET /doctors/DoctorService/get_all_doctors/
-  Future<Map<String, dynamic>> getAllDoctors({String? speciality, String? ville, String? gender}) async {
+  Future<Map<String, dynamic>> getAllDoctors({String? speciality, String? ville, String? gender, double? latitude, double? longitude}) async {
     try {
       final Map<String, dynamic> params = {};
       if (speciality != null && speciality.isNotEmpty) params['speciality'] = speciality;
       if (ville != null && ville.isNotEmpty) params['ville'] = ville;
       if (gender != null && gender.isNotEmpty) params['gender'] = gender;
+      if (latitude != null) params['latitude'] = latitude;
+      if (longitude != null) params['longitude'] = longitude;
       final response = await _dio.get(
         ApiEndpoints.getAllDoctors,
         queryParameters: params.isNotEmpty ? params : null,
