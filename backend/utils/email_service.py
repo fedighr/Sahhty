@@ -15,16 +15,16 @@ def send_verification_email(user_email, code, expires_at):
         'badge_bg':    '#4c51bf',
         'badge_text':  '#ffffff',
         'icon':        '🔐',
-        'label':       'Email Verification',
-        'subject':     '🔐 Your Verification Code',
+      'label':       'Vérification de l’adresse e-mail',
+      'subject':     '🔐 Votre code de vérification',
     }
 
     try:
         subject = cfg['subject']
-        text_content = f'Your verification code is: {code}. It expires at {formatted_expires}.'
+        text_content = f'Votre code de vérification est : {code}. Il expire le {formatted_expires}.'
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -52,13 +52,13 @@ def send_verification_email(user_email, code, expires_at):
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                Verify your email address
+                Vérifiez votre adresse e-mail
               </h2>
 
               <!-- Code box -->
               <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  Use the following code to verify your email address. Please do not share this code with anyone.
+                  Utilisez le code ci-dessous pour vérifier votre adresse e-mail. Ne partagez pas ce code avec qui que ce soit.
                 </p>
                 <div style="text-align:center;margin:20px 0;">
                   <span style="display:inline-block;background-color:#eef2ff;border:2px dashed {cfg["border"]};border-radius:10px;padding:16px 40px;font-size:32px;font-weight:800;letter-spacing:8px;color:#5a67d8;">
@@ -68,7 +68,7 @@ def send_verification_email(user_email, code, expires_at):
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Expires at</span>
+                      <span style="font-size:13px;color:#718096;">Expire le</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
                       <strong style="font-size:14px;color:#5a67d8;">⏰ {formatted_expires}</strong>
@@ -89,7 +89,7 @@ def send_verification_email(user_email, code, expires_at):
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                If you did not request this code, you can safely ignore this email.
+                Si vous n’avez pas demandé ce code, vous pouvez ignorer cet e-mail en toute sécurité.
               </p>
             </td>
           </tr>
@@ -98,7 +98,7 @@ def send_verification_email(user_email, code, expires_at):
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -128,16 +128,16 @@ def send_lockout_email(user_email):
         'badge_bg':    '#c53030',
         'badge_text':  '#ffffff',
         'icon':        '🔒',
-        'label':       'Account Locked',
-        'subject':     '🔒 Your Account Has Been Locked',
+    'label':       'Compte bloqué',
+    'subject':     '🔒 Votre compte a été temporairement bloqué',
     }
 
     try:
         subject = cfg['subject']
-        text_content = f'Your account has been locked for 15 minutes due to multiple failed login attempts.'
+        text_content = 'Votre compte a été temporairement bloqué pendant 15 minutes en raison de plusieurs tentatives de connexion échouées.'
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -165,16 +165,16 @@ def send_lockout_email(user_email):
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                Suspicious activity detected
+                Activité suspecte détectée
               </h2>
 
               <!-- Message box -->
               <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  Your account has been temporarily locked for <strong>15 minutes</strong> due to multiple failed login attempts.
+                  Votre compte a été temporairement bloqué pendant <strong>15 minutes</strong> en raison de plusieurs tentatives de connexion échouées.
                 </p>
                 <p style="margin:0;font-size:15px;color:#2d3748;line-height:1.7;">
-                  If this was you, please wait 15 minutes and try again. If this was not you, we recommend resetting your password immediately.
+                  Si c’était vous, veuillez patienter 15 minutes puis réessayer. Si ce n’était pas vous, nous vous recommandons de réinitialiser votre mot de passe immédiatement.
                 </p>
               </div>
 
@@ -190,7 +190,7 @@ def send_lockout_email(user_email):
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                If you did not attempt to login, please contact support immediately.
+                Si vous n’avez pas tenté de vous connecter, veuillez contacter le support immédiatement.
               </p>
             </td>
           </tr>
@@ -199,7 +199,7 @@ def send_lockout_email(user_email):
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -231,8 +231,8 @@ def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
             'badge_bg':    '#c53030',
             'badge_text':  '#ffffff',
             'icon':        '🔴',
-            'label':       'Critical Alert',
-            'subject':     '🔴 Critical Health Alert',
+        'label':       'Alerte critique',
+        'subject':     '🔴 Alerte santé critique',
         },
         'WARNING': {
             'bg':          '#fffbeb',
@@ -241,8 +241,8 @@ def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
             'badge_bg':    '#b7791f',
             'badge_text':  '#ffffff',
             'icon':        '🟡',
-            'label':       'Warning',
-            'subject':     '🟡 Health Warning',
+        'label':       'Avertissement',
+        'subject':     '🟡 Avertissement santé',
         },
         'INFO': {
             'bg':          '#ebf8ff',
@@ -251,8 +251,8 @@ def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
             'badge_bg':    '#2b6cb0',
             'badge_text':  '#ffffff',
             'icon':        '🔵',
-            'label':       'Info',
-            'subject':     '🔵 Health Notification',
+        'label':       'Information',
+        'subject':     '🔵 Notification de santé',
         },
     }
 
@@ -263,7 +263,7 @@ def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
         text_content = f'[{cfg["label"]}] {alert_message}'
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -288,10 +288,10 @@ def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
           <tr>
             <td style="padding:32px;">
               <p style="margin:0 0 8px;font-size:13px;color:#718096;text-transform:uppercase;letter-spacing:1px;font-weight:600;">
-                Sahty Health Alert
+                Alerte Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                You have a new health notification
+                Vous avez une nouvelle notification de santé
               </h2>
 
               <!-- Alert message box -->
@@ -314,7 +314,7 @@ def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                Please review this alert in your Sahty app and take appropriate action if needed.
+                Veuillez consulter cette alerte dans l’application Sahty et prendre les mesures nécessaires si besoin.
               </p>
             </td>
           </tr>
@@ -323,7 +323,7 @@ def send_alert_email(user_email, alert_message, level='INFO', alert_type=''):
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -353,16 +353,16 @@ def send_medication_reminder_email(email, medication_name, first_name, dose_time
         'badge_bg':    '#276749',
         'badge_text':  '#ffffff',
         'icon':        '💊',
-        'label':       'Medication Reminder',
-        'subject':     '💊 Time to take your medication',
+    'label':       'Rappel de médicament',
+    'subject':     '💊 Il est temps de prendre votre médicament',
     }
 
     try:
         subject = cfg['subject']
-        text_content = f"Reminder: Take your {medication_name} at {dose_time}"
+        text_content = f"Rappel : prenez votre {medication_name} à {dose_time}"
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -390,18 +390,18 @@ def send_medication_reminder_email(email, medication_name, first_name, dose_time
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                Hello {first_name} 👋
+                Bonjour {first_name} 👋
               </h2>
 
               <!-- Reminder box -->
               <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  This is a friendly reminder to take your medication:
+                  Ceci est un rappel amical pour prendre votre médicament :
                 </p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
-                      <span style="font-size:13px;color:#718096;">Medication</span>
+                      <span style="font-size:13px;color:#718096;">Médicament</span>
                     </td>
                     <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;text-align:right;">
                       <strong style="font-size:14px;color:#2d3748;">{medication_name}</strong>
@@ -409,7 +409,7 @@ def send_medication_reminder_email(email, medication_name, first_name, dose_time
                   </tr>
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Scheduled time</span>
+                      <span style="font-size:13px;color:#718096;">Heure prévue</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
                       <strong style="font-size:14px;color:#38a169;">🕐 {dose_time}</strong>
@@ -430,7 +430,7 @@ def send_medication_reminder_email(email, medication_name, first_name, dose_time
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                Please mark your medication as taken in the Sahty app after you have taken it.
+                Après l’avoir pris, merci d’indiquer dans l’application Sahty que votre médicament a été pris.
               </p>
             </td>
           </tr>
@@ -439,7 +439,7 @@ def send_medication_reminder_email(email, medication_name, first_name, dose_time
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -469,16 +469,16 @@ def send_appointment_reminder_email(patient_email, patient_name, doctor_name, ap
         'badge_bg':    '#553c9a',
         'badge_text':  '#ffffff',
         'icon':        '📅',
-        'label':       'Appointment Reminder',
-        'subject':     '📅 Upcoming Appointment Reminder',
+    'label':       'Rappel de rendez-vous',
+    'subject':     '📅 Rappel : rendez-vous à venir',
     }
 
     try:
         subject = cfg['subject']
-        text_content = f"Reminder: You have an appointment with Dr. {doctor_name} on {appointment_date}"
+        text_content = f"Rappel : vous avez un rendez-vous avec Dr. {doctor_name} le {appointment_date}"
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -506,18 +506,18 @@ def send_appointment_reminder_email(patient_email, patient_name, doctor_name, ap
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                Hello {patient_name} 👋
+                Bonjour {patient_name} 👋
               </h2>
 
               <!-- Reminder box -->
               <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  This is a friendly reminder about your upcoming appointment:
+                  Ceci est un rappel amical concernant votre rendez-vous à venir :
                 </p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
-                      <span style="font-size:13px;color:#718096;">Doctor</span>
+                      <span style="font-size:13px;color:#718096;">Médecin</span>
                     </td>
                     <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;text-align:right;">
                       <strong style="font-size:14px;color:#2d3748;">Dr. {doctor_name}</strong>
@@ -525,7 +525,7 @@ def send_appointment_reminder_email(patient_email, patient_name, doctor_name, ap
                   </tr>
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Appointment Date</span>
+                      <span style="font-size:13px;color:#718096;">Date du rendez-vous</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
                       <strong style="font-size:14px;color:#805ad5;">🗓️ {appointment_date}</strong>
@@ -546,7 +546,7 @@ def send_appointment_reminder_email(patient_email, patient_name, doctor_name, ap
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                Please make sure to be on time for your appointment. You can manage your appointments in the Sahty app.
+                Merci d’être à l’heure pour votre rendez-vous. Vous pouvez gérer vos rendez-vous dans l’application Sahty.
               </p>
             </td>
           </tr>
@@ -555,7 +555,7 @@ def send_appointment_reminder_email(patient_email, patient_name, doctor_name, ap
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -585,16 +585,38 @@ def send_missing_measurement_email(patient_email, patient_name, missing_measurem
         'badge_bg':    '#c05621',
         'badge_text':  '#ffffff',
         'icon':        '📊',
-        'label':       'Measurement Update Needed',
-        'subject':     '📊 You have missing health measurements',
+    'label':       'Mise à jour des mesures requise',
+    'subject':     '📊 Vous avez des mesures de santé manquantes',
     }
 
     try:
         subject = cfg['subject']
-        text_content = f"Hi {patient_name}, you have not updated the following measurements for more than a week: {missing_measurements}. Please log in to the Sahty app and update them."
+        measurement_translations = {
+            'BLOOD_PRESSURE': 'Tension artérielle',
+            'WEIGHT': 'Poids',
+            'GLYCEMIA': 'Glycémie',
+        }
+
+        try:
+            parts = [p.strip() for p in str(missing_measurements).split(',')]
+            translated_parts = [
+                measurement_translations.get(p, p.replace('_', ' ').title())
+                for p in parts
+                if p
+            ]
+            missing_measurements_fr = (
+                ', '.join(translated_parts) if translated_parts else str(missing_measurements)
+            )
+        except Exception:
+            missing_measurements_fr = str(missing_measurements)
+
+        text_content = (
+            f"Bonjour {patient_name}, vous n’avez pas mis à jour les mesures suivantes depuis plus d’une semaine : "
+            f"{missing_measurements_fr}. Veuillez ouvrir l’application Sahty et les mettre à jour."
+        )
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+  <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -622,21 +644,21 @@ def send_missing_measurement_email(patient_email, patient_name, missing_measurem
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                Hello {patient_name} 👋
+                Bonjour {patient_name} 👋
               </h2>
 
               <!-- Alert box -->
               <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  It looks like you haven't updated the following health measurements for <strong>more than a week</strong>. Keeping your data up to date helps us provide better care for you.
+                  Il semble que vous n’ayez pas mis à jour les mesures de santé suivantes depuis <strong>plus d’une semaine</strong>. Garder vos données à jour nous aide à mieux vous accompagner.
                 </p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Missing Measurements</span>
+                      <span style="font-size:13px;color:#718096;">Mesures manquantes</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
-                      <strong style="font-size:14px;color:#dd6b20;">⚠️ {missing_measurements}</strong>
+                      <strong style="font-size:14px;color:#dd6b20;">⚠️ {missing_measurements_fr}</strong>
                     </td>
                   </tr>
                 </table>
@@ -654,7 +676,7 @@ def send_missing_measurement_email(patient_email, patient_name, missing_measurem
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                Please open the Sahty app and log your measurements to keep your health record accurate and up to date.
+                Veuillez ouvrir l’application Sahty et enregistrer vos mesures afin de garder votre dossier de santé exact et à jour.
               </p>
             </td>
           </tr>
@@ -663,7 +685,7 @@ def send_missing_measurement_email(patient_email, patient_name, missing_measurem
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -693,8 +715,8 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
         'badge_bg':    '#2c7a7b',
         'badge_text':  '#ffffff',
         'icon':        '⏳',
-        'label':       'Appointment Pending Confirmation',
-        'subject':     '⏳ Your appointment is not confirmed yet',
+    'label':       'Rendez-vous en attente de confirmation',
+    'subject':     '⏳ Votre rendez-vous n’est pas encore confirmé',
     }
     doctor_cfg = {
         'bg':          '#e6fffa',
@@ -703,16 +725,19 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
         'badge_bg':    '#2c7a7b',
         'badge_text':  '#ffffff',
         'icon':        '🔔',
-        'label':       'Action Required',
-        'subject':     '🔔 Appointment awaiting your confirmation',
+    'label':       'Action requise',
+    'subject':     '🔔 Rendez-vous en attente de votre confirmation',
     }
 
     try:
         # --- Email to patient ---
-        patient_text = f"Hi {patient_name}, your appointment with Dr. {doctor_name} on {appointment_date} is still pending confirmation. Please check back later or contact us for more information."
+        patient_text = (
+            f"Bonjour {patient_name}, votre rendez-vous avec Dr. {doctor_name} le {appointment_date} "
+            f"est toujours en attente de confirmation. Merci de réessayer plus tard ou de nous contacter pour plus d’informations."
+        )
         patient_html = f'''
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -740,18 +765,18 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                Hello {patient_name} 👋
+                Bonjour {patient_name} 👋
               </h2>
 
               <!-- Info box -->
               <div style="background-color:#ffffff;border-left:5px solid {patient_cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  Your upcoming appointment is <strong>still pending confirmation</strong> from the doctor. Please check back later or contact us if needed.
+                  Votre rendez-vous à venir est <strong>toujours en attente de confirmation</strong> de la part du médecin. Merci de réessayer plus tard ou de nous contacter si besoin.
                 </p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
-                      <span style="font-size:13px;color:#718096;">Doctor</span>
+                      <span style="font-size:13px;color:#718096;">Médecin</span>
                     </td>
                     <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;text-align:right;">
                       <strong style="font-size:14px;color:#2d3748;">Dr. {doctor_name}</strong>
@@ -759,7 +784,7 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
                   </tr>
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Appointment Date</span>
+                      <span style="font-size:13px;color:#718096;">Date du rendez-vous</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
                       <strong style="font-size:14px;color:#319795;">🗓️ {appointment_date}</strong>
@@ -780,7 +805,7 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                You can check your appointment status anytime in the Sahty app.
+                Vous pouvez consulter le statut de votre rendez-vous à tout moment dans l’application Sahty.
               </p>
             </td>
           </tr>
@@ -789,7 +814,7 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -806,10 +831,13 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
         patient_msg.send()
 
         # --- Email to doctor ---
-        doctor_text = f"Dear Dr. {doctor_name}, there is a pending appointment with patient {patient_name} on {appointment_date} that requires your confirmation."
+        doctor_text = (
+            f"Bonjour Dr. {doctor_name}, un rendez-vous avec le patient {patient_name} le {appointment_date} "
+            f"est en attente de votre confirmation."
+        )
         doctor_html = f'''
 <!DOCTYPE html>
-<html lang="en">
+      <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -837,13 +865,13 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                Dear Dr. {doctor_name} 👋
+                Bonjour Dr. {doctor_name} 👋
               </h2>
 
               <!-- Info box -->
               <div style="background-color:#ffffff;border-left:5px solid {doctor_cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  You have an appointment scheduled for <strong>tomorrow</strong> that is still awaiting your confirmation. Please review and confirm it as soon as possible.
+                  Vous avez un rendez-vous prévu pour <strong>demain</strong> qui est toujours en attente de votre confirmation. Merci de le consulter et de le confirmer dès que possible.
                 </p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
@@ -856,7 +884,7 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
                   </tr>
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Appointment Date</span>
+                      <span style="font-size:13px;color:#718096;">Date du rendez-vous</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
                       <strong style="font-size:14px;color:#319795;">🗓️ {appointment_date}</strong>
@@ -877,7 +905,7 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                Please log in to the Sahty app to confirm or manage this appointment.
+                Veuillez ouvrir l’application Sahty pour confirmer ou gérer ce rendez-vous.
               </p>
             </td>
           </tr>
@@ -886,7 +914,7 @@ def send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name,
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -917,16 +945,19 @@ def send_pregnancy_no_appointment_email(patient_email, patient_name):
         'badge_bg':    '#b83280',
         'badge_text':  '#ffffff',
         'icon':        '🤰',
-        'label':       'Prenatal Care Reminder',
-        'subject':     '🤰 Schedule your prenatal appointment',
+    'label':       'Rappel de suivi prénatal',
+    'subject':     '🤰 Planifiez votre rendez-vous prénatal',
     }
 
     try:
         subject = cfg['subject']
-        text_content = f"Hi {patient_name}, we noticed you haven't booked a prenatal appointment in the last 2 weeks. Please schedule a check-up to ensure the health of you and your baby."
+        text_content = (
+            f"Bonjour {patient_name}, nous avons remarqué que vous n’avez pas pris de rendez-vous prénatal "
+            f"au cours des 2 dernières semaines. Veuillez planifier un contrôle afin d’assurer votre santé et celle de votre bébé."
+        )
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -954,21 +985,21 @@ def send_pregnancy_no_appointment_email(patient_email, patient_name):
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                Hello {patient_name} 👋
+                Bonjour {patient_name} 👋
               </h2>
 
               <!-- Alert box -->
               <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  We noticed that you haven't booked a prenatal appointment in the <strong>last 2 weeks</strong>. Regular check-ups are essential during pregnancy to monitor the health of both you and your baby.
+                  Nous avons remarqué que vous n’avez pas pris de rendez-vous prénatal au cours des <strong>2 dernières semaines</strong>. Des contrôles réguliers sont essentiels pendant la grossesse pour surveiller votre santé et celle de votre bébé.
                 </p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Status</span>
+                      <span style="font-size:13px;color:#718096;">Statut</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
-                      <strong style="font-size:14px;color:#d53f8c;">⚠️ No appointment in the last 2 weeks</strong>
+                      <strong style="font-size:14px;color:#d53f8c;">⚠️ Aucun rendez-vous au cours des 2 dernières semaines</strong>
                     </td>
                   </tr>
                 </table>
@@ -986,7 +1017,7 @@ def send_pregnancy_no_appointment_email(patient_email, patient_name):
               </table>
 
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                Please open the Sahty app to book your next prenatal appointment. Your health and your baby's health are our priority.
+                Veuillez ouvrir l’application Sahty pour réserver votre prochain rendez-vous prénatal. Votre santé et celle de votre bébé sont notre priorité.
               </p>
             </td>
           </tr>
@@ -995,7 +1026,7 @@ def send_pregnancy_no_appointment_email(patient_email, patient_name):
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -1023,7 +1054,7 @@ def send_appointment_notification_email(doctor_email, patient_name, appointment_
     Action (confirm/decline) is done in the app.
     """
     try:
-        formatted_dt = appointment_datetime.strftime('%A, %B %d %Y at %H:%M')
+      formatted_dt = appointment_datetime.strftime('%d/%m/%Y à %H:%M')
     except AttributeError:
         formatted_dt = str(appointment_datetime)
  
@@ -1034,18 +1065,18 @@ def send_appointment_notification_email(doctor_email, patient_name, appointment_
         'badge_bg':   '#276749',
         'badge_text': '#ffffff',
         'icon':       '📅',
-        'label':      'New Appointment Request',
-        'subject':    '📅 New Appointment Request',
+      'label':      'Nouvelle demande de rendez-vous',
+      'subject':    '📅 Nouvelle demande de rendez-vous',
     }
  
     try:
         text_content = (
-            f'You have a new appointment request from {patient_name} '
-            f'scheduled for {formatted_dt}. Please open the app to confirm or decline.'
+            f'Vous avez une nouvelle demande de rendez-vous de la part de {patient_name} '
+            f'prévue le {formatted_dt}. Veuillez ouvrir l’application pour confirmer ou refuser.'
         )
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -1073,13 +1104,13 @@ def send_appointment_notification_email(doctor_email, patient_name, appointment_
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                You have a new appointment request
+                Vous avez une nouvelle demande de rendez-vous
               </h2>
  
               <!-- Info box -->
               <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 16px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  A patient has requested an appointment with you. Please open the app to confirm or decline.
+                  Un patient a demandé un rendez-vous avec vous. Veuillez ouvrir l’application pour confirmer ou refuser.
                 </p>
  
                 <table cellpadding="0" cellspacing="0" width="100%">
@@ -1093,7 +1124,7 @@ def send_appointment_notification_email(doctor_email, patient_name, appointment_
                   </tr>
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Date &amp; Time</span>
+                      <span style="font-size:13px;color:#718096;">Date et heure</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
                       <strong style="font-size:14px;color:#38a169;">🕐 {formatted_dt}</strong>
@@ -1107,14 +1138,14 @@ def send_appointment_notification_email(doctor_email, patient_name, appointment_
                 <tr>
                   <td style="background-color:{cfg["badge_bg"]};border-radius:20px;padding:6px 16px;">
                     <span style="color:{cfg["badge_text"]};font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;">
-                      Action required in app
+                      Action requise dans l’application
                     </span>
                   </td>
                 </tr>
               </table>
  
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                Open the Sahty app to manage this appointment request.
+                Ouvrez l’application Sahty pour gérer cette demande de rendez-vous.
               </p>
             </td>
           </tr>
@@ -1123,7 +1154,7 @@ def send_appointment_notification_email(doctor_email, patient_name, appointment_
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -1155,7 +1186,7 @@ def send_access_request_email(patient_email, doctor_name, specialty, request_dat
     Action (approve/decline) is done in the app.
     """
     try:
-        formatted_date = request_date.strftime('%A, %B %d %Y at %H:%M')
+      formatted_date = request_date.strftime('%d/%m/%Y à %H:%M')
     except AttributeError:
         formatted_date = str(request_date)
  
@@ -1166,18 +1197,18 @@ def send_access_request_email(patient_email, doctor_name, specialty, request_dat
         'badge_bg':   '#9c4221',
         'badge_text': '#ffffff',
         'icon':       '🔓',
-        'label':      'Doctor Access Request',
-        'subject':    '🔓 A Doctor Requested Access to Your Data',
+      'label':      'Demande d’accès du médecin',
+      'subject':    '🔓 Un médecin a demandé l’accès à vos données',
     }
  
     try:
         text_content = (
-            f'Dr. {doctor_name} ({specialty}) has requested access to your health data '
-            f'on {formatted_date}. Please open the app to approve or decline.'
+            f'Dr. {doctor_name} ({specialty}) a demandé l’accès à vos données de santé '
+            f'le {formatted_date}. Veuillez ouvrir l’application pour accepter ou refuser.'
         )
         html_content = f'''
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -1205,19 +1236,19 @@ def send_access_request_email(patient_email, doctor_name, specialty, request_dat
                 Sahty Health
               </p>
               <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
-                A doctor wants to access your health data
+                Un médecin souhaite accéder à vos données de santé
               </h2>
  
               <!-- Info box -->
               <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
                 <p style="margin:0 0 16px;font-size:15px;color:#2d3748;line-height:1.7;">
-                  The following doctor has requested access to your personal health records. Open the app to approve or decline.
+                  Le médecin suivant a demandé l’accès à votre dossier médical. Ouvrez l’application pour accepter ou refuser.
                 </p>
  
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
-                      <span style="font-size:13px;color:#718096;">Doctor</span>
+                      <span style="font-size:13px;color:#718096;">Médecin</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;border-bottom:1px solid #e2e8f0;">
                       <strong style="font-size:14px;color:#2d3748;">👨‍⚕️ Dr. {doctor_name}</strong>
@@ -1225,7 +1256,7 @@ def send_access_request_email(patient_email, doctor_name, specialty, request_dat
                   </tr>
                   <tr>
                     <td style="padding:8px 0;border-bottom:1px solid #e2e8f0;">
-                      <span style="font-size:13px;color:#718096;">Specialty</span>
+                      <span style="font-size:13px;color:#718096;">Spécialité</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;border-bottom:1px solid #e2e8f0;">
                       <strong style="font-size:14px;color:#2d3748;">🏥 {specialty}</strong>
@@ -1233,7 +1264,7 @@ def send_access_request_email(patient_email, doctor_name, specialty, request_dat
                   </tr>
                   <tr>
                     <td style="padding:8px 0;">
-                      <span style="font-size:13px;color:#718096;">Requested at</span>
+                      <span style="font-size:13px;color:#718096;">Demandé le</span>
                     </td>
                     <td style="padding:8px 0;text-align:right;">
                       <strong style="font-size:14px;color:#dd6b20;">🕐 {formatted_date}</strong>
@@ -1247,14 +1278,14 @@ def send_access_request_email(patient_email, doctor_name, specialty, request_dat
                 <tr>
                   <td style="background-color:{cfg["badge_bg"]};border-radius:20px;padding:6px 16px;">
                     <span style="color:{cfg["badge_text"]};font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;">
-                      Action required in app
+                      Action requise dans l’application
                     </span>
                   </td>
                 </tr>
               </table>
  
               <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
-                If you do not recognize this doctor, you can safely decline in the app.
+                Si vous ne reconnaissez pas ce médecin, vous pouvez refuser en toute sécurité dans l’application.
               </p>
             </td>
           </tr>
@@ -1263,7 +1294,7 @@ def send_access_request_email(patient_email, doctor_name, specialty, request_dat
           <tr>
             <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#718096;">
-                This is an automated message from <strong>Sahty</strong>. Please do not reply to this email.
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
               </p>
             </td>
           </tr>
@@ -1287,4 +1318,120 @@ def send_access_request_email(patient_email, doctor_name, specialty, request_dat
     except Exception as e:
         print(f"Access request email error: {e}")
         return False
- 
+
+def send_two_factor_code_email(user_email, code, expires_at):
+    try:
+        formatted_expires = expires_at.strftime('%Y-%m-%d %H:%M')
+    except AttributeError:
+        formatted_expires = str(expires_at)
+    cfg = {
+        'bg':          '#eef2ff',
+        'border':      '#5a67d8',
+        'header_bg':   '#5a67d8',
+        'badge_bg':    '#4c51bf',
+        'badge_text':  '#ffffff',
+        'icon':        '🛡️',
+        'label':       'Authentification à deux facteurs',
+        'subject':     '🛡️ Votre code de connexion sécurisé',
+    }
+
+    try:
+        subject = cfg['subject']
+        text_content = f'Votre code d\'authentification à deux facteurs est : {code}. Il expire le {formatted_expires}.'
+        html_content = f'''
+<!DOCTYPE html>
+    <html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin:0;padding:0;background-color:#f7fafc;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7fafc;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:{cfg["bg"]};border-radius:12px;overflow:hidden;border:2px solid {cfg["border"]};box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background-color:{cfg["header_bg"]};padding:28px 32px;text-align:center;">
+              <p style="margin:0;font-size:36px;line-height:1;">{cfg["icon"]}</p>
+              <h1 style="margin:10px 0 0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">
+                {cfg["label"]}
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:13px;color:#718096;text-transform:uppercase;letter-spacing:1px;font-weight:600;">
+                Sahty Health
+              </p>
+              <h2 style="margin:0 0 20px;font-size:18px;color:#2d3748;">
+                Connectez-vous en toute sécurité
+              </h2>
+
+              <!-- Code box -->
+              <div style="background-color:#ffffff;border-left:5px solid {cfg["border"]};border-radius:8px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+                <p style="margin:0 0 12px;font-size:15px;color:#2d3748;line-height:1.7;">
+                  Utilisez le code à usage unique ci-dessous pour terminer votre connexion. Ne partagez jamais ce code.
+                </p>
+                <div style="text-align:center;margin:20px 0;">
+                  <span style="display:inline-block;background-color:#eef2ff;border:2px dashed {cfg["border"]};border-radius:10px;padding:16px 40px;font-size:32px;font-weight:800;letter-spacing:8px;color:#5a67d8;">
+                    {code}
+                  </span>
+                </div>
+                <table cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style="padding:8px 0;">
+                      <span style="font-size:13px;color:#718096;">Expire le</span>
+                    </td>
+                    <td style="padding:8px 0;text-align:right;">
+                      <strong style="font-size:14px;color:#5a67d8;">⏰ {formatted_expires}</strong>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Badge -->
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:{cfg["badge_bg"]};border-radius:20px;padding:6px 16px;">
+                    <span style="color:{cfg["badge_text"]};font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;">
+                      {cfg["label"]}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:28px 0 0;font-size:13px;color:#a0aec0;">
+                Si vous n’avez pas tenté de vous connecter, vous pouvez ignorer cet e-mail en toute sécurité.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#edf2f7;padding:18px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+              <p style="margin:0;font-size:12px;color:#718096;">
+                Ceci est un message automatique de <strong>Sahty</strong>. Merci de ne pas répondre à cet e-mail.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        '''
+        email = EmailMultiAlternatives(subject, text_content, os.getenv('DEFAULT_FROM_EMAIL'), [user_email])
+        email.attach_alternative(html_content, "text/html")
+        email.send()
+        return True
+    except BadHeaderError:
+        return False
+    except Exception as e:
+        print(f"Email error: {e}")
+        return False

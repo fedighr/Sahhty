@@ -9,6 +9,7 @@ from django.utils import timezone
 from datetime import timedelta, date
 from utils.otp_service import OTPService
 from measurements.services import MeasurementService
+from ml_engine.predictor import predict_risk
 
 @pytest.fixture
 def client():
@@ -344,6 +345,16 @@ class TestUnitaire:
             heart_rate=75, body_temp=37.0, risk_level='HIGH'
         )
         assert "Glycémie dangereusement élevée" in note
+
+    def test_out_of_range_glucose_high(self):
+        result, _ = predict_risk({"Age": 28,"BS": 3.5,"SystolicBP": 120,"DiastolicBP": 80,"BodyTemp": 37.0,"HeartRate": 78,})
+        assert result == "HIGH"
+
+
+    def test_out_of_range_glucose_low(self):
+        result, _ = predict_risk({"Age": 28,"BS": 0.25,"SystolicBP": 120,"DiastolicBP": 80,"BodyTemp": 37.0,"HeartRate": 78,})
+
+        assert result == "HIGH"
 
 class IntegrationTest:
 

@@ -57,7 +57,9 @@ class DoctorView(ViewSet):
         speciality_filter = request.query_params.get('speciality', None)
         ville_filter = request.query_params.get('ville', None)
         gender_filter = request.query_params.get('gender', None)
-        result = DoctorService.getAllDoctors(request, speciality_filter, ville_filter, gender_filter)
+        latitude = request.query_params.get('latitude', None)
+        longitude = request.query_params.get('longitude', None)
+        result = DoctorService.getAllDoctors(request, speciality_filter, ville_filter, gender_filter, latitude, longitude)
         return Response(result['data'], status=result['status'])
 
     @extend_schema(request=DoctorScheduleSerializer, responses=DoctorScheduleSerializer)

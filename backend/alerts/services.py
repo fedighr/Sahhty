@@ -67,8 +67,8 @@ class AlertService:
                                 schedule.save(update_fields=['last_sent_at'])
                                 send_push_notification_to_user(
                                     user=treatment.patient.user,
-                                    title="Medication Reminder",
-                                    body=f"You have a medication reminder to take medication",
+                                    title="Rappel de Médicament",
+                                    body=f"Vous avez un rappel pour prendre votre médicament",
                                 )
 
                     #break  # Only check the next upcoming dose for each treatment
@@ -102,8 +102,8 @@ class AlertService:
                     appointment.save(update_fields=['is_reminder_sent'])
                     send_push_notification_to_user(
                         user=appointment.patient.user,
-                        title="Appointment Reminder",
-                        body=f"You have an appointment tomorrow at {appointment_time}",
+                        title="Rappel de Rendez-vous",
+                        body=f"Vous avez un rendez-vous demain à {appointment_time}",
                     )
 
             return {'data': {'success': True, 'message': 'Appointment reminders processed successfully'}, 'status': 200}
@@ -136,7 +136,7 @@ class AlertService:
                     missing_measurements_str = ", ".join(missing_measurements)
                     result = send_missing_measurement_email(patient_email, patient_name, missing_measurements_str)
                     if result:
-                        Alert.objects.create(type='SYSTEM', message=f"Missing measurements alert: You have not recorded {missing_measurements_str} measurements in the last 7 days. Please update your measurements.", level='WARNING', status='NEW', user=patient.user)
+                        Alert.objects.create(type='SYSTEM', message=f"Alerte de mesures manquantes : Vous n'avez pas enregistré les mesures suivantes au cours des 7 derniers jours : {missing_measurements_str}. Veuillez mettre à jour vos mesures.", level='WARNING', status='NEW', user=patient.user)
             return {'data': {'success': True, 'message': 'Missing measurements alerts processed successfully'}, 'status': 200}
 
         except IntegrityError:
@@ -161,7 +161,7 @@ class AlertService:
                 appointment_time = appointment.appointment_date.strftime("%Y-%m-%d %H:%M")
                 result = send_unconfirmed_appointment_email(patient_email, patient_name, doctor_name, doctor_email, appointment_time)
                 if result:
-                    Alert.objects.create(type='SYSTEM', message=f"Unconfirmed appointment alert: You have a pending appointment with Dr. {doctor_name} on {appointment_time}. Please confirm or reschedule.", level='WARNING', status='NEW', user=appointment.patient.user)
+                    Alert.objects.create(type='SYSTEM', message=f"Alerte de rendez-vous non confirmé : Vous avez un rendez-vous en attente avec le Dr. {doctor_name} le {appointment_time}. Veuillez le confirmer ou le reporter.", level='WARNING', status='NEW', user=appointment.patient.user)
 
             return {'data': {'success': True, 'message': 'Unconfirmed appointment alerts processed successfully'}, 'status': 200}
 
@@ -186,7 +186,7 @@ class AlertService:
                     patient_name = pregnancy.patient.user.first_name + " " + pregnancy.patient.user.last_name
                     result = send_pregnancy_no_appointment_email(patient_email, patient_name)
                     if result:
-                        Alert.objects.create(type='SYSTEM', message=f"No appointment alert: You have not had an appointment in the last 14 days for pregnancy {pregnancy.id}. Please schedule an appointment.", level='WARNING', status='NEW', user= pregnancy.patient.user)
+                        Alert.objects.create(type='SYSTEM', message=f"Alerte de rendez-vous manquant : Vous n'avez pas eu de rendez-vous au cours des 14 derniers jours pour la grossesse {pregnancy.id}. Veuillez planifier un rendez-vous.", level='WARNING', status='NEW', user= pregnancy.patient.user)
             return {'data': {'success': True, 'message': 'Pregnancy no-appointment alerts processed successfully'}, 'status': 200}
 
         except IntegrityError:

@@ -276,7 +276,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
           tabs: const [
             Tab(text: 'Traitements', icon: Icon(Iconsax.health, size: 20)),
             Tab(text: 'Rechercher', icon: Icon(Iconsax.search_normal, size: 20)),
-            Tab(text: 'Comparer', icon: Icon(Iconsax.chart_2, size: 20)),
+            Tab(text: 'Interactions', icon: Icon(Iconsax.chart_2, size: 20)),
           ],
         ),
       ),

@@ -105,9 +105,9 @@ class MeasurementService:
                 )
 
                 if final_risk_level == 'HIGH':
-                    AlertService.sendRiskAlert(patient.user.email, f"High risk detected for patient {patient.id}. Note: {note}", 'CRITICAL')
+                    AlertService.sendRiskAlert(patient.user.email, f"Risque élevé détecté pour le patient {patient.id}. Note: {note}", 'CRITICAL')
                 elif final_risk_level == 'MEDIUM':
-                    AlertService.sendRiskAlert(patient.user.email, f"Medium risk detected for patient {patient.id}. Note: {note}", 'WARNING')
+                    AlertService.sendRiskAlert(patient.user.email, f"Risque moyen détecté pour le patient {patient.id}. Note: {note}", 'WARNING')
 
                 return {
                     'data': {

@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, date
 from django.db import transaction
 from rest_framework.pagination import PageNumberPagination
 from django.utils import timezone
+from math import radians, sin, cos, asin, sqrt
 
 class DoctorService:
     @staticmethod
@@ -78,14 +79,11 @@ class DoctorService:
         try:
             doctor_serializer = DoctorSerializer(doctor, data=data, partial=True)
             if not doctor_serializer.is_valid():
-                print(data)
-                print(doctor_serializer.errors)
                 return {'data': {'success': False, 'message': doctor_serializer.errors}, 'status': 400}
             doctor_serializer.save()
 
             user_serializer = UserSerializer(doctor.user, data=data, partial=True)
             if not user_serializer.is_valid():
-                print(user_serializer.errors)
                 return {'data': {'success': False, 'message': user_serializer.errors}, 'status': 400}
             user_serializer.save()
 
@@ -101,7 +99,7 @@ class DoctorService:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
     @staticmethod
-    def getAllDoctors(request, speciality_filter=None, ville_filter=None, gender_filter=None):
+    def getAllDoctors(request, speciality_filter=None, ville_filter=None, gender_filter=None, latitude=None, longitude=None):
         try:
             doctors = Doctor.objects.select_related('user', 'speciality').all()
 
@@ -114,8 +112,12 @@ class DoctorService:
             if gender_filter:
                 doctors = doctors.filter(user__gender__iexact=gender_filter)
 
-            # nearest doctor filter — to be implemented
-            
+            if latitude and longitude:
+                doctors = doctors.filter(
+                    latitude__isnull=False,
+                    longitude__isnull=False
+                )
+
             today = date.today()
             data = []
             for doctor in doctors:
@@ -127,7 +129,7 @@ class DoctorService:
                 else:
                     age = None
 
-                data.append({
+                doctor_data = {
                     'id': doctor.id,
                     'first_name': doctor.user.first_name,
                     'last_name': doctor.user.last_name,
@@ -144,29 +146,32 @@ class DoctorService:
                     'bio': doctor.bio,
                     'latitude': doctor.latitude,
                     'longitude': doctor.longitude,
-                })
+                    'distance_km': None,
+                }
+
+                if latitude and longitude and doctor.latitude and doctor.longitude:
+                    try:
+                        lat1, lon1 = float(latitude), float(longitude)
+                        lat2, lon2 = float(doctor.latitude), float(doctor.longitude)
+
+                        dlat = radians(lat2 - lat1)
+                        dlon = radians(lon2 - lon1)
+                        a = sin(dlat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon/2)**2
+                        distance = 6371 * 2 * asin(sqrt(a))
+
+                        doctor_data['distance_km'] = round(distance, 2)
+                    except (ValueError, TypeError):
+                        pass
+
+                data.append(doctor_data)
+
+            if latitude and longitude:
+                data.sort(key=lambda x: x['distance_km'] if x['distance_km'] is not None else float('inf'))
 
             paginator = PageNumberPagination()
             result = paginator.paginate_queryset(data, request)
             return {'data': paginator.get_paginated_response(result).data, 'status': 200}
 
-        except DatabaseError:
-            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
-        except Exception as e:
-            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
-        
-    @staticmethod
-    def addDoctorSchedule(data):
-        try:   
-            with transaction.atomic():         
-                DoctorSchedule.objects.filter(doctor=data[0]['doctor']).delete()
-                schedules = [DoctorSchedule(**item) for item in data]
-                DoctorSchedule.objects.bulk_create(schedules)
-
-                return {'data': {'success': True, 'message': 'Doctor schedule added successfully'}, 'status': 201}
-
-        except IntegrityError as e:
-            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
         except DatabaseError:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
         except Exception as e:

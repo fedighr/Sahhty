@@ -143,7 +143,19 @@ DATABASES = {
         'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
     }
 }
-
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sahhty_local',
+        'USER': 'postgres',
+        'PASSWORD': 'sift11ff',  # your local postgres password
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'CONN_MAX_AGE': 60,
+    }
+}
+"""
 if 'pytest' in sys.modules:
     testPostgres = urlparse("postgresql://neondb_owner:npg_UczmkV2pHSu5@ep-cool-recipe-ad4xrbbw-pooler.c-2.us-east-1.aws.neon.tech/Sahhty?sslmode=require&channel_binding=require")
     DATABASES['default'] = {
