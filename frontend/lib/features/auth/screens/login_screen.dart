@@ -9,6 +9,7 @@ import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
+import 'package:sahhty/core/providers/websocket_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -46,6 +47,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (auth.status == AuthStatus.authenticated) {
       // Register FCM device after successful login
       _registerFcmDevice();
+      // Connect WebSocket for real-time notifications
+      ref.read(webSocketServiceProvider).connect();
       // Redirect based on role
       context.go(auth.role == 'D' ? '/doctor-home' : '/home');
     } else if (auth.status == AuthStatus.needs2FA) {

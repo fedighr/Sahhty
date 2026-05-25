@@ -8,6 +8,9 @@ import 'firebase_options.dart';
 import 'core/routes/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/providers/locale_provider.dart';
+import 'core/providers/websocket_provider.dart';
+import 'core/widgets/realtime_notification_overlay.dart';
+import 'features/auth/providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,11 +53,37 @@ void main() async {
   runApp(const ProviderScope(child: SahhtyApp()));
 }
 
-class SahhtyApp extends ConsumerWidget {
+class SahhtyApp extends ConsumerStatefulWidget {
   const SahhtyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SahhtyApp> createState() => _SahhtyAppState();
+}
+
+class _SahhtyAppState extends ConsumerState<SahhtyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Listen to auth state changes to connect/disconnect WebSocket
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.listen<AuthState>(authProvider, (previous, next) {
+        final wsService = ref.read(webSocketServiceProvider);
+        if (next.status == AuthStatus.authenticated) {
+          wsService.connect();
+        } else if (next.status == AuthStatus.unauthenticated) {
+          wsService.disconnect();
+        }
+      });
+      // Connect immediately if already authenticated on app start
+      final authState = ref.read(authProvider);
+      if (authState.status == AuthStatus.authenticated) {
+        ref.read(webSocketServiceProvider).connect();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(appRouterProvider);
     final locale = ref.watch(localeProvider);
     return MaterialApp.router(
@@ -76,7 +105,7 @@ class SahhtyApp extends ConsumerWidget {
           data: MediaQuery.of(context).copyWith(
             textScaler: TextScaler.linear(scale),
           ),
-          child: child!,
+          child: RealtimeNotificationOverlay(child: child!),
         );
       },
     );

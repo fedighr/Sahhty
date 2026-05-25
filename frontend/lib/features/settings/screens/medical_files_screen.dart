@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
@@ -17,6 +18,8 @@ import 'package:sahhty/core/widgets/animated_background.dart';
 import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
+import 'package:sahhty/data/services/websocket_service.dart';
+import 'package:sahhty/core/providers/websocket_provider.dart';
 
 // ─── Attachment type metadata ─────────────────────────────────────────────────
 class _TypeMeta {
@@ -57,7 +60,25 @@ final _medFilesProvider = FutureProvider.autoDispose.family<List<Map<String, dyn
   },
 );
 
-// ─── Screen ───────────────────────────────────────────────────────────────────
+final _pendingRequestsProvider = FutureProvider.autoDispose.family<List<Map<String, dynamic>>, int>(
+  (ref, patientId) async {
+    final result = await ref.read(medicalFileServiceProvider).getPatientDoctorsRequests(patientId);
+    if (result['success'] == true) {
+      return List<Map<String, dynamic>>.from(result['doctors'] ?? []);
+    }
+    return [];
+  },
+);
+
+final _authorizedDoctorsProvider = FutureProvider.autoDispose.family<List<Map<String, dynamic>>, int>(
+  (ref, patientId) async {
+    final result = await ref.read(medicalFileServiceProvider).getPatientDoctors(patientId);
+    if (result['success'] == true) {
+      return List<Map<String, dynamic>>.from(result['doctors'] ?? []);
+    }
+    return [];
+  },
+);
 class MedicalFilesScreen extends ConsumerStatefulWidget {
   const MedicalFilesScreen({super.key});
 
@@ -65,8 +86,37 @@ class MedicalFilesScreen extends ConsumerStatefulWidget {
   ConsumerState<MedicalFilesScreen> createState() => _MedicalFilesScreenState();
 }
 
-class _MedicalFilesScreenState extends ConsumerState<MedicalFilesScreen> {
+class _MedicalFilesScreenState extends ConsumerState<MedicalFilesScreen> with TickerProviderStateMixin {
   bool _uploading = false;
+  late TabController _tabController;
+  StreamSubscription<WsNotification>? _wsSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _listenWs());
+  }
+
+  void _listenWs() {
+    _wsSub = ref.read(webSocketServiceProvider).notifications.listen((n) {
+      if (n.type == 'access_request' && mounted) {
+        final patientId = _getPatientId();
+        if (patientId != null) {
+          ref.invalidate(_pendingRequestsProvider(patientId));
+        }
+        // Switch to access tab
+        _tabController.animateTo(1);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _wsSub?.cancel();
+    _tabController.dispose();
+    super.dispose();
+  }
 
   int? _getPatientId() => int.tryParse(ref.read(authProvider).patientId ?? '');
 
@@ -240,6 +290,8 @@ class _MedicalFilesScreenState extends ConsumerState<MedicalFilesScreen> {
     }
 
     final asyncFiles = ref.watch(_medFilesProvider(patientId));
+    final asyncPending = ref.watch(_pendingRequestsProvider(patientId));
+    final pendingCount = asyncPending.value?.length ?? 0;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -248,6 +300,33 @@ class _MedicalFilesScreenState extends ConsumerState<MedicalFilesScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.white,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white60,
+          tabs: [
+            const Tab(text: 'Mes fichiers', icon: Icon(Iconsax.folder_open, size: 18)),
+            Tab(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Iconsax.people, size: 18),
+                  const SizedBox(width: 6),
+                  const Text('Accès médecins'),
+                  if (pendingCount > 0) ...[
+                    const SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+                      child: Text('$pendingCount', style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
         actions: [
           if (_uploading)
             const Padding(
@@ -276,7 +355,6 @@ class _MedicalFilesScreenState extends ConsumerState<MedicalFilesScreen> {
       ),
       body: Stack(
         children: [
-          // Gradient background
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -291,44 +369,358 @@ class _MedicalFilesScreenState extends ConsumerState<MedicalFilesScreen> {
           const FloatingParticles(particleCount: 10, maxOpacity: 0.12),
 
           SafeArea(
-            child: Column(
+            child: TabBarView(
+              controller: _tabController,
               children: [
-                // ── Header stats ──
-                _buildHeader(asyncFiles).animate().fadeIn(duration: 500.ms).slideY(begin: 0.1),
-                const SizedBox(height: 16),
-
-                // ── File list ──
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF8F5FF),
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                // ── Tab 1: Files ──
+                Column(
+                  children: [
+                    _buildHeader(asyncFiles).animate().fadeIn(duration: 500.ms).slideY(begin: 0.1),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFF8F5FF),
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                        ),
+                        child: asyncFiles.when(
+                          loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+                          error: (e, _) => _buildError(e.toString(), patientId),
+                          data: (files) => files.isEmpty ? _buildEmpty() : _buildList(files),
+                        ),
+                      ),
                     ),
-                    child: asyncFiles.when(
-                      loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
-                      error: (e, _) => _buildError(e.toString(), patientId),
-                      data: (files) => files.isEmpty
-                          ? _buildEmpty()
-                          : _buildList(files),
-                    ),
-                  ),
+                  ],
                 ),
+
+                // ── Tab 2: Access Management ──
+                _buildAccessTab(patientId),
               ],
             ),
           ),
         ],
       ),
 
-      // FAB upload
-      floatingActionButton: _uploading
-          ? null
-          : FloatingActionButton.extended(
-              onPressed: _pickAndUpload,
-              backgroundColor: AppColors.primary,
-              icon: const Icon(Iconsax.document_upload, color: Colors.white),
-              label: const Text('Ajouter un fichier', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            ).animate().fadeIn(delay: 600.ms).scale(begin: const Offset(0.8, 0.8)),
+      floatingActionButton: ListenableBuilder(
+        listenable: _tabController,
+        builder: (_, __) => _tabController.index == 0 && !_uploading
+            ? FloatingActionButton.extended(
+                onPressed: _pickAndUpload,
+                backgroundColor: AppColors.primary,
+                icon: const Icon(Iconsax.document_upload, color: Colors.white),
+                label: const Text('Ajouter un fichier', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              ).animate().fadeIn(delay: 600.ms).scale(begin: const Offset(0.8, 0.8))
+            : const SizedBox.shrink(),
+      ),
     );
+  }
+
+  // ── Access management tab ──────────────────────────────────────────────────
+  Widget _buildAccessTab(int patientId) {
+    final asyncPending = ref.watch(_pendingRequestsProvider(patientId));
+    final asyncAuthorized = ref.watch(_authorizedDoctorsProvider(patientId));
+
+    return Container(
+      color: const Color(0xFFF8F5FF),
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 120),
+        physics: const BouncingScrollPhysics(),
+        children: [
+          // Pending requests section
+          Row(
+            children: [
+              const Icon(Iconsax.timer_1, color: Colors.orange, size: 20),
+              const SizedBox(width: 8),
+              const Text('Demandes en attente', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              const SizedBox(width: 8),
+              asyncPending.when(
+                data: (list) => list.isEmpty ? const SizedBox.shrink()
+                    : Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(10)),
+                        child: Text('${list.length}', style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                      ),
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          asyncPending.when(
+            loading: () => const Center(child: Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator(color: AppColors.primary))),
+            error: (e, _) => Center(child: Text('Erreur: $e', style: const TextStyle(color: AppColors.error))),
+            data: (pending) => pending.isEmpty
+                ? _emptySection('Aucune demande en attente', Iconsax.timer_1, Colors.orange)
+                : Column(
+                    children: pending.map((doc) => _buildPendingCard(doc, patientId)).toList(),
+                  ),
+          ),
+
+          const SizedBox(height: 28),
+
+          // Authorized doctors section
+          Row(
+            children: [
+              const Icon(Iconsax.tick_circle, color: AppColors.success, size: 20),
+              const SizedBox(width: 8),
+              const Text('Médecins autorisés', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            ],
+          ),
+          const SizedBox(height: 12),
+          asyncAuthorized.when(
+            loading: () => const Center(child: Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator(color: AppColors.primary))),
+            error: (e, _) => Center(child: Text('Erreur: $e', style: const TextStyle(color: AppColors.error))),
+            data: (doctors) => doctors.isEmpty
+                ? _emptySection('Aucun médecin autorisé', Iconsax.people, AppColors.textLight)
+                : Column(
+                    children: doctors.map((doc) => _buildAuthorizedCard(doc, patientId)).toList(),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _emptySection(String msg, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withAlpha(40)),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(icon, color: color.withAlpha(120), size: 36),
+            const SizedBox(height: 8),
+            Text(msg, style: TextStyle(color: color, fontSize: 13)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPendingCard(Map<String, dynamic> doc, int patientId) {
+    final user = doc['user'] as Map<String, dynamic>? ?? {};
+    final name = '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
+    final speciality = (doc['speciality'] as Map<String, dynamic>?)?['name'] ?? doc['speciality']?.toString() ?? '';
+    final city = doc['ville'] ?? '';
+    final doctorId = doc['id'];
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Colors.orange.withAlpha(80), width: 1.5),
+        boxShadow: [BoxShadow(color: Colors.orange.withAlpha(20), blurRadius: 12, offset: const Offset(0, 4))],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 48, height: 48,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(colors: [Color(0xFFFF9800), Color(0xFFFFB74D)]),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(Iconsax.user, color: Colors.white, size: 24),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Dr. $name', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                      if (speciality.isNotEmpty)
+                        Text(speciality, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                      if (city.isNotEmpty)
+                        Text(city, style: const TextStyle(fontSize: 12, color: AppColors.textLight)),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withAlpha(20),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.orange.withAlpha(60)),
+                  ),
+                  child: const Text('En attente', style: TextStyle(fontSize: 11, color: Colors.orange, fontWeight: FontWeight.w600)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => _rejectRequest(doctorId, patientId),
+                    icon: const Icon(Iconsax.close_circle, size: 16),
+                    label: const Text('Refuser'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.error,
+                      side: BorderSide(color: AppColors.error.withAlpha(60)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () => _acceptRequest(doctorId, patientId),
+                    icon: const Icon(Iconsax.tick_circle, size: 16),
+                    label: const Text('Autoriser'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.success,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ).animate().fadeIn(duration: 400.ms).slideX(begin: 0.05);
+  }
+
+  Widget _buildAuthorizedCard(Map<String, dynamic> doc, int patientId) {
+    final user = doc['user'] as Map<String, dynamic>? ?? {};
+    final name = '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
+    final speciality = (doc['speciality'] as Map<String, dynamic>?)?['name'] ?? doc['speciality']?.toString() ?? '';
+    final city = doc['ville'] ?? '';
+    final doctorId = doc['id'];
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.success.withAlpha(60), width: 1.5),
+        boxShadow: [BoxShadow(color: AppColors.success.withAlpha(15), blurRadius: 12, offset: const Offset(0, 4))],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              width: 48, height: 48,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [AppColors.success, AppColors.success.withAlpha(180)]),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: const Icon(Iconsax.user, color: Colors.white, size: 24),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Dr. $name', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  if (speciality.isNotEmpty)
+                    Text(speciality, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                  if (city.isNotEmpty)
+                    Text(city, style: const TextStyle(fontSize: 12, color: AppColors.textLight)),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.success.withAlpha(20),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text('Autorisé', style: TextStyle(fontSize: 11, color: AppColors.success, fontWeight: FontWeight.w600)),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              icon: const Icon(Iconsax.close_circle, color: AppColors.error, size: 20),
+              tooltip: 'Révoquer l\'accès',
+              onPressed: () => _revokeAccess(doctorId, patientId),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            ),
+          ],
+        ),
+      ),
+    ).animate().fadeIn(duration: 400.ms).slideX(begin: 0.05);
+  }
+
+  Future<void> _acceptRequest(dynamic doctorId, int patientId) async {
+    final result = await ref.read(medicalFileServiceProvider).acceptDoctorAccess(
+      patientId: patientId,
+      doctorId: doctorId,
+    );
+    if (!mounted) return;
+    if (result['success'] == true) {
+      _showSnack('Accès accordé au médecin ✓');
+      ref.invalidate(_pendingRequestsProvider(patientId));
+      ref.invalidate(_authorizedDoctorsProvider(patientId));
+    } else {
+      _showSnack(result['message'] ?? 'Erreur', isError: true);
+    }
+  }
+
+  Future<void> _rejectRequest(dynamic doctorId, int patientId) async {
+    final result = await ref.read(medicalFileServiceProvider).revokeAccess(
+      patientId: patientId,
+      doctorId: doctorId,
+    );
+    if (!mounted) return;
+    if (result['success'] == true) {
+      _showSnack('Demande refusée');
+      ref.invalidate(_pendingRequestsProvider(patientId));
+    } else {
+      _showSnack(result['message'] ?? 'Erreur', isError: true);
+    }
+  }
+
+  Future<void> _revokeAccess(dynamic doctorId, int patientId) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        icon: const Icon(Iconsax.close_circle, color: AppColors.error, size: 40),
+        title: const Text('Révoquer l\'accès ?', style: TextStyle(fontWeight: FontWeight.bold)),
+        content: const Text('Ce médecin ne pourra plus accéder à vos dossiers médicaux.',
+            textAlign: TextAlign.center, style: TextStyle(color: AppColors.textSecondary)),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          OutlinedButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Annuler'),
+          ),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error, foregroundColor: Colors.white),
+            child: const Text('Révoquer'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final result = await ref.read(medicalFileServiceProvider).revokeAccess(
+      patientId: patientId,
+      doctorId: doctorId,
+    );
+    if (!mounted) return;
+    if (result['success'] == true) {
+      _showSnack('Accès révoqué');
+      ref.invalidate(_authorizedDoctorsProvider(patientId));
+    } else {
+      _showSnack(result['message'] ?? 'Erreur', isError: true);
+    }
   }
 
   Widget _buildHeader(AsyncValue<List<Map<String, dynamic>>> asyncFiles) {

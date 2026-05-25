@@ -10,6 +10,7 @@ import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:sahhty/core/providers/websocket_provider.dart';
 
 class Verify2FAScreen extends ConsumerStatefulWidget {
   final String email;
@@ -66,6 +67,8 @@ class _Verify2FAScreenState extends ConsumerState<Verify2FAScreen> {
         }
       } catch (_) {}
       if (!mounted) return;
+      // Connect WebSocket for real-time notifications
+      ref.read(webSocketServiceProvider).connect();
       context.go(auth.role == 'D' ? '/doctor-home' : '/home');
     } else {
       setState(() {

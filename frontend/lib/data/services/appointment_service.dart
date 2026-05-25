@@ -72,6 +72,38 @@ class AppointmentService {
     }
   }
 
+  /// GET /appointments/AppointmentService/{patientId}/get_patient_appointments/
+  /// Supports query params: status (PENDING|CONFIRMED|CANCELLED), order (asc|desc), page
+  Future<Map<String, dynamic>> getPatientAllAppointments(
+    int patientId, {
+    String? status,
+    String order = 'desc',
+    int page = 1,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{'page': page, 'order': order};
+      if (status != null) queryParams['status'] = status;
+      final response = await _dio.get(
+        ApiEndpoints.getPatientAllAppointments(patientId),
+        queryParameters: queryParams,
+      );
+      final data = response.data;
+      if (data is Map && data.containsKey('results')) {
+        return {
+          'success': true,
+          'appointments': data['results'] ?? [],
+          'count': data['count'] ?? 0,
+          'next': data['next'],
+          'previous': data['previous'],
+        };
+      }
+      if (data is Map && data.containsKey('success')) return Map<String, dynamic>.from(data);
+      return {'success': false, 'message': 'Format de réponse inattendu'};
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   /// GET /appointments/AppointmentService/{doctorId}/get_doctor_appointments/
   Future<Map<String, dynamic>> getDoctorAllAppointments(int doctorId) async {
     try {

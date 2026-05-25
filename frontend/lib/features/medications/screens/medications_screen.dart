@@ -241,7 +241,7 @@ class _MedicationsScreenState extends ConsumerState<MedicationsScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _TreatmentDetailSheet(treatment: t),
+      builder: (_) => _TreatmentDetailSheet(treatment: t, patientAllergies: _patientAllergies),
     );
   }
 
@@ -1234,7 +1234,8 @@ class _AddTreatmentSheetState extends State<_AddTreatmentSheet> {
 // ═══════════════════════════════════════════════════════════════════════
 class _TreatmentDetailSheet extends StatelessWidget {
   final Map<String, dynamic> treatment;
-  const _TreatmentDetailSheet({required this.treatment});
+  final List<String> patientAllergies;
+  const _TreatmentDetailSheet({required this.treatment, this.patientAllergies = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -1270,6 +1271,16 @@ class _TreatmentDetailSheet extends StatelessWidget {
       final pb = InteractionHelpers.severityPriority((b as Map<String, dynamic>)['severity']?.toString());
       return pb.compareTo(pa);
     });
+
+    // Allergy detection
+    final medDciUpper = medDci.toUpperCase();
+    final matchedAllergies = patientAllergies.where((a) =>
+      medDciUpper.contains(a) || a.split(' ').any((word) => word.length > 2 && medDciUpper.contains(word))
+    ).toList();
+    final allergyInteractions = matchedAllergies.map((a) => {
+      'allergy': a,
+      'message': 'Ce médicament contient un DCI auquel vous êtes allergique.',
+    }).toList();
 
     return Container(
       constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
@@ -1393,6 +1404,12 @@ class _TreatmentDetailSheet extends StatelessWidget {
                         ],
                       ),
                     ),
+                  ],
+
+                  // ── Allergy Section ─────────────────────
+                  if (allergyInteractions.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    _buildAllergySection(allergyInteractions),
                   ],
 
                   const SizedBox(height: 20),
@@ -1600,7 +1617,10 @@ class _TreatmentDetailSheet extends StatelessWidget {
           ...allergyInteractions.map((a) {
             final item = a as Map<String, dynamic>;
             final allergy = item['allergy']?.toString() ?? '?';
-            final message = item['message']?.toString() ?? 'Ce médicament contient un DCI auquel vous êtes allergique.';
+            final rawMessage = item['message']?.toString() ?? '';
+            final message = (rawMessage.isEmpty || rawMessage.toLowerCase().contains('allergic to'))
+                ? 'Ce médicament contient une substance à laquelle vous êtes allergique.'
+                : rawMessage;
             return Container(
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(12),

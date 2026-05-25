@@ -25,26 +25,33 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
   String? _error;
   late AnimationController _headerController;
   String _statusFilter = 'Tous';
+  String _order = 'desc'; // 'asc' or 'desc'
 
-  // Pagination
-  static const int _pageSize = 5;
+  // Pagination (server-side for patient)
   int _currentPage = 1;
+  int _totalCount = 0;
+  bool _hasNext = false;
+  bool _hasPrev = false;
+  static const int _pageSize = 5;
 
-  static const _statusFilters = ['Tous', 'En attente', 'Confirmé', 'Annulé'];
+  // Stats indépendants du filtre actif (patient seulement)
+  Map<String, int> _globalStats = {'PENDING': 0, 'CONFIRMED': 0, 'CANCELLED': 0, 'COMPLETED': 0};
 
+  // For doctor, client-side pagination remains
+  static const _statusFilters = ['Tous', 'En attente', 'Confirmé', 'Terminé'];
+
+  // Only used for doctor (client-side)
   List<dynamic> get _filteredAppointments {
-    List<dynamic> list;
-    if (_statusFilter == 'Tous') {
-      list = _appointments;
-    } else {
-      final map = {'En attente': 'PENDING', 'Confirmé': 'CONFIRMED', 'Annulé': 'CANCELLED'};
-      final key = map[_statusFilter];
-      list = _appointments.where((a) => a['status'] == key).toList();
-    }
-    return list;
+    if (ref.read(authProvider).role != 'D') return _appointments;
+    if (_statusFilter == 'Tous') return _appointments;
+    final map = {'En attente': 'PENDING', 'Confirmé': 'CONFIRMED', 'Terminé': 'COMPLETED'};
+    final key = map[_statusFilter];
+    return _appointments.where((a) => a['status'] == key).toList();
   }
 
   List<dynamic> get _pagedAppointments {
+    final isDoctor = ref.read(authProvider).role == 'D';
+    if (!isDoctor) return _appointments; // server already paginated
     final list = _filteredAppointments;
     final start = (_currentPage - 1) * _pageSize;
     if (start >= list.length) return [];
@@ -52,15 +59,43 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
     return list.sublist(start, end);
   }
 
-  int get _totalPages => (_filteredAppointments.length / _pageSize).ceil().clamp(1, 999);
+  int get _totalPages {
+    final isDoctor = ref.read(authProvider).role == 'D';
+    if (!isDoctor) return (_totalCount / _pageSize).ceil().clamp(1, 999);
+    return (_filteredAppointments.length / _pageSize).ceil().clamp(1, 999);
+  }
 
   int _countByStatus(String status) {
-    final map = {'PENDING': 0, 'CONFIRMED': 0, 'CANCELLED': 0};
-    for (final a in _appointments) {
-      final s = a['status'] ?? '';
-      if (map.containsKey(s)) map[s] = (map[s] ?? 0) + 1;
+    final isDoctor = ref.read(authProvider).role == 'D';
+    if (isDoctor) {
+      // For doctor, all appointments are loaded client-side
+      final map = {'PENDING': 0, 'CONFIRMED': 0, 'CANCELLED': 0, 'COMPLETED': 0};
+      for (final a in _appointments) {
+        final s = a['status'] ?? '';
+        if (map.containsKey(s)) map[s] = (map[s] ?? 0) + 1;
+      }
+      return map[status] ?? 0;
     }
-    return map[status] ?? 0;
+    // For patient, use global stats loaded without filter
+    return _globalStats[status] ?? 0;
+  }
+
+  Future<void> _loadGlobalStats() async {
+    final auth = ref.read(authProvider);
+    if (auth.role == 'D') return; // doctor loads all at once
+    final patientId = int.tryParse(auth.patientId ?? '');
+    if (patientId == null) return;
+    // Fetch all statuses with a large page to count
+    final statuses = ['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED'];
+    final counts = <String, int>{};
+    for (final s in statuses) {
+      final r = await ref.read(appointmentServiceProvider).getPatientAllAppointments(
+        patientId, status: s, page: 1,
+      );
+      counts[s] = (r['count'] as int?) ?? 0;
+    }
+    if (!mounted) return;
+    setState(() { _globalStats = counts; });
   }
 
   @override
@@ -68,6 +103,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
     super.initState();
     _headerController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
     _headerController.forward();
+    _loadGlobalStats();
     _loadAppointments();
   }
 
@@ -77,8 +113,8 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
     super.dispose();
   }
 
-  Future<void> _loadAppointments() async {
-    setState(() { _loading = true; _error = null; _currentPage = 1; });
+  Future<void> _loadAppointments({bool resetPage = true}) async {
+    setState(() { _loading = true; _error = null; if (resetPage) _currentPage = 1; });
     final auth = ref.read(authProvider);
     final isDoctor = auth.role == 'D';
     if (isDoctor) {
@@ -103,17 +139,31 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
         setState(() { _loading = false; _error = 'ID patient non trouvé'; });
         return;
       }
-      final result = await ref.read(appointmentServiceProvider).getPatientTodayAppointments(patientId);
+      final statusParam = _statusFilter == 'Tous' ? null : _statusFilterToApi(_statusFilter);
+      final result = await ref.read(appointmentServiceProvider).getPatientAllAppointments(
+        patientId,
+        status: statusParam,
+        order: _order,
+        page: _currentPage,
+      );
       if (!mounted) return;
       setState(() {
         _loading = false;
         if (result['success'] == true) {
           _appointments = result['appointments'] ?? [];
+          _totalCount = result['count'] ?? 0;
+          _hasNext = result['next'] != null;
+          _hasPrev = result['previous'] != null;
         } else {
           _error = result['message'] ?? 'Erreur';
         }
       });
     }
+  }
+
+  String? _statusFilterToApi(String label) {
+    const map = {'En attente': 'PENDING', 'Confirmé': 'CONFIRMED', 'Terminé': 'COMPLETED'};
+    return map[label];
   }
 
   Future<void> _confirmAppointment(int appointmentId) async {
@@ -131,6 +181,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
       ));
       _loadAppointments();
+      _loadGlobalStats();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(result['message'] ?? 'Erreur'),
@@ -210,6 +261,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
       ));
       _loadAppointments();
+      _loadGlobalStats();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(result['message'] ?? 'Erreur'),
@@ -235,7 +287,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
           CustomScrollView(
             slivers: [
               _buildSliverAppBar(),
-              if (!_loading && _error == null && _appointments.isNotEmpty)
+              if (!_loading && _error == null && (isDoctor ? _appointments.isNotEmpty : true))
                 SliverToBoxAdapter(child: _buildStatsAndFilter()),
               SliverToBoxAdapter(
                 child: _loading
@@ -297,51 +349,90 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
     final pendingColor = isDoctor ? DoctorColors.warning : AppColors.warning;
     final successColor = isDoctor ? DoctorColors.success : AppColors.success;
     final errorColor = isDoctor ? DoctorColors.error : AppColors.error;
+    final textSec = isDoctor ? DoctorColors.textSecondary : AppColors.textSecondary;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Mini stats row
           Row(
             children: [
               _statChip(Iconsax.clock, _countByStatus('PENDING'), 'En attente', pendingColor),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               _statChip(Iconsax.tick_circle, _countByStatus('CONFIRMED'), 'Confirmés', successColor),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
+              _statChip(Iconsax.medal_star, _countByStatus('COMPLETED'), 'Terminés', primary),
+              const SizedBox(width: 6),
               _statChip(Iconsax.close_circle, _countByStatus('CANCELLED'), 'Annulés', errorColor),
             ],
           ).animate().fadeIn(delay: 100.ms),
           const SizedBox(height: 12),
-          // Filter chips
-          SizedBox(
-            height: 36,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _statusFilters.length,
-              itemBuilder: (_, i) {
-                final f = _statusFilters[i];
-                final selected = _statusFilter == f;
-                  child: GestureDetector(
-                    onTap: () => setState(() { _statusFilter = f; _currentPage = 1; }),
+          // Filter chips + order toggle row
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 36,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _statusFilters.length,
+                    itemBuilder: (_, i) {
+                      final f = _statusFilters[i];
+                      final selected = _statusFilter == f;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() { _statusFilter = f; _currentPage = 1; });
+                          _loadAppointments(resetPage: true);
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          margin: const EdgeInsets.only(right: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: selected ? primary : Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: selected ? primary : const Color(0xFFE0E0E0)),
+                            boxShadow: selected ? [BoxShadow(color: primary.withAlpha(60), blurRadius: 8)] : [],
+                          ),
+                          child: Text(f, style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w600,
+                            color: selected ? Colors.white : textSec,
+                          )),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              // Order toggle (patient only — server-side)
+              if (!isDoctor)
+                GestureDetector(
+                  onTap: () {
+                    setState(() => _order = _order == 'desc' ? 'asc' : 'desc');
+                    _loadAppointments(resetPage: true);
+                  },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 250),
-                    margin: const EdgeInsets.only(right: 8),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    width: 36,
+                    height: 36,
                     decoration: BoxDecoration(
-                      color: selected ? primary : Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: selected ? primary : const Color(0xFFE0E0E0)),
-                      boxShadow: selected ? [BoxShadow(color: primary.withAlpha(60), blurRadius: 8)] : [],
+                      color: primary.withAlpha(20),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: primary.withAlpha(60)),
                     ),
-                    child: Text(f, style: TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.w600,
-                      color: selected ? Colors.white : (isDoctor ? DoctorColors.textSecondary : AppColors.textSecondary),
-                    )),
+                    child: Center(
+                      child: AnimatedRotation(
+                        turns: _order == 'desc' ? 0 : 0.5,
+                        duration: const Duration(milliseconds: 250),
+                        child: Icon(Iconsax.arrow_down, size: 18, color: primary),
+                      ),
+                    ),
                   ),
-                );
-              },
-            ),
+                ),
+            ],
           ).animate().fadeIn(delay: 150.ms),
         ],
       ),
@@ -593,7 +684,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
             child: Icon(isDoctor ? Iconsax.people : Iconsax.calendar, size: 56, color: primary),
           ).animate().scale(delay: 200.ms, curve: Curves.elasticOut),
           const SizedBox(height: 24),
-          Text(isDoctor ? 'Aucun rendez-vous' : 'Aucun rendez-vous aujourd\'hui',
+          Text(isDoctor ? 'Aucun rendez-vous' : 'Aucun rendez-vous pour le moment',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,
               color: isDoctor ? DoctorColors.textPrimary : AppColors.textPrimary),
             textAlign: TextAlign.center),
@@ -639,8 +730,15 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
     final list = _pagedAppointments;
     final isDoctor = ref.read(authProvider).role == 'D';
     final primary = isDoctor ? DoctorColors.primary : AppColors.primary;
+
+    // For patient: server handles pagination, _hasNext/_hasPrev tell us the state
+    // For doctor: client-side pagination
+    final showPagination = isDoctor
+        ? _filteredAppointments.length > _pageSize
+        : (_hasNext || _hasPrev);
+
     return RefreshIndicator(
-      onRefresh: _loadAppointments,
+      onRefresh: () => _loadAppointments(resetPage: true),
       color: primary,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
@@ -658,16 +756,22 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
                 isDoctor: isDoctor,
               ).animate().fadeIn(delay: (80 * i).ms).slideY(begin: 0.08);
             }),
-            if (_filteredAppointments.length > _pageSize) ...[
+            if (showPagination) ...[
               const SizedBox(height: 8),
               PaginationBar(
                 currentPage: _currentPage,
-                totalCount: _filteredAppointments.length,
+                totalCount: isDoctor ? _filteredAppointments.length : _totalCount,
                 pageSize: _pageSize,
-                hasNext: _currentPage < _totalPages,
-                hasPrev: _currentPage > 1,
-                onNext: _currentPage < _totalPages ? () => setState(() => _currentPage++) : null,
-                onPrev: _currentPage > 1 ? () => setState(() => _currentPage--) : null,
+                hasNext: isDoctor ? _currentPage < _totalPages : _hasNext,
+                hasPrev: isDoctor ? _currentPage > 1 : _hasPrev,
+                onNext: (isDoctor ? _currentPage < _totalPages : _hasNext) ? () {
+                  setState(() => _currentPage++);
+                  if (!isDoctor) _loadAppointments(resetPage: false);
+                } : null,
+                onPrev: (isDoctor ? _currentPage > 1 : _hasPrev) ? () {
+                  setState(() => _currentPage--);
+                  if (!isDoctor) _loadAppointments(resetPage: false);
+                } : null,
               ),
             ],
             const SizedBox(height: 80),

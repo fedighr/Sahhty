@@ -11,7 +11,7 @@ from patients.models import Patient
 from doctors.models import Doctor
 from django.db import transaction
 from alerts.services import AlertService
-from notifications.services import notify_user
+from notifications.services import send_websocket_notification
 from rest_framework.pagination import PageNumberPagination
 
 class AppointmentService:
@@ -44,10 +44,8 @@ class AppointmentService:
                     message=f'Nouveau rendez-vous planifié avec le docteur {doctor_user.first_name} {doctor_user.last_name} le {appointment.appointment_date.strftime("%d/%m/%Y à %H:%M")}. Veuillez attendre que le docteur confirme le rendez-vous.',
                 )
                 Alert.objects.bulk_create([doctor_alert, patient_alert])
-                device = doctor_user.devices.first()
-                fcm_token = device.fcm_token if device else None
 
-                notify_user(
+                send_websocket_notification(
                     user_id=doctor_user.id,
                     event_type='appointment_request',
                     data={
@@ -55,8 +53,6 @@ class AppointmentService:
                         'patient_name': f'{patient_user.first_name} {patient_user.last_name}',
                         'appointment_datetime': str(appointment.appointment_date),
                     },
-                    fcm_token=fcm_token,
-                    email=doctor_user.email,
                 )
 
 

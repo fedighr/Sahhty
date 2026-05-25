@@ -9,6 +9,7 @@ import 'package:sahhty/core/widgets/floating_particles.dart';
 import 'package:sahhty/core/providers/locale_provider.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
+import 'package:sahhty/core/providers/websocket_provider.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -173,6 +174,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       ),
     );
     if (confirmed != true || !mounted) return;
+    ref.read(webSocketServiceProvider).disconnect();
     await ref.read(authProvider.notifier).logout();
     if (!mounted) return;
     context.go('/login');

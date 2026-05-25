@@ -182,6 +182,12 @@ class MedicationDetailSheet extends StatelessWidget {
                     const SizedBox(height: 16),
                   ],
 
+                  // ── Allergy Warning Section ─────────────────────
+                  if (allergyInteractions.isNotEmpty) ...[
+                    _buildAllergySection(allergyInteractions).animate().fadeIn(delay: 200.ms),
+                    const SizedBox(height: 16),
+                  ],
+
                   // ── Action Button ──────────────────────────────
                   if (onAddTreatment != null) ...[
                     if (hasHighRisk) ...[
@@ -222,12 +228,6 @@ class MedicationDetailSheet extends StatelessWidget {
                     ).animate().fadeIn(delay: 400.ms),
                   ],
                   const SizedBox(height: 8),
-
-                  // ── Allergy Warning Section ─────────────────────
-                  if (allergyInteractions.isNotEmpty) ...[
-                    _buildAllergySection(allergyInteractions).animate().fadeIn(delay: 200.ms),
-                    const SizedBox(height: 16),
-                  ],
                 ],
               ),
             ),
@@ -516,8 +516,10 @@ class MedicationDetailSheet extends StatelessWidget {
           ...allergyList.map((a) {
             final item = a as Map<String, dynamic>;
             final allergy = item['allergy']?.toString() ?? '?';
-            final message = item['message']?.toString() ??
-                'Ce médicament contient un DCI auquel vous êtes allergique.';
+            final rawMessage = item['message']?.toString() ?? '';
+            final message = (rawMessage.isEmpty || rawMessage.toLowerCase().contains('allergic to'))
+                ? 'Ce médicament contient une substance à laquelle vous êtes allergique.'
+                : rawMessage;
             return Container(
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(12),

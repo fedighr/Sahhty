@@ -39,12 +39,16 @@ class _DoctorSetupScreenState extends ConsumerState<DoctorSetupScreen>
   final _expCtrl     = TextEditingController();
   final _priceCtrl   = TextEditingController();
   final _bioCtrl     = TextEditingController();
-  final _specIdCtrl  = TextEditingController();
   final _userIdCtrl  = TextEditingController();
 
   String _ville    = 'TUNIS';
   bool _isLoading  = false;
   int _currentStep = 0;
+
+  // Specialities
+  List<Map<String, dynamic>> _specialities = [];
+  int? _selectedSpecialityId;
+  bool _loadingSpecialities = false;
 
   late final AnimationController _bgCtrl;
   late final AnimationController _pulseCtrl;
@@ -61,6 +65,24 @@ class _DoctorSetupScreenState extends ConsumerState<DoctorSetupScreen>
     super.initState();
     _bgCtrl    = AnimationController(vsync: this, duration: const Duration(seconds: 6))..repeat(reverse: true);
     _pulseCtrl = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadSpecialities());
+  }
+
+  Future<void> _loadSpecialities() async {
+    setState(() => _loadingSpecialities = true);
+    try {
+      final result = await ref.read(doctorServiceProvider).getSpecialities();
+      final data = result['data'];
+      List<Map<String, dynamic>> list = [];
+      if (data is List) {
+        list = data.map<Map<String, dynamic>>((e) => {'id': e['id'], 'name': e['name'] ?? e['speciality_name'] ?? e.toString()}).toList();
+      } else if (data is Map && data['results'] is List) {
+        list = (data['results'] as List).map<Map<String, dynamic>>((e) => {'id': e['id'], 'name': e['name'] ?? e['speciality_name'] ?? ''}).toList();
+      }
+      if (mounted) setState(() { _specialities = list; _loadingSpecialities = false; });
+    } catch (_) {
+      if (mounted) setState(() => _loadingSpecialities = false);
+    }
   }
 
   @override
@@ -71,21 +93,17 @@ class _DoctorSetupScreenState extends ConsumerState<DoctorSetupScreen>
     _expCtrl.dispose();
     _priceCtrl.dispose();
     _bioCtrl.dispose();
-    _specIdCtrl.dispose();
     _userIdCtrl.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    setState(() => _isLoading = true);
-
-    final specialityId = int.tryParse(_specIdCtrl.text.trim());
-    if (specialityId == null) {
-      _snack('ID de spécialité invalide', isError: true);
-      setState(() => _isLoading = false);
+    if (_selectedSpecialityId == null) {
+      _snack('Veuillez sélectionner une spécialité', isError: true);
       return;
     }
+    setState(() => _isLoading = true);
 
     int resolvedUserId = widget.userId;
     if (resolvedUserId == 0) {
@@ -102,7 +120,7 @@ class _DoctorSetupScreenState extends ConsumerState<DoctorSetupScreen>
       'address': _addressCtrl.text.trim(),
       'experience': int.tryParse(_expCtrl.text.trim()) ?? 0,
       'user_id': resolvedUserId,
-      'speciality_id': specialityId,
+      'speciality_id': _selectedSpecialityId,
     };
     final price = double.tryParse(_priceCtrl.text.trim());
     if (price != null) payload['consultation_price'] = price;
@@ -368,17 +386,55 @@ class _DoctorSetupScreenState extends ConsumerState<DoctorSetupScreen>
             }),
           const SizedBox(height: 16),
         ],
-        _infoBox(icon: Iconsax.info_circle, color: _DC.accent,
-          title: 'ID Spécialité',
-          text: 'Contactez l\'administrateur pour obtenir l\'ID de votre spécialité médicale.'),
-        const SizedBox(height: 12),
-        _field(ctrl: _specIdCtrl, label: 'ID Spécialité *', icon: Iconsax.health,
-          type: TextInputType.number, hint: 'Ex: 1',
-          validator: (v) {
-            if (v == null || v.isEmpty) return 'Requis';
-            if (int.tryParse(v) == null) return 'Nombre entier requis';
-            return null;
-          }),
+        _label('Spécialité médicale *'),
+        const SizedBox(height: 6),
+        _loadingSpecialities
+            ? Container(
+                height: 56,
+                decoration: _boxDeco(),
+                child: const Center(
+                  child: SizedBox(width: 22, height: 22,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: _DC.primary)),
+                ),
+              )
+            : _specialities.isEmpty
+                ? Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: _boxDeco(),
+                    child: Row(children: [
+                      const Icon(Iconsax.warning_2, color: _DC.error, size: 20),
+                      const SizedBox(width: 10),
+                      const Expanded(
+                        child: Text('Impossible de charger les spécialités.',
+                          style: TextStyle(color: _DC.error, fontSize: 13)),
+                      ),
+                      TextButton(
+                        onPressed: _loadSpecialities,
+                        child: const Text('Réessayer', style: TextStyle(color: _DC.primary)),
+                      ),
+                    ]),
+                  )
+                : Container(
+                    decoration: _boxDeco(),
+                    child: DropdownButtonFormField<int>(
+                      initialValue: _selectedSpecialityId,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Iconsax.health, color: _DC.primary, size: 20),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 4),
+                      ),
+                      hint: const Text('Choisir une spécialité',
+                        style: TextStyle(color: Color(0x885A6A5A), fontSize: 14)),
+                      dropdownColor: Colors.white,
+                      style: const TextStyle(color: _DC.textPrimary, fontSize: 15),
+                      validator: (_) => _selectedSpecialityId == null ? 'Spécialité requise' : null,
+                      items: _specialities.map((s) => DropdownMenuItem<int>(
+                        value: s['id'] as int,
+                        child: Text(s['name'].toString()),
+                      )).toList(),
+                      onChanged: (v) => setState(() => _selectedSpecialityId = v),
+                    ),
+                  ),
         const SizedBox(height: 16),
         _field(ctrl: _expCtrl, label: 'Années d\'expérience *', icon: Iconsax.award,
           type: TextInputType.number, hint: 'Ex: 10',
