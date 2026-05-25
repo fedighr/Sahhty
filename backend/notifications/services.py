@@ -30,14 +30,14 @@ def notify_user(user_id, event_type, data, fcm_token=None, email=None):
 
     if fcm_token:
         if event_type == 'appointment_request':
-            title = 'New Appointment Request'
-            body = f"Patient {data['patient_name']} has requested an appointment"
+            title = 'Nouvelle Demande de Rendez-vous'
+            body = f"Le patient {data['patient_name']} a demandé un rendez-vous"
         elif event_type == 'access_request':
-            title = 'Doctor Access Request'
-            body = f"Dr. {data['doctor_name']} ({data['specialty']}) has requested access to your health data"
+            title = 'Demande d\'Accès Médecin'
+            body = f"Dr. {data['doctor_name']} ({data['specialty']}) a demandé l'accès à vos données de santé"
         else:
             title = 'Notification'
-            body = 'You have a new notification'
+            body = 'Vous avez une nouvelle notification'
 
         send_push_notification_to_user(
             user=user_id,

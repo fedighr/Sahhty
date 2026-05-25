@@ -36,12 +36,12 @@ class AppointmentService:
                 doctor_alert = Alert(
                     type='SYSTEM',
                     user=doctor_user,
-                    message=f'New appointment scheduled with patient {patient_user.first_name} {patient_user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")}. please confirm the appointment.',
+                    message=f'Nouveau rendez-vous planifié avec le patient {patient_user.first_name} {patient_user.last_name} le {appointment.appointment_date.strftime("%d/%m/%Y à %H:%M")}. Veuillez confirmer le rendez-vous.',
                 )
                 patient_alert = Alert(
                     type='SYSTEM',
                     user=patient_user,
-                    message=f'New appointment scheduled with doctor {doctor_user.first_name} {doctor_user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")}. please wait for the doctor to confirm the appointment.',
+                    message=f'Nouveau rendez-vous planifié avec le docteur {doctor_user.first_name} {doctor_user.last_name} le {appointment.appointment_date.strftime("%d/%m/%Y à %H:%M")}. Veuillez attendre que le docteur confirme le rendez-vous.',
                 )
                 Alert.objects.bulk_create([doctor_alert, patient_alert])
                 device = doctor_user.devices.first()
@@ -83,7 +83,7 @@ class AppointmentService:
             patient_alert = Alert(
                 type='SYSTEM',
                 user=patient_user_id,
-                message=f'Appointment with doctor {appointment.doctor.user.first_name} {appointment.doctor.user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")} has been confirmed.',
+                message=f'Le rendez-vous avec le docteur {appointment.doctor.user.first_name} {appointment.doctor.user.last_name} le {appointment.appointment_date.strftime("%d/%m/%Y à %H:%M")} a été confirmé.',
             )
             patient_alert.save()
 
@@ -116,14 +116,14 @@ class AppointmentService:
                 patient_alert = Alert(
                     type='SYSTEM',
                     user=patient_user_id,
-                    message=f'Appointment with doctor {appointment.doctor.user.first_name} {appointment.doctor.user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")} has been cancelled by the doctor.',
+                    message=f'Rendez-vous avec le docteur {appointment.doctor.user.first_name} {appointment.doctor.user.last_name} le {appointment.appointment_date.strftime("%d/%m/%Y à %H:%M")} a été annulé par le docteur.',
                 )
                 patient_alert.save()
             elif cancelled_by.upper() == 'PATIENT':
                 doctor_alert = Alert(
                     type='SYSTEM',
                     user=doctor_user_id,
-                    message=f'Appointment with patient {appointment.patient.user.first_name} {appointment.patient.user.last_name} on {appointment.appointment_date.strftime("%Y-%m-%d %H:%M")} has been cancelled by the patient.',
+                    message=f'Rendez-vous avec le patient {appointment.patient.user.first_name} {appointment.patient.user.last_name} le {appointment.appointment_date.strftime("%d/%m/%Y à %H:%M")} a été annulé par le patient.',
                 )
                 doctor_alert.save()
             else:

@@ -58,7 +58,7 @@ class MedicalFileService:
                 Alert.objects.create(
                     type='SYSTEM',
                     user=doctor.user,
-                    message=f"You have been granted access to patient {patient.user.first_name} {patient.user.last_name}'s medical files.",
+                    message=f"L'accès aux dossiers médicaux du patient {patient.user.first_name} {patient.user.last_name} vous a été accordé.",
                 )
 
                 serializer = PatientDoctorAccessSerializer(access)
@@ -207,7 +207,7 @@ class MedicalFileService:
             Alert.objects.create(
                 user=patient_user,
                 type='SYSTEM',
-                message=f"Doctor {doctor_user.first_name} {doctor_user.last_name} has requested access to your medical files."
+                message=f"Le docteur {doctor_user.first_name} {doctor_user.last_name} a demandé l'accès à vos dossiers médicaux."
             )
             device = patient_user.devices.first()
             fcm_token = device.fcm_token if device else None

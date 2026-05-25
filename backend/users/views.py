@@ -36,7 +36,7 @@ class UserAuth(ViewSet):
         limited = is_ratelimited(request, fn=self.signin, key='ip', rate='5/m', method='POST', increment=True)
         if limited:
             return Response({'success': False, 'message': 'Too many login attempts. Please try again later.'}, status=429)
-
+        
         if not request.data:
             return Response({'success': False, 'message': 'No data provided'}, status=400)
 

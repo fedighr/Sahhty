@@ -1,5 +1,5 @@
 from rest_framework_simplejwt.tokens import RefreshToken
-from utils.email_service import send_verification_email, send_lockout_email
+from utils.email_service import send_verification_email, send_lockout_email, send_two_factor_code_email
 from utils.otp_service import OTPService
 from utils.constraints import CheckConstraint
 from .models import User
@@ -96,7 +96,7 @@ class AuthService:
             user.two_factor_code = otp['code']
             user.two_factor_expiration = otp['expires_at']
             user.save()
-            send_verification_email(user.email, otp['code'], otp['expires_at'])
+            send_two_factor_code_email(user.email, otp['code'], otp['expires_at'])
             return {
                 'data': {
                     'success': True,
@@ -281,7 +281,6 @@ class AuthService:
             user.expiration_date = otp['expires_at']
             user.save()
             return {'data': {'success': True, 'message': 'Code sent successfully', 'user_id': user.id}, 'status': 200}
-        return {'data': {'success': False, 'message': 'Email not sent'}, 'status': 500}    
+        return {'data': {'success': False, 'message': 'Email not sent'}, 'status': 500}
 
-    
-      
+
