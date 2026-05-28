@@ -34,10 +34,11 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
     required String label,
     required IconData icon,
     String? suffix,
+    required Color color,
   }) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, size: 20, color: AppColors.primary),
+      prefixIcon: Icon(icon, size: 20, color: color),
       suffixText: suffix,
       contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -47,7 +48,7 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+        borderSide: BorderSide(color: color, width: 1.5),
       ),
     );
   }
@@ -170,16 +171,32 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
   @override
   Widget build(BuildContext context) {
     final typeInfo = _types[_selectedType]!;
+    final isMale = ref.watch(authProvider).gender == 'M';
+    final themeColor = AppColors.patientColor(isMale);
+    final bgColor = isMale ? Colors.white : AppColors.background;
 
     return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text('Nouvelle mesure'),
         leading: IconButton(
           icon: const Icon(Iconsax.arrow_left, size: 24),
           onPressed: () => context.pop(),
         ),
       ),
-      body: SafeArea(
+      body: Container(
+        decoration: isMale
+            ? const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFFBBDEFB), Color(0xFFE3F2FD), Colors.white],
+                  stops: [0.0, 0.35, 1.0],
+                ),
+              )
+            : null,
+        child: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Form(
@@ -191,7 +208,6 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 12),
 
-                // 🔥 ICI LA CORRECTION (GRID SYMÉTRIQUE)
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -216,10 +232,10 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
-                          color: selected ? AppColors.primary : Colors.white,
+                          color: selected ? themeColor : Colors.white,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: selected ? AppColors.primary : const Color(0xFFE0E0E0),
+                            color: selected ? themeColor : const Color(0xFFE0E0E0),
                           ),
                         ),
                         child: Row(
@@ -260,6 +276,7 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
                       label: _selectedType == 'BLOOD_PRESSURE' ? 'Systolique' : 'Valeur',
                       icon: typeInfo['icon'] as IconData,
                       suffix: typeInfo['unit'] as String,
+                      color: themeColor,
                     ),
                     validator: (v) {
                       if (v == null || v.isEmpty) return 'Valeur requise';
@@ -281,6 +298,7 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
                         label: 'Diastolique',
                         icon: Iconsax.heart,
                         suffix: 'mmHg',
+                        color: themeColor,
                       ),
                       validator: (v) {
                         if (v == null || v.isEmpty) return 'Valeur requise';
@@ -299,6 +317,7 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
                     decoration: _inputDecoration(
                       label: 'Contexte (optionnel)',
                       icon: Iconsax.note,
+                      color: themeColor,
                     ),
                   ),
                 ),
@@ -307,17 +326,18 @@ class _AddMeasurementScreenState extends ConsumerState<AddMeasurementScreen> {
 
                 ElevatedButton(
                   onPressed: _isLoading ? null : _submit,
+                  style: ElevatedButton.styleFrom(backgroundColor: themeColor),
                   child: _isLoading
                       ? const SizedBox(
-                      height: 22,
-                      width: 22,
-                      child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white))
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                       : const Text('Enregistrer'),
                 ),
               ],
             ),
           ),
+        ),
         ),
       ),
     );

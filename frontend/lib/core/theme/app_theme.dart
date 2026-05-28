@@ -33,6 +33,16 @@ class AppColors {
   static const Color error         = Color(0xFFEF5350);
   static const Color info          = Color(0xFF42A5F5);
 
+  // Male patient theme — blue gradient
+  static const Color male          = Color(0xFF1565C0);
+  static const Color maleLight     = Color(0xFFE3F2FD);
+  static const Color maleDark      = Color(0xFF0D47A1);
+
+  /// Returns the primary accent color based on patient gender.
+  static Color patientColor(bool isMale) => isMale ? male : primary;
+  static Color patientLightColor(bool isMale) => isMale ? maleLight : primaryLight;
+  static Color patientDarkColor(bool isMale) => isMale ? maleDark : primaryDark;
+
   // Risk
   static const Color riskLow       = Color(0xFF66BB6A);
   static const Color riskMedium    = Color(0xFFE65100);

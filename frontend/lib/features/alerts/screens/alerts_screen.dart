@@ -118,6 +118,8 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
   }
 
   void _showFilterSheet() {
+    final isMale = ref.read(authProvider).gender == 'M';
+    final themeColor = AppColors.patientColor(isMale);
     String? tempType = _filterType;
     String? tempLevel = _filterLevel;
     String? tempStatus = _filterStatus;
@@ -145,7 +147,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  const Icon(Iconsax.filter, color: AppColors.primary),
+                  Icon(Iconsax.filter, color: themeColor),
                   const SizedBox(width: 8),
                   const Text('Filtrer les alertes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const Spacer(),
@@ -155,7 +157,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                         tempType = null; tempLevel = null; tempStatus = null; tempOrder = 'desc';
                       });
                     },
-                    child: const Text('Réinitialiser', style: TextStyle(color: AppColors.primary)),
+                    child: Text('Réinitialiser', style: TextStyle(color: themeColor)),
                   ),
                 ],
               ),
@@ -165,11 +167,11 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
               const Text('Type', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textSecondary)),
               const SizedBox(height: 8),
               Wrap(spacing: 8, children: [
-                _chip('Tous', tempType == null, () => setLocal(() => tempType = null)),
-                _chip('Santé', tempType == 'HEALTH', () => setLocal(() => tempType = 'HEALTH')),
-                _chip('Rappel', tempType == 'REMINDER', () => setLocal(() => tempType = 'REMINDER')),
-                _chip('Système', tempType == 'SYSTEM', () => setLocal(() => tempType = 'SYSTEM')),
-                _chip('Médecin', tempType == 'DOCTOR_MESSAGE', () => setLocal(() => tempType = 'DOCTOR_MESSAGE')),
+                _chip('Tous', tempType == null, () => setLocal(() => tempType = null), color: themeColor),
+                _chip('Santé', tempType == 'HEALTH', () => setLocal(() => tempType = 'HEALTH'), color: themeColor),
+                _chip('Rappel', tempType == 'REMINDER', () => setLocal(() => tempType = 'REMINDER'), color: themeColor),
+                _chip('Système', tempType == 'SYSTEM', () => setLocal(() => tempType = 'SYSTEM'), color: themeColor),
+                _chip('Médecin', tempType == 'DOCTOR_MESSAGE', () => setLocal(() => tempType = 'DOCTOR_MESSAGE'), color: themeColor),
               ]),
               const SizedBox(height: 16),
 
@@ -177,7 +179,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
               const Text('Niveau', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textSecondary)),
               const SizedBox(height: 8),
               Wrap(spacing: 8, children: [
-                _chip('Tous', tempLevel == null, () => setLocal(() => tempLevel = null)),
+                _chip('Tous', tempLevel == null, () => setLocal(() => tempLevel = null), color: themeColor),
                 _chip('Critique', tempLevel == 'CRITICAL', () => setLocal(() => tempLevel = 'CRITICAL'),
                     color: AppColors.riskHigh),
                 _chip('Attention', tempLevel == 'WARNING', () => setLocal(() => tempLevel = 'WARNING'),
@@ -191,9 +193,9 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
               const Text('Statut', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textSecondary)),
               const SizedBox(height: 8),
               Wrap(spacing: 8, children: [
-                _chip('Tous', tempStatus == null, () => setLocal(() => tempStatus = null)),
-                _chip('Non lues', tempStatus == 'NEW', () => setLocal(() => tempStatus = 'NEW')),
-                _chip('Lues', tempStatus == 'READ', () => setLocal(() => tempStatus = 'READ')),
+                _chip('Tous', tempStatus == null, () => setLocal(() => tempStatus = null), color: themeColor),
+                _chip('Non lues', tempStatus == 'NEW', () => setLocal(() => tempStatus = 'NEW'), color: themeColor),
+                _chip('Lues', tempStatus == 'READ', () => setLocal(() => tempStatus = 'READ'), color: themeColor),
               ]),
               const SizedBox(height: 16),
 
@@ -201,10 +203,10 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
               const Text('Ordre', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textSecondary)),
               const SizedBox(height: 8),
               Row(children: [
-                Expanded(child: _orderBtn('Plus récent', Iconsax.arrow_down_2, tempOrder == 'desc',
+                Expanded(child: _orderBtn('Plus récent', Iconsax.arrow_down_2, tempOrder == 'desc', themeColor,
                     () => setLocal(() => tempOrder = 'desc'))),
                 const SizedBox(width: 8),
-                Expanded(child: _orderBtn('Plus ancien', Iconsax.arrow_up_3, tempOrder == 'asc',
+                Expanded(child: _orderBtn('Plus ancien', Iconsax.arrow_up_3, tempOrder == 'asc', themeColor,
                     () => setLocal(() => tempOrder = 'asc'))),
               ]),
               const SizedBox(height: 20),
@@ -213,7 +215,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: themeColor,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -258,23 +260,23 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     );
   }
 
-  Widget _orderBtn(String label, IconData icon, bool selected, VoidCallback onTap) {
+  Widget _orderBtn(String label, IconData icon, bool selected, Color themeColor, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: selected ? AppColors.primary.withAlpha(20) : Colors.grey[100],
+          color: selected ? themeColor.withAlpha(20) : Colors.grey[100],
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: selected ? AppColors.primary : Colors.transparent, width: 1.5),
+          border: Border.all(color: selected ? themeColor : Colors.transparent, width: 1.5),
         ),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(icon, size: 16, color: selected ? AppColors.primary : AppColors.textSecondary),
+          Icon(icon, size: 16, color: selected ? themeColor : AppColors.textSecondary),
           const SizedBox(width: 6),
           Text(label, style: TextStyle(fontSize: 13,
             fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
-            color: selected ? AppColors.primary : AppColors.textSecondary,
+            color: selected ? themeColor : AppColors.textSecondary,
           )),
         ]),
       ),
@@ -283,14 +285,20 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isMale = ref.read(authProvider).gender == 'M';
+    final themeColor = AppColors.patientColor(isMale);
+    final bgGradient = isMale
+        ? [AppColors.maleLight.withAlpha(180), const Color(0xFFF0F7FF), Colors.white]
+        : null;
     return Scaffold(
+      backgroundColor: isMale ? Colors.white : AppColors.background,
       appBar: AppBar(
         title: const Text('Alertes'),
         actions: [
           Stack(
             children: [
               IconButton(
-                icon: Icon(Iconsax.filter, color: _hasActiveFilters ? AppColors.primary : null),
+                icon: Icon(Iconsax.filter, color: _hasActiveFilters ? themeColor : null),
                 onPressed: _showFilterSheet,
                 tooltip: 'Filtrer',
               ),
@@ -299,7 +307,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                   right: 8, top: 8,
                   child: Container(
                     width: 8, height: 8,
-                    decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                    decoration: BoxDecoration(color: themeColor, shape: BoxShape.circle),
                   ),
                 ),
             ],
@@ -308,8 +316,8 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
       ),
       body: Stack(
         children: [
-          const AnimatedBackground(showImage: false, imageOpacity: 0),
-          const FloatingParticles(particleCount: 10, maxOpacity: 0.1),
+          AnimatedBackground(showImage: false, imageOpacity: 0, gradientColors: bgGradient),
+          FloatingParticles(particleCount: 10, maxOpacity: 0.1, color: isMale ? AppColors.male : null),
           Column(
             children: [
               // Active filters summary bar
@@ -318,7 +326,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     children: [
-                      const Icon(Iconsax.filter_tick, size: 16, color: AppColors.primary),
+                      Icon(Iconsax.filter_tick, size: 16, color: themeColor),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Wrap(spacing: 6, children: [
@@ -347,14 +355,14 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                       TextButton(
                         onPressed: _resetFilters,
                         style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
-                        child: const Text('Effacer tout', style: TextStyle(fontSize: 12, color: AppColors.primary)),
+                        child: Text('Effacer tout', style: TextStyle(fontSize: 12, color: themeColor)),
                       ),
                     ],
                   ),
                 ).animate().fadeIn(),
               Expanded(
                 child: _loading
-                    ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+                    ? Center(child: CircularProgressIndicator(color: themeColor))
                     : _error != null
                         ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
                             const Icon(Iconsax.close_circle, size: 48, color: AppColors.error),
@@ -365,7 +373,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                         : _alerts.isEmpty
                             ? Center(
                                 child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                  const Icon(Iconsax.notification, size: 64, color: AppColors.primary),
+                                  Icon(Iconsax.notification, size: 64, color: themeColor),
                                   const SizedBox(height: 16),
                                   const Text('Aucune alerte', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                                   const SizedBox(height: 4),
@@ -377,8 +385,8 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                                     const SizedBox(height: 12),
                                     TextButton.icon(
                                       onPressed: _resetFilters,
-                                      icon: const Icon(Iconsax.refresh_2, size: 16),
-                                      label: const Text('Réinitialiser les filtres'),
+                                      icon: Icon(Iconsax.refresh_2, size: 16, color: themeColor),
+                                      label: Text('Réinitialiser les filtres', style: TextStyle(color: themeColor)),
                                     ),
                                   ],
                                 ]).animate().fadeIn(),
@@ -416,19 +424,21 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
   }
 
   Widget _activeFilterBadge(String label, VoidCallback onRemove) {
+    final isMale = ref.read(authProvider).gender == 'M';
+    final color = AppColors.patientColor(isMale);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.primary.withAlpha(15),
+        color: color.withAlpha(15),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary.withAlpha(60)),
+        border: Border.all(color: color.withAlpha(60)),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
-        Text(label, style: const TextStyle(fontSize: 11, color: AppColors.primary, fontWeight: FontWeight.w500)),
+        Text(label, style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w500)),
         const SizedBox(width: 4),
         GestureDetector(
           onTap: onRemove,
-          child: const Icon(Icons.close, size: 12, color: AppColors.primary),
+          child: Icon(Icons.close, size: 12, color: color),
         ),
       ]),
     );

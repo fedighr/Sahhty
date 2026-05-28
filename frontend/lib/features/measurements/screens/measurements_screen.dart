@@ -36,7 +36,9 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
   bool _hasPrev = false;
   static const int _pageSize = 10;
   String? _selectedType;
-  String _order = 'desc'; // 'desc' = plus récent en premier, 'asc' = plus ancien en premier
+  String _order = 'desc';
+  Color _themeColor = AppColors.primary;   // updated in build()
+  Color _themeLightColor = AppColors.primaryLight;
 
   static const List<_FilterType> _filters = [
     _FilterType(null, 'Tous', Iconsax.category, AppColors.primary),
@@ -119,7 +121,15 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isMale = ref.watch(authProvider).gender == 'M';
+    _themeColor = AppColors.patientColor(isMale);
+    _themeLightColor = AppColors.patientLightColor(isMale);
+    final bgGradient = isMale
+        ? [AppColors.maleLight.withAlpha(180), const Color(0xFFF0F7FF), Colors.white]
+        : null;
+
     return Scaffold(
+      backgroundColor: isMale ? Colors.white : AppColors.background,
       appBar: AppBar(
         title: const Text('Mes mesures'),
         actions: [
@@ -136,7 +146,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
                 _order == 'desc' ? Iconsax.arrow_down_2 : Iconsax.arrow_up_3,
                 key: ValueKey(_order),
                 size: 22,
-                color: AppColors.primary,
+                color: _themeColor,
               ),
             ),
           ),
@@ -145,14 +155,14 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
               await context.push('/add-measurement');
               _loadMeasurements(page: 1);
             },
-            icon: const Icon(Iconsax.add_circle, size: 26, color: AppColors.primary),
+            icon: Icon(Iconsax.add_circle, size: 26, color: _themeColor),
           ),
         ],
       ),
       body: Stack(
         children: [
-          const AnimatedBackground(showImage: false, imageOpacity: 0),
-          const FloatingParticles(particleCount: 10, maxOpacity: 0.1),
+          AnimatedBackground(showImage: false, imageOpacity: 0, gradientColors: bgGradient),
+          FloatingParticles(particleCount: 10, maxOpacity: 0.1, color: isMale ? AppColors.male : null),
           Column(
             children: [
               // ─── Filter bar ───────────────────────────────────────
@@ -223,7 +233,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
 
   Widget _buildContent() {
     if (_loading) {
-      return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+      return Center(child: CircularProgressIndicator(color: _themeColor));
     }
     if (_error != null) {
       return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -267,12 +277,12 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withAlpha(20),
+                    color: _themeColor.withAlpha(20),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     '$_totalCount résultat${_totalCount > 1 ? 's' : ''}',
-                    style: const TextStyle(fontSize: 12, color: AppColors.primary, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 12, color: _themeColor, fontWeight: FontWeight.w600),
                   ),
                 ),
               ],

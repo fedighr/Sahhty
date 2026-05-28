@@ -8,6 +8,7 @@ class AnimatedBackground extends StatelessWidget {
   final double imageOpacity;
   final Widget? child;
   final List<Color>? gradientColors;
+  final bool isMale;
 
   const AnimatedBackground({
     super.key,
@@ -15,10 +16,36 @@ class AnimatedBackground extends StatelessWidget {
     this.imageOpacity = 0.18,
     this.child,
     this.gradientColors,
+    this.isMale = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Male theme: blue gradient, no maternal image
+    if (isMale) {
+      final colors = gradientColors ?? [
+        const Color(0xFFE3F2FD),
+        const Color(0xFFF0F8FF),
+        Colors.white,
+      ];
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: colors,
+                stops: const [0.0, 0.5, 1.0],
+              ),
+            ),
+          ),
+          if (child != null) child!,
+        ],
+      );
+    }
+
     final colors = gradientColors ??
         [
           AppColors.primaryLight.withAlpha(153),
@@ -40,7 +67,7 @@ class AnimatedBackground extends StatelessWidget {
             ),
           ),
         ),
-        // Optional image
+        // Optional image (female/default only)
         if (showImage)
           Positioned.fill(
             child: Opacity(

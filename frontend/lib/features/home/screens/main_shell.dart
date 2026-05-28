@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sahhty/core/theme/app_theme.dart';
+import 'package:sahhty/features/auth/providers/auth_provider.dart';
 
-class MainShell extends StatelessWidget {
+class MainShell extends ConsumerWidget {
   final Widget child;
   const MainShell({super.key, required this.child});
 
-  static const _tabs = ['/home', '/measurements', '/pregnancy', '/alerts', '/profile'];
+  static const _tabsFemale = ['/home', '/measurements', '/pregnancy', '/alerts', '/profile'];
+  static const _tabsMale   = ['/home', '/measurements', '/alerts', '/profile'];
 
-  int _currentIndex(BuildContext context) {
+  int _currentIndex(BuildContext context, bool isMale) {
     final location = GoRouterState.of(context).matchedLocation;
-    final index = _tabs.indexWhere((t) => location.startsWith(t));
+    final tabs = isMale ? _tabsMale : _tabsFemale;
+    final index = tabs.indexWhere((t) => location.startsWith(t));
     return index >= 0 ? index : 0;
   }
 
   @override
-  Widget build(BuildContext context) {
-    final index = _currentIndex(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(authProvider);
+    final isMale = auth.gender == 'M';
+    final index = _currentIndex(context, isMale);
+
+    // Male patients use blue accent; female use pink
+    final activeColor = isMale ? const Color(0xFF1565C0) : AppColors.primary;
+
     return Scaffold(
       body: child,
       bottomNavigationBar: Container(
@@ -42,11 +52,12 @@ class MainShell extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _NavItem(icon: Iconsax.home_2, label: 'Accueil', isSelected: index == 0, onTap: () => context.go('/home')),
-                  _NavItem(icon: Iconsax.activity, label: 'Mesures', isSelected: index == 1, onTap: () => context.go('/measurements')),
-                  _NavItem(icon: Iconsax.heart, label: 'Grossesse', isSelected: index == 2, onTap: () => context.go('/pregnancy')),
-                  _NavItem(icon: Iconsax.notification, label: 'Alertes', isSelected: index == 3, onTap: () => context.go('/alerts')),
-                  _NavItem(icon: Iconsax.user, label: 'Profil', isSelected: index == 4, onTap: () => context.go('/profile')),
+                  _NavItem(icon: Iconsax.home_2, label: 'Accueil', isSelected: index == 0, activeColor: activeColor, onTap: () => context.go('/home')),
+                  _NavItem(icon: Iconsax.activity, label: 'Mesures', isSelected: index == 1, activeColor: activeColor, onTap: () => context.go('/measurements')),
+                  if (!isMale)
+                    _NavItem(icon: Iconsax.heart, label: 'Grossesse', isSelected: index == 2, activeColor: activeColor, onTap: () => context.go('/pregnancy')),
+                  _NavItem(icon: Iconsax.notification, label: 'Alertes', isSelected: isMale ? index == 2 : index == 3, activeColor: activeColor, onTap: () => context.go('/alerts')),
+                  _NavItem(icon: Iconsax.user, label: 'Profil', isSelected: isMale ? index == 3 : index == 4, activeColor: activeColor, onTap: () => context.go('/profile')),
                 ],
               ),
             ),
@@ -62,8 +73,9 @@ class _NavItem extends StatefulWidget {
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
+  final Color activeColor;
 
-  const _NavItem({required this.icon, required this.label, required this.isSelected, required this.onTap});
+  const _NavItem({required this.icon, required this.label, required this.isSelected, required this.onTap, this.activeColor = AppColors.primary});
 
   @override
   State<_NavItem> createState() => _NavItemState();
@@ -90,7 +102,7 @@ class _NavItemState extends State<_NavItem> {
           curve: Curves.easeOutCubic,
           padding: EdgeInsets.symmetric(horizontal: widget.isSelected ? 14 : 10, vertical: 8),
           decoration: BoxDecoration(
-            color: widget.isSelected ? AppColors.primary.withAlpha(30) : Colors.transparent,
+            color: widget.isSelected ? widget.activeColor.withAlpha(30) : Colors.transparent,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Column(
@@ -100,7 +112,7 @@ class _NavItemState extends State<_NavItem> {
                 scale: widget.isSelected ? 1.25 : 1.0,
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.elasticOut,
-                child: Icon(widget.icon, color: widget.isSelected ? AppColors.primary : AppColors.textLight, size: 24),
+                child: Icon(widget.icon, color: widget.isSelected ? widget.activeColor : AppColors.textLight, size: 24),
               ),
               const SizedBox(height: 2),
               AnimatedDefaultTextStyle(
@@ -108,7 +120,7 @@ class _NavItemState extends State<_NavItem> {
                 style: TextStyle(
                   fontSize: widget.isSelected ? 10 : 9,
                   fontWeight: widget.isSelected ? FontWeight.w700 : FontWeight.w500,
-                  color: widget.isSelected ? AppColors.primary : AppColors.textLight,
+                  color: widget.isSelected ? widget.activeColor : AppColors.textLight,
                 ),
                 child: Text(widget.label),
               ),
@@ -119,10 +131,10 @@ class _NavItemState extends State<_NavItem> {
                 width: widget.isSelected ? 6 : 0,
                 height: widget.isSelected ? 6 : 0,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: widget.activeColor,
                   shape: BoxShape.circle,
                   boxShadow: widget.isSelected
-                      ? [BoxShadow(color: AppColors.primary.withAlpha(102), blurRadius: 6)]
+                      ? [BoxShadow(color: widget.activeColor.withAlpha(102), blurRadius: 6)]
                       : [],
                 ),
               ),

@@ -29,6 +29,13 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
   bool _loading = true;
   String? _error;
 
+  // ── Male blue theme palette ──────────────────────────────────────
+  static const Color _maleBlue      = Color(0xFF1565C0);
+  static const Color _maleBlueDark  = Color(0xFF0D47A1);
+  static const Color _maleBlueLight = Color(0xFF42A5F5);
+  static const Color _maleBluePale  = Color(0xFFE3F2FD);
+  static const Color _maleTeal      = Color(0xFF00ACC1);
+
   late AnimationController _breatheController;
 
   @override
@@ -169,7 +176,23 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
       return;
     }
 
+    final isMale = auth.gender == 'M';
     try {
+      if (isMale) {
+        final results = await Future.wait([
+          ref.read(measurementServiceProvider).getLatestMeasurements(patientId),
+          ref.read(appointmentServiceProvider).getPatientTodayAppointments(patientId),
+        ]);
+        if (!mounted) return;
+        setState(() {
+          _loading = false;
+          if (results[0]['success'] == true) _latestData = results[0];
+          if (results[1]['success'] == true) {
+            final appts = results[1]['appointments'];
+            _todayAppointments = appts is List ? appts : [];
+          }
+        });
+      } else {
       final results = await Future.wait([
         ref.read(measurementServiceProvider).getLatestMeasurements(patientId),
         ref.read(pregnancyServiceProvider).getCurrentPregnancy(patientId),
@@ -190,6 +213,7 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
           _todayAppointments = appts is List ? appts : [];
         }
       });
+      }
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -214,6 +238,11 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
     // Doctor home screen
     if (auth.role == 'D') {
       return _buildDoctorHome(auth);
+    }
+
+    // Male patient → dedicated blue home
+    if (auth.gender == 'M') {
+      return _buildMaleHome(auth);
     }
 
     return Scaffold(
@@ -877,6 +906,428 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
     ).animate().fadeIn().shake(delay: 300.ms, hz: 2, offset: const Offset(4, 0));
   }
 
+  // ══════════════════════════════════════════════════════════════════
+  // ── MALE HOME SCREEN (blue theme, no pregnancy / menstrual content)
+  // ══════════════════════════════════════════════════════════════════
+  Widget _buildMaleHome(AuthState auth) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF0F4FF),
+      body: Stack(
+        children: [
+          // Animated blue background
+          _MaleAnimatedBackground(),
+          SafeArea(
+            child: RefreshIndicator(
+              onRefresh: _loadData,
+              color: _maleBlue,
+              child: _loading
+                  ? _buildMaleShimmer()
+                  : SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildMaleHeader(auth),
+                          if (_error != null)
+                            _buildMaleErrorBanner()
+                          else ...[
+                            const SizedBox(height: 8),
+                            _buildMaleStatsRow(),
+                            const SizedBox(height: 20),
+                            _buildMaleQuickActions(),
+                            const SizedBox(height: 24),
+                            _buildMaleMeasurementsSection(),
+                            const SizedBox(height: 16),
+                            if (_todayAppointments.isNotEmpty) ...[
+                              _buildMaleAppointmentsSection(),
+                              const SizedBox(height: 16),
+                            ],
+                            _buildMaleMotivationalCard(),
+                          ],
+                          const SizedBox(height: 28),
+                        ],
+                      ),
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Male Header ───────────────────────────────────────────────────
+  Widget _buildMaleHeader(AuthState auth) {
+    final name = auth.name ?? 'Utilisateur';
+    final hour = DateTime.now().hour;
+    final greeting = hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
+    final greetIcon = hour < 12 ? Iconsax.sun_1 : hour < 18 ? Iconsax.cloud_sunny : Iconsax.moon;
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF1565C0), Color(0xFF0D47A1), Color(0xFF1A237E)],
+        ),
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(color: _maleBlue.withAlpha(100), blurRadius: 24, offset: const Offset(0, 10)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              AnimatedBuilder(
+                animation: _breatheController,
+                builder: (context, _) {
+                  final s = 1.0 + _breatheController.value * 0.05;
+                  return Transform.scale(
+                    scale: s,
+                    child: Container(
+                      width: 58, height: 58,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withAlpha(30),
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: Colors.white.withAlpha(60), width: 2),
+                      ),
+                      child: Center(
+                        child: Text(
+                          name.isNotEmpty ? name[0].toUpperCase() : 'U',
+                          style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ).animate().scale(delay: 100.ms, duration: 400.ms, curve: Curves.elasticOut),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(greetIcon, size: 14, color: Colors.white60),
+                        const SizedBox(width: 4),
+                        Text(greeting, style: const TextStyle(color: Colors.white60, fontSize: 13)),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(name, style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withAlpha(25),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Iconsax.shield_tick, size: 12, color: Colors.white70),
+                          SizedBox(width: 4),
+                          Text('Suivi santé actif', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1),
+              ),
+              _MaleHeaderBtn(icon: Iconsax.notification, onTap: () => context.push('/alerts'), color: _maleBlueLight)
+                  .animate().fadeIn(delay: 300.ms).scale(begin: const Offset(0.5, 0.5), duration: 400.ms, curve: Curves.elasticOut),
+              const SizedBox(width: 8),
+              _MaleHeaderBtn(icon: Iconsax.hospital, onTap: () => context.push('/doctors'), color: _maleTeal)
+                  .animate().fadeIn(delay: 400.ms).scale(begin: const Offset(0.5, 0.5), duration: 400.ms, curve: Curves.elasticOut),
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Blue health pulse line
+          Row(
+            children: [
+              const Icon(Iconsax.activity, color: Colors.white60, size: 14),
+              const SizedBox(width: 6),
+              const Text('Bonne santé commence par un suivi régulier', style: TextStyle(color: Colors.white60, fontSize: 12)),
+            ],
+          ).animate().fadeIn(delay: 400.ms),
+        ],
+      ),
+    ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.1);
+  }
+
+  // ── Male Stats Row ─────────────────────────────────────────────────
+  Widget _buildMaleStatsRow() {
+    final data = _latestData;
+    final hrValue = data?['heart_rate'] != null ? '${data!['heart_rate']['value1']} bpm' : '--';
+    final bpValue = data?['blood_pressure'] != null
+        ? '${data!['blood_pressure']['value1']}/${data['blood_pressure']['value2']}'
+        : '--';
+    final tempValue = data?['body_temp'] != null ? '${data!['body_temp']['value1']}°C' : '--';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          Expanded(child: _MaleStatCard(icon: Iconsax.activity, label: 'Rythme\ncardiac', value: hrValue, color: _maleBlueLight)),
+          const SizedBox(width: 10),
+          Expanded(child: _MaleStatCard(icon: Iconsax.heart, label: 'Tension\nartérielle', value: bpValue, color: const Color(0xFFEF5350))),
+          const SizedBox(width: 10),
+          Expanded(child: _MaleStatCard(icon: Iconsax.health, label: 'Tempéra-\nture', value: tempValue, color: _maleTeal)),
+        ],
+      ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.15),
+    );
+  }
+
+  // ── Male Quick Actions ──────────────────────────────────────────────
+  Widget _buildMaleQuickActions() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Iconsax.flash_1, color: Color(0xFF1565C0), size: 20),
+              SizedBox(width: 6),
+              Text('Actions rapides', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            ],
+          ).animate().fadeIn(delay: 100.ms),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              Expanded(child: _MaleActionCard(icon: Iconsax.ruler, label: 'Nouvelle\nmesure', color: _maleBlue, onTap: () => context.push('/add-measurement')).animate().fadeIn(delay: 120.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 450.ms, curve: Curves.easeOutBack)),
+              const SizedBox(width: 10),
+              Expanded(child: _MaleActionCard(icon: Iconsax.calendar, label: 'Rendez-\nvous', color: _maleTeal, onTap: () => context.push('/appointments')).animate().fadeIn(delay: 170.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 450.ms, curve: Curves.easeOutBack)),
+              const SizedBox(width: 10),
+              Expanded(child: _MaleActionCard(icon: Iconsax.health, label: 'Médica-\nments', color: _maleBlueLight, onTap: () => context.push('/medications')).animate().fadeIn(delay: 220.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 450.ms, curve: Curves.easeOutBack)),
+              const SizedBox(width: 10),
+              Expanded(child: _MaleActionCard(icon: Iconsax.watch, label: 'Montre\nSmart', color: const Color(0xFF5C6BC0), onTap: () => context.push('/smartwatch')).animate().fadeIn(delay: 270.ms).slideY(begin: 0.2).scale(begin: const Offset(0.8, 0.8), duration: 450.ms, curve: Curves.easeOutBack)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Male Measurements Section ──────────────────────────────────────
+  Widget _buildMaleMeasurementsSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(children: const [
+                Icon(Iconsax.chart_2, color: Color(0xFF1565C0), size: 20),
+                SizedBox(width: 6),
+                Text('Dernières mesures', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              ]),
+              TextButton.icon(
+                onPressed: () => context.go('/measurements'),
+                icon: const Text('Voir tout', style: TextStyle(color: Color(0xFF1565C0), fontSize: 13, fontWeight: FontWeight.w600)),
+                label: const Icon(Iconsax.arrow_right_3, size: 12, color: Color(0xFF1565C0)),
+              ),
+            ],
+          ).animate().fadeIn(delay: 350.ms),
+          const SizedBox(height: 8),
+          if (_latestData != null) _buildMaleMeasurementsGrid() else _buildMaleEmptyMeasurements(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMaleMeasurementsGrid() {
+    final d = _latestData!;
+    final items = <_MeasureData>[
+      _MeasureData(icon: Iconsax.weight, label: 'Poids', value: '${d['weight'] ?? '--'}', unit: 'kg', color: _maleBlue),
+      _MeasureData(icon: Iconsax.chart_2, label: 'IMC', value: '${d['bmi'] ?? '--'}', unit: '', color: const Color(0xFF5C6BC0)),
+      _MeasureData(icon: Iconsax.drop, label: 'Glycémie', value: d['glycemia_informations'] != null ? '${d['glycemia_informations']['value1']}' : '--', unit: d['glycemia_informations'] != null ? '${d['glycemia_informations']['unit'] ?? ''}' : '', color: AppColors.info),
+      _MeasureData(icon: Iconsax.heart, label: 'Tension', value: d['blood_pressure'] != null ? '${d['blood_pressure']['value1']}/${d['blood_pressure']['value2']}' : '--', unit: 'mmHg', color: AppColors.error),
+      _MeasureData(icon: Iconsax.activity, label: 'Rythme', value: d['heart_rate'] != null ? '${d['heart_rate']['value1']}' : '--', unit: 'bpm', color: _maleBlueLight),
+      _MeasureData(icon: Iconsax.health, label: 'Temp.', value: d['body_temp'] != null ? '${d['body_temp']['value1']}' : '--', unit: '°C', color: _maleTeal),
+    ];
+    return Column(
+      children: [
+        for (int i = 0; i < items.length; i += 2)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Row(children: [
+              Expanded(child: _MeasureCard(data: items[i]).animate().fadeIn(delay: (100 * (i ~/ 2 + 1) + 400).ms).slideY(begin: 0.15)),
+              const SizedBox(width: 12),
+              Expanded(child: i + 1 < items.length
+                  ? _MeasureCard(data: items[i + 1]).animate().fadeIn(delay: (100 * (i ~/ 2 + 1) + 450).ms).slideY(begin: 0.15)
+                  : const SizedBox.shrink()),
+            ]),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildMaleEmptyMeasurements() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: _maleBluePale,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _maleBlue.withAlpha(40)),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(color: _maleBlue.withAlpha(25), borderRadius: BorderRadius.circular(20)),
+            child: Icon(Iconsax.ruler, size: 48, color: _maleBlue),
+          ).animate(onPlay: (c) => c.repeat(reverse: true)).rotate(begin: -0.05, end: 0.05, duration: 2000.ms),
+          const SizedBox(height: 12),
+          Text('Aucune mesure enregistrée', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: _maleBlue)),
+          const SizedBox(height: 4),
+          const Text('Ajoutez vos premières mesures\npour suivre votre santé', textAlign: TextAlign.center, style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () => context.push('/add-measurement'),
+            icon: const Icon(Iconsax.add_circle, size: 18),
+            label: const Text('Ajouter une mesure'),
+            style: ElevatedButton.styleFrom(backgroundColor: _maleBlue, minimumSize: const Size(200, 44), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
+          ),
+        ],
+      ),
+    ).animate().fadeIn(delay: 400.ms);
+  }
+
+  Widget _buildMaleAppointmentsSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: const [
+            Icon(Iconsax.calendar, color: Color(0xFF1565C0), size: 20),
+            SizedBox(width: 6),
+            Text("Rendez-vous d'aujourd'hui", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+          ]).animate().fadeIn(delay: 500.ms),
+          const SizedBox(height: 10),
+          ..._todayAppointments.asMap().entries.map((e) {
+            final appt = e.value as Map<String, dynamic>;
+            final doctor = appt['doctor'] as Map<String, dynamic>?;
+            final doctorName = doctor != null ? '${doctor['user']?['first_name'] ?? ''} ${doctor['user']?['last_name'] ?? ''}'.trim() : 'Médecin';
+            final dateStr = appt['appointment_date']?.toString() ?? '';
+            final date = DateTime.tryParse(dateStr);
+            final timeStr = date != null ? '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}' : '--:--';
+            final status = appt['status']?.toString() ?? 'PENDING';
+            final Color statusColor = status == 'CONFIRMED' ? AppColors.success : status == 'CANCELLED' ? AppColors.error : AppColors.warning;
+            return Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border(left: BorderSide(color: _maleBlue.withAlpha(120), width: 4)),
+                boxShadow: [BoxShadow(color: _maleBlue.withAlpha(15), blurRadius: 10, offset: const Offset(0, 4))],
+              ),
+              child: Row(children: [
+                Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: _maleBlue.withAlpha(20), borderRadius: BorderRadius.circular(12)), child: Icon(Iconsax.calendar_tick, color: _maleBlue, size: 22)),
+                const SizedBox(width: 12),
+                Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text('Dr. $doctorName', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary)),
+                  if ((appt['reason']?.toString() ?? '').isNotEmpty)
+                    Text(appt['reason'].toString(), style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                ])),
+                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                  Text(timeStr, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: _maleBlue)),
+                  Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: statusColor.withAlpha(30), borderRadius: BorderRadius.circular(8)), child: Text(status, style: TextStyle(fontSize: 11, color: statusColor, fontWeight: FontWeight.w600))),
+                ]),
+              ]),
+            ).animate().fadeIn(delay: (550 + e.key * 100).ms).slideY(begin: 0.1);
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMaleMotivationalCard() {
+    final messages = [
+      'La santé est la vraie richesse — prenez soin de vous',
+      'Un suivi régulier est la clé d\'une bonne santé',
+      'Votre bien-être est notre priorité absolue',
+      'Chaque mesure vous rapproche d\'une meilleure santé',
+    ];
+    final msg = messages[DateTime.now().day % messages.length];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [_maleBlue.withAlpha(20), _maleBluePale],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: _maleBlue.withAlpha(40)),
+        ),
+        child: Row(children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: _maleBlue.withAlpha(20), borderRadius: BorderRadius.circular(14)),
+            child: Icon(Iconsax.shield_tick, color: _maleBlue, size: 28),
+          )
+              .animate(onPlay: (c) => c.repeat(reverse: true))
+              .scale(begin: const Offset(1, 1), end: const Offset(1.08, 1.08), duration: 2000.ms, curve: Curves.easeInOut),
+          const SizedBox(width: 14),
+          Expanded(child: Text(msg, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _maleBlueDark, height: 1.4, fontStyle: FontStyle.italic))),
+        ]),
+      ),
+    ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.15);
+  }
+
+  Widget _buildMaleShimmer() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Container(height: 140, decoration: BoxDecoration(color: _maleBluePale, borderRadius: BorderRadius.circular(28)))
+            .animate(onPlay: (c) => c.repeat()).shimmer(duration: 1200.ms, color: Colors.white38),
+        const SizedBox(height: 16),
+        Row(children: List.generate(3, (_) => Expanded(child: Container(margin: const EdgeInsets.symmetric(horizontal: 4), height: 80, decoration: BoxDecoration(color: _maleBluePale, borderRadius: BorderRadius.circular(16))))))
+            .animate(onPlay: (c) => c.repeat()).shimmer(duration: 1200.ms, color: Colors.white38),
+        const SizedBox(height: 16),
+        Row(children: List.generate(4, (_) => Expanded(child: Container(margin: const EdgeInsets.symmetric(horizontal: 4), height: 90, decoration: BoxDecoration(color: _maleBluePale, borderRadius: BorderRadius.circular(16))))))
+            .animate(onPlay: (c) => c.repeat()).shimmer(duration: 1200.ms, color: Colors.white38),
+        const SizedBox(height: 16),
+        ...List.generate(3, (_) => Container(margin: const EdgeInsets.only(bottom: 12), height: 80, decoration: BoxDecoration(color: _maleBluePale, borderRadius: BorderRadius.circular(16))))
+            .animate(onPlay: (c) => c.repeat()).shimmer(duration: 1200.ms, color: Colors.white38),
+      ]),
+    );
+  }
+
+  Widget _buildMaleErrorBanner() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(color: AppColors.error.withAlpha(15), borderRadius: BorderRadius.circular(20), border: Border.all(color: AppColors.error.withAlpha(51))),
+        child: Column(children: [
+          const Icon(Iconsax.close_circle, color: AppColors.error, size: 48),
+          const SizedBox(height: 12),
+          Text(_error ?? 'Erreur', style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600), textAlign: TextAlign.center),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: _loadData,
+            icon: const Icon(Iconsax.refresh_2, size: 18),
+            label: const Text('Réessayer'),
+            style: ElevatedButton.styleFrom(backgroundColor: _maleBlue, minimumSize: const Size(160, 44), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
+          ),
+        ]),
+      ),
+    ).animate().fadeIn().shake(delay: 300.ms, hz: 2, offset: const Offset(4, 0));
+  }
+
   // ── DOCTOR HOME ───────────────────────────────────────────────────
   Widget _buildDoctorHome(AuthState auth) {
     return Scaffold(
@@ -1124,4 +1575,140 @@ class AnimatedBuilder extends AnimatedWidget {
       : super(listenable: animation);
   @override
   Widget build(BuildContext context) => builder(context, null);
+}
+
+// ─── Male Animated Background ──────────────────────────────────────────
+class _MaleAnimatedBackground extends StatefulWidget {
+  @override
+  State<_MaleAnimatedBackground> createState() => _MaleAnimatedBackgroundState();
+}
+class _MaleAnimatedBackgroundState extends State<_MaleAnimatedBackground>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _ctrl;
+  late Animation<double> _anim;
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(vsync: this, duration: const Duration(seconds: 6))..repeat(reverse: true);
+    _anim = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut);
+  }
+  @override
+  void dispose() { _ctrl.dispose(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _anim,
+      builder: (context, _) => Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.lerp(const Color(0xFFE3F2FD), const Color(0xFFBBDEFB), _anim.value)!,
+              Color.lerp(const Color(0xFFF0F4FF), const Color(0xFFE8EAF6), _anim.value)!,
+              Colors.white,
+            ],
+            stops: const [0.0, 0.5, 1.0],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Male Header Button ────────────────────────────────────────────────
+class _MaleHeaderBtn extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final Color color;
+  const _MaleHeaderBtn({required this.icon, required this.onTap, required this.color});
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 40, height: 40,
+        decoration: BoxDecoration(
+          color: Colors.white.withAlpha(25),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white.withAlpha(60)),
+        ),
+        child: Icon(icon, color: Colors.white, size: 20),
+      ),
+    );
+  }
+}
+
+// ─── Male Stat Card ────────────────────────────────────────────────────
+class _MaleStatCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color color;
+  const _MaleStatCard({required this.icon, required this.label, required this.value, required this.color});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: color.withAlpha(30), blurRadius: 10, offset: const Offset(0, 4))],
+        border: Border(top: BorderSide(color: color, width: 3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 20),
+          const SizedBox(height: 6),
+          Text(value, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: color)),
+          const SizedBox(height: 2),
+          Text(label, style: const TextStyle(fontSize: 10, color: AppColors.textSecondary, height: 1.2)),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Male Action Card ──────────────────────────────────────────────────
+class _MaleActionCard extends StatefulWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+  const _MaleActionCard({required this.icon, required this.label, required this.color, required this.onTap});
+  @override
+  State<_MaleActionCard> createState() => _MaleActionCardState();
+}
+class _MaleActionCardState extends State<_MaleActionCard> {
+  bool _pressed = false;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) { setState(() => _pressed = false); widget.onTap(); },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        scale: _pressed ? 0.90 : 1.0,
+        duration: const Duration(milliseconds: 150),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [widget.color.withAlpha(25), widget.color.withAlpha(10)],
+              begin: Alignment.topLeft, end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: widget.color.withAlpha(60)),
+            boxShadow: _pressed ? [] : [BoxShadow(color: widget.color.withAlpha(25), blurRadius: 10, offset: const Offset(0, 4))],
+          ),
+          child: Column(children: [
+            Icon(widget.icon, size: 26, color: widget.color),
+            const SizedBox(height: 6),
+            Text(widget.label, textAlign: TextAlign.center, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: widget.color, height: 1.3)),
+          ]),
+        ),
+      ),
+    );
+  }
 }

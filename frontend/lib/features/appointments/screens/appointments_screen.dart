@@ -194,7 +194,8 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
 
   Future<void> _cancelAppointment(int appointmentId) async {
     final isDoctor = ref.read(authProvider).role == 'D';
-    final primary = isDoctor ? DoctorColors.primary : AppColors.primary;
+    final isMale = ref.read(authProvider).gender == 'M';
+    final primary = isDoctor ? DoctorColors.primary : AppColors.patientColor(isMale);
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => Dialog(
@@ -275,12 +276,14 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
   @override
   Widget build(BuildContext context) {
     final isDoctor = ref.read(authProvider).role == 'D';
+    final isMale = ref.read(authProvider).gender == 'M';
+    final patientColor = AppColors.patientColor(isMale);
     return Scaffold(
       backgroundColor: isDoctor ? DoctorColors.background : AppColors.background,
       body: Stack(
         children: [
           if (!isDoctor) ...[
-            const AnimatedBackground(showImage: false, imageOpacity: 0),
+            AnimatedBackground(showImage: false, imageOpacity: 0, isMale: isMale),
             const FloatingParticles(particleCount: 8, maxOpacity: 0.06),
           ] else
             _buildDoctorBackground(),
@@ -291,7 +294,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
                 SliverToBoxAdapter(child: _buildStatsAndFilter()),
               SliverToBoxAdapter(
                 child: _loading
-                    ? SizedBox(height: 300, child: Center(child: CircularProgressIndicator(color: isDoctor ? DoctorColors.primary : AppColors.primary)))
+                    ? SizedBox(height: 300, child: Center(child: CircularProgressIndicator(color: isDoctor ? DoctorColors.primary : patientColor)))
                     : _error != null
                         ? _buildError()
                         : _appointments.isEmpty
@@ -345,7 +348,8 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
 
   Widget _buildStatsAndFilter() {
     final isDoctor = ref.read(authProvider).role == 'D';
-    final primary = isDoctor ? DoctorColors.primary : AppColors.primary;
+    final isMale = ref.read(authProvider).gender == 'M';
+    final primary = isDoctor ? DoctorColors.primary : AppColors.patientColor(isMale);
     final pendingColor = isDoctor ? DoctorColors.warning : AppColors.warning;
     final successColor = isDoctor ? DoctorColors.success : AppColors.success;
     final errorColor = isDoctor ? DoctorColors.error : AppColors.error;
@@ -464,7 +468,8 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
 
   Widget _buildFilterEmpty() {
     final isDoctor = ref.read(authProvider).role == 'D';
-    final primary = isDoctor ? DoctorColors.primary : AppColors.primary;
+    final isMale = ref.read(authProvider).gender == 'M';
+    final primary = isDoctor ? DoctorColors.primary : AppColors.patientColor(isMale);
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(
@@ -489,11 +494,12 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
 
   Widget _buildSliverAppBar() {
     final isDoctor = ref.read(authProvider).role == 'D';
-    final primary = isDoctor ? DoctorColors.primary : AppColors.primary;
-    final primaryDark = isDoctor ? DoctorColors.primaryDark : AppColors.primaryDark;
+    final isMale = ref.read(authProvider).gender == 'M';
+    final primary = isDoctor ? DoctorColors.primary : AppColors.patientColor(isMale);
+    final primaryDark = isDoctor ? DoctorColors.primaryDark : AppColors.patientDarkColor(isMale);
     final gradientColors = isDoctor
         ? [DoctorColors.primaryDark, DoctorColors.primary, DoctorColors.accent]
-        : [AppColors.primary, AppColors.primaryDark];
+        : [AppColors.patientColor(isMale), AppColors.patientDarkColor(isMale)];
 
     return SliverAppBar(
       expandedHeight: 160,

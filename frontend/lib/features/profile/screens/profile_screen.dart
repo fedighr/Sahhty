@@ -48,32 +48,48 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 
   Future<void> _loadProfile() async {
     setState(() { _loading = true; _error = null; });
+    final auth = ref.read(authProvider);
     final patientId = _getPatientId();
     if (patientId == null) {
       setState(() { _loading = false; _error = 'ID patient non trouvé'; });
       return;
     }
 
-    final futures = await Future.wait([
-      ref.read(patientServiceProvider).getPatientById(patientId),
-      ref.read(pregnancyServiceProvider).getCurrentPregnancy(patientId),
-    ]);
+    final isMale = auth.gender == 'M';
 
-    if (!mounted) return;
-    final patientResult = futures[0];
-    final pregnancyResult = futures[1];
+    if (isMale) {
+      final result = await ref.read(patientServiceProvider).getPatientById(patientId);
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        if (result['success'] == true) {
+          _patientData = result['patient'];
+        } else {
+          _error = result['message'] ?? 'Erreur';
+        }
+      });
+    } else {
+      final futures = await Future.wait([
+        ref.read(patientServiceProvider).getPatientById(patientId),
+        ref.read(pregnancyServiceProvider).getCurrentPregnancy(patientId),
+      ]);
 
-    setState(() {
-      _loading = false;
-      if (patientResult['success'] == true) {
-        _patientData = patientResult['patient'];
-      } else {
-        _error = patientResult['message'] ?? 'Erreur';
-      }
-      if (pregnancyResult['success'] == true) {
-        _pregnancyData = pregnancyResult['pregnancy'];
-      }
-    });
+      if (!mounted) return;
+      final patientResult = futures[0];
+      final pregnancyResult = futures[1];
+
+      setState(() {
+        _loading = false;
+        if (patientResult['success'] == true) {
+          _patientData = patientResult['patient'];
+        } else {
+          _error = patientResult['message'] ?? 'Erreur';
+        }
+        if (pregnancyResult['success'] == true) {
+          _pregnancyData = pregnancyResult['pregnancy'];
+        }
+      });
+    }
   }
 
   int? _getPatientId() => int.tryParse(ref.read(authProvider).patientId ?? '');
@@ -89,15 +105,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(authProvider);
+    final auth = ref.watch(authProvider);
+    final isMale = auth.gender == 'M';
+
+    // Male profile uses blue accent, female uses pink
+    final profileColor = isMale ? const Color(0xFF1565C0) : AppColors.primary;
+    final profileColorDark = isMale ? const Color(0xFF0D47A1) : AppColors.primaryDark;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Mon profil', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+        title: Text('Mon profil', style: TextStyle(color: profileColor, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.primary),
+        iconTheme: IconThemeData(color: profileColor),
         actions: [
           IconButton(
             icon: Container(
@@ -115,17 +136,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       ),
       body: Stack(
         children: [
-          // Beautiful image background with stronger opacity for profile
-          const AnimatedBackground(showImage: true, imageOpacity: 0.22),
-          // Floating hearts in background
-          const FloatingParticles(particleCount: 24, maxOpacity: 0.3),
+          // Background — blue gradient for male, pink/maternal for female
+          if (isMale)
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFFBBDEFB), Color(0xFFE3F2FD), Colors.white],
+                  stops: [0.0, 0.4, 1.0],
+                ),
+              ),
+            )
+          else
+            const AnimatedBackground(showImage: true, imageOpacity: 0.22),
+          FloatingParticles(particleCount: 24, maxOpacity: 0.3, color: isMale ? AppColors.male : null),
           // Content
           _loading
               ? Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const CircularProgressIndicator(color: AppColors.primary),
+                      CircularProgressIndicator(color: profileColor),
                       const SizedBox(height: 16),
                       const Text('Chargement du profil...', style: TextStyle(color: AppColors.textSecondary)),
                     ],
@@ -141,20 +173,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                         onPressed: _loadProfile,
                         icon: const Icon(Iconsax.refresh_2, size: 20),
                         label: const Text('Réessayer'),
+                        style: ElevatedButton.styleFrom(backgroundColor: profileColor),
                       ),
                     ]).animate().fadeIn().shake(hz: 1, offset: const Offset(4, 0)))
                   : RefreshIndicator(
                       onRefresh: _loadProfile,
+                      color: profileColor,
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.fromLTRB(20, 100, 20, 20),
                         child: Column(
                           children: [
-                            _buildHeader().animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
+                            _buildHeader(profileColor: profileColor, profileColorDark: profileColorDark, isMale: isMale)
+                                .animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
                             const SizedBox(height: 24),
 
                             if (_patientData != null) ...[
-                              if (_pregnancyData != null) ...[
+                              // Female-only sections
+                              if (!isMale && _pregnancyData != null) ...[
                                 _buildPregnancyCard().animate().fadeIn(delay: 150.ms).slideX(begin: 0.1)
                                     .then()
                                     .animate(onPlay: (c) => c.repeat(reverse: true))
@@ -162,38 +198,39 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                                 const SizedBox(height: 16),
                               ],
 
-                              _buildCollapsibleSection('personal', Iconsax.user, 'Informations personnelles', [
-                                _infoRow(Iconsax.sms, 'Email', _patientData!['email'] ?? '--'),
-                                _infoRow(Iconsax.call, 'Téléphone', _patientData!['phone'] ?? '--'),
-                                _infoRow(Iconsax.calendar, 'Date de naissance', '${_patientData!['birth_date'] ?? '--'}'),
-                                _infoRow(Iconsax.clock, 'Âge', '${_patientData!['age'] ?? '--'} ans'),
+                              _buildCollapsibleSection('personal', Iconsax.user, 'Informations personnelles', profileColor, [
+                                _infoRow(Iconsax.sms, 'Email', _patientData!['email'] ?? '--', profileColor),
+                                _infoRow(Iconsax.call, 'Téléphone', _patientData!['phone'] ?? '--', profileColor),
+                                _infoRow(Iconsax.calendar, 'Date de naissance', '${_patientData!['birth_date'] ?? '--'}', profileColor),
+                                _infoRow(Iconsax.clock, 'Âge', '${_patientData!['age'] ?? '--'} ans', profileColor),
                               ]).animate().fadeIn(delay: 250.ms).slideY(begin: 0.08),
                               const SizedBox(height: 16),
 
-                              _buildCollapsibleSection('medical', Iconsax.hospital, 'Informations médicales', [
-                                _infoRow(Iconsax.ruler, 'Taille', '${_patientData!['height'] ?? '--'} cm'),
-                                _infoRow(Iconsax.weight, 'Poids', '${_patientData!['weight'] ?? '--'} kg'),
-                                _infoRow(Iconsax.health, 'Groupe sanguin', _patientData!['blood_type'] ?? 'Non renseigné'),
+                              _buildCollapsibleSection('medical', Iconsax.hospital, 'Informations médicales', profileColor, [
+                                _infoRow(Iconsax.ruler, 'Taille', '${_patientData!['height'] ?? '--'} cm', profileColor),
+                                _infoRow(Iconsax.weight, 'Poids', '${_patientData!['weight'] ?? '--'} kg', profileColor),
+                                _infoRow(Iconsax.health, 'Groupe sanguin', _patientData!['blood_type'] ?? 'Non renseigné', profileColor),
                                 if (_patientData!['chronic_diseases'] != null && _patientData!['chronic_diseases'].toString().isNotEmpty)
-                                  _infoRow(Iconsax.health, 'Maladies chroniques', _patientData!['chronic_diseases']),
+                                  _infoRow(Iconsax.health, 'Maladies chroniques', _patientData!['chronic_diseases'], profileColor),
                                 if (_patientData!['allergies'] != null && _patientData!['allergies'].toString().isNotEmpty)
-                                  _infoRow(Iconsax.warning_2, 'Allergies', _patientData!['allergies']),
+                                  _infoRow(Iconsax.warning_2, 'Allergies', _patientData!['allergies'], profileColor),
                                 if (_patientData!['current_medications'] != null && _patientData!['current_medications'].toString().isNotEmpty)
-                                  _infoRow(Iconsax.health, 'Médicaments actuels', _patientData!['current_medications']),
+                                  _infoRow(Iconsax.health, 'Médicaments actuels', _patientData!['current_medications'], profileColor),
                                 if (_patientData!['family_doctor_name'] != null && _patientData!['family_doctor_name'].toString().isNotEmpty)
-                                  _infoRow(Iconsax.user, 'Médecin traitant', _patientData!['family_doctor_name']),
+                                  _infoRow(Iconsax.user, 'Médecin traitant', _patientData!['family_doctor_name'], profileColor),
                               ]).animate().fadeIn(delay: 350.ms).slideY(begin: 0.08),
 
-                              if (_patientData!['menstrual_cycle'] != null) ...[
+                              // Female-only: menstrual cycle
+                              if (!isMale && _patientData!['menstrual_cycle'] != null) ...[
                                 const SizedBox(height: 16),
-                                _buildCollapsibleSection('menstrual', Iconsax.calendar, 'Cycle menstruel', [
-                                  _infoRow(Iconsax.chart_2, 'Statut', _menstrualStatusLabel(_patientData!['menstrual_cycle']['menstrual_status'])),
+                                _buildCollapsibleSection('menstrual', Iconsax.calendar, 'Cycle menstruel', profileColor, [
+                                  _infoRow(Iconsax.chart_2, 'Statut', _menstrualStatusLabel(_patientData!['menstrual_cycle']['menstrual_status']), profileColor),
                                   if (_patientData!['menstrual_cycle']['start_date'] != null)
-                                    _infoRow(Iconsax.calendar, 'Dernier début de cycle', '${_patientData!['menstrual_cycle']['start_date']}'),
+                                    _infoRow(Iconsax.calendar, 'Dernier début de cycle', '${_patientData!['menstrual_cycle']['start_date']}', profileColor),
                                   if (_patientData!['menstrual_cycle']['end_date'] != null)
-                                    _infoRow(Iconsax.calendar, 'Dernière fin de cycle', '${_patientData!['menstrual_cycle']['end_date']}'),
+                                    _infoRow(Iconsax.calendar, 'Dernière fin de cycle', '${_patientData!['menstrual_cycle']['end_date']}', profileColor),
                                   if (_patientData!['menstrual_cycle']['cycle_length'] != null)
-                                    _infoRow(Iconsax.clock, 'Durée du cycle', '${_patientData!['menstrual_cycle']['cycle_length']} jours'),
+                                    _infoRow(Iconsax.clock, 'Durée du cycle', '${_patientData!['menstrual_cycle']['cycle_length']} jours', profileColor),
                                 ]).animate().fadeIn(delay: 450.ms).slideY(begin: 0.08),
                               ],
                             ],
@@ -305,21 +342,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader({required Color profileColor, required Color profileColorDark, required bool isMale}) {
     final firstName = _patientData?['first_name'];
     final lastName = _patientData?['last_name'];
     final name = (firstName != null && lastName != null)
         ? '$firstName $lastName'
         : (ref.read(authProvider).name ?? 'Utilisateur');
-    final gender = _patientData?['gender'];
 
     return Column(
       children: [
-        // Pulsing glow behind avatar
         Stack(
           alignment: Alignment.center,
           children: [
-            // Outer glow ring with animation
             GlowAnimatedBuilder(
               listenable: _glowController,
               builder: (context, _) {
@@ -329,8 +363,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        AppColors.primary.withAlpha((51 + _glowController.value * 30).toInt()),
-                        AppColors.primary.withAlpha((13 + _glowController.value * 15).toInt()),
+                        profileColor.withAlpha((51 + _glowController.value * 30).toInt()),
+                        profileColor.withAlpha((13 + _glowController.value * 15).toInt()),
                         Colors.transparent,
                       ],
                     ),
@@ -341,9 +375,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
             Container(
               width: 88, height: 88,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [AppColors.primary, AppColors.primaryDark]),
+                gradient: LinearGradient(colors: [profileColor, profileColorDark]),
                 borderRadius: BorderRadius.circular(28),
-                boxShadow: [BoxShadow(color: AppColors.primary.withAlpha(102), blurRadius: 20, offset: const Offset(0, 8))],
+                boxShadow: [BoxShadow(color: profileColor.withAlpha(102), blurRadius: 20, offset: const Offset(0, 8))],
               ),
               child: Center(
                 child: Text(
@@ -364,20 +398,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
           decoration: BoxDecoration(
-            color: AppColors.primary.withAlpha(30),
+            color: profileColor.withAlpha(30),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.primary.withAlpha(51)),
+            border: Border.all(color: profileColor.withAlpha(51)),
           ),
-            child: Text(
-              gender == 'F' ? 'Patiente' : 'Patient',
-            style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 13),
+              child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(isMale ? Iconsax.user : Iconsax.user, size: 14, color: profileColor),
+              const SizedBox(width: 4),
+              Text(
+                isMale ? 'Patient' : 'Patiente',
+                style: TextStyle(color: profileColor, fontWeight: FontWeight.w600, fontSize: 13),
+              ),
+            ],
           ),
         ).animate().fadeIn(delay: 300.ms).scale(begin: const Offset(0.8, 0.8), duration: 400.ms, curve: Curves.elasticOut),
       ],
     );
   }
 
-  Widget _buildCollapsibleSection(String key, IconData icon, String title, List<Widget> children) {
+  Widget _buildCollapsibleSection(String key, IconData icon, String title, Color profileColor, List<Widget> children) {
     final expanded = _sectionExpanded[key] ?? false;
     return GestureDetector(
       onTap: () => setState(() => _sectionExpanded[key] = !expanded),
@@ -390,20 +431,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
           color: Colors.white.withAlpha(235),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 14, offset: const Offset(0, 4))],
-          border: Border.all(color: expanded ? AppColors.primary.withAlpha(80) : Colors.white.withAlpha(153)),
+          border: Border.all(color: expanded ? profileColor.withAlpha(80) : Colors.white.withAlpha(153)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(icon, size: 20, color: AppColors.primary),
+                Icon(icon, size: 20, color: profileColor),
                 const SizedBox(width: 8),
                 Expanded(child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary))),
                 AnimatedRotation(
                   turns: expanded ? 0.5 : 0,
                   duration: const Duration(milliseconds: 300),
-                  child: const Icon(Iconsax.arrow_down, size: 20, color: AppColors.primary),
+                  child: Icon(Iconsax.arrow_down, size: 20, color: profileColor),
                 ),
               ],
             ),
@@ -424,8 +465,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     );
   }
 
-
-  Widget _infoRow(IconData icon, String label, String value) {
+  Widget _infoRow(IconData icon, String label, String value, Color profileColor) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Container(
@@ -433,18 +473,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         decoration: BoxDecoration(
           color: AppColors.background.withAlpha(128),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.primaryLight.withAlpha(77)),
+          border: Border.all(color: profileColor.withAlpha(40)),
         ),
         child: Row(
           children: [
             Container(
-              width: 36,
-              height: 36,
+              width: 36, height: 36,
               decoration: BoxDecoration(
-                color: AppColors.primary.withAlpha(20),
+                color: profileColor.withAlpha(20),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Center(child: Icon(icon, size: 18, color: AppColors.primary)),
+              child: Center(child: Icon(icon, size: 18, color: profileColor)),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -462,7 +501,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       ),
     );
   }
-}
+
+} // end _ProfileScreenState
 
 class _ShortcutButton extends StatefulWidget {
   final IconData icon;

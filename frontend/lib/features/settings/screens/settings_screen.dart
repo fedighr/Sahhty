@@ -265,6 +265,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _showLanguageSheet() {
+    final isMale = ref.read(authProvider).gender == 'M';
+    final themeColor = AppColors.patientColor(isMale);
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -290,10 +292,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
                   const SizedBox(height: 20),
                   Row(
-                    children: const [
-                      Icon(Iconsax.global, color: AppColors.primary, size: 22),
-                      SizedBox(width: 10),
-                      Text('Choisir la langue', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    children: [
+                      Icon(Iconsax.global, color: themeColor, size: 22),
+                      const SizedBox(width: 10),
+                      const Text('Choisir la langue', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -301,14 +303,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     final isSelected = current == lang['code'];
                     return ListTile(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                      tileColor: isSelected ? AppColors.primary.withAlpha(15) : null,
+                      tileColor: isSelected ? themeColor.withAlpha(15) : null,
                       leading: Text(lang['flag']!, style: const TextStyle(fontSize: 28)),
                       title: Text(lang['name']!, style: TextStyle(
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                        color: isSelected ? themeColor : AppColors.textPrimary,
                       )),
                       trailing: isSelected
-                          ? const Icon(Iconsax.tick_circle, color: AppColors.primary)
+                          ? Icon(Iconsax.tick_circle, color: themeColor)
                           : null,
                       onTap: () async {
                         await ref.read(localeProvider.notifier).setLocale(Locale(lang['code']!));
@@ -347,6 +349,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
+    final isMale = authState.gender == 'M';
+    final themeColor = AppColors.patientColor(isMale);
+    final themeLightColor = AppColors.patientLightColor(isMale);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -368,7 +373,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       ),
       body: Stack(
         children: [
-          const AnimatedBackground(showImage: true, imageOpacity: 0.08),
+          AnimatedBackground(showImage: !isMale, imageOpacity: 0.08, isMale: isMale),
           const FloatingParticles(particleCount: 12, maxOpacity: 0.15),
           if (_deletingAccount)
             Container(
@@ -392,17 +397,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // ── Header ──
-                  _buildSettingsHeader(authState)
+                  _buildSettingsHeader(authState, themeColor, themeLightColor)
                       .animate().fadeIn(duration: 500.ms).slideY(begin: 0.1),
                   const SizedBox(height: 28),
 
                   // ── Section: Profil & Compte ──
-                  _buildSectionTitle(Iconsax.user, 'Profil & Compte')
+                  _buildSectionTitle(Iconsax.user, 'Profil & Compte', themeColor)
                       .animate().fadeIn(delay: 100.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
                     icon: Iconsax.user,
-                    iconColor: AppColors.primary,
+                    iconColor: themeColor,
                     title: 'Modifier mon profil',
                     subtitle: 'Nom, téléphone, date de naissance',
                     onTap: () => context.push('/settings/edit-profile'),
@@ -428,7 +433,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
                   // ── Section: Grossesse ──
                   if (authState.gender == 'F') ...[
-                    _buildSectionTitle(Iconsax.heart, 'Grossesse')
+                    _buildSectionTitle(Iconsax.heart, 'Grossesse', themeColor)
                         .animate().fadeIn(delay: 300.ms).slideX(begin: -0.05),
                     const SizedBox(height: 12),
                     _SettingsTile(
@@ -451,12 +456,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ],
 
                   // ── Section: Dossier Médical ──
-                  _buildSectionTitle(Iconsax.folder_open, 'Dossier médical')
+                  _buildSectionTitle(Iconsax.folder_open, 'Dossier médical', themeColor)
                       .animate().fadeIn(delay: 300.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
                     icon: Iconsax.folder_open,
-                    iconColor: Color(0xFF6C63FF),
+                    iconColor: const Color(0xFF6C63FF),
                     title: 'Mes fichiers médicaux',
                     subtitle: 'Radios, analyses, ordonnances, résultats...',
                     onTap: () => context.push('/settings/medical-files'),
@@ -464,7 +469,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   _SettingsTile(
                     icon: Iconsax.shield_tick,
-                    iconColor: Color(0xFF43A047),
+                    iconColor: const Color(0xFF43A047),
                     title: 'Médecins autorisés',
                     subtitle: 'Gérer l\'accès des médecins à votre dossier',
                     onTap: () => context.push('/settings/doctor-access'),
@@ -472,7 +477,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 24),
 
                   // ── Section: Traitements ──
-                  _buildSectionTitle(Iconsax.health, 'Traitements & Médicaments')
+                  _buildSectionTitle(Iconsax.health, 'Traitements & Médicaments', themeColor)
                       .animate().fadeIn(delay: 450.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
@@ -485,7 +490,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 24),
 
                   // ── Section: Médecins ──
-                  _buildSectionTitle(Iconsax.hospital, 'Médecins')
+                  _buildSectionTitle(Iconsax.hospital, 'Médecins', themeColor)
                       .animate().fadeIn(delay: 550.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
@@ -498,7 +503,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 24),
 
                   // ── Section: Sécurité ──
-                  _buildSectionTitle(Iconsax.lock, 'Sécurité & Confidentialité')
+                  _buildSectionTitle(Iconsax.lock, 'Sécurité & Confidentialité', themeColor)
                       .animate().fadeIn(delay: 650.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   _SettingsTile(
@@ -535,7 +540,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 24),
 
                   // ── Section: Langue ──
-                  _buildSectionTitle(Iconsax.global, 'Langue & Région')
+                  _buildSectionTitle(Iconsax.global, 'Langue & Région', themeColor)
                       .animate().fadeIn(delay: 850.ms).slideX(begin: -0.05),
                   const SizedBox(height: 12),
                   Builder(builder: (context) {
@@ -558,7 +563,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         const SizedBox(height: 4),
                         Text('v1.0.0', style: TextStyle(color: AppColors.textLight, fontSize: 12)),
                         const SizedBox(height: 4),
-                        Text('💕 Votre santé, notre priorité', style: TextStyle(color: AppColors.primary.withAlpha(150), fontSize: 12)),
+                        Text('💕 Votre santé, notre priorité', style: TextStyle(color: themeColor.withAlpha(150), fontSize: 12)),
                       ],
                     ),
                   ).animate().fadeIn(delay: 900.ms),
@@ -571,24 +576,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Widget _buildSettingsHeader(AuthState authState) {
+  Widget _buildSettingsHeader(AuthState authState, Color themeColor, Color themeLightColor) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.primary.withAlpha(25), AppColors.primaryLight.withAlpha(40)],
+          colors: [themeColor.withAlpha(25), themeLightColor.withAlpha(40)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.primary.withAlpha(30)),
+        border: Border.all(color: themeColor.withAlpha(30)),
       ),
       child: Row(
         children: [
           Container(
             width: 56, height: 56,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [AppColors.primary, AppColors.primaryDark]),
+              gradient: LinearGradient(colors: [themeColor, AppColors.patientDarkColor(authState.gender == 'M')]),
               borderRadius: BorderRadius.circular(18),
             ),
             child: Center(
@@ -622,10 +627,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Widget _buildSectionTitle(IconData icon, String title) {
+  Widget _buildSectionTitle(IconData icon, String title, Color themeColor) {
     return Row(
       children: [
-        Icon(icon, size: 20, color: AppColors.primary),
+        Icon(icon, size: 20, color: themeColor),
         const SizedBox(width: 8),
         Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ],
