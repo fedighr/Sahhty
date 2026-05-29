@@ -299,13 +299,12 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
               ),
             ),
             // Contenu
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: Column(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Stack(
                       alignment: Alignment.center,
@@ -352,7 +351,6 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
                         ),
                       ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2),
                   ],
-                ),
               ),
             ),
           ],
