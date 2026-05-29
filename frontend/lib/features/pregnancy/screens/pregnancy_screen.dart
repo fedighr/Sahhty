@@ -195,7 +195,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
                   const SizedBox(height: 16),
                   if (_pregnancy?['test_date'] != null)
                     _buildTestResultCard().animate().fadeIn(delay: 450.ms),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 80 + MediaQuery.of(context).padding.bottom),
                 ],
               ),
             ),
@@ -301,10 +301,11 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
             // Contenu
             Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Stack(
                       alignment: Alignment.center,
@@ -318,22 +319,22 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
                         )
                             .animate(onPlay: (c) => c.repeat(reverse: true))
                             .scale(begin: const Offset(1, 1), end: const Offset(1.2, 1.2), duration: 2500.ms),
-                        Text(_babyEmoji, style: const TextStyle(fontSize: 56))
+                        Text(_babyEmoji, style: const TextStyle(fontSize: 44))
                             .animate(onPlay: (c) => c.repeat(reverse: true))
                             .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 2000.ms, curve: Curves.easeInOut),
                       ],
                     ),
-                    const SizedBox(height: 12),
-                    AnimatedWeekCounter(weeks: _weeks, days: _days, size: 130),
                     const SizedBox(height: 8),
+                    AnimatedWeekCounter(weeks: _weeks, days: _days, size: 110),
+                    const SizedBox(height: 6),
                     Text(
                       _trimesterLabel,
-                      style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                      style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w500),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
                     if (_daysUntilDue != null && _daysUntilDue! > 0)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
                           color: Colors.white.withAlpha(51),
                           borderRadius: BorderRadius.circular(20),

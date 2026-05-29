@@ -156,7 +156,7 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
       body: NestedScrollView(
         headerSliverBuilder: (ctx, inner) => [
           SliverAppBar(
-            expandedHeight: 180,
+            expandedHeight: 200,
             floating: false,
             pinned: true,
             backgroundColor: DoctorColors.primary,
@@ -183,7 +183,7 @@ class _DoctorAlertsScreenState extends ConsumerState<DoctorAlertsScreen>
                 ),
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 54, 16, 8),
+                    padding: const EdgeInsets.fromLTRB(16, 44, 16, 52),
                     child: Row(
                       children: [
                         _TopBadge(icon: Iconsax.calendar, label: 'En attente', count: pendingCount, color: DoctorColors.warning),
