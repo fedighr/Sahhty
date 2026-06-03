@@ -1,9 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sahhty/core/providers/websocket_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/data/services/auth_service.dart';
 
-enum AuthStatus { initial, loading, authenticated, unauthenticated, needsVerification, needsProfileSetup, needs2FA, error }
+enum AuthStatus {
+  initial,
+  loading,
+  authenticated,
+  unauthenticated,
+  needsVerification,
+  needsProfileSetup,
+  needs2FA,
+  error
+}
 
 class AuthState {
   final AuthStatus status;
@@ -55,8 +65,9 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthService _authService;
+  final Ref _ref;
 
-  AuthNotifier(this._authService) : super(const AuthState());
+  AuthNotifier(this._ref, this._authService) : super(const AuthState());
 
   Future<void> checkAuth() async {
     state = state.copyWith(status: AuthStatus.loading);
@@ -192,11 +203,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> logout() async {
-    await _authService.logout();
-    state = const AuthState(status: AuthStatus.unauthenticated);
+    try {
+      await _authService.logout(); // 1. call backend + delete storage only on 200
+      _ref.read(webSocketServiceProvider).disconnect(); // 2. disconnect websocket
+      state = const AuthState(status: AuthStatus.unauthenticated); // 3. update UI state
+    } catch (e) {
+      // if backend fails, still force local logout
+      _ref.read(webSocketServiceProvider).disconnect();
+      await _authService.clearStorage();
+      state = const AuthState(status: AuthStatus.unauthenticated);
+    }
   }
 }
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier(ref.read(authServiceProvider));
+  return AuthNotifier(ref, ref.read(authServiceProvider));
 });

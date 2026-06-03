@@ -35,12 +35,15 @@ class AuthService:
         except User.DoesNotExist:
             return {'data': {'success': False, 'message': 'Invalid email or password'}, 'status': 400}
 
+        if user.email.endswith('.deleted'):
+            return {'data': {'success': False, 'message': 'This account has been deleted'}, 'status': 403}
+
         if user.lockout_until and user.lockout_until > timezone.now():
             return {'data': {'success': False, 'message': 'Account locked due to suspicious activity, try again in 15 minutes'}, 'status': 403}
 
         if not user.check_password(password):
             user.failed_login_attempts += 1
-            if user.failed_login_attempts >= 5:
+            if user.failed_login_attempts >= 10:
                 user.lockout_until = timezone.now() + timedelta(minutes=15)
                 user.failed_login_attempts = 0
                 user.save()
@@ -51,6 +54,13 @@ class AuthService:
 
         if not user.is_verified:
             return {'data': {'success': False, 'message': 'Email not verified'}, 'status': 403}
+        
+        if user.role == 'D' and Doctor.objects.filter(user=user, is_doctor_verified=False).exists():
+            return {
+                    'data': {'success': False, 'message': 'Doctor account pending verification by admin'},
+                    'status': 403
+                }
+        
 
         user.failed_login_attempts = 0
         user.lockout_until = None
@@ -124,7 +134,7 @@ class AuthService:
 
         if code != user.two_factor_code:
             user.failed_login_attempts += 1
-            if user.failed_login_attempts >= 5:
+            if user.failed_login_attempts >= 10:
                 user.lockout_until = timezone.now() + timedelta(minutes=15)
                 user.failed_login_attempts = 0
                 user.two_factor_code = None
@@ -265,8 +275,8 @@ class AuthService:
             return  {'data':{"success": False,"message": "Account already deleted"}, 'status' : 400}
 
         user.is_deleted = True
-        user.email = user.email + ".deleted"
-        user.phone = user.phone + ".deleted"
+        user.email = f"{user.email}.{user.id}.deleted"
+        user.phone = f"{user.phone}.{user.id}.deleted"
         user.save()
 
         return {'data':{"success": True,"message": "Account deleted successfully"}, 'status' : 200   }

@@ -50,31 +50,119 @@ class AuthService {
     try {
       final response = await _dio.post(
         ApiEndpoints.signin,
-        data: {'email': email, 'password': password},
+        data: {
+          'email': email,
+          'password': password,
+        },
       );
+
       final data = response.data as Map<String, dynamic>;
+
       if (data['success'] == true && data['access'] != null) {
         await _saveTokens(data['access'], data['refresh']);
       }
+
       return data;
     } on DioException catch (e) {
+      final statusCode = e.response?.statusCode;
+      final message = e.response?.data['message'] ?? '';
+
+      // 429 - Rate limit
+      if (statusCode == 429) {
+        return {
+          'success': false,
+          'message': "Trop de tentatives de connexion. Veuillez réessayer dans une minute."
+        };
+      }
+
+      if (statusCode == 403) {
+        // Deleted account
+        if (message == 'This account has been deleted') {
+          return {
+            'success': false,
+            'message': "Ce compte a été supprimé."
+          };
+        }
+
+        // Account locked
+        if (message == 'Account locked due to suspicious activity, try again in 15 minutes') {
+          return {
+            'success': false,
+            'message': "Votre compte est temporairement verrouillé. Veuillez réessayer dans 15 minutes."
+          };
+        }
+
+        // Email not verified
+        if (message == 'Email not verified') {
+          return {
+            'success': false,
+            'message': "Votre adresse e-mail n'est pas vérifiée. Veuillez vérifier votre boîte mail."
+          };
+        }
+
+        // Doctor pending verification
+        if (message == 'Doctor account pending verification by admin') {
+          return {
+            'success': false,
+            'message': "Votre compte médecin est en attente de vérification par l'administrateur."
+          };
+        }
+
+        // Incomplete signup
+        if (message == 'User does not complete his signup') {
+          return {
+            'success': false,
+            'message': "Votre inscription n'est pas complète. Veuillez finaliser votre profil."
+          };
+        }
+      }
+
+      // 400 - Invalid credentials
+      if (statusCode == 400) {
+        return {
+          'success': false,
+          'message': "Email ou mot de passe incorrect."
+        };
+      }
+
       return _handleError(e);
     }
   }
-
   // ── Verify 2FA code (after login with 2FA enabled) ──────────────────
   Future<Map<String, dynamic>> verify2FA(String email, String code) async {
     try {
       final response = await _dio.post(
         ApiEndpoints.verify2fa,
-        data: {'email': email, 'code': code},
+        data: {
+          'email': email,
+          'code': code,
+        },
       );
+
       final data = response.data as Map<String, dynamic>;
+
       if (data['success'] == true && data['access'] != null) {
         await _saveTokens(data['access'], data['refresh']);
       }
+
       return data;
     } on DioException catch (e) {
+      if (e.response?.statusCode == 429) {
+        return {
+          'success': false,
+          'message':
+              'Trop de tentatives de vérification ont été effectuées. Veuillez réessayer dans une minute.'
+        };
+      }
+
+      if (e.response?.statusCode == 403) {
+        return {
+          'success': false,
+          'message':
+              'Votre compte a été temporairement verrouillé pour des raisons de sécurité. Veuillez réessayer dans 15 minutes.'
+        };
+      }
+
       return _handleError(e);
     }
   }
@@ -94,10 +182,22 @@ class AuthService {
     try {
       final response = await _dio.post(
         ApiEndpoints.verifyCode,
-        data: {'email': email, 'code': code},
+        data: {
+          'email': email,
+          'code': code,
+        },
       );
+
       return response.data;
     } on DioException catch (e) {
+      if (e.response?.statusCode == 429) {
+        return {
+          'success': false,
+          'message':
+              'Nombre maximal de tentatives atteint. Veuillez patienter une minute avant de réessayer.'
+        };
+      }
+
       return _handleError(e);
     }
   }
@@ -129,14 +229,29 @@ class AuthService {
   }
 
   // ── Verify Reset Code (forgot password step 2) ──────────────────────
-  Future<Map<String, dynamic>> verifyResetCode(String email, String code) async {
+  Future<Map<String, dynamic>> verifyResetCode(
+    String email,
+    String code,
+  ) async {
     try {
       final response = await _dio.post(
         ApiEndpoints.verifyResetCode,
-        data: {'email': email, 'code': code},
+        data: {
+          'email': email,
+          'code': code,
+        },
       );
+
       return response.data;
     } on DioException catch (e) {
+      if (e.response?.statusCode == 429) {
+        return {
+          'success': false,
+          'message':
+              'Nombre maximal de tentatives atteint. Veuillez patienter une minute avant de réessayer.'
+        };
+      }
+
       return _handleError(e);
     }
   }
@@ -214,7 +329,19 @@ class AuthService {
 
   // ── Logout ───────────────────────────────────────────────────────────
   Future<void> logout() async {
-    await _storage.deleteAll();
+    try {
+      final response = await _dio.post(ApiEndpoints.logout);
+      if (response.statusCode == 200) {
+        await _storage.deleteAll();
+      }
+    } on DioException catch (e) {
+      _handleError(e);
+    }
+  }
+
+  // ── Clear all stored data (used for logout + account deletion) ─────────
+  Future<void> clearStorage() async {
+  await _storage.deleteAll();
   }
 
   // ── Check if logged in ──────────────────────────────────────────────

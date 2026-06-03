@@ -37,7 +37,9 @@ class _RealtimeNotificationOverlayState
   void _showToast(WsNotification notification) {
     if (!mounted) return;
 
-    final overlay = Overlay.of(context);
+    final overlay = _overlayKey.currentState;
+    if (overlay == null) return;
+
     late OverlayEntry entry;
 
     entry = OverlayEntry(
@@ -53,7 +55,6 @@ class _RealtimeNotificationOverlayState
     _toasts.add(_ToastEntry(entry: entry));
     overlay.insert(entry);
 
-    // Auto-remove after 4 seconds
     Timer(const Duration(seconds: 4), () {
       if (entry.mounted) {
         entry.remove();
@@ -73,7 +74,14 @@ class _RealtimeNotificationOverlayState
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return Overlay(
+      key: _overlayKey,
+      initialEntries: [
+        OverlayEntry(
+          builder: (context) => widget.child,
+        ),
+      ],
+    );
   }
 }
 

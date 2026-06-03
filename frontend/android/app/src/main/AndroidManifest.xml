@@ -17,7 +17,7 @@
 
     <application
         tools:ignore="GoogleAppIndexingWarning,AllowBackup"
-        android:label="sahhty"
+        android:label="Sahhty"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">

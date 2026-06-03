@@ -26,6 +26,7 @@ def send_email_async(email_func, **kwargs):
     thread.start()
 
 def notify_user(user_id, event_type, data, fcm_token=None, email=None):
+    print(fcm_token)
     send_websocket_notification(user_id, event_type, data)
 
     if fcm_token:

@@ -78,6 +78,26 @@ class PregnancyService:
             return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
         except Exception as e:
             return {'data': {'success': False, 'message': str(e)}, 'status': 500}
+        
+    @staticmethod
+    def endPregnancy(pregnancy_id, end_date):
+        try:
+            pregnancy = Pregnancy.objects.get(pk=pregnancy_id)
+        except Pregnancy.DoesNotExist:
+            return {'data': {'success': False, 'message': 'Pregnancy not found'}, 'status': 404}
+
+        try:
+            pregnancy.end_date = end_date
+            pregnancy.save()
+            serializer = PregnancySerializer(pregnancy)
+            return {'data': {'success': True, 'pregnancy': serializer.data}, 'status': 200}
+
+        except IntegrityError as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 400}
+        except DatabaseError:
+            return {'data': {'success': False, 'message': 'Database error occurred'}, 'status': 500}
+        except Exception as e:
+            return {'data': {'success': False, 'message': str(e)}, 'status': 500}
 
     @staticmethod
     def deletePregnancy(pregnancy_id):

@@ -1,7 +1,7 @@
 /// All API endpoints matching the Django REST backend exactly.
 class ApiEndpoints {
   ApiEndpoints._();
-  static const String baseUrl = 'http://10.0.2.2:8000';
+  static const String baseUrl = 'http://192.168.100.10:8000';
 
 
 
@@ -9,6 +9,7 @@ class ApiEndpoints {
   // ── Auth (ViewSet: users/auth/) ──────────────────────────────────────
   static const String signup            = '/users/auth/signup/';
   static const String signin            = '/users/auth/signin/';
+  static const String logout            = '/users/auth/logout/';
   static const String refreshToken      = '/users/refresh/';
   static const String verifyCode        = '/users/auth/verify_code/';
   static const String resendCode        = '/users/auth/resend_code/';

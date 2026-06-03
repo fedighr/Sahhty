@@ -12,7 +12,7 @@ from doctors.models import Doctor
 from doctors.serializers import DoctorSerializer
 from django.db import transaction
 from alerts.services import AlertService
-from notifications.services import send_websocket_notification
+from notifications.services import send_websocket_notification, notify_user
 from rest_framework.pagination import PageNumberPagination
 
 class MedicalFileService:
@@ -203,13 +203,14 @@ class MedicalFileService:
 
             patient_user = validated_data['patient'].user
             doctor_user = validated_data['doctor'].user
+            fcm_token = patient_user.devices.first().fcm_token if patient_user.devices.exists() else None
 
             Alert.objects.create(
                 user=patient_user,
                 type='SYSTEM',
                 message=f"Le docteur {doctor_user.first_name} {doctor_user.last_name} a demandé l'accès à vos dossiers médicaux."
             )
-            send_websocket_notification(
+            notify_user(
                 user_id=patient_user.id,
                 event_type='access_request',
                 data={
@@ -218,6 +219,7 @@ class MedicalFileService:
                     'specialty': validated_data['doctor'].speciality.name,
                     'request_date': str(access.granted_at),
                 },
+                fcm_token=fcm_token
             )
             serializer = PatientDoctorAccessSerializer(access)
             return {'data': {'success': True, 'message': 'Medical access requested successfully', 'access': serializer.data}, 'status': 201}

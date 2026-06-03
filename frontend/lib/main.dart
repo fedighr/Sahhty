@@ -23,7 +23,6 @@ void main() async {
     debugPrint('Firebase init failed (non-critical): $e');
   }
 
-  // Request notification permission (non-blocking)
   try {
     await FirebaseMessaging.instance.requestPermission(
       alert: true,
@@ -44,7 +43,10 @@ void main() async {
     debugPrint('FCM initialization failed (non-critical): $e');
   }
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
@@ -64,7 +66,6 @@ class _SahhtyAppState extends ConsumerState<SahhtyApp> {
   @override
   void initState() {
     super.initState();
-    // Listen to auth state changes to connect/disconnect WebSocket
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.listen<AuthState>(authProvider, (previous, next) {
         final wsService = ref.read(webSocketServiceProvider);
@@ -74,7 +75,6 @@ class _SahhtyAppState extends ConsumerState<SahhtyApp> {
           wsService.disconnect();
         }
       });
-      // Connect immediately if already authenticated on app start
       final authState = ref.read(authProvider);
       if (authState.status == AuthStatus.authenticated) {
         ref.read(webSocketServiceProvider).connect();
@@ -105,7 +105,11 @@ class _SahhtyAppState extends ConsumerState<SahhtyApp> {
           data: MediaQuery.of(context).copyWith(
             textScaler: TextScaler.linear(scale),
           ),
-          child: RealtimeNotificationOverlay(child: child!),
+          child: Builder(
+            builder: (innerContext) => RealtimeNotificationOverlay(
+              child: child!,
+            ),
+          ),
         );
       },
     );

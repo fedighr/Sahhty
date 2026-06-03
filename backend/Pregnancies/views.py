@@ -40,6 +40,15 @@ class PregnancyView(ViewSet):
         result = PregnancyService.updatePregnancy(pk, request.data)
         return Response(result['data'], status=result['status'])
 
+    @extend_schema(request=PregnancySerializer, responses=PregnancySerializer)
+    @action(detail=True, methods=['patch'], url_path='end_pregnancy', permission_classes=[AllowAny])
+    def end_pregnancy(self, request, pk=None):
+        if(requetst.data.get('end_date') is None):
+            return Response({'success': False, 'message': 'End date is required to end pregnancy'}, status=400)
+        
+        result = PregnancyService.endPregnancy(pk, request.data.get('end_date'))
+        return Response(result['data'], status=result['status'])
+
     @extend_schema(responses=PregnancySerializer)
     @action(detail=True, methods=['delete'], permission_classes=[AllowAny])
     def delete_pregnancy(self, request, pk=None):

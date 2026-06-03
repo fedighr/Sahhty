@@ -258,10 +258,9 @@ class MedicationService:
 
         if user.gender == 'F':
             result = MedicationService._get_pregnancy_risk(medication_id, user_id)
-            if result.get('error'):
-                return result['error']
-            pregnancy_data = result.get('pregnancy_data')
-            trimester_risk = result.get('trimester_risk')
+            if not result.get('error'):
+                pregnancy_data = result.get('pregnancy_data')
+                trimester_risk = result.get('trimester_risk')
             
 
         return {

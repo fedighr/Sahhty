@@ -72,6 +72,12 @@ dev_dependencies:
   mocktail: ^1.0.4
   build_runner: ^2.4.13
   riverpod_generator: ^2.4.3
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo2.png"
 
 flutter:
   uses-material-design: true
