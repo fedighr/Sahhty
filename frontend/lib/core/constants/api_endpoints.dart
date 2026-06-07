@@ -1,7 +1,7 @@
 /// All API endpoints matching the Django REST backend exactly.
 class ApiEndpoints {
   ApiEndpoints._();
-  static const String baseUrl = 'http://192.168.100.10:8000';
+  static const String baseUrl = 'http://192.168.43.103:8000';
 
 
 

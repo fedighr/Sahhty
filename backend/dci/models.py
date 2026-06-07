@@ -18,6 +18,9 @@ class DCI(models.Model):
     summary = models.TextField(null=True, blank=True)
     source_url = models.URLField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
 class DciInteraction(models.Model):
     SEVERITY_CHOICES = [
         ("CONTRE_INDICATION", "Contre-indication"),
@@ -32,3 +35,5 @@ class DciInteraction(models.Model):
     severity = models.CharField(max_length=50, choices=SEVERITY_CHOICES)
     description = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.dci1.name} ↔ {self.dci2.name} ({self.get_severity_display()})"

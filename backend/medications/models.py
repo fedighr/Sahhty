@@ -25,6 +25,9 @@ class Medication(models.Model):
     category = models.CharField(max_length = 1, choices=category, null=True, blank=True)
     dci = models.TextField()
     prior_approval = models.CharField(max_length = 1, choices=prior_approval_Category, null=True, blank=True)
+
+    def __str__(self):
+        return self.commercial_name or self.name
     
 class MedicationDci(models.Model):
     medication = models.ForeignKey(Medication, on_delete=models.CASCADE, related_name='medication_dcis')
@@ -32,6 +35,9 @@ class MedicationDci(models.Model):
 
     class Meta:
         unique_together = ('medication', 'dci')
+
+    def __str__(self):
+        return f"{self.medication} — {self.dci.name}"
 
 class Treatment(models.Model):
     start_date = models.DateField()

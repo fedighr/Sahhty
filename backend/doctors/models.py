@@ -7,6 +7,9 @@ class Speciality(models.Model):
     name = models.CharField(max_length=50, validators=[RegexValidator(r'^[a-zA-Z\s]+$')])
     description = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
 class Doctor(models.Model):
     VILLE_CHOICES = [
         ('TUNIS', 'Tunis'),
