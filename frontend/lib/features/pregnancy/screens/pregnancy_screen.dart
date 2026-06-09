@@ -23,6 +23,7 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
   bool _loading = true;
   String? _error;
   bool _noPregnancy = false;
+  bool _ending = false;
 
   @override
   void initState() {
@@ -58,6 +59,178 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
   }
 
   int? _getPatientId() => int.tryParse(ref.read(authProvider).patientId ?? '');
+
+  String _formatDate(DateTime d) =>
+      '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+  Future<void> _showEndPregnancyDialog() async {
+    DateTime? selectedDate;
+
+    await showDialog(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(builder: (ctx, setStateDialog) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            title: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.warning.withAlpha(25),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Iconsax.calendar_remove, color: AppColors.warning, size: 22),
+                ),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Text(
+                    'Terminer la grossesse',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Veuillez indiquer la date de fin de grossesse.',
+                  style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+                ),
+                const SizedBox(height: 16),
+                GestureDetector(
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: ctx,
+                      initialDate: selectedDate ?? DateTime.now(),
+                      firstDate: DateTime(2020),
+                      lastDate: DateTime.now(),
+                      builder: (c, child) => Theme(
+                        data: Theme.of(c).copyWith(
+                          colorScheme: const ColorScheme.light(
+                            primary: AppColors.primary,
+                            onPrimary: Colors.white,
+                          ),
+                        ),
+                        child: child!,
+                      ),
+                    );
+                    if (picked != null) {
+                      setStateDialog(() => selectedDate = picked);
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: selectedDate != null ? AppColors.primary : Colors.grey.shade300,
+                        width: 1.5,
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                      color: selectedDate != null
+                          ? AppColors.primary.withAlpha(10)
+                          : Colors.grey.shade50,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Iconsax.calendar,
+                          size: 20,
+                          color: selectedDate != null ? AppColors.primary : Colors.grey,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          selectedDate != null
+                              ? _formatDate(selectedDate!)
+                              : 'Sélectionner une date',
+                          style: TextStyle(
+                            color: selectedDate != null ? AppColors.primary : Colors.grey,
+                            fontWeight: selectedDate != null ? FontWeight.w600 : FontWeight.normal,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Annuler', style: TextStyle(color: AppColors.textSecondary)),
+              ),
+              ElevatedButton(
+                onPressed: selectedDate == null
+                    ? null
+                    : () {
+                        Navigator.pop(ctx);
+                        _doEndPregnancy(_formatDate(selectedDate!));
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text('Confirmer'),
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Future<void> _doEndPregnancy(String endDate) async {
+    final pregnancyId = _pregnancy?['id'] as int?;
+    if (pregnancyId == null) return;
+
+    setState(() => _ending = true);
+    try {
+      final result = await ref.read(pregnancyServiceProvider).endPregnancy(pregnancyId, endDate);
+      if (!mounted) return;
+      if (result['success'] == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Row(
+              children: [
+                Icon(Iconsax.tick_circle, color: Colors.white, size: 18),
+                SizedBox(width: 8),
+                Text('Grossesse terminée avec succès.'),
+              ],
+            ),
+            backgroundColor: AppColors.success,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+        await _loadPregnancy();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message']?.toString() ?? 'Une erreur est survenue.'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur: $e'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _ending = false);
+    }
+  }
 
   int get _weeks {
     if (_weekFromBackend != null) return _weekFromBackend!;
@@ -195,6 +368,8 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
                   const SizedBox(height: 16),
                   if (_pregnancy?['test_date'] != null)
                     _buildTestResultCard().animate().fadeIn(delay: 450.ms),
+                  const SizedBox(height: 16),
+                  _buildEndPregnancyButton().animate().fadeIn(delay: 500.ms),
                   SizedBox(height: 80 + MediaQuery.of(context).padding.bottom),
                 ],
               ),
@@ -623,4 +798,35 @@ class _PregnancyScreenState extends ConsumerState<PregnancyScreen> {
       ),
     );
   }
+
+  Widget _buildEndPregnancyButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: _ending ? null : _showEndPregnancyDialog,
+        icon: _ending
+            ? const SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.error),
+              )
+            : const Icon(Iconsax.calendar_remove, size: 20, color: AppColors.error),
+        label: Text(
+          _ending ? 'Traitement en cours...' : 'Grossesse terminée',
+          style: const TextStyle(
+            color: AppColors.error,
+            fontWeight: FontWeight.w600,
+            fontSize: 15,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: AppColors.error, width: 1.5),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          backgroundColor: AppColors.error.withAlpha(8),
+        ),
+      ),
+    );
+  }
 }
+

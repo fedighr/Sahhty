@@ -45,10 +45,20 @@ import 'package:sahhty/features/doctors/screens/doctor_location_screen.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
+/// ChangeNotifier qui notifie GoRouter à chaque changement de l'état d'auth
+class _RouterNotifier extends ChangeNotifier {
+  _RouterNotifier(Ref ref) {
+    ref.listen<AuthState>(authProvider, (_, __) => notifyListeners());
+  }
+}
+
 final appRouterProvider = Provider<GoRouter>((ref) {
+  final notifier = _RouterNotifier(ref);
+
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/splash',
+    refreshListenable: notifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final location = state.matchedLocation;
@@ -59,12 +69,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           location == '/forgot-password' ||
           location == '/patient-setup' ||
           location == '/doctor-setup' ||
-          location == '/splash';
+          location == '/splash' ||
+          location == '/language';
 
+      // Utilisateur authentifié sur une page auth → aller au home
       if (authState.status == AuthStatus.authenticated && isAuthRoute && location != '/splash') {
-        // Redirect to role-specific home
         return authState.role == 'D' ? '/doctor-home' : '/home';
       }
+
+      // Session expirée : utilisateur non-authentifié sur une page protégée → /login
+      if (authState.status == AuthStatus.unauthenticated && !isAuthRoute) {
+        return '/login';
+      }
+
       return null;
     },
     routes: [

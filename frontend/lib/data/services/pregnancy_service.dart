@@ -37,6 +37,20 @@ class PregnancyService {
     }
   }
 
+  /// PATCH /pregnancies/PregnancyService/{pregnancyId}/end_pregnancy/
+  /// Backend expects: { "end_date": "YYYY-MM-DD" }
+  Future<Map<String, dynamic>> endPregnancy(int pregnancyId, String endDate) async {
+    try {
+      final response = await _dio.patch(
+        ApiEndpoints.endPregnancy(pregnancyId),
+        data: {'end_date': endDate},
+      );
+      return response.data;
+    } on DioException catch (e) {
+      return _err(e);
+    }
+  }
+
   /// DELETE /pregnancies/PregnancyService/{pregnancyId}/delete_pregnancy/
   Future<Map<String, dynamic>> deletePregnancy(int pregnancyId) async {
     try {

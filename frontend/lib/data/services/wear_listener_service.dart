@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sahhty/core/constants/api_endpoints.dart';
-import 'package:sahhty/data/services/measurement_service.dart';
 
 class WearListenerService {
   static const _channel = MethodChannel('com.example.sahhty/wear');
@@ -10,11 +9,11 @@ class WearListenerService {
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
 
-  final MeasurementService _measurementService;
-  Function(String?, String?, double?)? onRiskAlert;
+  /// Appelé quand le backend détecte un risque non-LOW après une mesure montre.
+  Function(String riskLevel, String? note, double? heartRate)? onRiskDetected;
 
-  WearListenerService({required MeasurementService measurementService})
-      : _measurementService = measurementService;
+  /// Appelé quand une nouvelle mesure arrive de la montre (pour rafraîchir l'UI).
+  Function(double heartRate)? onNewMeasurement;
 
   void start() {
     _channel.setMethodCallHandler(_handleMethod);
@@ -46,41 +45,32 @@ class WearListenerService {
 
   Future<dynamic> _handleMethod(MethodCall call) async {
     switch (call.method) {
-
       case 'onHeartRateFromWatch':
+        // PhoneWearListenerService (Kotlin) a déjà envoyé la mesure au backend.
+        // On notifie seulement l'UI qu'une nouvelle mesure est arrivée.
         final data = Map<String, dynamic>.from(call.arguments as Map);
         final heartRate = (data['heart_rate'] as num).toDouble();
-        final context = data['context'] as String? ?? 'smartwatch data';
-
-        debugPrint('[WearListener] Received HR from watch: $heartRate BPM');
-
-        final patientIdStr = await _storage.read(key: StorageKeys.patientId);
-        if (patientIdStr == null) {
-          debugPrint('[WearListener] No patient ID stored, skipping POST');
-          return;
-        }
-
-        final payload = {
-          'type': 'HEART_RATE',
-          'value1': heartRate.toStringAsFixed(2),
-          'unit': 'BPM',
-          'context': context,
-          'patient_id': int.parse(patientIdStr),
-        };
-
-        debugPrint('[WearListener] Sending to backend: $payload');
-        final result = await _measurementService.syncSmartwatch(payload: payload);
-        debugPrint('[WearListener] Backend response: $result');
+        debugPrint('[WearListener] Nouvelle FC reçue: $heartRate BPM (déjà sauvegardée par le service natif)');
+        onNewMeasurement?.call(heartRate);
         break;
 
       case 'onRiskAlert':
+        // Le service Kotlin a posté au backend et reçu le niveau de risque.
+        // On notifie l'UI du risque et de la nouvelle mesure.
         final data = Map<String, dynamic>.from(call.arguments as Map);
-        final riskLevel = data['risk_level'] as String?;
+        final riskLevel = (data['risk_level'] as String? ?? '').toUpperCase();
         final note = data['note'] as String?;
         final heartRate = (data['heart_rate'] as num?)?.toDouble();
 
-        debugPrint('[WearListener] RISK ALERT: $riskLevel — $note');
-        onRiskAlert?.call(riskLevel, note, heartRate);
+        debugPrint('[WearListener] Alerte de risque: $riskLevel — $note');
+
+        // Notifier la nouvelle mesure
+        if (heartRate != null) onNewMeasurement?.call(heartRate);
+
+        // Notifier le risque si ce n'est pas LOW
+        if (riskLevel.isNotEmpty && riskLevel != 'LOW') {
+          onRiskDetected?.call(riskLevel, note, heartRate);
+        }
         break;
     }
   }

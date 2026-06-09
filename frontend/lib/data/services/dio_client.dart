@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +9,12 @@ import 'package:sahhty/core/constants/api_endpoints.dart';
 class DioClient {
   static final DioClient _instance = DioClient._internal();
   factory DioClient() => _instance;
+
+  /// Émis quand le refresh token est expiré/invalide → l'app doit rediriger vers /login
+  static final StreamController<void> _sessionExpiredController =
+      StreamController<void>.broadcast();
+  static Stream<void> get sessionExpiredStream =>
+      _sessionExpiredController.stream;
 
   late final Dio dio;
   final FlutterSecureStorage _storage = const FlutterSecureStorage(
@@ -57,6 +65,7 @@ class DioClient {
   Future<bool> _tryRefreshToken() async {
     try {
       final refreshToken = await _storage.read(key: StorageKeys.refreshToken);
+      // Pas de refresh token → l'utilisateur n'est pas connecté, rien à faire
       if (refreshToken == null) return false;
 
       final response = await Dio(BaseOptions(
@@ -86,9 +95,30 @@ class DioClient {
 
         return true;
       }
+
+      // Réponse reçue mais pas 200 → token expiré ou invalide
+      debugPrint('[DioClient] Refresh token rejeté (${response.statusCode}) → session expirée');
+      await _onSessionExpired();
+      return false;
+    } on DioException catch (e) {
+      // Le serveur a explicitement refusé le refresh token
+      if (e.response != null &&
+          (e.response!.statusCode == 401 || e.response!.statusCode == 403)) {
+        debugPrint('[DioClient] Refresh token invalide (${e.response!.statusCode}) → session expirée');
+        await _onSessionExpired();
+      }
+      // Erreur réseau (pas de réponse) → ne pas déconnecter, échec silencieux
       return false;
     } catch (e) {
       return false;
+    }
+  }
+
+  /// Efface tous les tokens et notifie l'application de rediriger vers /login
+  Future<void> _onSessionExpired() async {
+    await _storage.deleteAll();
+    if (!_sessionExpiredController.isClosed) {
+      _sessionExpiredController.add(null);
     }
   }
 }

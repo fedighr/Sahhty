@@ -43,7 +43,7 @@ class PregnancyView(ViewSet):
     @extend_schema(request=PregnancySerializer, responses=PregnancySerializer)
     @action(detail=True, methods=['patch'], url_path='end_pregnancy', permission_classes=[AllowAny])
     def end_pregnancy(self, request, pk=None):
-        if(requetst.data.get('end_date') is None):
+        if(request.data.get('end_date') is None):
             return Response({'success': False, 'message': 'End date is required to end pregnancy'}, status=400)
         
         result = PregnancyService.endPregnancy(pk, request.data.get('end_date'))

@@ -1,0 +1,1284 @@
+\chapter{Tests and Validation}
+\label{chap:Fire}
+
+\section{Introduction}
+
+This chapter presents the testing and validation process conducted on the Sahhty platform to evaluate its reliability, security, performance, and functional correctness. A comprehensive validation strategy based on the V-Model approach was adopted, covering unit, integration, functional, security, and performance testing phases.
+
+The conducted tests aimed to verify the correct operation of the platform, identify potential anomalies, and ensure stable and secure behavior under realistic healthcare usage conditions.
+\section{Testing Strategy and Methodology}
+%--------------------------------------------------
+The testing strategy adopted for the Sahhty platform follows the \textbf{V-Model} approach, ensuring traceability between system requirements and their corresponding validation phases. Requirements identified in Chapter~\ref{chap:requirements} are mapped to dedicated functional test cases to ensure complete coverage and systematic verification of the implemented features.
+
+The validation process was organized into five complementary phases. \textbf{Unit and Automated Testing} was conducted to validate isolated backend logic and critical business rules. \textbf{Integration Testing} verified the interaction between APIs, databases, authentication mechanisms, WebSocket communication, and notification services. \textbf{Functional Testing} ensured that the implemented features operated correctly according to system requirements. \textbf{Security Testing} focused on validating authentication, authorization, and protection mechanisms against unauthorized access. Finally, \textbf{Performance Testing} evaluated system responsiveness and stability under concurrent user loads.
+
+These phases ensured the reliability, correctness, security, and performance of the platform, as illustrated in Figure~\ref{fig:vmodel}. More details regarding the activities, deliverables, and success criteria of each testing phase are presented in Table~\ref{tab:test_planning}.
+
+The conducted tests aim to:
+
+\begin{itemize}
+    \item Validate the main functionalities of the platform, including authentication, drug safety classification, AI-based risk assessment, appointment management, and alert delivery.
+    \item Verify the robustness of JWT authentication and the protection of secured API endpoints.
+    \item Ensure the correct enforcement of role-based access control and user permissions.
+    \item Validate critical business rules such as appointment conflict detection, OTP expiration handling, and account lockout mechanisms.
+    \item Ensure data integrity during database operations involving appointments, alerts, and medical records.
+    \item Evaluate the behavior and stability of the platform under concurrent usage conditions.
+    \item Validate the correctness and synchronization of the multi-channel notification system (WebSocket, FCM, and email), ensuring consistent delivery across real-time and background scenarios.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{chapter5/figures/v-model.jpg}
+    \caption{V-Model testing strategy}
+    \label{fig:vmodel}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Test planning timeline and phase distribution}
+\label{tab:test_planning}
+\renewcommand{\arraystretch}{1.4}
+\small
+
+\begin{tabular}{|p{2cm}|p{4.5cm}|p{3.5cm}|p{4cm}|}
+\hline
+
+\rowcolor{gray!20}
+\multicolumn{4}{|c|}{\textbf{Phase 1: Unit and Automated Testing}} \\
+\hline
+\textbf{Duration} & \textbf{Activities} & \textbf{Deliverables} & \textbf{Success Criteria} \\
+\hline
+2 days &
+Validation of isolated backend logic such as password hashing, OTP expiration, and risk note generation &
+Automated test suite and execution report &
+Critical business logic validated successfully \\
+\hline
+
+\rowcolor{blue!10}
+\multicolumn{4}{|c|}{\textbf{Phase 2: Integration Testing}} \\
+\hline
+\textbf{Duration} & \textbf{Activities} & \textbf{Deliverables} & \textbf{Success Criteria} \\
+\hline
+4 days &
+Validation of API communication, database transactions, JWT authentication flow, WebSocket event delivery, and notification pipeline &
+Integration test suite and API validation report &
+Reliable communication between system components and consistent API responses \\
+\hline
+
+\rowcolor{green!10}
+\multicolumn{4}{|c|}{\textbf{Phase 3: Functional Testing}} \\
+\hline
+\textbf{Duration} & \textbf{Activities} & \textbf{Deliverables} & \textbf{Success Criteria} \\
+\hline
+2 days &
+Feature-by-feature validation of authentication, treatments, appointments, medical files, and alerts &
+Functional test results and traceability report &
+Core functionalities operating correctly according to requirements \\
+\hline
+
+\rowcolor{red!10}
+\multicolumn{4}{|c|}{\textbf{Phase 4: Security Testing}} \\
+\hline
+\textbf{Duration} & \textbf{Activities} & \textbf{Deliverables} & \textbf{Success Criteria} \\
+\hline
+3 days &
+Validation of JWT enforcement, account lockout, rate limiting, and access control &
+Security audit report &
+Unauthorized access attempts successfully blocked \\
+\hline
+
+\rowcolor{orange!20}
+\multicolumn{4}{|c|}{\textbf{Phase 5: Performance Testing}} \\
+\hline
+\textbf{Duration} & \textbf{Activities} & \textbf{Deliverables} & \textbf{Success Criteria} \\
+\hline
+4 days &
+Load testing of critical endpoints under concurrent usage &
+Performance benchmark report &
+Stable response times under moderate concurrent load \\
+\hline
+
+\end{tabular}
+\end{table}
+\section{Testing Environment and Tools}
+This section presents the technical environment and tools used during the validation process of the Sahhty platform. It describes the hardware and software configurations, the external services integrated into the system, the testing tools used across different validation phases, and the preparation of test datasets required to simulate realistic usage scenarios.
+
+\subsection{Hardware Environment}
+This step describes the hardware infrastructure used to execute and validate the platform during development and testing activities. All tests were conducted on a single development machine, while mobile validation was performed using a physical Android device to evaluate the application under real usage conditions. The hardware specifications are presented in Table~\ref{tab:hardware_env}.
+
+\begin{table}[H]
+\centering
+\caption{Hardware environment used for testing}
+\label{tab:hardware_env}
+\begin{tabular}{|p{4cm}|p{7cm}|}
+\hline
+\textbf{Specification} & \textbf{Details} \\
+\hline
+Machine & ASUS TUF Gaming FX505DT \\
+\hline
+Processor & AMD Ryzen 5 3550H \\
+\hline
+RAM & 8 GB DDR4 \\
+\hline
+Storage & 512 GB SSD M.2 \\
+\hline
+Operating System & Windows 11 Pro 64-bit \\
+\hline
+Mobile Device & realme 12x 5G (RMX3998) \\
+\hline
+Network & 50 Mbps fiber internet connection \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Software Environment}
+This subsection presents the software environment used for the development and testing of the Sahhty platform. The detailed configuration is presented in Table~\ref{tab:environment_config}.
+
+\begin{table}[H]
+\centering
+\caption{Development and Testing Environment Configuration}
+\label{tab:environment_config}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{3cm}|p{11cm}|}
+\hline
+\textbf{Component} & \textbf{Configuration} \\
+\hline
+Backend & Django 5.2.7 with Django REST Framework 3.16.1 \\
+\hline
+Programming Language & Python 3.13.5 \\
+\hline
+Database & Neon PostgreSQL (cloud-hosted relational database) \\
+\hline
+Frontend & Flutter 3.41.7 with Riverpod state management \\
+\hline
+Mobile Testing & Android emulator and real Android device (realme 12x 5G) \\
+\hline
+Server Environment & Localhost development server (\texttt{127.0.0.1}) \\
+\hline
+Testing Structure & Modular Django architecture with a dedicated \texttt{tests.py} file in each application \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{External Services}
+This subsection introduces the external services integrated into the platform to support notification delivery, email communication, and authentication-related functionalities.
+
+\begin{itemize}
+    \item \textbf{Firebase Cloud Messaging (FCM):} Used to deliver push notifications when the application is running in the background or closed.
+
+    \item \textbf{Brevo Email Service:} Used for transactional email delivery, including OTP verification and system-generated notifications.
+
+    \item \textbf{OTP System:} Custom authentication mechanism implemented using Python's \texttt{secrets} module with time-based expiration handling.
+\end{itemize}
+
+\subsection{Testing Tools}
+
+This subsection presents the main tools used during the validation process to support API testing, automated testing, database inspection, and performance evaluation. The tools and their respective purposes are detailed in Table~\ref{tab:testing_tools}.
+
+\begin{table}[H]
+\centering
+\caption{Testing tools and their usage}
+\label{tab:testing_tools}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{3.2cm}|p{3cm}|p{7cm}|}
+\hline
+\textbf{Tool} & \textbf{Test Level} & \textbf{Purpose} \\
+\hline
+Postman & Functional / Integration Testing & Manual testing of REST API endpoints with authentication and request validation \\
+\hline
+Swagger UI & Functional Testing & Interactive API documentation and endpoint testing \\
+\hline
+pytest & Unit / Integration Testing & Automated testing of Django backend logic and service interactions \\
+\hline
+Locust & Performance Testing & Load and stress testing of critical API endpoints under concurrent users \\
+\hline
+Neon PostgreSQL Tools & Integration Testing & Database inspection and validation of persisted test data \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Test Data Preparation}
+This subsection describes the preparation of test datasets used during validation activities. To ensure realistic testing conditions, representative data was manually prepared and incrementally injected into the database throughout the development and testing phases. The different categories of test data are listed in Table~\ref{tab:test_data_preparation}.
+\begin{table}[H]
+\centering
+\caption{Test Data Preparation}
+\label{tab:test_data_preparation}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{4.5cm}|p{10cm}|}
+\hline
+\textbf{Data Category} & \textbf{Description} \\
+\hline
+User Accounts & Test accounts representing both patients and doctors. \\
+\hline
+Appointment Records & Appointment datasets covering all lifecycle states: \texttt{PENDING}, \texttt{CONFIRMED}, \texttt{CANCELLED}, and \texttt{COMPLETED}. \\
+\hline
+Drug Datasets & Drug information derived from CNAM Tunisia sources and LECRAT classification references. \\
+\hline
+Risk Assessment Samples & Sample datasets used to validate the correctness of the XGBoost model outputs. \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\section{Unit Testing}
+
+Unit testing is the first validation phase of the Sahhty platform. It focuses on verifying the correctness of individual backend functions in complete isolation, with no database access or external service dependency. This phase ensures that the most critical low-level logic produces accurate and consistent results before any integration with other components takes place.
+
+\subsection{Objective}
+Unit testing validates isolated backend components of the Sahhty platform to ensure correct and reliable behavior under normal and edge-case conditions. A pytest-based strategy was adopted to verify critical business logic, authentication mechanisms, security operations, and medical processing routines independently from external dependencies.
+
+\subsection{Test Cases}
+This section presents the unit test cases executed to validate critical backend functionalities of the Sahhty platform, including business logic, authentication, security operations, and medical processing routines.
+
+\subsubsection{Test Case UT-001: Password Hashing Verification}
+
+This test case validates the password hashing mechanism in the Table \ref{tab:ut001} implemented by Django to ensure that user passwords are securely stored in encrypted form rather than plain text.
+
+\begin{table}[H]
+\centering
+\caption{UT-001 Password Hashing Verification}
+\label{tab:ut001}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{gray!20}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Verify secure password hashing using Django PBKDF2-SHA256 and ensure passwords are not stored in plain text. \\
+\hline
+Expected Result & The password is stored in hashed format starting with \texttt{pbkdf2\_sha256\$} and is never stored as plain text. \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: password hashing works correctly and produces a unique salted hash for each password. \\
+\hline
+Priority & Critical. \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case UT-002: OTP Expiration Validation}
+
+This test case validates the OTP expiration mechanism in the Table \ref{tab:ut002} to ensure that expired verification codes are rejected while valid codes remain accepted within the allowed time window.
+
+\begin{table}[H]
+\centering
+\caption{UT-002 OTP Expiration Validation}
+\label{tab:ut002}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{gray!20}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Validate the correctness of the OTP expiration logic by testing both an expired timestamp and a valid future timestamp \\
+\hline
+Expected Result & The system correctly identifies expired OTP codes and accepts valid ones within the 5-minute window \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: OTP expiration logic behaves correctly under all tested time conditions \\
+\hline
+Priority & Critical \\
+\hline
+\end{tabular}
+\end{table}
+\subsubsection{Test Case UT-003: AI Risk Note Generation}
+
+This test case validates the medical risk in the Table \ref{tab:ut003} note generation functionality by ensuring that abnormal patient measurements produce accurate clinical notes with the appropriate medical terminology and severity indicators.
+
+\begin{table}[H]
+\centering
+\caption{UT-003 AI Risk Note Generation}
+\label{tab:ut003}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{gray!20}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Validate medical risk note generation using abnormal vital signs and verify the correctness of the generated French clinical terminology \\
+\hline
+Expected Result & A dangerously high glucose input produces a note explicitly mentioning glycemia with the correct value and severity level \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: risk notes are generated correctly and reflect the appropriate medical indicators for each risk level \\
+\hline
+Priority & High \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case UT-004: Out-of-Range Measurement Direct Risk Escalation}
+
+This test case validates the direct risk escalation mechanism for abnormal glucose measurements, ensuring that dangerous values are immediately classified as HIGH risk without invoking the XGBoost model. The detailed results are presented in Table~\ref{tab:ut004}.
+\begin{table}[H]
+\centering
+\caption{UT-004 Out-of-Range Measurement Direct Risk Escalation}
+\label{tab:ut004}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{gray!20}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Validate that glucose measurements outside the predefined safety thresholds trigger an immediate HIGH risk classification without invoking the XGBoost prediction model \\
+\hline
+Safety Thresholds & Glucose values below 0.594 g/L or above 3.42 g/L are considered dangerous and require direct escalation \\
+\hline
+Test Inputs & Glucose values of 2.2 g/L and 0.25 g/L were used to simulate abnormal patient conditions \\
+\hline
+Expected Result & Both abnormal values trigger an immediate HIGH risk classification and bypass the AI prediction model entirely \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: dangerous glucose values were correctly intercepted before model inference, and HIGH risk alerts with appropriate clinical notes were generated \\
+\hline
+Priority & Critical \\
+\hline
+\end{tabular}
+\end{table}
+\subsection{Test Evidence}
+The implemented pytest unit testing suite and its execution results are presented in Figures~\ref{fig1} and~\ref{fig2}. The results confirm that all defined unit test cases were successfully executed and validated.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapter5/figures/test_unitaire.png}
+    \caption{Unit Testing Source Code (pytest suite)}
+    \label{fig1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapter5/figures/result_test_unitaire}
+    \caption{Unit Testing Execution Results: All Tests Passed}
+    \label{fig2}
+\end{figure}
+
+\section{Integration Testing}
+
+Integration testing is the second validation phase of the Sahhty platform. In this section, the interactions between system components are validated to ensure correct communication between APIs, authentication services, databases, and external notification channels such as email and FCM.
+\subsection{Objective}
+
+Integration testing aims to validate the interaction between the different modules of the Sahhty platform after unit-level verification. An incremental integration strategy was adopted using Django REST API endpoints tested with \texttt{pytest} and \texttt{APIClient}. The tests focus on verifying data flow between services, database consistency, authentication workflows, and communication with external systems such as email services, push notifications, and real-time communication channels. To isolate integration behavior, external dependencies including AI models and notification services were mocked during testing.
+\subsection{Test Cases}
+This section presents the integration test cases used to validate the interaction and communication between the different modules of the Sahhty platform.
+
+\subsubsection{Test Case INT-001: User Signup and OTP Verification Integration}
+
+This test case validates the integration between user registration, OTP generation, and email notification services. The detailed test results are presented in Table~\ref{tab:int001}.
+
+\begin{table}[H]
+\centering
+\caption{INT-001 User Signup and OTP Verification Integration}
+\label{tab:int001}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{blue!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Validates the full registration workflow including user creation, OTP generation, and email notification delivery \\
+\hline
+Expected Result & A new user account is created in an unverified state and an OTP verification email is successfully triggered \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: the registration process correctly triggers OTP generation and email dispatch, ensuring proper authentication flow initialization \\
+\hline
+Priority & Critical \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case INT-002: Appointment Creation and Notification Integration}
+
+This test case validates the integration between appointment creation, database persistence, and the notification delivery pipeline. The detailed test results are presented in Table~\ref{tab:int002}.
+
+\begin{table}[H]
+\centering
+\caption{INT-002 Appointment Creation and Notification Integration}
+\label{tab:int002}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{blue!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Ensures correct appointment creation and notification delivery.\\
+\hline
+Expected Result & Appointment is stored successfully and both doctor and patient receive notifications via the full notification pipeline \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: appointment creation and notification delivery operate correctly. (Issue AN-02 resolved before final validation; see Section~\ref{sec:anomalies}.) \\
+\hline
+Priority & Critical \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case INT-003: Treatment and Medication Analysis Integration}
+
+This test case validates the integration between treatment retrieval and medication analysis services. The detailed test results are presented in Table~\ref{tab:int003}.
+
+\begin{table}[H]
+\centering
+\caption{INT-003 Treatment and Medication Analysis Integration}
+\label{tab:int003}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{blue!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Verifies the integration between treatment retrieval and medication enrichment services, including interaction detection, allergy checking, and pregnancy risk analysis. \\
+\hline
+Expected Result & The system returns treatment data enriched with medication details, interaction warnings, and risk information when applicable. \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: treatment data is correctly enriched with interaction and risk analysis. \\
+\hline
+Priority & High. \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case INT-004: Measurement and Risk Assessment Integration}
+
+This test case validates the integration between measurement recording, AI-based risk prediction, and alert generation services. The detailed test results are presented in Table~\ref{tab:int004}.
+
+\begin{table}[H]
+\centering
+\caption{INT-004 Measurement and Risk Assessment Integration}
+\label{tab:int004}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{blue!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Validates the interaction between measurement recording, AI-based risk prediction, and alert generation services \\
+\hline
+Expected Result & A new measurement triggers risk evaluation using the AI model and generates alerts when high-risk conditions are detected \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: measurement processing correctly triggers the risk prediction model and alert system when required \\
+\hline
+Priority & Critical \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case INT-005: WebSocket Real-Time Notification Delivery}
+
+This test case validates the real-time delivery of WebSocket notifications for appointment requests and medical file access requests. The detailed test results are presented in Table~\ref{tab:int005}.
+
+\begin{table}[H]
+\centering
+\caption{INT-005 WebSocket Real-Time Notification Delivery}
+\label{tab:int005}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{blue!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Validates that WebSocket notifications are correctly delivered in real time for appointment requests and medical file access requests \\
+\hline
+Expected Result & Doctors receive \texttt{appointment\_request} events when appointments are created, while patients receive \texttt{access\_request} events when doctors request file access. Events must be delivered instantly while the recipient is connected \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: both WebSocket events were correctly delivered in real time with all expected payload fields properly populated \\
+\hline
+Priority & High \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case INT-006: FCM and Email Fallback Notification Delivery}
+
+This test case validates the fallback notification mechanism using FCM and email when the recipient is offline or the application is running in the background. The detailed test results are presented in Table~\ref{tab:int006}.
+
+\begin{table}[H]
+\centering
+\caption{INT-006 FCM and Email Fallback Notification Delivery}
+\label{tab:int006}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{blue!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Description & Validates that the notification pipeline falls back to FCM push notifications and email delivery when the recipient is offline or inactive \\
+\hline
+Expected Result & Appointment requests and medical file access requests trigger both FCM and email notifications regardless of WebSocket connectivity state \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: fallback notifications were successfully delivered through FCM and email in all tested offline scenarios \\
+\hline
+Priority & High \\
+\hline
+\end{tabular}
+\end{table}
+\subsection{Test Evidence}
+
+Figures~\ref{fig:integration_suite} and~\ref{fig:integration_results} present excerpts from the implemented integration test suite and the corresponding execution results, confirming the successful validation of all integration test cases.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{chapter5/figures/integration_test.png}
+\caption{Integration test suite}
+\label{fig:integration_suite}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{chapter5/figures/result_integration_test.png}
+\caption{Integration test results}
+\label{fig:integration_results}
+\end{figure}
+
+
+\section{Functional Testing}
+In this section, functional testing is performed to verify that the implemented features of the Sahhty platform behave according to the specified functional requirements, including authentication, appointment management, medical data handling, and AI-assisted risk assessment.
+
+\subsection{Objective}
+
+Functional testing aims to validate that the Sahhty platform behaves according to its specified functional requirements. The testing strategy is based on scenario-driven validation of the platform’s main features using REST API endpoints tested through Postman, Swagger UI, and automated pytest scenarios. The tests cover authentication, appointment management, treatments, medical files, measurements, and AI-assisted risk assessment, while verifying request validation, database consistency, access control, and error handling under realistic healthcare usage conditions.
+\subsection{Test Cases}
+This section presents the functional test cases used to validate the main features of the Sahhty platform, including both core system and medical functionalities.
+
+\subsubsection{Authentication and Appointment Features}
+The following test cases validate the authentication workflow, JWT-based access control, and the appointment lifecycle. These features represent the critical entry points of the Sahhty platform and directly impact user security and data integrity.
+
+\begin{table}[H]
+\centering
+\caption{Functional Test Cases: Core System 1}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{1.6cm}|p{3cm}|p{3.8cm}|p{1.6cm}|p{1.6cm}|p{1.7cm}|}
+\hline
+\rowcolor{green!10}
+\textbf{Test ID} & \textbf{Functionality} & \textbf{Expected Behavior} & \textbf{Priority} & \textbf{Method} & \textbf{Result} \\
+\hline
+CS-001 & User Signup & Account created and OTP email sent successfully & Critical & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-002 & Duplicate Email Rejection & System rejects registration with an already used email & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-003 & OTP Verification & Correct OTP validates account, wrong or expired OTP is rejected & Critical & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-004 & Expired OTP Handling & System detects expired OTP and sends a new verification code & High & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-005 & User Login & Only verified users receive JWT tokens upon correct credentials & Critical & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-006 & Login with Wrong Password & System returns error and increments failed attempt counter & Critical & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-007 & Account Lockout & Account is locked for 15 minutes after 5 consecutive failed login attempts & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-008 & Two-Factor Authentication & 2FA code is sent by email and must be validated before JWT is issued & Critical & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-009 & JWT Route Protection & Requests to protected routes without a valid token receive HTTP 401 & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Functional Test Cases: Core System 2}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{1.6cm}|p{3cm}|p{3.8cm}|p{1.6cm}|p{1.6cm}|p{1.7cm}|}
+\hline
+\rowcolor{green!10}
+\textbf{Test ID} & \textbf{Functionality} & \textbf{Expected Behavior} & \textbf{Priority} & \textbf{Method} & \textbf{Result} \\
+\hline
+CS-010 & Token Blacklisting after Logout & Blacklisted refresh tokens cannot be reused after logout & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-011 & Account Deletion Security & Only the account owner can delete their account, others receive HTTP 403 & High & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-012 & Appointment Creation & Appointment is created and stored with PENDING status & Critical & pytest & \textcolor{darkgreen}{PASSED}\textsuperscript{$\dagger$} \\
+\hline
+CS-013 & Doctor Double Booking Prevention & System rejects appointment if doctor already has one at the same time & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-014 & Patient Double Booking Prevention & System rejects appointment if patient already has one at the same time & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-015 & Appointment Confirmation & Doctor can confirm a PENDING appointment, status transitions to CONFIRMED & High & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-016 & Appointment Cancellation & Doctor or patient can cancel a PENDING or CONFIRMED appointment & High & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+CS-017 & Invalid Cancellation & System rejects cancellation of an already cancelled appointment & Medium & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+\end{tabular}
+\end{table}
+
+($\dagger$) Test CS-012 initially failed due to anomaly AN-05 (incorrect endpoint path). The issue was identified and resolved before final validation. See Section~\ref{sec:anomalies}.
+
+\normalsize
+
+\subsubsection{Medical System: Treatments, Files, Measurements, and AI Risk}
+The following test cases validate the medical data management features, including treatment handling, medical file operations, patient measurements, and the AI-based risk assessment pipeline. The detailed functional test cases are presented in Table~\ref{tab:medical_system_1}.
+\begin{table}[ht!]
+\centering
+\caption{Functional Test Cases: Medical System 1}
+\label{tab:medical_system_1}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{1.6cm}|p{3cm}|p{3.8cm}|p{1.6cm}|p{1.6cm}|p{1.7cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Test ID} & \textbf{Functionality} & \textbf{Expected Behavior} & \textbf{Priority} & \textbf{Method} & \textbf{Result} \\
+\hline
+MS-001 & Create Treatment with Schedule & Treatment and dose schedules are created and stored successfully & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-002 & Invalid Treatment Date & End date before start date is rejected with HTTP 400 & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-003 & Treatment Without Schedules & System rejects treatment creation with an empty schedule list & High & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-004 & Retrieve Patient Treatments & System returns all treatments with their associated schedules & High & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-005 & Delete Treatment & Treatment and its schedules are removed from the database & Medium & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-006 & Medication Search & System returns correct paginated results for valid search queries & Medium & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-007 & Short Query Rejection & Queries shorter than 2 characters are rejected with HTTP 400 & Low & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-008 & Medical File Upload & Valid files are uploaded and stored correctly & High & pytest & \textcolor{darkgreen}{PASSED}\textsuperscript{$\ddagger$}\\
+\hline
+MS-009 & Oversized File Rejection & Files exceeding 10MB are rejected with a validation error & High & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[ht!]
+\centering
+\caption{Functional Test Cases: Medical System 2}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{1.6cm}|p{3cm}|p{3.8cm}|p{1.6cm}|p{1.6cm}|p{1.8cm}|}
+\hline
+\textbf{Test ID} & \textbf{Functionality} & \textbf{Expected Behavior} & \textbf{Priority} & \textbf{Method} & \textbf{Result} \\
+\hline
+MS-010 & Invalid File Type Rejection & Files with unsupported formats are rejected by the system & High & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-011 & Doctor Medical Access Request & Doctor can request access to patient medical files and patient receives notification & High & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-012 & Duplicate Access Request Rejection & System rejects a second access request to the same patient & Medium & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-013 & Measurement Storage & New patient measurement is stored correctly in the database & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-014 & Insufficient Data Handling & System stores measurement and skips risk assessment when data is incomplete & High & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-015 & AI Risk Prediction Trigger & XGBoost model is triggered and produces a risk level when full data exists & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-016 & High Risk Alert Generation & System generates and sends an alert when the predicted risk level is HIGH & Critical & pytest & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-017 & Medication Interaction Detection & System detects drug interactions and returns the associated clinical guidance & Critical & Postman & \textcolor{darkgreen}{PASSED} \\
+\hline
+MS-018 & Drug Safety Classification & System returns trimester-specific drug safety classification with clinical recommendations & Critical & Postman & \textcolor{darkgreen}{PASSED}  \\\hline
+\end{tabular}
+\end{table}
+
+($\ddagger$) Test MS-008 initially failed due to anomaly AN-04 (uploaded files not rendering in the Flutter viewer). The issue was identified and resolved before final validation. See Section~\ref{sec:anomalies}.
+
+
+\subsection{Requirements Traceability Overview}
+
+All functional test cases were derived from the requirements defined in previous chapters. Table \ref{tab:traceability_func} presents the coverage across the main feature categories of the Sahhty platform.
+
+\begin{table}[H]
+\centering
+\caption{Functional Test Coverage Overview}
+\label{tab:traceability_func}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|>{\centering\arraybackslash}p{6cm}|
+                >{\centering\arraybackslash}p{3cm}|
+                >{\centering\arraybackslash}p{2cm}|
+                >{\centering\arraybackslash}p{2cm}|}
+\hline
+\textbf{Feature Category} & \textbf{Total Tests} & \textbf{Passed} & \textbf{Coverage} \\
+\hline
+Authentication and Security & 11 & 11 & 100\% \\
+\hline
+Appointment Management & 6 & 6 & 100\% \\
+\hline
+Treatment and Medication & 7 & 7 & 100\% \\
+\hline
+Medical Files and Access & 4 & 4 & 100\% \\
+\hline
+Measurements and AI Risk & 7 & 7 & 100\% \\
+\hline
+\textbf{Total} & \textbf{35} & \textbf{35} & \textbf{100\%} \\
+\hline
+\end{tabular}
+\end{table}
+%--------------------------------------------------
+\section{Security Testing}
+%--------------------------------------------------
+
+In this section, security testing is performed to validate the protection mechanisms of the Sahhty platform against unauthorized access, token misuse, brute-force attacks, and privilege escalation attempts.
+\subsection{Objective}
+Security testing aims to validate the effectiveness of the protection mechanisms implemented in the Sahhty platform against unauthorized access, token manipulation, brute-force attacks, and access control violations through simulated attack scenarios.
+
+\subsection{Security Mechanisms Overview}
+This step presents the main security mechanisms implemented in the Sahhty platform to protect authentication workflows, user accounts, and sensitive medical data. The implemented protection layers are summarized in Table~\ref{tab:security_summary}.
+\begin{table}[H]
+\centering
+\caption{Sahhty security mechanisms overview}
+\label{tab:security_summary}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{5cm}|p{8cm}|p{1.4cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Security Mechanism} & \textbf{Description} & \textbf{Status} \\
+\hline
+JWT Authentication & Signed access tokens (2h) and refresh tokens (1 day) & \textcolor{darkgreen}{Active} \\
+\hline
+Token Blacklisting & Refresh tokens invalidated immediately at logout & \textcolor{darkgreen}{Active} \\
+\hline
+Two-Factor Authentication & OTP code sent by email, valid for 10 minutes & \textcolor{darkgreen}{Active} \\
+\hline
+Email Verification & Account access blocked until email is confirmed & \textcolor{darkgreen}{Active} \\
+\hline
+Rate Limiting & Maximum 5 login attempts per minute per IP address & \textcolor{darkgreen}{Active} \\
+\hline
+Account Lockout & Account locked for 15 minutes after 10 failed attempts & \textcolor{darkgreen}{Active} \\
+\hline
+Doctor Manual Verification & Doctor accounts require admin approval before access & \textcolor{darkgreen}{Active} \\
+\hline
+Soft Delete & Accounts marked as deleted, login permanently blocked & \textcolor{darkgreen}{Active} \\
+\hline
+Patient Data Access Control & Doctor access to patient data requires explicit patient authorization & \textcolor{darkgreen}{Active} \\
+\hline
+File Upload Validation & Type and size validation on all uploaded medical files & \textcolor{darkgreen}{Active} \\
+\hline
+Role-Based Access Control & Account deletion and sensitive operations restricted by ownership & \textcolor{darkgreen}{Active} \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Test Cases}
+This subsection presents the security test cases executed to validate the protection mechanisms of the Sahhty platform against unauthorized access, authentication attacks, privilege escalation, and malicious file uploads.
+\subsubsection{Test Case SEC-001: Unauthenticated Access to Protected Endpoint}
+
+This test case validates that protected API endpoints cannot be accessed without valid JWT authentication credentials. The detailed test results are presented in Table~\ref{tab:sec001}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-001 Unauthenticated Access to Protected Endpoint}
+\label{tab:sec001}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & Critical \\
+\hline
+Precondition & No JWT token provided in the request headers \\
+\hline
+Steps & Send a DELETE request to \texttt{/users/auth/\{id\}/delete\_account/} without an Authorization header \\
+\hline
+Expected Result & HTTP 401 Unauthorized is returned \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: server correctly rejects the unauthenticated request with HTTP 401 \\
+\hline
+\end{tabular}
+\end{table}
+\subsubsection{Test Case SEC-002: Expired JWT Token}
+
+This test case validates that expired JWT tokens are correctly rejected when accessing protected endpoints. The detailed test results are presented in Table~\ref{tab:sec002}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-002 Expired JWT Token}
+\label{tab:sec002}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & Critical \\
+\hline
+Precondition & A JWT access token whose expiration date has passed \\
+\hline
+Steps & Use the expired token in the Authorization header to call a protected endpoint \\
+\hline
+Expected Result & HTTP 401 Unauthorized is returned \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: expired tokens are correctly detected and rejected by the JWT middleware \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case SEC-003: Token Blacklisting after Logout}
+
+This test case validates that refresh tokens are invalidated after user logout and cannot be reused. The detailed test results are presented in Table~\ref{tab:sec003}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-003 Token Blacklisting after Logout}
+\label{tab:sec003}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & Critical \\
+\hline
+Precondition & Authenticated user with a valid refresh token \\
+\hline
+Steps & Log out the user, then attempt to reuse the same refresh token to obtain a new access token \\
+\hline
+Expected Result & HTTP 401 Unauthorized is returned and the blacklisted token is rejected \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: refresh token is correctly blacklisted after logout and cannot be reused \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case SEC-004: Account Lockout after Brute Force Attempts}
+
+This test case validates the account lockout mechanism against brute-force login attempts. The detailed test results are presented in Table~\ref{tab:sec004}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-004 Account Lockout after Brute Force Attempts}
+\label{tab:sec004}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & Critical \\
+\hline
+Precondition & An active verified user account \\
+\hline
+Steps & Submit 9 consecutive incorrect password attempts, then attempt a 10th login \\
+\hline
+Expected Result & Account is locked for 15 minutes and subsequent attempts return HTTP 403 with a lockout message \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: account lockout is correctly enforced after repeated failed login attempts \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case SEC-005: Rate Limiting on Login Endpoint}
+
+This test case validates the rate-limiting mechanism against excessive login requests from the same IP address. The detailed test results are presented in Table~\ref{tab:sec005}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-005 Rate Limiting on Login Endpoint}
+\label{tab:sec005}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & High \\
+\hline
+Precondition & Active login endpoint accessible from the same IP address \\
+\hline
+Steps & Submit more than 5 login requests per minute from the same IP address \\
+\hline
+Expected Result & HTTP 429 Too Many Requests is returned after the 5th attempt \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: excessive login requests are correctly blocked with HTTP 429 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case SEC-006: Cross-User Data Access (Horizontal Privilege Escalation)}
+
+This test case validates access control enforcement against unauthorized cross-user operations. The detailed test results are presented in Table~\ref{tab:sec006}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-006 Cross-User Data Access}
+\label{tab:sec006}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & Critical \\
+\hline
+Precondition & Authenticated as User A \\
+\hline
+Steps & Attempt to delete User B's account while authenticated as User A \\
+\hline
+Expected Result & HTTP 403 Forbidden is returned \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: ownership validation correctly blocks unauthorized cross-user deletion \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case SEC-007: Unverified Doctor Login Blocked}
+
+This test case validates that doctor accounts pending administrator approval cannot access the platform. The detailed test results are presented in Table~\ref{tab:sec007}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-007 Unverified Doctor Login Blocked}
+\label{tab:sec007}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & Critical \\
+\hline
+Precondition & Doctor account with \texttt{is\_doctor\_verified = False} \\
+\hline
+Steps & Attempt to login using valid credentials of the unverified doctor account \\
+\hline
+Expected Result & HTTP 400 is returned and access is denied until admin verification \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: unverified doctor accounts are correctly blocked from accessing the platform (Issue AN-03 resolved before final validation; see Section~\ref{sec:anomalies}) \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case SEC-008: Soft Delete Prevents Login}
+
+This test case validates that soft-deleted accounts can no longer authenticate. The detailed test results are presented in Table~\ref{tab:sec008}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-008 Soft Delete Prevents Login}
+\label{tab:sec008}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & High \\
+\hline
+Precondition & Soft-deleted account with \texttt{is\_deleted = True} \\
+\hline
+Steps & Attempt to login using the original credentials of the deleted account \\
+\hline
+Expected Result & Login fails because the account is no longer active \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: soft-deleted accounts are correctly prevented from authenticating \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Test Case SEC-009: 2FA Account Lockout}
+
+This test case validates the lockout mechanism applied to repeated failed 2FA verification attempts. The detailed test results are presented in Table~\ref{tab:sec009}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-009 2FA Account Lockout}
+\label{tab:sec009}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & High \\
+\hline
+Precondition & User with 2FA enabled after successful password verification \\
+\hline
+Steps & Submit 9 consecutive incorrect 2FA codes \\
+\hline
+Expected Result & Account is locked for 15 minutes and HTTP 403 is returned \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: lockout protection is correctly enforced on the 2FA verification endpoint \\
+\hline
+\end{tabular}
+\end{table}
+\subsubsection{Test Case SEC-010: Medical File Upload Validation}
+
+This test case validates file upload protection mechanisms against oversized and unsupported files. The detailed test results are presented in Table~\ref{tab:sec010}.
+
+\begin{table}[H]
+\centering
+\caption{SEC-010 Medical File Upload Validation}
+\label{tab:sec010}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{13cm}|}
+\hline
+\rowcolor{red!10}
+
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+Priority & High \\
+\hline
+Precondition & Authenticated patient account \\
+\hline
+Steps & Attempt to upload a file larger than 10 MB and an executable file with a forged extension \\
+\hline
+Expected Result & Invalid uploads are rejected with HTTP 400; only supported file formats under 10 MB are accepted \\
+\hline
+Actual Result & \textbf{\textcolor{darkgreen}{PASSED}}: file size and type validation correctly reject all non-compliant uploads \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Security Test Results Overview}
+
+Table~\ref{tab:security_results} summarizes the execution results of all security test cases performed on the Sahhty platform.
+
+\begin{table}[H]
+\centering
+\caption{Security Test Results Overview}
+\label{tab:security_results}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{2cm}|p{9cm}|p{2cm}|p{1.8cm}|}
+\hline
+\rowcolor{red!10}
+
+\textbf{Test ID} & \textbf{Scenario} & \textbf{Priority} & \textbf{Result} \\
+\hline
+SEC-001 & Unauthenticated access to protected endpoint & Critical & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-002 & Expired JWT token rejection & Critical & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-003 & Token blacklisting after logout & Critical & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-004 & Account lockout after 9 failed login attempts & Critical & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-005 & Rate limiting on login endpoint & High & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-006 & Cross-user account deletion blocked & Critical & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-007 & Unverified doctor login blocked & Critical & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-008 & Soft delete prevents future login & High & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-009 & 2FA account lockout after failed attempts & High & \textcolor{darkgreen}{PASSED} \\
+\hline
+SEC-010 & Medical file upload validation & High & \textcolor{darkgreen}{PASSED} \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Performance Testing}
+
+In this section, performance testing is conducted to evaluate the stability, responsiveness, and scalability of the Sahhty platform under concurrent user load conditions.
+\subsection{Objective}
+Performance testing aims to evaluate the behavior and stability of the Sahhty
+platform under concurrent usage conditions. The goal is to determine the
+system's capacity to handle simultaneous requests while maintaining acceptable
+response times and error rates.
+
+\subsection{Testing Configuration}
+
+Performance tests were conducted using \textbf{Locust 2.x}, a Python-based load testing framework used to simulate concurrent users and evaluate API performance under increasing load conditions. The complete testing configuration is presented in Table~\ref{tab:testing_config}.
+
+\begin{table}[H]
+\centering
+\caption{Performance Testing Configuration}
+\label{tab:testing_config}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{2.5cm}|p{13cm}|}
+\hline
+\rowcolor{orange!20}
+\textbf{Parameter} & \textbf{Configuration} \\
+\hline
+Tool & Locust 2.x (Python-based load testing framework) \\
+\hline
+Target Endpoints &
+\texttt{POST /users/auth/signin/} \newline
+\texttt{GET /patients/PatientService/get\_patient\_by\_id} \newline
+\texttt{GET /measurements/MeasurementService/get\_latest\_measurements} \newline
+\texttt{GET /appointments/AppointmentService/get\_patient\_appointments} \\
+\hline
+Authentication & JWT token obtained per virtual user via \texttt{on\_start()} login flow \\
+\hline
+Ramp-up & 5--10 users per second \\
+\hline
+Test Duration & 60 seconds per iteration \\
+\hline
+Test Iterations & 10, 25, 50, 100, 250 concurrent users \\
+\hline
+Environment & Local Django development server with local PostgreSQL instance to isolate application-level performance from external network latency \\
+\hline
+Rate Limiting & Temporarily disabled on the authentication endpoint during load testing to isolate infrastructure performance from application-level security controls \\
+\hline
+\end{tabular}
+\end{table}
+\subsection{Load Test Results}
+The load testing results evaluate the behavior of the Sahhty platform under increasing concurrent user activity by measuring response time, throughput, and error rate. The detailed performance metrics and their graphical representation are presented in Table~\ref{tab:load_results} and Figure~\ref{fig:performance_chart}.
+\begin{table}[H]
+\centering
+\caption{System performance under increasing concurrent user load}
+\label{tab:load_results}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\rowcolor{orange!20}
+\textbf{Concurrent Users} & \textbf{Avg Response Time} & \textbf{Error Rate} & \textbf{Throughput} & \textbf{Status} \\
+\hline
+10  & 17 ms   & 0\%    & 4.7 req/s  & Stable   \\
+\hline
+25  & 23 ms   & 0\%    & 11.8 req/s & Stable   \\
+\hline
+50  & 314 ms  & 0\%    & 20.8 req/s & Degraded \\
+\hline
+100 & 1724 ms & 3.7\%  & 23.1 req/s & Critical \\
+\hline
+250 & 4474 ms & 13.9\% & 15.0 req/s & Critical \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapter5/figures/performance_chart.png}
+    \caption{Performance test results}
+    \label{fig:performance_chart}
+\end{figure}
+\subsection{Performance Analysis}
+The load testing results reveal the behavior of the Sahhty platform under different levels of concurrent user activity. The analysis highlights system stability under normal conditions, the beginning of performance degradation under moderate load, and critical limitations under heavy traffic conditions.
+
+\begin{itemize}
+    \item \textbf{Stable phase  (10--25 users):} The platform maintains average
+    response times below 25\,ms with a zero error rate, confirming reliable
+    and efficient performance under normal expected usage conditions.
+    Throughput scales linearly from 4.7 to 11.8 req/s.
+
+    \item \textbf{Degradation phase (50 users):} Average response time rises
+    to 314\,ms while the error rate remains at 0\%, indicating the system
+    begins to experience queuing pressure on Django worker threads.
+    Throughput continues to grow to 20.8 req/s but response time
+    variability increases significantly at the 95th percentile (2400\,ms).
+
+    \item \textbf{Critical phase (100--250 users):} At 100 concurrent users,
+    average response time reaches 1724\,ms with an error rate of 3.7\%,
+    caused by Django worker exhaustion and database connection saturation.
+    At 250 users, the system experiences severe latency averaging 4474\,ms,
+    an error rate of 13.9\%, and connection refusal errors, confirming
+    the need for horizontal scaling and connection pooling for
+    production deployment.
+
+    \item \textbf{Note on observed degradation:} The sharp increase in average
+    response time from 23\,ms at 25 users to 314\,ms at 50 users is
+    primarily attributed to the single-threaded nature of Django's
+    built-in development server, which processes one request at a time.
+    Under concurrent load, requests begin queuing behind each other,
+    causing latency to multiply rapidly. Additionally, the
+    \texttt{POST /users/auth/signin/} endpoint contributes inherently
+    higher latency at all load levels due to bcrypt password hashing,
+    which is independent of infrastructure capacity. These results
+    represent application-level baseline benchmarks under development
+    server constraints and should not be extrapolated to production capacity.
+\end{itemize}
+
+\textbf{Limitations and Recommendations:}
+\begin{itemize}
+    \item Optimize the authentication flow to reduce response time
+    under high concurrent usage conditions.
+    \item Introduce a caching strategy for frequently accessed medical
+    data to improve overall system responsiveness.
+    \item Strengthen the platform's capacity to handle a higher number
+    of simultaneous users to support future growth.
+    \item Consider a more scalable architecture for the notification
+    system to ensure reliable delivery under heavy load conditions.
+\end{itemize}
+
+%--------------------------------------------------
+\section{Detected Anomalies and Applied Corrections}
+\label{sec:anomalies}
+In this section, the anomalies identified during the testing and validation process are presented along with their root causes, impact on the system, and the corrective actions applied before final validation. Table~\ref{anomalies} summarizes the detected issues and their corresponding resolutions.
+
+\begin{table}[H]
+\centering
+\caption{Detected anomalies and corresponding corrective actions}
+\label{anomalies}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{0.8cm}|p{2.2cm}|p{2cm}|p{1.7cm}|p{2.3cm}|p{1.5cm}|p{1.2cm}|}
+\hline
+\textbf{ID} & \textbf{Symptom} & \textbf{Root Cause} & \textbf{Impact} & \textbf{Correction} & \textbf{Related Test} & \textbf{Status} \\
+\hline
+AN-01 & Frontend calling incorrect API URLs returning HTTP 404 & Hardcoded service class names used as URL paths in Flutter client & All service calls fail & Corrected all endpoint constants in Flutter API client to match backend URL patterns & CS-001, CS-005 & \textcolor{darkgreen}{Fixed} \\
+\hline
+AN-02 & FCM device registration returns HTTP 401 on app launch & FCM token sent before JWT authentication is completed & Device not registered for push notifications & Moved FCM token registration to post-login flow after valid JWT is obtained & INT-002 & \textcolor{darkgreen}{Fixed} \\
+\hline
+AN-03 & Doctor account creation returns HTTP 400 with invalid user ID & Flutter sent \texttt{user\_id: 0}; user ID not correctly read from JWT payload & Doctor account creation fails & Fixed JWT payload parsing to correctly extract \texttt{user\_id} from decoded token & SEC-007 & \textcolor{darkgreen}{Fixed} \\
+\hline
+AN-04 & Medical file figures not opening in Flutter viewer & Files served via Django media URL but Flutter viewer could not resolve local IP address & Patient cannot view uploaded files & Replaced (url\_launcher) with embedded (Interactive-Viewer) for in-app display & MS-008 & \textcolor{darkgreen}{Fixed} \\
+\hline
+AN-05 & Appointment list returns HTTP 404 on first load & Frontend called a non-existent endpoint path & Appoin-tment screen empty & Corrected endpoint to match backend router registration & CS-012 & \textcolor{darkgreen}{Fixed} \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\section{Requirements Traceability Matrix}
+In this section, a requirements traceability matrix is presented to establish the relationship between the functional requirements of the Sahhty platform and their corresponding test cases, ensuring complete validation coverage. The detailed traceability mapping is presented in Table~\ref{traceability_matrix}. Overall, \textbf{14 functional requirements} were successfully validated through \textbf{55 test cases}.
+
+
+\begin{longtable}{|p{0.8cm}|p{3.5cm}|p{4cm}|p{2.5cm}|p{1.7cm}|}
+\caption{Requirements Traceability Matrix (Part 1)}
+\label{traceability_matrix} \\
+\hline
+\textbf{ID} & \textbf{Requirement} & \textbf{Test Cases} & \textbf{Expected Outcome} & \textbf{Status} \\
+\hline
+\endfirsthead
+
+\multicolumn{5}{c}%
+{{\tablename\ \thetable{} Requirements Traceability Matrix (Part 2)}} \\
+\hline
+\textbf{ID} & \textbf{Requirement} & \textbf{Test Cases} & \textbf{Expected Outcome} & \textbf{Status} \\
+\hline
+\endhead
+
+% ---------------- CORE FUNCTIONAL REQUIREMENTS ----------------
+
+FR1 & User registration and OTP verification & UT-001, UT-002, INT-001, CS-001, CS-002, CS-003, CS-004 & Account created, OTP validated & \textcolor{darkgreen}{Validated} \\
+\hline
+FR2 & Secure authentication with JWT and 2FA & CS-005, CS-006, CS-008, CS-009, CS-010, SEC-001, SEC-002, SEC-003 & Login authorized only for verified users & \textcolor{darkgreen}{Validated} \\
+\hline
+FR3 & Role-based access control & CS-011, SEC-006, SEC-007 & Unauthorized access blocked & \textcolor{darkgreen}{Validated} \\
+\hline
+FR4 & Account protection mechanisms & CS-007, SEC-004, SEC-005, SEC-009 & Brute force and rate limiting enforced & \textcolor{darkgreen}{Validated} \\
+\hline
+FR5 & Appointment management & CS-012, CS-013, CS-014, CS-015, CS-016, CS-017, INT-002 & Appointments created, conflicts detected & \textcolor{darkgreen}{Validated} \\
+\hline
+FR6 & Treatment and medication management & MS-001, MS-002, MS-003, MS-004, MS-005, MS-006, MS-007, MS-017, MS-018, INT-003 & Treatments stored with schedules and interactions detected & \textcolor{darkgreen}{Validated} \\
+\hline
+FR7 & Medical file upload and access control & MS-008, MS-009, MS-010, MS-011, MS-012, SEC-010 & Valid files stored, invalid files rejected & \textcolor{darkgreen}{Validated} \\
+\hline
+FR8 & Health measurement recording & MS-013, MS-014, INT-004 & Measurements stored and associated to patient & \textcolor{darkgreen}{Validated} \\
+\hline
+FR9 & AI-based pregnancy risk assessment & UT-003, UT-004, MS-015, INT-004 & XGBoost model triggered and produces risk level & \textcolor{darkgreen}{Validated} \\
+\hline
+FR10 & Alert generation for high-risk patients & MS-016, INT-004 & Alerts generated when risk level is HIGH & \textcolor{darkgreen}{Validated} \\
+\hline
+FR11 & Multi-channel notification system & INT-001, INT-002, INT-005, INT-006 & Notifications delivered across all channels & \textcolor{darkgreen}{Validated} \\
+\hline
+FR12 & Doctor verification by admin & SEC-007 & Unverified doctors blocked from platform & \textcolor{darkgreen}{Validated} \\
+\hline
+FR13 & Soft delete and account deactivation & SEC-008, CS-011 & Deleted accounts cannot authenticate & \textcolor{darkgreen}{Validated} \\
+\hline
+FR14 & Performance under normal concurrent load & Performance tests (20--100 users) & Response time $\leq$ 350 ms, error rate $\approx$ 0\% & \textcolor{darkgreen}{Validated} \\
+\hline
+\end{longtable}
+
+
+\section{Conclusion}
+
+This chapter presented the testing and validation process carried out on the Sahhty platform to evaluate its reliability, correctness, security, and performance. Different testing phases were conducted, including unit testing, integration testing, functional testing, security testing, and performance testing, in order to validate both the functional and non-functional aspects of the system.
+
+The obtained results confirmed the correct operation of the platform’s main features and verified the effectiveness of the implemented security and communication mechanisms. In addition, the detected anomalies were identified and corrected during the validation process, contributing to the improvement of the platform’s stability and robustness.
+
+The conducted validation process demonstrates that the Sahhty platform satisfies the specified requirements and provides a reliable foundation for deployment in real-world healthcare environments.

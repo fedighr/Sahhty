@@ -1,0 +1,760 @@
+\chapter{Machine Learning-Based Maternal Risk Prediction and the Medication Management Module}
+\label{chap:MCMMC}
+\section{Introduction}
+
+This chapter presents two major components of the Sahhty platform. The first component focuses on maternal risk prediction using machine learning techniques to identify patients at different risk levels based on clinical and physiological indicators. The second component describes the Medication Module, which provides medication management, treatment follow-up, allergy verification, and pregnancy safety assessment functionalities. Together, these components contribute to a more intelligent and secure healthcare support system for pregnant women.
+
+
+\section{Medical Risk Level Prediction}
+
+This section presents the development of a supervised machine learning model designed to predict maternal risk levels based on physiological and clinical indicators.
+
+The proposed approach covers the complete machine learning workflow, including data preprocessing, exploratory data analysis, feature selection, model training, and performance evaluation. The target variable, RiskLevel, is predicted using several health-related attributes, namely age, systolic blood pressure, diastolic blood pressure, blood glucose level (BS), body temperature, and heart rate.
+
+Several classification algorithms were trained and compared to identify the most suitable model for risk prediction. The objective is to provide an automated decision-support mechanism capable of classifying patients into different risk categories and assisting healthcare professionals in monitoring maternal health more effectively.
+
+\subsection{Methodology}
+
+The maternal risk prediction model was developed using the Maternal Health Risk Data dataset \cite{maternal_health_dataset}. This dataset contains physiological measurements collected from hospitals, community clinics, and maternal healthcare centers through an IoT-based monitoring system. It includes attributes such as age, systolic blood pressure, diastolic blood pressure, blood glucose level (BS), body temperature, heart rate, and the corresponding maternal risk level (RiskLevel), which serves as the target variable for classification.
+
+\subsection{Feature Models}
+
+To improve the analysis, a few additional health indicators were created from the existing patient measurements. These indicators help provide a clearer picture of a patient's condition. Figure~\ref{fig:feature_engineering} shows the function used to create these additional features.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/rapp1.png}
+    \caption{Implementation of the \texttt{add\_features} function}
+    \label{fig:feature_engineering}
+\end{figure}
+
+The following features were added:
+
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+    \item \textbf{PulsePressure}: the difference between systolic and diastolic blood pressure.
+
+    \item \textbf{MAP (Mean Arterial Pressure)}: an estimate of the average blood pressure during one heartbeat cycle.
+
+    \item \textbf{ShockIndex}: a measure obtained by dividing heart rate by systolic blood pressure.
+
+    \item \textbf{TempHigh} and \textbf{BS\_High}: indicators showing whether body temperature or blood sugar level is above the normal range.
+
+    \item \textbf{AgeGroup}: patients were grouped into age ranges instead of using their exact age.
+\end{list}
+
+These additional features provide useful health information that complements the original data and may help improve prediction results. They were generated separately for the training and testing datasets to ensure a fair evaluation of the models.
+
+
+
+
+
+\subsection{Model Selection and Training}
+
+To predict maternal health risks, four machine learning models were tested and compared. These models were chosen because they use different methods to make predictions. Figure~\ref{fig:classification_models} shows the models used in this study.
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[t]{0.25\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/LR.png}
+        \caption{Logistic Regression}
+        \label{fig:logistic_regression}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.25\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/SVM.png}
+        \caption{SVM}
+        \label{fig:svm_model}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.25\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/RF.png}
+        \caption{Random Forest}
+        \label{fig:random_forest}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.25\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/XG.png}
+        \caption{XGBoost}
+        \label{fig:xgboost}
+    \end{subfigure}
+
+    \caption{Machine learning models used for maternal risk prediction.}
+    \label{fig:classification_models}
+\end{figure}
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+    \item \textbf{Logistic Regression} \cite{cox1958logistic}: a simple model that estimates the probability of a patient belonging to a specific risk group. It was used as a baseline model.
+
+    \item \textbf{Support Vector Machine (SVM)} \cite{cortes1995support}: a model that separates patients into different risk groups based on their characteristics.
+
+    \item \textbf{Random Forest} \cite{breiman2001random}: a model that combines the results of many decision trees to make a final prediction.
+
+    \item \textbf{XGBoost} \cite{chen2016xgboost}: a model that builds a series of decision trees, where each new tree improves on the mistakes of the previous ones.
+
+\end{list}
+
+All models were trained and tested using the same data to ensure a fair comparison. Different settings were tested for each model to find the configuration that produced the best results.
+
+
+
+\subsection{Comparative Analysis and Model Selection}
+This section presents a detailed comparison of the four evaluated models: Logistic Regression, Support Vector Machine (SVM), Random Forest, and XGBoost. The obtained results are analyzed to highlight the strengths and limitations of each approach and to justify the selection of the final model integrated into the Sahhty platform.
+\subsubsection{Performance Metrics}
+
+The trained models were evaluated using two complementary performance metrics: Accuracy and Macro F1-score. These metrics were selected to assess both the overall classification performance and the model's ability to correctly predict each risk category.
+
+\paragraph{Accuracy:}
+
+Accuracy measures the proportion of correctly classified instances among all predictions. It is defined as:
+
+\begin{equation}
+Accuracy = \frac{TP + TN}{TP + TN + FP + FN}
+\end{equation}
+
+where:
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}    \item $TP$ denotes True Positives,
+    \item $TN$ denotes True Negatives,
+    \item $FP$ denotes False Positives,
+    \item $FN$ denotes False Negatives.
+\end{list}
+
+Although accuracy provides a global measure of performance, it may not fully reflect the model's effectiveness when the class distribution is imbalanced.
+
+\paragraph{Macro F1-Score:}
+
+To obtain a more balanced evaluation across the three maternal risk categories (low risk, mid risk, and high risk), the Macro F1-score was also considered. The F1-score combines precision and recall into a single metric:
+
+\begin{equation}
+F1 = 2 \times \frac{Precision \times Recall}
+{Precision + Recall}
+\end{equation}
+
+where:
+
+\begin{equation}
+Precision = \frac{TP}{TP + FP}
+\end{equation}
+
+\begin{equation}
+Recall = \frac{TP}{TP + FN}
+\end{equation}
+
+For a multi-class classification problem, the Macro F1-score is computed by calculating the F1-score for each class independently and then averaging the results:
+
+\begin{equation}
+MacroF1 = \frac{1}{N}\sum_{i=1}^{N}F1_i
+\end{equation}
+
+where $N$ represents the number of classes and $F1_i$ is the F1-score of class $i$.
+
+The Macro F1-score gives equal importance to each class regardless of its frequency in the dataset, making it particularly suitable for evaluating maternal risk prediction models.
+
+\subsubsection{Experimental Configuration}
+
+To ensure a fair and reproducible evaluation, the dataset was divided into separate training and testing subsets. The partitioning strategy adopted in this study is summarized in Table~\ref{tab:data_split}. The training set 70\% was used to train the machine learning models, while the test set 30\% was reserved for evaluating their performance on unseen data. Stratified sampling was applied to maintain the same proportion of maternal risk categories in both subsets, ensuring that each risk class was adequately represented. A random state of 42 was used to guarantee that the data split remains consistent and reproducible across different experiments.
+
+\begin{table}[H]
+\centering
+\caption{Dataset partitioning}
+\label{tab:data_split}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+Training set & 70\% \\
+\hline
+Test set & 30\% \\
+\hline
+Sampling strategy & Stratified sampling \\
+\hline
+Random state & 42 \\
+\hline
+\end{tabular}
+\end{table}
+
+In addition, the machine learning models were configured using a set of key hyperparameters selected to balance predictive performance and generalization capability. The most important hyperparameters used for each model are presented in Table~\ref{tab:model_hyperparameters}.
+
+\begin{table}[H]
+\centering
+\caption{Main hyperparameters used for the evaluated models}
+\label{tab:model_hyperparameters}
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Model} & \textbf{Hyperparameter} & \textbf{Description} \\
+\hline
+
+\multirow{2}{*}{Logistic Regression}
+& max\_iter = 4000
+& Number of training iterations. \\
+\cline{2-3}
+& class\_weight = balanced
+& Gives equal importance to all risk classes. \\
+\hline
+
+\multirow{3}{*}{SVM}
+& kernel = RBF
+& Allows the model to learn complex patterns. \\
+\cline{2-3}
+& C = 3.0
+& Controls model flexibility. \\
+\cline{2-3}
+& class\_weight = balanced
+& Gives equal importance to all risk classes. \\
+\hline
+
+\multirow{4}{*}{Random Forest}
+& n\_estimators = 400
+& Number of trees used for prediction. \\
+\cline{2-3}
+& max\_depth = 14
+& Maximum depth of each tree. \\
+\cline{2-3}
+& min\_samples\_split = 4
+& Minimum number of samples required to create a split. \\
+\cline{2-3}
+& class\_weight = balanced
+& Gives equal importance to all risk classes. \\
+\hline
+
+\multirow{5}{*}{XGBoost}
+& n\_estimators = 600
+& Number of trees built during training. \\
+\cline{2-3}
+& max\_depth = 5
+& Maximum depth of each tree. \\
+\cline{2-3}
+& learning\_rate = 0.05
+& Controls the learning speed of the model. \\
+\cline{2-3}
+& colsample\_bytree = 0.7
+& Percentage of features used by each tree. \\
+\cline{2-3}
+& reg\_lambda = 2
+& Helps reduce overfitting and improve robustness. \\
+\hline
+
+\end{tabular}
+\end{table}
+
+
+
+
+
+
+
+
+\subsection{Model Comparison}
+This section presents a detailed comparison of the evaluated models, analyzes their strengths and limitations, and justifies the selection of the final model adopted for integration into the Sahhty platform.
+\subsubsection{Accuracy Analysis}
+
+Accuracy measures the percentage of instances that were correctly classified by the model. Figure~\ref{accuracy_comparison} presents the accuracy obtained by the four evaluated models. XGBoost achieved the highest accuracy, reaching approximately 84\%, followed by Random Forest with 81\%. SVM and Logistic Regression obtained lower accuracies of approximately 71\% and 66\%, respectively.
+
+These results indicate that ensemble-based approaches are more effective at capturing the relationships between the clinical variables used for maternal risk prediction.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Médicaments&MachineLearning/figures/rapp2.png}
+    \caption{Accuracy comparison between the evaluated models}
+    \label{accuracy_comparison}
+\end{figure}
+
+\subsubsection{Macro F1-Score Analysis}
+
+While accuracy provides an overall measure of performance, it does not always reflect how well a model performs on each risk category. Therefore, the Macro F1-score was also used for evaluation. Figure~\ref{fig:f1_comparison} compares the Macro F1-scores of the different models.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Médicaments&MachineLearning/figures/rapp3.png}
+    \caption{Macro F1-score comparison between the evaluated models}
+    \label{fig:f1_comparison}
+\end{figure}
+
+XGBoost achieved the highest Macro F1-score, reaching approximately 0.85. Random Forest followed with a score of 0.82, while SVM and Logistic Regression obtained lower scores of about 0.71 and 0.66, respectively.
+
+These results indicate that XGBoost provides the most balanced performance across all maternal risk categories, including classes with fewer samples.
+
+
+
+Based on the results obtained for both evaluation metrics, XGBoost was selected as the final model for maternal risk prediction.
+
+From a quantitative perspective, XGBoost achieved the highest accuracy (\textbf{84\%}) and Macro F1-score (\textbf{85\%}), outperforming all competing algorithms. These results demonstrate its ability to provide both accurate predictions and balanced performance across the different risk categories.
+
+From a methodological perspective, XGBoost effectively captures complex and non-linear relationships between clinical variables. By sequentially constructing decision trees and correcting previous prediction errors, the algorithm can model interactions among factors such as age, blood pressure, blood glucose level, body temperature, and heart rate.
+
+Consequently, XGBoost was retained as the most suitable model for maternal risk prediction, offering the best balance between predictive performance and the ability to learn complex clinical patterns.
+
+\subsubsection{Performance Analysis}
+
+To provide a more comprehensive evaluation, Figure~\ref{fig:summary_table} summarizes the performance obtained by the four classification models on the test dataset, which contains 305 samples. The table reports the number of correctly classified instances (Matched), the corresponding classification rate (Match \%), Accuracy, Macro F1-score, Weighted F1-score, and the F1-scores computed for each risk category (High, Low, and Medium).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/rapp5.png}
+    \caption{Model performance on the test dataset}
+    \label{fig:summary_table}
+\end{figure}
+
+The results show that \textbf{XGBoost} achieved the best overall performance, correctly classifying 256 out of 305 samples, corresponding to a classification rate of approximately 83.9\%. It also obtained the highest Accuracy (0.8393) and Macro F1-score (0.8457), indicating strong and balanced predictive performance across all risk categories.
+
+\textbf{Random Forest} ranked second, with 248 correctly classified samples and a classification rate of approximately 81.3\%. Its Accuracy (0.8131) and Macro F1-score (0.8205) remained close to those of XGBoost, confirming the effectiveness of tree-based ensemble methods for maternal risk prediction.
+
+\textbf{Support Vector Machine (SVM)} achieved moderate performance, correctly classifying 216 samples and reaching an Accuracy of 0.7082. Although the model performed reasonably well for the high-risk category (F1 = 0.8795), its lower Macro F1-score (0.7110) indicates reduced effectiveness across all classes.
+
+Finally, \textbf{Logistic Regression} produced the lowest performance among the evaluated models. It correctly classified 201 samples, corresponding to an Accuracy of 0.6590 and a Macro F1-score of 0.6592. These results suggest that a linear classifier is less capable of capturing the complex relationships present in maternal health data.
+
+A detailed examination of the class-specific F1-scores further highlights the superiority of XGBoost. The model achieved an F1-score of 0.9161 for the High Risk class, which is the most clinically important category because it corresponds to patients requiring immediate medical attention. Additionally, XGBoost maintained strong performance for the Low Risk (0.8421) and Medium Risk (0.7788) classes, demonstrating balanced predictive capability across all maternal risk levels.
+
+These results show that XGBoost achieved the best performance and was selected for integration into the Sahhty platform.
+
+\subsection{Classification Analysis}
+
+In addition to the overall evaluation metrics, a classification report was used to examine the model's performance for each maternal risk category. Figure~\ref{fig:xgboost_report} shows the results obtained by the XGBoost model.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{Médicaments&MachineLearning/figures/rapp4.png}
+    \caption{Detailed classification report of the selected XGBoost model.}
+    \label{fig:xgboost_report}
+\end{figure}
+
+The results show that XGBoost performed well across all risk levels. For the High Risk category, the model achieved an F1-score of 0.9161, indicating that it was able to correctly identify most patients who require urgent medical attention.
+
+This is particularly important in healthcare, where missing a high-risk patient can lead to serious consequences. The strong performance of the model on this category suggests that it can identify high-risk cases while limiting incorrect predictions.
+
+The model also produced good results for the Low Risk and Medium Risk categories, with F1-scores of 0.8421 and 0.7788, respectively. Overall, these results show that the model provides reliable predictions for all maternal risk groups while maintaining strong performance on the most critical cases.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/rapp6.png}
+    \caption{Predictions obtained on a validation sample using the XGBoost model (Accuracy = 91.3\%).}
+    \label{fig:sample_predictions}
+\end{figure}
+
+To further assess the generalization capability of the selected model, an additional validation was performed on a subset of unseen samples. Figure~\ref{fig:sample_predictions} presents a selection of validation instances together with their actual and predicted risk levels.
+
+For each patient record, the model predicts one of the three risk categories (Low, Medium, or High Risk) based on physiological measurements such as age, blood pressure, and blood glucose level. The comparison between the actual and predicted labels shows that most samples were correctly classified.
+
+The validation process achieved an accuracy of approximately \textbf{91.3\%}, indicating that the model is capable of maintaining strong predictive performance on previously unseen data. Only a small number of misclassifications were observed, mainly involving confusion between adjacent risk categories, which is expected in practical clinical datasets where class boundaries may overlap.
+
+These results demonstrate that the selected XGBoost model generalizes effectively beyond the training data and can reliably support maternal risk assessment in real-world scenarios.
+
+
+
+\section{Medication Module}
+
+The Medication Module is one of the core components of the Sahhty application. It is designed to support medication management and therapeutic follow-up for pregnant women by providing access to reliable medication information and safety-related recommendations. The module enables users to search for medications, assess their safety during pregnancy, detect potential drug interactions, manage treatment plans, and receive medication reminders.
+
+This section presents the design and implementation of the Medication Module. It first describes the medical data sources used to build the medication repository and support safety analyses. It then explains the data collection and processing mechanisms, the data models adopted to represent medications and treatments, and the main functionalities offered by the module, including pregnancy risk assessment, drug interaction detection, and treatment management.
+
+To achieve these objectives, the module relies on several official medical data sources. The national drug repository is derived from the medication nomenclature published by the Caisse Nationale d’Assurance Maladie (CNAM) \cite{cnam}. Information related to medication safety during pregnancy is collected from recognized medical reference platforms, including CRAT \cite{crat}, BUMPS \cite{bumps}, and VIDAL \cite{vidal}. In addition, drug interaction data are obtained from the official database published by the Agence Nationale de Sécurité du Médicament et des Produits de Santé (ANSM) \cite{ansm}.
+
+By integrating these medical data sources with automated processing mechanisms, the Medication Module provides reliable medication information, assesses pregnancy-related risks, detects potential drug interactions, and supports personalized treatment management throughout pregnancy.
+
+\subsection{General Architecture of the Module}
+\label{subsec:medication-architecture}
+
+The Medication module represents the therapeutic management layer of the Sahhty application. It centralizes medication-related data, supports treatment follow-up, and provides the information required by the medical safety mechanisms. Its architecture relies on several interconnected components responsible for medication management, active ingredient association, treatment scheduling, allergy verification, pregnancy safety assessment, and drug interaction analysis.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/medication_architecture.pdf}
+    \caption{General architecture of the Medication module}
+    \label{fig:architecture_medications}
+\end{figure}
+
+The process begins with the importation of the national medication repository provided by the Caisse Nationale d'Assurance Maladie (CNAM) \cite{cnam}. The extracted data are stored in the Medication model, which represents the pharmaceutical information related to the medications available in the application.
+
+Each medication is then linked to one or more active ingredients through the MedicationDci association model. In the English version of the report, these active ingredients are referred to as International Nonproprietary Names (INNs), which constitute the basis for the medical safety mechanisms \cite{who_inn}.
+
+The INN-related information is used by two specialized subsystems:
+
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+  \item the pregnancy safety assessment system, based on data collected from the medical reference platforms CRAT, BUMPS, and VIDAL \cite{crat,bumps,vidal};
+
+    \item the drug interaction analysis system, based on official data published by the French National Agency for Medicines and Health Products Safety (ANSM) \cite{ansm}.
+\end{list}
+
+In parallel, medications can be integrated into patient treatment plans through the Treatment model. Each treatment stores information about the prescribed medication, dosage, administration frequency, and treatment period.
+
+To support therapeutic follow-up, the TreatmentSchedule model is used to plan medication intakes and manage reminders sent to patients. These reminders help improve treatment adherence and reduce missed doses.
+
+The module integrates an allergy verification mechanism. When a medication is consulted or added to a treatment plan, its associated INNs are compared with the allergies recorded in the patient's medical profile. If a match is detected, the system generates an alert indicating a potential risk.
+
+Finally, the module is accessible to the main actors of the platform, including patients, healthcare professionals, and administrators. This architecture ensures consistency across medication data, patient treatments, and safety mechanisms while supporting the prevention of medication-related risks during pregnancy.
+
+
+\subsection{Data Modeling}
+\label{subsec:data-modeling}
+
+Medication management within the Sahhty platform relies on a set of data models designed to represent the medication repository, associated active ingredients, and patient treatment plans.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/medication_er_diagram.png}
+    \caption{Entity-relationship diagram of the medication management module.}
+    \label{fig:medication_er_diagram}
+\end{figure}
+This data model ensures consistency across the application while facilitating the integration of safety mechanisms such as allergy verification, drug interaction analysis, and pregnancy risk assessment. The main entities are Medication, MedicationDci, Treatment, and TreatmentSchedule.
+Figure~\ref{fig:medication_er_diagram} illustrates the relationships between these entities and provides an overview of the medication management data model used in the Sahhty platform.
+
+\subsubsection{Medication Model}
+
+The Medication model is the main component of the medication repository. It stores information about medications obtained from the CNAM database, including the CNAM code, name, pharmaceutical form, dosage, and price. These data support the different functionalities of the module (Table \ref{medication_model}).
+
+\begin{table}[H]
+\centering
+\caption{Main attributes of the Medication model}
+\label{medication_model}
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Attribute} & \textbf{Description} \\
+\hline
+code & Unique CNAM medication identifier \\
+\hline
+name & Generic medication name \\
+\hline
+commercial\_name & Commercial medication name \\
+\hline
+form & Pharmaceutical dosage form \\
+\hline
+dosage & Medication dosage \\
+\hline
+package & Packaging information \\
+\hline
+public\_price & Public selling price \\
+\hline
+tarif\_reference & CNAM reference reimbursement price \\
+\hline
+category & Therapeutic category \\
+\hline
+dci & Raw list of active ingredients (INNs) \\
+\hline
+prior\_approval & Indicates whether prior approval is required \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{MedicationDci Model}
+
+The MedicationDci model establishes the association between medications and their active ingredients. A medication may contain multiple International Nonproprietary Names (INNs), and a single INN may be present in multiple medications. Consequently, this relationship is modeled as a many-to-many association.
+\subsubsection{Treatment Model}
+
+The Treatment model represents medication treatments associated with patients. Each treatment corresponds to the prescription of a medication over a defined period and stores all information required for therapeutic follow-up.
+
+\subsubsection{TreatmentSchedule Model}
+
+The TreatmentSchedule model is responsible for managing medication intake schedules associated with a treatment. It stores the planned administration times and maintains reminder tracking information.
+
+\subsection{Treatment Management}
+\label{subsec:treatment_management}
+
+The Sahhty platform provides a treatment management system that supports medication adherence and therapeutic follow-up. This functionality is built around the Treatment and TreatmentSchedule models, which allow patients to register prescribed medications and receive automated medication reminders.
+
+When a treatment is created, information such as the prescribed medication, dosage, administration frequency, and treatment duration is stored in the Treatment model. The patient can then define one or more medication intake schedules, which are stored in the TreatmentSchedule model.
+
+To ensure that reminders are delivered at the appropriate time, the system combines APScheduler for task scheduling and Firebase Cloud Messaging (FCM) for notification delivery.
+
+As illustrated in Figure~\ref{fig:treatment_management_process}, the treatment management workflow consists of six main stages, from treatment creation to medication intake confirmation. These stages ensure that patients receive timely reminders and that adherence information is recorded for future follow-up.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Médicaments&MachineLearning/figures/treatment_management_process.pdf}
+    \caption{Treatment management process}
+    \label{fig:treatment_management_process}
+\end{figure}
+
+
+\subsubsection{Treatment Creation and Registration}
+
+The process begins when a patient creates a new treatment. The user selects the prescribed medication and enters the required treatment information, including dosage, administration frequency, start date, and end date.
+
+After validation, the treatment is stored in the Treatment model. This model maintains the relationship between the patient and the prescribed medication while recording all information necessary for treatment monitoring.
+
+\subsubsection{Medication Intake Scheduling}
+
+Once the treatment has been registered, the patient specifies one or more medication intake times. These schedules are stored in the TreatmentSchedule model.
+
+Each schedule represents a planned medication intake and determines when reminders should be generated. Multiple schedules can be associated with the same treatment according to the prescribed frequency.
+
+\subsubsection{Reminder Generation and Delivery}
+
+The scheduling service continuously monitors active treatments and upcoming intake schedules. When a scheduled intake time approaches, APScheduler checks whether a reminder must be generated and verifies that no notification has already been sent for the same intake.
+
+If the reminder is valid, a notification is prepared and transmitted through Firebase Cloud Messaging (FCM). The notification contains information about the medication and serves as a reminder for the patient to take the prescribed dose.
+
+\subsubsection{Medication Intake Confirmation}
+
+After receiving a reminder, the patient can confirm that the medication has been taken. This confirmation is recorded by the system and contributes to the patient's treatment adherence history. The collected adherence information can later be used to monitor treatment compliance and identify missed doses.
+
+\subsubsection{Data Model Support}
+
+The lower part of Figure~\ref{fig:treatment_management_process} illustrates the data model supporting the treatment management workflow. Three main entities are involved:
+
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+    \item \textbf{Medication}: stores medication information such as name, dosage, and pharmaceutical form.
+
+    \item \textbf{Treatment}: represents a patient's prescribed treatment and contains information about the medication, dosage, frequency, treatment period, and treatment status.
+
+    \item \textbf{TreatmentSchedule}: stores medication intake schedules and notification tracking information.
+\end{list}
+
+The figure shows the relationships between these entities. A single medication may be associated with multiple treatments, while a treatment may contain multiple intake schedules.
+
+\subsubsection{Supporting Services}
+
+The treatment management workflow relies on two main services:
+
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+    \item \textbf{APScheduler}: periodically checks active treatments and upcoming intake schedules to trigger reminder generation.
+
+    \item \textbf{Firebase Cloud Messaging (FCM)}: delivers push notifications to patients' mobile devices.
+\end{list}
+
+These services provide an automated treatment management mechanism that improves medication adherence, ensures timely reminder delivery, and maintains a history of patient interactions with prescribed treatments.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Intelligent Medication Search}
+\label{subsec:medication_search}
+
+The Sahhty application integrates an intelligent search mechanism that enables users to quickly retrieve medications based on a search query. This functionality is particularly important because the medication repository contains a large volume of data imported from the CNAM national drug database.
+
+The search process is organized into several stages, as illustrated in Figure~\ref{fig:medication_search_process}.
+
+The first step consists of entering a search query. Users can provide the full or partial name of a medication, with or without spelling mistakes. This query serves as the starting point of the search process.
+
+The second step involves query preprocessing. The entered text is normalized to reduce differences related to letter casing, unnecessary spaces, and formatting variations. This normalization improves the quality of the comparison with the data stored in the database.
+
+The third step relies on a trigram-based similarity search algorithm. The system uses the PostgreSQL pg\_trgm extension \cite{pgtrgm}, which implements a fuzzy matching technique based on trigrams, i.e., groups of three consecutive characters extracted from a text string. For each search query, the algorithm computes similarity scores between the user input and the indexed medication attributes. This approach enables the search engine to tolerate spelling mistakes, typographical errors, and partial queries while maintaining a high level of retrieval accuracy.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Médicaments&MachineLearning/figures/medication_search_process.pdf}
+    \caption{Intelligent medication search process}
+    \label{fig:medication_search_process}
+\end{figure}
+
+To improve the relevance of the results, the search process combines fuzzy matching on medication names and associated International Nonproprietary Names (INNs) with exact matching on structured attributes such as dosage and dosage form. The retrieved medications are then ranked according to their similarity scores, ensuring that the most relevant results are displayed first. Algorithm~\ref{alg:medication_search} summarizes the medication retrieval strategy implemented in the system.
+
+\begin{algorithm}[H]
+\caption{Trigram-Based Medication Search Algorithm}
+\label{alg:medication_search}
+\begin{algorithmic}[1]
+\Require Search query $q$
+\Ensure Ranked list of relevant medications
+
+\ForAll{medication $m$ in the medication repository}
+    \State $nameScore \gets TrigramSimilarity(m.name, q)$
+    \State $innScore \gets TrigramSimilarity(m.inn, q)$
+    \State $bestScore \gets \max(nameScore, innScore)$
+
+    \If{$nameScore \geq 0.4$ \textbf{or} $innScore \geq 0.4$ \textbf{or} $q \subseteq m.dosage$ \textbf{or} $q \subseteq m.dosageForm$}
+        \State Add $(m, bestScore)$ to the result list
+    \EndIf
+\EndFor
+
+\State Sort the result list in descending order according to $bestScore$
+\State \Return result list
+
+\end{algorithmic}
+\end{algorithm}
+
+The fourth step focuses on the database fields involved in the search. The search is not limited to the medication name; it  considers the associated International Nonproprietary Names (INNs), dosage information, and dosage forms. This strategy broadens the search scope and improves the relevance of the returned results.
+
+The fifth step consists of calculating a similarity score for each medication matching the query. The results are then ranked in descending order according to their similarity score, ensuring that the most relevant medications appear first.
+
+Finally, the sixth step corresponds to the presentation of relevant results. Users are provided with a ranked list of medications together with the information required for identification, including the medication name, associated INNs, dosage, and dosage form.
+
+This mechanism provides several functional benefits. It improves tolerance to typing errors, supports partial searches, accelerates access to medications, and enhances the overall user experience when consulting the medication repository.
+
+\paragraph{Search Examples.} For example, a search for ``Paracétmol 500mg'' successfully retrieves ``Paracétamol 500 mg'' despite the spelling error. Similarly, a query such as ``Amoxiciline'' is automatically matched to ``Amoxicilline''. The search engine can leverage dosage information and commercial drug names. For instance, a search for ``Paracetamol 1g'' can return the corresponding commercial product ``Doliprane 1000 mg''.
+
+
+\subsection{Allergy Verification}
+\label{subsec:allergy_verification}
+
+Allergy verification is an important safety feature of the Sahhty platform. Its purpose is to prevent patients from receiving medications that contain active ingredients to which they are known to be allergic. By automatically checking medications before they are prescribed or added to a treatment plan, the system helps reduce the risk of adverse drug reactions and improves patient safety.
+
+During the creation of their medical profile, patients can declare known allergies to specific active ingredients, represented as International Nonproprietary Names (INNs). These allergy records are stored in the patient's medical history and are used during all medication-related operations.
+
+When a medication is selected, the system retrieves its associated active ingredients through the MedicationDci model. The extracted INNs are then compared with the allergies recorded in the patient's profile. This verification is performed in real time to ensure immediate detection of potential risks.
+
+If one or more active ingredients match a registered allergy, the system generates a warning alert. This notification informs the patient or healthcare professional about the potential risk and allows them to review the medication before treatment begins.
+
+The allergy verification process is summarized in Table~\ref{tab:allergy_check}. This automated check helps reduce the risk of prescribing medications that may cause allergic reactions.
+\begin{table}[H]
+\centering
+\caption{Allergy verification workflow}
+\label{tab:allergy_check}
+\begin{tabular}{|c|p{9cm}|}
+\hline
+\textbf{Step} & \textbf{Description} \\
+\hline
+1 & Retrieve the list of allergies recorded in the patient's medical profile \\
+\hline
+2 & Extract the INNs associated with the selected medication \\
+\hline
+3 & Compare the extracted INNs with the patient's allergy records \\
+\hline
+4 & Detect potential matches indicating an allergic risk \\
+\hline
+5 & Generate a warning alert if a potential allergy is identified \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Pregnancy Safety Collection}
+\label{subsec:pregnancy_safety_pipeline}
+
+The pregnancy safety database was constructed through an automated data collection and classification pipeline. The objective of this pipeline is to determine the safety profile of each International Nonproprietary Name (INN) throughout pregnancy and at delivery, using information gathered from trusted medical reference sources.
+
+The pipeline combines web search, web scraping, artificial intelligence-based classification, and database integration. The pipeline is composed of four successive stages.
+
+\subsubsection{URL Discovery (Step 1)}
+
+The process begins with the list of INNs extracted from the CNAM medication repository. For each INN, the system automatically searches three official medical reference platforms:
+
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+    \item CRAT (Centre de Référence sur les Agents Tératogènes);
+    \item BUMPS (Best Use of Medicines in Pregnancy);
+    \item VIDAL.
+\end{list}
+
+To maximize retrieval accuracy, multiple variants of the INN name are generated automatically. These variants include word permutations, removal of non-essential terms, and the addition of prefixes such as ``Vaccine'' when applicable. The retrieved URLs are filtered to retain only pages related to medication use during pregnancy.
+
+When multiple potential matches are identified, the LLaMA~3.3--70B \cite{llama33} model is used to validate the pharmacological equivalence between the searched INN and the retrieved result. Additionally, the RapidFuzz library is employed to compute fuzzy similarity scores, with a minimum acceptance threshold of 80\%.
+
+\subsubsection{Web Scraping  (Step 2)}
+
+Once the relevant URLs have been identified, the content of each webpage is extracted using the BeautifulSoup library. Non-informative elements such as scripts, navigation menus, advertisements, and page footers are removed during preprocessing.
+
+The extraction strategy varies according to the source:
+
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+    \item For CRAT, the complete textual content of the page is retained.
+    \item For BUMPS and VIDAL, only sections related to pregnancy risks, clinical recommendations, fetal effects, neonatal monitoring, and treatment benefits are extracted.
+\end{list}
+
+This preprocessing step reduces irrelevant information and improves the quality of the subsequent classification process.
+
+\subsubsection{AI-Based Safety Classification (Step 3)}
+
+After extraction, the collected medical content is submitted to the LLaMA 3.3--70B large language model developed by Meta \cite{llama33}. The model is accessed through the Groq API \cite{groq}. A structured clinical pharmacology prompt is used to guide the analysis and ensure consistent classification across all medications.
+
+For each INN, the model evaluates medication safety separately for the first trimester (T1), second trimester (T2), third trimester (T3), and delivery period. Based exclusively on the information contained in the source documents, the model assigns one of the following safety categories:
+
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+    \item \textbf{SAFE}: no identified risk under normal conditions of use;
+    \item \textbf{CAUTION}: use requires medical supervision or additional precautions;
+    \item \textbf{UNSAFE}: use is contraindicated or associated with significant risks;
+    \item \textbf{NOT\_APPLICABLE}: insufficient or non-relevant information for the considered period.
+\end{list}
+
+An overall safety status is subsequently derived according to the following decision rules:
+
+\begin{list}{--}{}
+ \setlength\itemsep{-0.5em}
+    \item \textbf{UNSAFE} if at least one trimester is classified as UNSAFE;
+    \item \textbf{CAUTION} if no trimester is classified as UNSAFE but at least one trimester is classified as CAUTION;
+    \item \textbf{SAFE} if all trimesters are classified as either SAFE or NOT\_APPLICABLE.
+\end{list}
+
+In addition to the safety classification, the model generates a short description of the pregnancy-related risks and recommendations associated with the active ingredient. Algorithm~\ref{alg:pregnancy_safety_classification} presents the classification procedure.
+\begin{algorithm}[H]
+\caption{AI-Based Pregnancy Safety Classification}
+\label{alg:pregnancy_safety_classification}
+
+\begin{algorithmic}[1]
+
+\Require Scraped medical text $T$
+\Ensure Pregnancy safety classification and clinical summary
+
+\State Submit $T$ to LLaMA~3.3--70B using a structured clinical prompt
+
+\ForAll{pregnancy period $p \in \{T1, T2, T3, Delivery\}$}
+    \State Predict the safety status of the medication for period $p$
+\EndFor
+
+\If{at least one predicted status is \texttt{UNSAFE}}
+    \State $overallStatus \gets \texttt{UNSAFE}$
+\ElsIf{at least one predicted status is \texttt{CAUTION}}
+    \State $overallStatus \gets \texttt{CAUTION}$
+\Else
+    \State $overallStatus \gets \texttt{SAFE}$
+\EndIf
+
+\State Generate a clinical summary
+
+\State \Return trimester classifications, delivery classification, overall status, and clinical summary
+
+\end{algorithmic}
+\end{algorithm}
+\subsubsection{Database Insertion (Step 4)}
+
+After validation, the generated safety information is stored in the DCI model. Medications from the CNAM repository are then linked to their corresponding active ingredients through the MedicationDci model, allowing pregnancy safety assessments to be performed automatically.
+
+\section{Conclusion}
+
+This chapter presented the development of two main components of the Sahhty platform. First, a maternal risk prediction system was developed to help identify pregnancy-related risks at an early stage. After comparing several machine learning models, XGBoost was selected because it achieved the best results.
+
+Second, the Medication Module was developed to support medication management and treatment follow-up. It includes medication search, treatment scheduling, allergy checking, and pregnancy safety assessment based on trusted medical sources.
+
+These components improve the platform's ability to support maternal healthcare by helping prevent risks, monitor patients, and promote safer medication use during pregnancy.

@@ -1,0 +1,418 @@
+% ============================================================
+%  CHAPTER 1 — Project Foundations: Context, Analysis, and Methodology
+% ============================================================
+\chapter{Project Foundations: Context, Analysis, and Methodology}
+
+% ── 1.1 Introduction ─────────────────────────────────────────
+\section{Introduction}
+
+This chapter presents the foundations of the Sahhty project by describing the environment
+in which it was carried out, the problem it was designed to solve, and the approach that
+guided its development from beginning to end.
+
+The chapter opens with a presentation of the organization that hosted this project, followed
+by an overview of the subject and the motivations behind it. A problem statement identifies
+the specific difficulties faced by patients, and particularly by pregnant women, in managing
+their health in the current healthcare landscape. A review of existing solutions examines
+what the market currently offers and highlights the limitations that justify building something
+new. The proposed solution is then introduced, along with the development approach and
+project timeline adopted by the team.
+
+% ── 1.2 Presentation of the Host Organization ────────────────
+\section{Presentation of the Host Organization}
+
+This project was carried out as a final-year internship hosted at \textbf{Pharmacie Nahla
+Noureddine}, a community pharmacy located in Tunisia. The project originated from an
+initiative taken by the pharmacy itself: observing a real and recurring need among its
+patients, the pharmacy approached the development team and proposed the creation of a
+digital health companion tailored to the specific challenges faced by pregnant women and
+patients in the local healthcare context. The team accepted this proposal and worked
+closely with the pharmacy throughout the entire project, drawing on its professional
+expertise to shape the priorities and clinical direction of the application.
+
+Pharmacies occupy a central position in the daily healthcare journey of patients. Beyond
+dispensing medications, they serve as a first point of contact for health advice, drug
+interaction warnings, and guidance on medication safety during pregnancy. This direct
+contact with patients and their everyday health concerns gave the pharmacy a clear and
+concrete understanding of the problem to be solved, making it both the initiator and the
+primary source of domain knowledge for this project.
+
+
+
+% ── 1.3 Subject Presentation ─────────────────────────────────
+\section{Subject Presentation}
+
+The subject of this project is the development of a mobile health platform
+called \textbf{Sahhty}, a word meaning ``my health'' in Tunisian Arabic. The platform
+serves two types of users: patients (both pregnant women and men who want to monitor
+their general health) and doctors who wish to manage their patients and appointments
+through a dedicated interface.
+
+The application was born from a straightforward observation. Despite the rapid growth of
+health applications worldwide, pregnant women in Tunisia still lack a single, unified tool
+that covers all aspects of their pregnancy journey. They record their measurements in
+paper notebooks, carry heavy medical folders from one appointment to the next, and have
+no reliable way to check whether a medication is safe to take during their current stage of
+pregnancy.
+
+Sahhty was designed to address all of these needs in one place. It allows patients to record
+and track their health readings over time, follow the progress of their pregnancy week by
+week, search for doctors near them and book appointments, store and share their medical
+documents securely, look up the safety of medications during pregnancy, and receive alerts
+when something requires their attention.
+
+For doctors, the platform provides a space to manage their schedule, review the files of
+patients who have granted them access, respond to appointment requests, and stay informed
+about their practice activity through real-time notifications.
+
+The platform is designed exclusively for Android smartphones and is available in both
+French and English, with the interface adapting its colours and content depending on
+whether the user is a woman or a man.
+
+% ── 1.4 Problem Statement ─────────────────────────────────────
+\section{Problem Statement}
+
+\subsection*{The Growth of Health Applications}
+
+Since the Internet spread to virtually every aspect of daily life, health-related applications
+have grown at an extraordinary pace. According to the World Health Organization, the use
+of mobile technologies for health purposes gives users access to information, services, and
+guidance, and contributes to meaningful improvements in health behaviours that help
+prevent both acute and chronic conditions~\cite{who2016}. The scale of this shift is
+considerable: the WHO reports more than seven billion mobile phone subscriptions
+worldwide, and in some countries, access to a mobile phone is easier than access to clean
+water or electricity~\cite{who2018}.
+
+Health applications installed on smartphones and wearable devices have emerged as one of
+the most direct ways for people to take an active role in managing their own health. Some
+collect information automatically without any input from the user, monitoring steps, heart
+rate, or sleep patterns throughout the day. Others ask the user to enter information
+themselves, such as their diet, medication schedule, or clinical measurements. The
+combination of both approaches makes it possible for these tools to suggest changes in
+daily habits and reduce the risk of avoidable health problems~\cite{milne2020}.
+
+\subsection*{The Fragmented Reality of Healthcare in Tunisia}
+
+Alongside consumer health applications, a second category of digital health tools exists
+within hospitals and healthcare institutions. These systems fully digitise the patient record
+and allow every practitioner within the institution to access the patient's complete history,
+test results, prescriptions, and ongoing treatments. In such environments, doctors can avoid
+repeating examinations that have already been performed and can detect dangerous
+combinations of medications before they are prescribed, because all the information is
+visible and centralised.
+
+In the Tunisian healthcare system, this level of organisation is largely absent. Patient
+records are not systematically computerised, and there is little or no structured
+communication between different healthcare facilities. As a result, patients often find
+themselves carrying heavy paper folders containing a disorganised mix of laboratory results,
+radiological reports, and prescriptions issued by different doctors at different locations.
+
+This fragmentation creates serious consequences. At best, it leads to unnecessary
+repetition: the same examination is ordered multiple times because no one can see that it
+was already performed. At worst, it creates dangerous situations where two medications
+prescribed by two different doctors interact with each other in a harmful way, and no one
+is aware of it because neither doctor has access to the other's prescription.
+
+\subsection*{A More Serious Problem for Pregnant Women}
+
+While this situation affects all patients, it becomes particularly concerning for pregnant
+women, because every health decision made during pregnancy affects not only the mother
+but also the child she is carrying. A medication that is safe for a healthy adult may cause
+serious harm to a developing baby at a specific stage of pregnancy. A drug combination
+that produces only mild discomfort in a non-pregnant person can have lasting consequences
+for fetal development.
+
+pregnant women in Tunisia therefore face a dual challenge. They must navigate a
+fragmented healthcare system while also managing a level of medical complexity that
+requires precise, personalised information about the safety of every treatment they take.
+Fragmented records, multiple prescribers, and the absence of any reliable way to check
+medication safety during pregnancy together define the core problem that this project
+was created to address.
+
+
+% ── 1.5 Study of Existing Solutions ──────────────────────────
+\section{Study of Existing Solutions}
+
+\subsection{Market Overview}
+
+The global market for health applications has expanded significantly over the past decade.
+Four main categories of solutions are currently available to patients:
+
+\textbf{Cycle and fertility tracking applications} help women monitor their menstrual cycle,
+predict ovulation, and track the early stages of pregnancy. They are widely used and
+scientifically grounded, but they focus exclusively on the reproductive dimension of health
+and do not address broader health monitoring or clinical risk evaluation.
+
+\textbf{Pregnancy companion applications} provide week-by-week information about fetal
+development, allow users to record symptoms and appointments, and offer curated health
+content. They are informative but passive: they display content without analysing the
+user's own health data.
+
+\textbf{Doctor appointment booking platforms} allow patients to search for doctors by
+speciality and location, view their availability, and reserve a time slot. They excel at
+scheduling but offer no health monitoring, no medication safety information, and no
+management of medical records.
+
+\textbf{Hospital information systems} centralise patient records within a single institution
+and give practitioners access to a shared medical history. They are powerful within their
+walls but are not accessible to patients outside those walls, and they serve institutions
+rather than individuals.
+
+
+
+\subsection{Critique of Existing Solutions}
+The review of existing solutions reveals a consistent pattern: each platform addresses one
+or two dimensions of the problem well, but none brings all the necessary capabilities
+together in a single experience tailored to the Tunisian context.
+
+\textbf{BabyCenter} is one of the most widely used pregnancy applications among Tunisian
+women due to its availability in French and its rich content. It offers week-by-week
+fetal development tracking, symptom logging, kick counting, and weight monitoring.
+However, it remains an informational and community tool rather than a clinical one.
+It has no connection to local doctors, no medication safety guidance, and no automated
+health risk evaluation based on recorded measurements.
+
+\textbf{Grossesse+}, equally popular among French-speaking Tunisian users, provides
+detailed week-by-week pregnancy guides enriched with interactive 3D models, weight
+tracking, contraction and kick counters, and appointment reminders. Like BabyCenter,
+it functions purely as a reference and personal diary application with no integration
+into the healthcare system and no clinical safety analysis of any kind.
+
+\textbf{Keeplyna} is a Tunisian health platform that allows users to manage a digital
+medical record including prescriptions, blood pressure readings, allergy information,
+and chronic conditions, with an official list of doctors registered through the Tunisian
+Medical Council. However, it is a general health management tool with no features
+specific to pregnancy monitoring, no medication safety analysis for pregnant women,
+and no doctor appointment scheduling functionality.
+
+\textbf{Docic} is a Tunisian digital health platform founded in 2022 that enables patients
+and healthcare professionals to store, organise, and share medical records. It supports
+document sharing between patients and doctors, which is a meaningful step toward
+digitising patient records in Tunisia. However, it has no pregnancy-specific features,
+no health measurement recording, no risk evaluation engine, and no medication
+safety guidance.
+
+Across all four platforms, four critical capabilities are universally absent: automatic
+evaluation of health risk based on recorded measurements, medication safety information
+adapted to pregnancy and the Tunisian drug market, a doctor appointment scheduling
+system integrated with health monitoring, and an interface specifically designed for
+pregnant women.
+These four gaps define exactly what Sahhty was built to fill.
+
+% ── 1.6 Proposed Solution ─────────────────────────────────────
+\section{Proposed Solution}
+
+Sahhty is a mobile health platform designed to give pregnant women and all patients a
+single, coherent tool to manage their health throughout their care journey. The platform
+brings together six interconnected capabilities:
+
+\textbf{Automatic health risk evaluation.} Each time the patient records a new health
+reading, the platform automatically evaluates the result against the patient's full history
+and produces an assessment of the overall risk level. If the result signals a concern, the
+patient receives an immediate alert on her screen and a recommendation to consult her
+doctor. High-concern results also generate a notification that reaches the patient even
+when the application is closed.
+
+\textbf{Complete health monitoring.} Patients record six types of health readings: weight,
+blood pressure, blood sugar level, heart rate, body temperature, and body mass index. The
+full history of readings is available at any time, with the ability to filter by type, sort by
+date, and navigate through past entries.
+
+\textbf{Pregnancy follow-up.} The application tracks the pregnancy week by week from
+the day it is discovered until the expected delivery date. A visual progress indicator and a
+fruit size comparison help the patient understand each stage of development intuitively.
+For women, the platform also tracks the menstrual cycle. Male patients see a completely
+different interface that shows only the information relevant to their situation.
+
+\textbf{Doctor search and appointment booking.} Patients search for doctors by speciality,
+city, or distance on an interactive map. Each doctor profile shows their schedule, years
+of experience, and consultation fees. Appointments are booked directly from the
+application, and both the patient and the doctor receive an immediate notification when a
+booking is made or confirmed.
+
+\textbf{Personal medical file management.} Patients upload and organise their health
+documents by category. They decide which doctors are allowed to view their files. A doctor
+who has been granted access can view all documents, alongside the patient's recent health
+readings and current treatments. Access can be revoked at any time by the patient.
+
+\textbf{Medication safety and drug interaction checking.} The platform integrates the full
+list of medications available in Tunisia, enriched with pregnancy safety information
+sourced from reference databases used by healthcare professionals. For each medication,
+the patient can see whether it is considered safe, to be used with caution, or to be avoided
+at each stage of pregnancy. The platform also warns the patient if a medication contains a
+substance she is known to be allergic to, or if two medications in her treatment plan are
+known to interact with each other.
+
+\textbf{Smartwatch data collection.} A companion application installed on a paired
+smartwatch automatically measures the patient's heart rate every thirty minutes and sends
+the reading to the phone, which then forwards it to the platform. This allows health data
+to be collected passively without requiring the patient to do anything.
+
+The platform also sends instant notifications for critical events, supports two languages
+(French and English), and provides a completely distinct visual experience for male patients
+compared to female patients, adapting the colors and content to each user's profile.
+
+% ── 1.7 Methodology: V-Model ─────────────────────────────────
+\section{Methodology: V-Model}
+
+\subsection*{Presentation of the V-Model}
+
+The development of Sahhty was guided by the V-Model, a structured approach to software
+development in which every stage of construction is directly paired with a corresponding
+stage of verification. The model takes its name from the shape it forms when represented
+visually: the left side descends through a series of definition stages, and the right side
+rises through a corresponding series of testing stages, meeting at the point where the
+system is built.As shown in (Figure 1.1) .
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/vmodel.png}
+    \caption{The V-Model development approach applied to the Sahhty project}
+    \label{fig:vmodel}
+\end{figure}
+
+The V-Model was chosen for this project for two main reasons. First, it enforces a
+discipline of thinking about how each piece of the system will be verified \textit{before}
+it is built, which reduces the risk of discovering fundamental problems late in the
+development process. Second, it provides clear milestones and deliverables at each stage,
+making it easier for a two-person team to stay aligned and to know when a phase is
+genuinely complete before moving to the next one.
+
+The following (Table 1.1) describes how each stage of the V-Model was applied to the Sahhty
+project.
+
+\begin{table}[H]
+\centering
+\caption{Application of the V-Model stages to the Sahhty project}
+\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{|p{4.5cm}|p{8.5cm}|}
+\hline
+\textbf{Stage} & \textbf{What was done} \\
+\hline
+Needs analysis &
+The team identified who would use the platform, what problems they face, and what the
+system must do to address those problems. This stage produced the list of features and
+the acceptance criteria that defined the final target. \\
+\hline
+Overall system design &
+The main building blocks of the platform were defined: the mobile application, the
+server managing the data, and the database storing all information. The way these three
+blocks communicate was agreed upon before any construction began. \\
+\hline
+Detailed design &
+Each feature was broken down into its individual parts. The screens, the data structures,
+and the interactions between the phone and the server were described in detail through
+diagrams. \\
+\hline
+Construction &
+The mobile application and the server were built in parallel by the two team members,
+following the designs established in the previous stages. Features were integrated
+progressively and verified at each step. \\
+\hline
+Component verification &
+Each individual feature was tested in isolation to confirm that it behaves correctly
+under normal conditions and handles errors gracefully. \\
+\hline
+Integration verification &
+The mobile application and the server were connected and tested together using real
+accounts and real data to confirm that information flows correctly between them. \\
+\hline
+Overall system validation &
+The complete platform was tested from the user's point of view, following real usage
+scenarios for patients and doctors, to confirm that the system meets the needs
+identified at the start. \\
+\hline
+Acceptance &
+The platform was demonstrated on a real device to confirm that it meets the goals
+defined during the internship, in terms of functionality, reliability, and ease of use. \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Gantt Chart}
+
+The project was carried out over a period of approximately four months. The planning was
+organised into successive phases corresponding to the stages of the V-Model, with the
+two team members working in parallel on their respective responsibilities.As shown in (Figure 1.2) and (Table 1.2) .
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{images/gantt_chart.png}
+    \caption{Gantt chart (Sahhty project planning and timeline)}
+    \label{fig:gantt}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Project phase summary}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{5cm}|p{2.5cm}|p{5.5cm}|}
+\hline
+\textbf{Phase} & \textbf{Duration} & \textbf{Main outcome} \\
+\hline
+Needs analysis and design      & Weeks 1--3  & Features defined, diagrams produced \\
+\hline
+Authentication and accounts    & Weeks 4--5  & Login, registration, and identity verification working \\
+\hline
+Health monitoring              & Weeks 6--8  & Health readings recorded, risk evaluated automatically \\
+\hline
+Doctors and appointments       & Weeks 9--10 & Doctor search, map, and booking live \\
+\hline
+Medical files and medications  & Weeks 11--12 & Document storage, drug safety checker complete \\
+\hline
+Smartwatch and final features  & Weeks 13--14 & Watch data collected, male interface, two languages \\
+\hline
+Testing and validation         & Weeks 15--16 & Full platform verified on real device \\
+\hline
+Report writing                 & Weeks 14--17 & Final report submitted \\
+\hline
+\end{tabular}
+\label{tab:timeline}
+\end{table}
+
+
+% ── 1.8 Conclusion ────────────────────────────────────────────
+\section{Conclusion}
+
+This chapter has laid the foundations of the Sahhty project. Starting from the observation
+that pregnant women and patients in Tunisia lack a single, integrated tool to manage their
+health, a clear problem statement was established around five recurring difficulties:
+fragmented medical records, the absence of automatic risk evaluation, limited doctor-patient
+coordination, the lack of reliable medication safety information during pregnancy, and the
+absence of passive data collection through wearable devices.
+
+A review of four representative applications confirmed that no existing solution addresses
+all of these difficulties together. Each platform covers a narrow part of the problem well,
+but leaves the rest unaddressed. This gap directly motivated the design of Sahhty.
+
+The proposed platform was introduced as a unified response to all five challenges, bringing
+together health monitoring, pregnancy follow-up, doctor connectivity, medical file
+management, medication safety, and smartwatch integration into one coherent experience.
+
+Finally, the V-Model development approach was presented as the guiding framework for the
+project, providing a structured path from the definition of needs to the final validation of
+the complete system.
+
+
+
+
+% ── References ───────────────────────────────────────────────
+\begin{thebibliography}{9}
+
+\bibitem{who2016}
+World Health Organization (2016).
+\textit{mHealth: Use of Mobile Wireless Technologies for Public Health}.
+EB/139/8.
+
+\bibitem{who2018}
+World Health Organization (2018).
+\textit{mHealth: Use of Appropriate Digital Technologies for Public Health}.
+A71/20.
+
+\bibitem{milne2020}
+Milne-Ives M, Lam C, De Cock C, Van Velthoven MH, Meinert E.
+Mobile Apps for Health Behavior Change in Physical Activity, Diet, Drug and Alcohol
+Use, and Mental Health: Systematic Review.
+\textit{JMIR Mhealth Uhealth} 2020;8(3):e17046.
+
+\end{thebibliography}

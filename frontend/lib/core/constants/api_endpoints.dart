@@ -1,7 +1,7 @@
 /// All API endpoints matching the Django REST backend exactly.
 class ApiEndpoints {
   ApiEndpoints._();
-  static const String baseUrl = 'http://192.168.43.103:8000';
+  static const String baseUrl = 'http://10.0.2.2:8000';
 
 
 
@@ -47,6 +47,7 @@ class ApiEndpoints {
   static const String createPregnancy           = '/pregnancies/PregnancyService/create_pregnancy/';
   static String getCurrentPregnancy(int pk)     => '/pregnancies/PregnancyService/$pk/get_current_pregnancy/';
   static String updatePregnancy(int pk)         => '/pregnancies/PregnancyService/$pk/update_pregnancy/';
+  static String endPregnancy(int pk)            => '/pregnancies/PregnancyService/$pk/end_pregnancy/';
   static String deletePregnancy(int pk)         => '/pregnancies/PregnancyService/$pk/delete_pregnancy/';
 
   // ── Measurement (ViewSet: measurements/MeasurementService/) ──────────

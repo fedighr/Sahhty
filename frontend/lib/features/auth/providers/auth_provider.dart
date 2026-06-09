@@ -214,6 +214,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = const AuthState(status: AuthStatus.unauthenticated);
     }
   }
+
+  /// Appelé quand le refresh token est expiré — le storage est déjà vidé par DioClient.
+  /// On déconnecte juste le WebSocket et on remet l'état à unauthenticated.
+  void sessionExpired() {
+    debugPrint('[AuthProvider] Session expirée → redirection vers /login');
+    _ref.read(webSocketServiceProvider).disconnect();
+    state = const AuthState(status: AuthStatus.unauthenticated);
+  }
 }
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {

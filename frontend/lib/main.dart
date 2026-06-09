@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,7 +11,10 @@ import 'core/routes/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/providers/locale_provider.dart';
 import 'core/providers/websocket_provider.dart';
+import 'core/services/smartwatch_risk_service.dart';
 import 'core/widgets/realtime_notification_overlay.dart';
+import 'data/providers/service_providers.dart';
+import 'data/services/dio_client.dart';
 import 'features/auth/providers/auth_provider.dart';
 
 void main() async {
@@ -63,23 +68,55 @@ class SahhtyApp extends ConsumerStatefulWidget {
 }
 
 class _SahhtyAppState extends ConsumerState<SahhtyApp> {
+  StreamSubscription<void>? _sessionExpiredSub;
+
   @override
   void initState() {
     super.initState();
+
+    // Écouter les expirations de session émises par DioClient
+    _sessionExpiredSub = DioClient.sessionExpiredStream.listen((_) {
+      if (mounted) {
+        ref.read(authProvider.notifier).sessionExpired();
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.listen<AuthState>(authProvider, (previous, next) {
         final wsService = ref.read(webSocketServiceProvider);
         if (next.status == AuthStatus.authenticated) {
           wsService.connect();
+          _startWearListener();
         } else if (next.status == AuthStatus.unauthenticated) {
           wsService.disconnect();
+          ref.read(wearListenerServiceProvider).stop();
         }
       });
       final authState = ref.read(authProvider);
       if (authState.status == AuthStatus.authenticated) {
         ref.read(webSocketServiceProvider).connect();
+        _startWearListener();
       }
     });
+  }
+
+  void _startWearListener() {
+    final wearService = ref.read(wearListenerServiceProvider);
+    final riskService = ref.read(smartWatchRiskServiceProvider);
+
+    wearService.onRiskDetected = (riskLevel, note, heartRate) {
+      riskService.notifyRisk(riskLevel, note, heartRate);
+    };
+    wearService.onNewMeasurement = (heartRate) {
+      riskService.notifyNewMeasurement(heartRate);
+    };
+    wearService.start();
+  }
+
+  @override
+  void dispose() {
+    _sessionExpiredSub?.cancel();
+    super.dispose();
   }
 
   @override

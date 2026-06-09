@@ -10,6 +10,7 @@ import 'package:sahhty/data/services/health_connect_service.dart';
 import 'package:sahhty/data/services/vitals_sync_service.dart';
 import 'package:sahhty/data/services/appointment_service.dart';
 import 'package:sahhty/data/services/medical_file_service.dart';
+import 'package:sahhty/data/services/wear_listener_service.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
 final patientServiceProvider = Provider<PatientService>((ref) => PatientService());
@@ -25,3 +26,10 @@ final vitalsSyncServiceProvider = Provider<VitalsSyncService>((ref) => VitalsSyn
   measurementService: ref.read(measurementServiceProvider),
 ));
 final medicalFileServiceProvider = Provider<MedicalFileService>((ref) => MedicalFileService());
+
+final wearListenerServiceProvider = Provider<WearListenerService>((ref) {
+  final service = WearListenerService();
+  ref.onDispose(service.stop);
+  return service;
+});
+
