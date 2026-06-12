@@ -78,8 +78,8 @@ SPECTACULAR_SETTINGS = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
 MIDDLEWARE = [
@@ -132,7 +132,7 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -156,7 +156,7 @@ DATABASES = {
         'CONN_MAX_AGE': 60,
     }
 }
-"""
+
 if 'pytest' in sys.modules:
     testPostgres = urlparse("postgresql://neondb_owner:npg_UczmkV2pHSu5@ep-cool-recipe-ad4xrbbw-pooler.c-2.us-east-1.aws.neon.tech/Sahhty?sslmode=require&channel_binding=require")
     DATABASES['default'] = {

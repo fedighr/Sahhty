@@ -11,6 +11,7 @@ import 'package:sahhty/core/widgets/animated_week_counter.dart';
 import 'package:sahhty/features/auth/providers/auth_provider.dart';
 import 'package:sahhty/data/providers/service_providers.dart';
 import 'package:sahhty/data/services/wearable_service.dart';
+import 'package:sahhty/core/services/smartwatch_risk_service.dart';
 
 class PatientHomeScreen extends ConsumerStatefulWidget {
   const PatientHomeScreen({super.key});
@@ -40,14 +41,19 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
 
   @override
   void initState() {
-    super.initState();
-    _breatheController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 4),
-    )..repeat(reverse: true);
-    _loadData();
-    _checkWearableApp();
-  }
+      super.initState();
+      _breatheController = AnimationController(
+        vsync: this,
+        duration: const Duration(seconds: 4),
+      )..repeat(reverse: true);
+      _loadData();
+      _checkWearableApp();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(smartWatchRiskServiceProvider).riskEvents.listen((event) {
+          if (mounted) _showWatchRiskAlert(event.riskLevel);
+        });
+      });
+    }
 
   Future<void> _checkWearableApp() async {
     final result = await WearableService.checkWatchApp();
@@ -113,7 +119,6 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
       ),
     );
   }
-
   void _showNoWatchDialog(String message) {
     showDialog(
       context: context,
@@ -139,6 +144,52 @@ class _PatientHomeScreenState extends ConsumerState<PatientHomeScreen>
       ),
     );
   }
+
+  void _showWatchRiskAlert(String riskLevel) {
+      final isHigh = riskLevel == 'HIGH';
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            children: [
+              Icon(Iconsax.warning_2,
+                  color: isHigh ? AppColors.riskHigh : AppColors.riskMedium, size: 28),
+              const SizedBox(width: 8),
+              Text(
+                isHigh ? 'Risque élevé !' : 'Attention',
+                style: TextStyle(
+                    color: isHigh ? AppColors.riskHigh : AppColors.riskMedium,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          content: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: (isHigh ? AppColors.riskHigh : AppColors.riskMedium).withAlpha(25),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              isHigh
+                  ? 'Un risque élevé a été détecté par votre montre. Veuillez consulter votre médecin immédiatement.'
+                  : 'Un risque modéré a été détecté par votre montre. Surveillez vos mesures de près.',
+              style: TextStyle(color: isHigh ? AppColors.riskHigh : AppColors.riskMedium),
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isHigh ? AppColors.riskHigh : AppColors.riskMedium,
+              ),
+              child: const Text('Compris'),
+            ),
+          ],
+        ),
+      );
+    }
 
   @override
   void dispose() {

@@ -76,7 +76,7 @@ class PhoneWearListenerService : WearableListenerService() {
                     Log.w(TAG, "No token found — user not logged in?")
                     return@launch
                 }
-
+                Log.d(TAG, "Token found: ${token.take(20)}...")
                 val payload = JSONObject().apply {
                     put("type", "HEART_RATE")
                     put("value1", heartRate.toBigDecimal().toPlainString())
@@ -104,27 +104,25 @@ class PhoneWearListenerService : WearableListenerService() {
 
                 if (responseCode == 200 || responseCode == 201) {
                     val response = connection.inputStream.bufferedReader().readText()
+                    Log.d(TAG, "Backend full response: $response")
                     val json = JSONObject(response)
-                    val data = json.optJSONObject("data")
 
-                    if (data != null) {
-                        val riskLevel = data.optString("risk_level", "")
-                        val note = data.optString("note", "")
+                    val riskLevel = json.optString("risk_level", "")
+                    val note = json.optString("note", "")
 
-                        Log.d(TAG, "Risk level: $riskLevel — $note")
+                    Log.d(TAG, "Risk level: $riskLevel — $note")
 
-                        // Broadcast to Flutter if app is open
-                        sendBroadcast(Intent(ACTION_RISK_ALERT).apply {
-                            setPackage(packageName)
-                            putExtra(EXTRA_RISK_LEVEL, riskLevel)
-                            putExtra(EXTRA_RISK_NOTE, note)
-                            putExtra(EXTRA_HEART_RATE, heartRate)
-                        })
+                    // Broadcast to Flutter if app is open
+                    sendBroadcast(Intent(ACTION_RISK_ALERT).apply {
+                        setPackage(packageName)
+                        putExtra(EXTRA_RISK_LEVEL, riskLevel)
+                        putExtra(EXTRA_RISK_NOTE, note)
+                        putExtra(EXTRA_HEART_RATE, heartRate)
+                    })
 
-                        // Show notification if HIGH risk
-                        if (riskLevel == "HIGH") {
-                            showRiskNotification(heartRate, note)
-                        }
+                    // Show notification if HIGH or MEDIUM risk
+                    if (riskLevel == "HIGH" || riskLevel == "MEDIUM") {
+                        showRiskNotification(heartRate, note)
                     }
                 }
 
@@ -162,7 +160,7 @@ class PhoneWearListenerService : WearableListenerService() {
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_alert)
-            .setContentTitle("⚠️ Alerte santé détectée")
+            .setContentTitle("Alerte santé détectée")
             .setContentText("Rythme cardiaque: ${heartRate.toInt()} BPM")
             .setStyle(NotificationCompat.BigTextStyle().bigText(note))
             .setPriority(NotificationCompat.PRIORITY_HIGH)

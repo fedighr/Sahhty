@@ -81,26 +81,21 @@ class _SahhtyAppState extends ConsumerState<SahhtyApp> {
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.listen<AuthState>(authProvider, (previous, next) {
-        final wsService = ref.read(webSocketServiceProvider);
-        if (next.status == AuthStatus.authenticated) {
-          wsService.connect();
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await ref.read(authProvider.notifier).checkAuth();
+        
+        final authState = ref.read(authProvider);
+        debugPrint('[Main] Auth status after check: ${authState.status}');
+        if (authState.status == AuthStatus.authenticated) {
+          debugPrint('[Main] _startWearListener called! ✅');
+          ref.read(webSocketServiceProvider).connect();
           _startWearListener();
-        } else if (next.status == AuthStatus.unauthenticated) {
-          wsService.disconnect();
-          ref.read(wearListenerServiceProvider).stop();
         }
       });
-      final authState = ref.read(authProvider);
-      if (authState.status == AuthStatus.authenticated) {
-        ref.read(webSocketServiceProvider).connect();
-        _startWearListener();
-      }
-    });
   }
 
   void _startWearListener() {
+    debugPrint('[Main] _startWearListener called! ✅');
     final wearService = ref.read(wearListenerServiceProvider);
     final riskService = ref.read(smartWatchRiskServiceProvider);
 
