@@ -72,7 +72,7 @@ class _DoctorSetupScreenState extends ConsumerState<DoctorSetupScreen>
     setState(() => _loadingSpecialities = true);
     try {
       final result = await ref.read(doctorServiceProvider).getSpecialities();
-      final data = result['data'];
+      final data = result['specialities'];
       List<Map<String, dynamic>> list = [];
       if (data is List) {
         list = data.map<Map<String, dynamic>>((e) => {'id': e['id'], 'name': e['name'] ?? e['speciality_name'] ?? e.toString()}).toList();

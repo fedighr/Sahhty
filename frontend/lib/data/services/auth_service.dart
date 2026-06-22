@@ -109,12 +109,7 @@ class AuthService {
         }
 
         // Incomplete signup
-        if (message == 'User does not complete his signup') {
-          return {
-            'success': false,
-            'message': "Votre inscription n'est pas complète. Veuillez finaliser votre profil."
-          };
-        }
+
       }
 
       // 400 - Invalid credentials
